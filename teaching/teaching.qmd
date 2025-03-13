@@ -1,0 +1,6 @@
+---
+title: "Class name"
+subtitle: "Template for teaching"
+execute:
+  freeze: false
+---
