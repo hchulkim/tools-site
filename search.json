@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "tools",
+    "section": "",
+    "text": "This site is an archive that contains my tools.\n\nWho am I?\nI am a Ph.D student in Applied Economics at The Wharton School: [Website]"
+  },
+  {
     "objectID": "misc/links.html",
     "href": "misc/links.html",
     "title": "Useful links",
@@ -9,12 +16,5 @@
       "Misc.",
       "Useful links"
     ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "tools",
-    "section": "",
-    "text": "This site is an archive that contains my tools.\n\nWho am I?\nI am a Ph.D student in Applied Economics at The Wharton School: [Website]"
   }
 ]
