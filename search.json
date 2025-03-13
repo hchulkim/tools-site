@@ -1,0 +1,20 @@
+[
+  {
+    "objectID": "misc/links.html",
+    "href": "misc/links.html",
+    "title": "Useful links",
+    "section": "",
+    "text": "RStudio containers\n🔗 on Duke Container Manager\n\n\n\n\nCourse GitHub organization\n🔗 on GitHub\n\n\nGradescope\n🔗 on Sakai\n\n\nGradebook\n🔗 on Sakai\n\n\nOffice hours\n🔗 on Google docs\n\n\nClass recording request form\n🔗 on Google forms\n\n\nTexbooks\n🔗 R for Data Science\n🔗 Introduction to Modern Statistics\n\n\nPackage documentation\n🔗 ggplot2: ggplot2.tidyverse.org\n🔗 dplyr: dplyr.tidyverse.org\n🔗 tidyr: tidyr.tidyverse.org\n🔗 forcats: forcats.tidyverse.org\n🔗 stringr: stringr.tidyverse.org\n🔗 lubridate: lubridate.tidyverse.org\n🔗 readr: readr.tidyverse.org\n🔗 readxl: readxl.tidyverse.org",
+    "crumbs": [
+      "Misc.",
+      "Useful links"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "tools",
+    "section": "",
+    "text": "This site is an archive that contains my tools.\n\nWho am I?\nI am a Ph.D student in Applied Economics at The Wharton School: [Website]"
+  }
+]
