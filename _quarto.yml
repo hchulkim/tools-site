@@ -9,7 +9,7 @@ website:
   description: "Homepage for my tools."
   site-url: "https://tools.github.io/"
 
-  repo-url: https://github.com/hchulkim/tools.github.io
+  repo-url: https://hchulkim.github.io/tools-site/
   repo-actions: [edit, issue]
 
   open-graph: true
