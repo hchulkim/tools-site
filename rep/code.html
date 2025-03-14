@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Useful links – tools</title>
+<title>Code – tools</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -29,18 +63,18 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../teaching/prob.qmd" rel="prev">
+<link href="../rep/report.html" rel="next">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-73ccfa9290d908556efc93e07998db97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-864f35fabda0a24f6ab610eb25b40235.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-23115d98ab80971b614850db06197979.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b42f7cebfd6b830e80fb2a076e521d3f.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -70,10 +104,12 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<meta property="og:title" content="Useful links – tools">
+<meta property="og:title" content="Code – tools">
+<meta property="og:description" content="Useful codes">
 <meta property="og:site_name" content="tools">
-<meta name="twitter:title" content="Useful links – tools">
-<meta name="twitter:image" content="https://tools.github.io/misc/images/pic.png">
+<meta name="twitter:title" content="Code – tools">
+<meta name="twitter:description" content="Useful codes">
+<meta name="twitter:image" content="https://tools.github.io/rep/images/pic.png">
 <meta name="twitter:creator" content="@hckim_econ">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -87,7 +123,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../misc/links.html">Misc.</a></li><li class="breadcrumb-item"><a href="../misc/links.html">Useful links</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../rep/code.html">Replication template</a></li><li class="breadcrumb-item"><a href="../rep/code.html">code</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -118,17 +154,35 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
- <span class="menu-text">Code resources</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Replication template</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../code-resource/code.qmd" class="sidebar-item-text sidebar-link">
+  <a href="../rep/code.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">code</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../rep/report.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">report</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../rep/docker.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">docker</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../rep/makefile.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">makefile</span></a>
   </div>
 </li>
       </ul>
@@ -165,38 +219,20 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Teaching template</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../teaching/topology.qmd" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Topology resources</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../teaching/metrics.qmd" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Metric theory resources</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../teaching/prob.qmd" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Probability theory resources</span></a>
-  </div>
-</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
  <span class="menu-text">Misc.</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../misc/links.html" class="sidebar-item-text sidebar-link active">
+  <a href="../misc/links.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Useful links</span></a>
   </div>
 </li>
@@ -207,15 +243,24 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#r" id="toc-r" class="nav-link active" data-scroll-target="#r">R</a></li>
+  <li><a href="#julia" id="toc-julia" class="nav-link" data-scroll-target="#julia">Julia</a></li>
+  <li><a href="#python" id="toc-python" class="nav-link" data-scroll-target="#python">Python</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/rep/code.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../misc/links.html">Misc.</a></li><li class="breadcrumb-item"><a href="../misc/links.html">Useful links</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../rep/code.html">Replication template</a></li><li class="breadcrumb-item"><a href="../rep/code.html">code</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Useful links</h1>
+<h1 class="title">Code</h1>
+<p class="subtitle lead">Useful codes</p>
 </div>
 
 
@@ -232,54 +277,88 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>RStudio containers</th>
-<th>🔗 on <a href="https://cmgr.oit.duke.edu/containers">Duke Container Manager</a></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Course GitHub organization</td>
-<td>🔗 on <a href="https://github.com/sta199-f22-1">GitHub</a></td>
-</tr>
-<tr class="even">
-<td>Gradescope</td>
-<td>🔗 on <a href="https://sakai.duke.edu/portal/site/d55dc1df-28e1-4637-be6f-6ba7c848fabf/page/e6e5b35b-ae85-4d98-8c56-ec6c559db637">Sakai</a></td>
-</tr>
-<tr class="odd">
-<td>Gradebook</td>
-<td>🔗 on <a href="https://sakai.duke.edu/portal/site/d55dc1df-28e1-4637-be6f-6ba7c848fabf/tool/1d0ca2ac-6304-46b2-a6ac-de5a93f677b2/">Sakai</a></td>
-</tr>
-<tr class="even">
-<td>Office hours</td>
-<td>🔗 on <a href="https://docs.google.com/spreadsheets/d/1Jgujcf6xor-63a_qfltwfMkHQtaBJHtUetd-rEpXljw/edit?usp=drive_web&amp;ouid=113269240218009175773">Google docs</a></td>
-</tr>
-<tr class="odd">
-<td>Class recording request form</td>
-<td>🔗 on <a href="https://forms.gle/1ckJVZU9unoxkaJ39">Google forms</a></td>
-</tr>
-<tr class="even">
-<td>Texbooks</td>
-<td><p>🔗 <a href="https://r4ds.hadley.nz/">R for Data Science</a></p>
-<p>🔗 <a href="https://openintro-ims.netlify.app/">Introduction to Modern Statistics</a></p></td>
-</tr>
-<tr class="odd">
-<td>Package documentation</td>
-<td><p>🔗 ggplot2: <a href="https://ggplot2.tidyverse.org/">ggplot2.tidyverse.org</a></p>
-<p>🔗 dplyr: <a href="https://dplyr.tidyverse.org/">dplyr.tidyverse.org</a></p>
-<p>🔗 tidyr: <a href="https://tidyr.tidyverse.org/">tidyr.tidyverse.org</a></p>
-<p>🔗 forcats: <a href="https://forcats.tidyverse.org/">forcats.tidyverse.org</a></p>
-<p>🔗 stringr: <a href="https://stringr.tidyverse.org/">stringr.tidyverse.org</a></p>
-<p>🔗 lubridate: <a href="https://lubridate.tidyverse.org/">lubridate.tidyverse.org</a></p>
-<p>🔗 readr: <a href="https://readr.tidyverse.org/">readr.tidyverse.org</a></p>
-<p>🔗 readxl: <a href="https://readxl.tidyverse.org/">readxl.tidyverse.org</a></p></td>
-</tr>
-</tbody>
-</table>
+<section id="r" class="level3">
+<h3 class="anchored" data-anchor-id="r">R</h3>
+<ol type="1">
+<li><code>datasummary</code> template</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fixest)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># define custom statistic</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>MinMax <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">paste0</span>(<span class="st">'['</span>, <span class="fu">min</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="st">', '</span>, <span class="fu">max</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="st">']'</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate LaTeX output</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>output_tex <span class="ot">&lt;-</span> <span class="fu">datasummary</span>(mpg <span class="sc">+</span> cyl <span class="sc">~</span> <span class="fu">Factor</span>(vs) <span class="sc">*</span> (mean <span class="sc">+</span> sd <span class="sc">+</span> MinMax), </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>                          <span class="at">data =</span> mtcars, </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>                          <span class="at">align =</span> <span class="st">'lcccccc'</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                          <span class="at">output =</span> <span class="st">"latex"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">datasummary</span>(mpg <span class="sc">+</span> cyl <span class="sc">~</span> <span class="fu">Factor</span>(vs) <span class="sc">*</span> (mean <span class="sc">+</span> sd <span class="sc">+</span> MinMax), </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> mtcars,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">align =</span> <span class="st">'lcccccc'</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the output to a single character string</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>output_tex <span class="ot">&lt;-</span> <span class="fu">paste</span>(output_tex, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove \begin{table} and \end{table}</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>output_tex_cleaned <span class="ot">&lt;-</span> <span class="fu">str_replace</span>(output_tex, <span class="st">"(?s)</span><span class="sc">\\\\</span><span class="st">begin</span><span class="sc">\\</span><span class="st">{table</span><span class="sc">\\</span><span class="st">}.*?</span><span class="sc">\\\\</span><span class="st">begin</span><span class="sc">\\</span><span class="st">{tblr</span><span class="sc">\\</span><span class="st">}"</span>, <span class="st">"</span><span class="sc">\\\\</span><span class="st">begin{tblr}"</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>output_tex_cleaned <span class="ot">&lt;-</span> <span class="fu">str_replace</span>(output_tex_cleaned, <span class="st">"(?s)</span><span class="sc">\\\\</span><span class="st">end</span><span class="sc">\\</span><span class="st">{tblr</span><span class="sc">\\</span><span class="st">}.*?</span><span class="sc">\\\\</span><span class="st">end</span><span class="sc">\\</span><span class="st">{table</span><span class="sc">\\</span><span class="st">}"</span>, <span class="st">"</span><span class="sc">\\\\</span><span class="st">end{tblr}"</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Write to a file</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(output_tex_cleaned, <span class="st">"summary_output.tex"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li><code>etable</code> template</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fixest)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>est1 <span class="ot">=</span> <span class="fu">feols</span>(Ozone <span class="sc">~</span> <span class="fu">i</span>(Month) <span class="sc">/</span> Wind <span class="sc">+</span> Temp, <span class="at">data =</span> airquality)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span><span class="al">NOTE</span><span class="co">: 37 observations removed because of NA values (LHS: 37).</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>est2 <span class="ot">=</span> <span class="fu">feols</span>(Ozone <span class="sc">~</span> <span class="fu">i</span>(Month, Wind) <span class="sc">+</span> Temp <span class="sc">|</span> Month, <span class="at">data =</span> airquality)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Assume the following dictionary:</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>dict <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Month::5"</span><span class="ot">=</span><span class="st">"May"</span>, <span class="st">"Month::6"</span><span class="ot">=</span><span class="st">"Jun"</span>, <span class="st">"Month::7"</span><span class="ot">=</span><span class="st">"Jul"</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>         <span class="st">"Month::8"</span><span class="ot">=</span><span class="st">"Aug"</span>, <span class="st">"Month::9"</span><span class="ot">=</span><span class="st">"Sep"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># set my custom latex style</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>style_lines <span class="ot">=</span> <span class="fu">style.tex</span>(<span class="at">depvar.title =</span> <span class="st">""</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                        <span class="at">model.title=</span><span class="st">""</span>, </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>                        <span class="at">var.title=</span><span class="st">"</span><span class="sc">\\</span><span class="st">midrule"</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                        <span class="at">line.top =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">toprule"</span>, <span class="at">line.bottom =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">bottomrule"</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                        <span class="at">fixef.title=</span><span class="st">"</span><span class="sc">\\</span><span class="st">midrule"</span>, <span class="at">fixef.suffix=</span><span class="st">" FE"</span>,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>                        <span class="at">stats.title=</span><span class="st">"</span><span class="sc">\\</span><span class="st">midrule"</span>,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>                        <span class="at">tablefoot.value=</span><span class="st">""</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># save etable</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="fu">etable</span>(est1, est2, <span class="at">dict =</span> dict,        </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">style.tex =</span> style_lines,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>       <span class="at">digits =</span> <span class="st">"r2"</span>, <span class="at">drop =</span> <span class="st">"Constant"</span>, <span class="at">fitstat =</span> <span class="sc">~</span> n <span class="sc">+</span> r2,</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>       <span class="at">signif.code =</span> <span class="fu">c</span>(<span class="st">"***"</span><span class="ot">=</span><span class="fl">0.01</span>, <span class="st">"**"</span><span class="ot">=</span><span class="fl">0.05</span>, <span class="st">"*"</span><span class="ot">=</span><span class="fl">0.1</span>),</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>       <span class="at">order =</span> <span class="st">"Temp"</span>,</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">extralines =</span> <span class="fu">list</span>(<span class="st">"_Lorem"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"lorem1"</span>, <span class="st">"lorem2"</span>)),</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">tex =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>       <span class="at">replace =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>       <span class="at">file=</span> <span class="st">"reg.tex"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="julia" class="level3">
+<h3 class="anchored" data-anchor-id="julia">Julia</h3>
+</section>
+<section id="python" class="level3">
+<h3 class="anchored" data-anchor-id="python">Python</h3>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -845,11 +924,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../teaching/prob.qmd" class="pagination-link" aria-label="Probability theory resources">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Probability theory resources</span>
-      </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../rep/report.html" class="pagination-link" aria-label="report">
+        <span class="nav-page-text">report</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -860,7 +939,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/misc/links.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/rep/code.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This page is built using <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
