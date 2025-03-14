@@ -41,14 +41,26 @@ website:
           text: "Computing template"
       - section: "Teaching"
         contents:
-        - href: teaching/teaching.qmd
-          text: "Teaching template"
-        - href: teaching/topology.qmd
-          text: "Topology resources"
-        - href: teaching/metrics.qmd
-          text: "Metric theory resources"
-        - href: teaching/prob.qmd
-          text: "Probability theory resources"
+          - section: "Class-name"
+            contents:
+              - href: teaching/teaching.qmd
+                text: "Overview"
+              - href: teaching/syllabus.pdf
+                text: "Syllabus"
+              - href: teaching/office-hours.qmd
+                text: "Office hours"
+              - href: teaching/assignments.qmd
+                text: "Assignments"
+              - href: teaching/faq.qmd
+                text: "FAQ" 
+          - section: "Mathematics"
+            contents:
+            - href: teaching/topology.qmd
+              text: "Topology resources"
+            - href: teaching/metrics.qmd
+              text: "Metric theory resources"
+            - href: teaching/prob.qmd
+              text: "Probability theory resources"
       - section: "Misc."
         contents:
         - href: misc/links.qmd
