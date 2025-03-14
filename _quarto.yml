@@ -31,16 +31,10 @@ website:
     search: true
     collapse-level: 1
     contents:
-      - section: "Replication template"
+      - section: "Code resources"
         contents:
-        - href: rep/code.qmd
+        - href: code-resource/code.qmd
           text: "code"
-        - href: rep/report.qmd
-          text: "report"
-        - href: rep/docker.qmd
-          text: "docker"
-        - href: rep/makefile.qmd
-          text: "makefile"
       - section: "Computing"
         contents:
         - href: computing/computing.qmd
