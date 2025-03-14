@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Computing – tools</title>
+<title>Makefile – tools</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -29,8 +29,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../teaching/teaching.html" rel="next">
-<link href="../rep/makefile.html" rel="prev">
+<link href="../computing/computing.html" rel="next">
+<link href="../rep/docker.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -71,12 +71,12 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<meta property="og:title" content="Computing – tools">
-<meta property="og:description" content="Lorem ipsum.">
+<meta property="og:title" content="Makefile – tools">
+<meta property="og:description" content="Makefile template">
 <meta property="og:site_name" content="tools">
-<meta name="twitter:title" content="Computing – tools">
-<meta name="twitter:description" content="Lorem ipsum.">
-<meta name="twitter:image" content="https://tools.github.io/computing/images/pic.png">
+<meta name="twitter:title" content="Makefile – tools">
+<meta name="twitter:description" content="Makefile template">
+<meta name="twitter:image" content="https://tools.github.io/rep/images/pic.png">
 <meta name="twitter:creator" content="@hckim_econ">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -90,7 +90,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../computing/computing.html">Computing</a></li><li class="breadcrumb-item"><a href="../computing/computing.html">Computing template</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../rep/code.html">Replication template</a></li><li class="breadcrumb-item"><a href="../rep/makefile.html">makefile</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -121,13 +121,13 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Replication template</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../rep/code.html" class="sidebar-item-text sidebar-link">
@@ -148,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rep/makefile.html" class="sidebar-item-text sidebar-link">
+  <a href="../rep/makefile.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">makefile</span></a>
   </div>
 </li>
@@ -156,16 +156,16 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
  <span class="menu-text">Computing</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../computing/computing.html" class="sidebar-item-text sidebar-link active">
+  <a href="../computing/computing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Computing template</span></a>
   </div>
 </li>
@@ -216,10 +216,10 @@ ul.task-list li input[type="checkbox"] {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../computing/computing.html">Computing</a></li><li class="breadcrumb-item"><a href="../computing/computing.html">Computing template</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../rep/code.html">Replication template</a></li><li class="breadcrumb-item"><a href="../rep/makefile.html">makefile</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Computing</h1>
-<p class="subtitle lead">Lorem ipsum.</p>
+<h1 class="title">Makefile</h1>
+<p class="subtitle lead">Makefile template</p>
 </div>
 
 
@@ -236,6 +236,187 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>This is my Makefile template.</p>
+<pre class="{bash}"><code>#| eval: false
+
+# Makefile for analysis report
+#
+
+## Directory vars (usually only these need changing)
+rawdir = data/raw/
+datdir = data/
+rdir = R/
+juliadir = julia/
+standir = stan/
+resdir = results/
+figsdir = figs/
+papdir = paper/
+perfdir = performance/
+
+## See note about new grouped targets method, i.e. replacing ":" with "&amp;:"
+## https://stackoverflow.com/a/59877127/4115816
+
+## Headline build
+all: data stan main recursive evidence sensitivity paper
+
+data: $(datdir)climate.csv $(datdir)priors.csv $(datdir)df18.fst
+stan: $(standir)mod-pred.stan $(standir)mod.stan $(standir)mod-anthro.stan \
+ $(standir)mod-me.stan
+main: $(resdir)main/tcr.fst $(resdir)main/gmst2100.fst \
+ $(resdir)main/gmst-pred.csv $(resdir)main/params.csv $(resdir)main/gmst-sim.csv
+recursive: $(resdir)recursive/tcr-rec.csv
+evidence: $(resdir)evidence/evid.csv
+sensitivity: $(resdir)sensitivity/params-alt-gmst.csv $(resdir)sensitivity/tcr-alt-gmst.fst \
+ $(resdir)sensitivity/params-me-gmst.csv $(resdir)sensitivity/tcr-me-gmst.fst \
+ $(resdir)sensitivity/tcr-me-forcings.fst \
+ $(resdir)sensitivity/tcr-eff1.fst $(resdir)sensitivity/tcr-eff2.fst \
+ $(resdir)sensitivity/params-anthro.csv $(resdir)sensitivity/tcr-anthro.fst
+scc: $(resdir)scc/scc.csv
+paper: $(papdir)sceptic/sceptic.pdf $(papdir)SM/sceptic-SM.pdf
+ 
+clean:
+    rm -f $(rawdir)* $(datdir)* $(resdir)* $(figsdir)* $(papdir)sceptic/* $(papdir)SM/* $(perfdir)*
+    
+    
+    
+file_abbc: file_ab file_bc
+    copy file_ab+file_bc file_abbc
+
+file_ab file_bc &amp;: file_a file_b file_c
+    copy file_a+file_b file_ab
+    copy file_b+file_c file_bc
+
+file_a file_b file_c &amp;: content
+    copy content file_a
+    copy content file_b
+    copy content file_c
+
+## Draw the Makefile DAG
+## Requires: https://github.com/lindenb/makefile2graph
+dag: makefile-dag.png
+makefile-dag.png: Makefile
+    make -Bnd all | make2graph | dot -Tpng -Gdpi=300 -o makefile-dag.png
+
+## Raw Data
+raw: $(rdir)00-data-raw.R
+    Rscript $&lt;
+    rm Rplots.pdf
+
+## Prep Data
+$(datdir)climate.csv: $(rdir)01-data-prep.R $(rawdir)*
+    Rscript $&lt;
+    rm Rplots.pdf
+
+$(datdir)priors.csv: $(rdir)01-data-prep.R $(datdir)climate.csv
+    Rscript $&lt;
+    rm Rplots.pdf
+
+$(datdir)df18.fst: $(rdir)01-data-prep.R $(rawdir)df18.idlsave
+    Rscript $&lt;
+    rm Rplots.pdf
+
+## Results
+
+### Main results
+#results_main = $(resdir)main/tcr.fst $(resdir)main/gmst2100.fst \
+# $(resdir)main/gmst-pred.csv $(resdir)main/params.csv $(resdir)main/gmst-sim.csv
+#$(results_main) &amp;: $(rdir)02-main.R $(standir)mod-pred.stan $(datdir)climate.csv
+#   Rscript $&lt;
+#   
+$(resdir)main/tcr.fst &amp;: $(rdir)02-main.R $(standir)mod-pred.stan $(datdir)climate.csv
+    Rscript $&lt;
+$(resdir)main/gmst2100.fst &amp;: $(rdir)02-main.R $(standir)mod-pred.stan $(datdir)climate.csv
+    Rscript $&lt;
+$(resdir)main/gmst-pred.csv &amp;: $(rdir)02-main.R $(standir)mod-pred.stan $(datdir)climate.csv
+    Rscript $&lt;
+$(resdir)main/params.csv &amp;: $(rdir)02-main.R $(standir)mod-pred.stan $(datdir)climate.csv
+    Rscript $&lt;
+$(resdir)main/gmst-sim.csv &amp;: $(rdir)02-main.R $(standir)mod-pred.stan $(datdir)climate.csv
+    Rscript $&lt;
+
+### Recursive results
+results_recursive = $(resdir)recursive/tcr-rec.csv
+$(results_recursive) &amp;: $(rdir)03-recursive.R $(standir)mod.stan $(datdir)climate.csv
+    Rscript $&lt;
+    
+### Evidence results
+results_evidence = $(resdir)evidence/evid.csv
+$(results_evidence) &amp;: $(rdir)04-evidence.R $(standir)mod.stan $(datdir)climate.csv \
+ $(resdir)main/gmst-sim.csv
+    Rscript $&lt;
+
+### Sensitivity analysis results
+
+#### a) Alt GMST series
+#results_gmst_alt = $(resdir)sensitivity/params-alt-gmst.csv $(resdir)sensitivity/tcr-alt-gmst.fst
+#$(results_gmst_alt) &amp;: $(rdir)05-sensitivity-alt-gmst.R $(standir)mod.stan $(datdir)climate.csv
+#   Rscript $&lt;
+$(resdir)sensitivity/params-alt-gmst.csv &amp;: $(rdir)05-sensitivity-alt-gmst.R \
+ $(standir)mod.stan $(datdir)climate.csv
+    Rscript $&lt;
+$(resdir)sensitivity/tcr-alt-gmst.fst &amp;: $(rdir)05-sensitivity-alt-gmst.R \
+ $(standir)mod.stan $(datdir)climate.csv
+    Rscript $&lt;
+
+#### b) Measurement error in GMST
+#results_me_gmst = $(resdir)sensitivity/params-me-gmst.csv $(resdir)sensitivity/tcr-me-gmst.fst
+#$(results_me_gmst) &amp;: $(rdir)05-sensitivity-me-gmst.R $(standir)mod-me.stan $(datdir)climate.csv
+#   Rscript $&lt;
+$(resdir)sensitivity/params-me-gmst.csv &amp;: $(rdir)05-sensitivity-me-gmst.R \
+ $(standir)mod-me.stan $(datdir)climate.csv
+    Rscript $&lt;
+$(resdir)sensitivity/tcr-me-gmst.fst &amp;: $(rdir)05-sensitivity-me-gmst.R \
+ $(standir)mod-me.stan $(datdir)climate.csv
+    Rscript $&lt;
+
+#### c) Measurement error in forcings
+results_me_gmst = $(resdir)sensitivity/tcr-me-forcings.fst
+$(results_me_gmst) &amp;: $(rdir)05-sensitivity-me-forcings.R $(standir)mod.stan $(datdir)climate.csv \
+ $(datdir)df18.fst
+    Rscript $&lt;
+
+#### d) Adjust forcing efficacies (Marvel et. al, 2016)
+#results_eff = $(resdir)sensitivity/tcr-eff1.fst $(resdir)sensitivity/tcr-eff2.fst
+#$(results_eff) &amp;: $(rdir)05-sensitivity-eff.R $(standir)mod.stan $(datdir)climate.csv \
+# $(rawdir)rcps.csv
+#   Rscript $&lt;
+$(resdir)sensitivity/tcr-eff1.fst &amp;: $(rdir)05-sensitivity-eff.R \
+ $(standir)mod.stan $(datdir)climate.csv $(rawdir)rcps.csv
+    Rscript $&lt;
+$(resdir)sensitivity/tcr-eff2.fst &amp;: $(rdir)05-sensitivity-eff.R \
+ $(standir)mod.stan $(datdir)climate.csv $(rawdir)rcps.csv
+    Rscript $&lt;
+
+#### e) Separate out anthropogenic forcings
+#results_anthro = $(resdir)sensitivity/params-anthro.csv $(resdir)sensitivity/tcr-anthro.fst
+#$(results_anthro) &amp;: $(rdir)05-sensitivity-anthro.R $(standir)mod-anthro.stan $(datdir)climate.csv
+#   Rscript $&lt;
+$(resdir)sensitivity/params-anthro.csv &amp;: $(rdir)05-sensitivity-anthro.R \
+ $(standir)mod-anthro.stan $(datdir)climate.csv
+    Rscript $&lt;
+$(resdir)sensitivity/tcr-anthro.fst &amp;: $(rdir)05-sensitivity-anthro.R \
+ $(standir)mod-anthro.stan $(datdir)climate.csv
+    Rscript $&lt;
+
+## Social cost of carbon
+$(resdir)scc/scc.csv &amp;: $(juliadir)scc.jl $(resdir)main/tcr.fst
+    julia $&lt;
+
+## Paper
+$(papdir)sceptic/sceptic.pdf &amp;: $(papdir)sceptic/sceptic.Rmd \
+ $(datdir)climate.csv $(datdir)priors.csv \
+ $(resdir)main/params.csv $(resdir)main/tcr.fst \
+ $(resdir)main/gmst-pred.csv $(resdir)main/gmst2100.fst \
+ $(resdir)recursive/tcr-rec.csv $(resdir)evidence/evid.csv \
+ $(resdir)scc/scc.csv
+    Rscript -e 'rmarkdown::render("$&lt;")'
+$(papdir)SM/sceptic-SM.pdf: $(papdir)SM/sceptic-SM.Rmd $(resdir)scc/scc.csv
+    Rscript -e 'rmarkdown::render("$&lt;")'
+
+## Helpers
+.PHONY: all clean dag data stan main recursive evidence sensitivity scc paper
+.DELETE_ON_ERROR:
+.SECONDARY:</code></pre>
 
 
 
@@ -803,13 +984,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../rep/makefile.html" class="pagination-link" aria-label="makefile">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">makefile</span>
+      <a href="../rep/docker.html" class="pagination-link" aria-label="docker">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">docker</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../teaching/teaching.html" class="pagination-link" aria-label="Teaching template">
-        <span class="nav-page-text">Teaching template</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../computing/computing.html" class="pagination-link" aria-label="Computing template">
+        <span class="nav-page-text">Computing template</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -821,7 +1002,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/computing/computing.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/rep/makefile.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This page is built using <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

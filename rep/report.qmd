@@ -1,0 +1,8 @@
+---
+title: "Report"
+subtitle: "Dockerfile template"
+execute:
+  freeze: false
+---
+
+This is my quarto template for reports and lecture notes.
