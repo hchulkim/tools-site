@@ -2,5 +2,5 @@
 title: "Computing"
 subtitle: "Lorem ipsum."
 execute:
-  freeze: false
+  freeze: auto
 ---

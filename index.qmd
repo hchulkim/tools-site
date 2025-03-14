@@ -2,7 +2,7 @@
 title: "tools"
 subtitle: "Website that archives my tools"
 execute:
-  freeze: false
+  freeze: auto
 ---
 
 This site is an archive that contains my tools.
