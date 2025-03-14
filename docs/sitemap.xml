@@ -2,15 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://tools.github.io/misc/links.html</loc>
-    <lastmod>2025-03-13T04:49:31.471Z</lastmod>
+    <lastmod>2025-03-14T02:09:56.611Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/teaching/teaching.html</loc>
-    <lastmod>2025-03-13T14:29:36.789Z</lastmod>
+    <lastmod>2025-03-14T02:12:09.922Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/index.html</loc>
-    <lastmod>2025-03-13T23:58:01.059Z</lastmod>
+    <lastmod>2025-03-14T02:04:18.730Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/computing/computing.html</loc>
@@ -31,5 +31,17 @@
   <url>
     <loc>https://tools.github.io/rep/code.html</loc>
     <lastmod>2025-03-13T23:48:04.972Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/teaching/topology.html</loc>
+    <lastmod>2025-03-14T02:20:29.598Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/teaching/prob.html</loc>
+    <lastmod>2025-03-14T02:24:59.611Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/teaching/metrics.html</loc>
+    <lastmod>2025-03-14T02:24:46.717Z</lastmod>
   </url>
 </urlset>
