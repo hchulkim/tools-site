@@ -12,7 +12,7 @@ library(googlesheets4)
 library(gt)
 library(tidyverse)
 gs4_deauth()
-d <- read_sheet("https://docs.google.com/spreadsheets/d/16al0i5qXkKP0wKX86-TRgB0zpJRbwZywreXhBo--wSk/edit?usp=sharing", sheet = "probs")
+d <- read_sheet("https://docs.google.com/spreadsheets/d/16al0i5qXkKP0wKX86-TRgB0zpJRbwZywreXhBo--wSk/edit?usp=sharing", sheet = "prob")
 ```
 
 ::: column-screen-right
