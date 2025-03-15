@@ -38,7 +38,11 @@ website:
       - section: "Computing"
         contents:
         - href: computing/computing.qmd
-          text: "Computing template"
+          text: "Overview"
+        - href: computing/blp.qmd
+          text: "BLP code (Julia)"
+        - href: computing/google-big-query.qmd
+          text: "Google Big Query: example"
       - section: "Teaching"
         contents:
           - section: "Class-name"
