@@ -1,6 +1,8 @@
 ---
-title: "Computing"
-subtitle: "Lorem ipsum."
+title: "Overview"
+subtitle: "Templates for computing"
 execute:
   freeze: auto
 ---
+
+This section is a set of templates related to computing.
