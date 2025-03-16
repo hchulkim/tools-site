@@ -7,3 +7,4 @@ title: "Useful links"
 | **Personal website**       | 🔗 [GitHub site](https://hchulkim.github.io)                                               |
 | **Coffee chat (with me)**  | 🔗 [Appointment link](https://appt.link/meet-with-hyoungchul-kim-beUIhP3Q/in-person-meeting) |
 | **Computing and replication resources** | 🔗 [Web-scraping 1](06-web-css.pdf) <br> 🔗 [Web-scraping 2](07-web-apis.pdf) <br> 🔗 [Parallel programming](12-parallel.pdf) <br> 🔗 [Docker](13-docker.pdf) <br> 🔗 [Google compute engine 1](14-gce-i.pdf) <br> 🔗 [Google compute engine 2](14-gce-ii.pdf) <br> 🔗 [Databases](16-databases.pdf) <br> 🔗 [Spark](17-spark.pdf) |
+| **Useful packages**       | 🔗 [New DiD methods](https://yiqingxu.org/packages/fect/05-panel.html) |
