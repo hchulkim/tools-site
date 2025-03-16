@@ -6,7 +6,7 @@ execute:
 engine: knitr
 ---
 
-This is a `Dockerfile` template for my computing environment.
+This is a `Dockerfile` template for my computing environment. If you want to know more about what this does, check out my [blog post](https://hchulkim.github.io/posts/dockerfile-template/).
 
 ```{bash}
 #| echo: true
