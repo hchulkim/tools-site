@@ -11,68 +11,25 @@
     ]
   },
   {
-    "objectID": "computing/computing.html",
-    "href": "computing/computing.html",
-    "title": "Overview",
+    "objectID": "computing/duckdb-sql.html",
+    "href": "computing/duckdb-sql.html",
+    "title": "DuckDB SQL",
     "section": "",
-    "text": "This section is a set of templates related to computing.",
+    "text": "This is example templates that use DuckDB with SQL for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(duckdb)\n\ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\n# con = dbConnect(duckdb(), dbdir = \"nyc.duck\")\n\n# SELECT\n#   passenger_count,\n#   AVG(tip_amount) AS mean_tip\n# FROM 'nyc-taxi/**/*.parquet'\n# GROUP BY passenger_count\n# ORDER BY passenger_count\n\ntic = Sys.time()\ndat1 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  GROUP BY ALL\n  ORDER BY ALL\n  \"\n)\ntoc = Sys.time()\n\ndat1\ntoc - tic\n\ntic = Sys.time()\ndat2 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    month,\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  WHERE month &lt;= 3\n  GROUP BY ALL\n  \"\n    )\ntoc = Sys.time()\n\nhead(dat2)\n\ndbDisconnect(con)\n\n\n\n\nimport duckdb\nimport time\n\ncon = duckdb.connect(database=':memory:', read_only=False)\n\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\ncon = duckdb.connect(database='nyc.duck', read_only=False)\n\ntic = time.time()\ndat1 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    GROUP BY ALL\n    ORDER BY ALL\n    '''\n    )\n)\ntoc = time.time()\n\ndat1\n\ntic = time.time()\ndat2 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      month,\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    WHERE month &lt;= 3\n    GROUP BY ALL\n    '''\n  )\n)\ntoc = time.time()\n\ndat2\n\ncon.close()",
     "crumbs": [
       "Computing",
-      "Overview"
+      "DuckDB SQL"
     ]
   },
   {
-    "objectID": "misc/links.html",
-    "href": "misc/links.html",
-    "title": "Useful links",
+    "objectID": "computing/polars.html",
+    "href": "computing/polars.html",
+    "title": "Polars from Python and R",
     "section": "",
-    "text": "Category\nLinks\n\n\n\n\nPersonal website\n🔗 GitHub site\n\n\nCoffee chat (with me)\n🔗 Appointment link\n\n\nComputing and replication resources\n🔗 Web-scraping 1  🔗 Web-scraping 2  🔗 Parallel programming  🔗 Docker  🔗 Google compute engine 1  🔗 Google compute engine 2  🔗 Databases  🔗 Spark  🔗 DuckDB and polars  🔗 NYU Course Notes & Resources  🔗 Quantitative dynamic model\n\n\nJulia\n🔗 Julia for data science  🔗 Computational economics for PhDs  🔗 Computational Methods in Macroeconomics  🔗 BLPDemand.jl  🔗 Guide to Efficient Computational Work in Economics  🔗 Econometrics with Julia  🔗 Advanced Dynamic Programming\n\n\nUseful packages\n🔗 New DiD methods\n\n\nGraduate trade and spatial\n🔗 Treb Allen",
+    "text": "This is example templates that use Polars for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(polars)\n\nnyc = pl$scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning = TRUE)\nnyc\n\nq1 = (\n    nyc\n    $group_by(\"passenger_count\")\n    $agg(\n        pl$mean(\"tip_amount\")#$alias(\"mean_tip\") ## alias is optional\n    )\n    $sort(\"passenger_count\")\n)\nq1 \n\ntic = Sys.time()\ndat1 = q1$collect()\ntoc = Sys.time()\n\ndat1\n\nq2 = (\n    nyc\n    $filter(pl$col(\"month\") &lt;= 3)\n    $group_by(\"month\", \"passenger_count\")\n    $agg(pl$mean(\"tip_amount\")$alias(\"mean_tip\"))\n    $sort(\"passenger_count\")\n) \n\n# q2              # naive\ncat(q2$explain()) # optimized\n\ntic = Sys.time()\ndat2 = q2$collect()\ntoc = Sys.time()\n\ndat2\n\nq3 = (\n    nyc\n    $group_by(\"passenger_count\", \"trip_distance\")\n    $agg(\n        pl$mean(\"tip_amount\")$alias(\"mean_tip\"),\n        pl$mean(\"fare_amount\")$alias(\"mean_fare\")\n        )\n    $sort(\"passenger_count\", \"trip_distance\")\n)\n\ntic = Sys.time()\ndat3 = q3$collect()\ntoc = Sys.time()\n \ndat3\n\ndat3$unpivot(index = c(\"passenger_count\", \"trip_distance\"))\n\nmean_tips  = nyc$group_by(\"month\")$agg(pl$col(\"tip_amount\")$mean())\nmean_fares = nyc$group_by(\"month\")$agg(pl$col(\"fare_amount\")$mean())\n\n(\n    mean_tips\n    $join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\"  # default is inner join\n    )\n    $collect()\n)\n\n# You can also try tidypolars\n\nlibrary(polars) ## Already loaded\nlibrary(tidypolars)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)\n\nnyc = scan_parquet_polars(\"nyc-taxi/**/*.parquet\")\n\nnyc |&gt; \n    summarise(mean_tip = mean(tip_amount), .by = passenger_count) |&gt;\n    compute()\n\n# Aside: Use collect() instead of compute() at the end if you would prefer to return a standard R data.frame instead of a Polars DataFrame.\n\n\n\n\nimport polars as pl\nimport time\nimport matplotlib\n\nnyc = pl.scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning=True)\nnyc\n\nq1 = (\n    nyc\n    .group_by([\"passenger_count\"])\n    .agg([\n            pl.mean(\"tip_amount\")#.alias(\"mean_tip\") ## alias is optional\n        ])\n    .sort(\"passenger_count\")\n)\nq1\n\ntic = time.time()\ndat1 = q1.collect()\ntoc = time.time()\n\ndat1\n\nq2 = (\n    nyc\n    .filter(pl.col(\"month\") &lt;= 3)\n    .group_by([\"month\", \"passenger_count\"])\n    .agg([pl.mean(\"tip_amount\").alias(\"mean_tip\")])\n    .sort(\"passenger_count\")\n)\n\n# q2             # naive\nq2.show_graph()  # optimized\n\ntic = time.time()\ndat2 = q2.collect()\ntoc = time.time()\n\ndat2\n\nq3 = (\n    nyc\n    .group_by([\"passenger_count\", \"trip_distance\"])\n    .agg([\n        pl.mean(\"tip_amount\").alias(\"mean_tip\"),\n        pl.mean(\"fare_amount\").alias(\"mean_fare\"),\n        ])\n    .sort([\"passenger_count\", \"trip_distance\"])\n)\n\ntic = time.time()\ndat3 = q3.collect()\ntoc = time.time()\n\ndat3\n\ndat3.unpivot(index = [\"passenger_count\", \"trip_distance\"])\n\nmean_tips  = nyc.group_by(\"month\").agg(pl.col(\"tip_amount\").mean())\nmean_fares = nyc.group_by(\"month\").agg(pl.col(\"fare_amount\").mean())\n\n(\n    mean_tips\n    .join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\" # default is inner join\n    )\n    .collect()\n)",
     "crumbs": [
-      "Misc.",
-      "Useful links"
-    ]
-  },
-  {
-    "objectID": "teaching/teaching.html",
-    "href": "teaching/teaching.html",
-    "title": "Class name",
-    "section": "",
-    "text": "This page contains an outline of the topics, content, and assignments for the semester. Note that this schedule will be updated as the semester progresses and the timeline of topics and assignments might be updated throughout the semester. Syllabus\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nprepare\nslides\nhw\nhw_sol\nexam\nnotes\n\n\n\n\n1\nM\nAug 29\nLab\nNo lab\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nAug 30\nLec 1\nWelcome to STA 199\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 1\nLec 2\nMeet the toolkit\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2\nM\nSep 5\nLab 0\nHello R!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 0\n\n\n\nT\nSep 6\nLec 3\nGrammar of graphics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 8\nLec 4\nVisualizing various types of data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 1\n\n\n\nF\nSep 9\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 0 + AE 1\n\n\n\nSu\nSep 11\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: AE 2\n\n\n3\nM\nSep 12\nLab 1\nData visualization\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 1\n\n\n\nT\nSep 13\nLec 5\nGrammar of data wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 15\nLec 6\nWorking with multiple data frames\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 1 / Release: HW 2\n\n\n\nF\nSep 16\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 1\n\n\n4\nM\nSep 19\nLab 2\nData wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 2\n\n\n\nT\nSep 20\nLec 7\nTidying data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 22\nLec 8\nData types and classes\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue HW 2\n\n\n\nF\nSep 23\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 2\n\n\n5\nM\nSep 26\nLab 3\nData tidying\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 3\n\n\n\nT\nSep 27\nLec 9\nImporting and recoding data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 29\nLec 10\nExam 1 Review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 1 at 12pm\n\n\n\nF\nSep 30\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 3\n\n\n6\nM\nOct 3\nLab\nNo lab - Work on Exam 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam 1 at 2pm\n\n\n\nT\nOct 4\nLec 11\nData science ethics - Misrepresentation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 6\nLec 12\nData science ethics - Algorithmic bias + data privacy\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 3\n\n\n7\nM\nOct 10\nLab\nNo lab - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nOct 11\nLecture\nNo Lec - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 13\nLec 13\nWeb scraping\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 3\n\n\n8\nM\nOct 17\nLab\nWork on project proposal\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nOct 18\nLec 14\nFunctions + iteration\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 20\nLec 15\nThe language of models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nF\nOct 21\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project proposal\n\n\n9\nM\nOct 24\nLab 4\nProbability + Simpson's Paradox\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 4\n\n\n\nT\nOct 25\nLec 16\nModels with a single predictor\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 27\nLec 17\nModels with multiple predictors\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 4\n\n\n\nF\nOct 28\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 4\n\n\n10\nM\nOct 31\nLab 5\nPredicting a numerical outcome\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 5\n\n\n\nT\nNov 1\nLec 18\nModels with multiple predictors + Overfitting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 3\nLec 19\nLogistic regression\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 4 / Release: HW 5\n\n\n\nF\nNov 4\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 5 / Release: HW 6\n\n\n\nS\nNov 5\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 1\n\n\n11\nM\nNov 7\nLab\nWork on project draft\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nNov 8\nLec 20\nQuantifying uncertainty with bootstrap intervals\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 10\nLec 21\nHypothesis testing via simulation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 5\n\n\n\nF\nNov 11\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 1\n\n\n12\nM\nNov 14\nLab 6\nPrediction + Bootstrapping\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 6\n\n\n\nT\nNov 15\nLec 22\nInference overview\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 17\nLec 23\nExam 2 Review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 2 at 12pm\n\n\n\nF\nNov 18\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 6\n\n\n13\nM\nNov 21\nLab\nNo lab - Work on Exam 2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam 2 at 2pm\n\n\n\nT\nNov 22\nLec 24\nNo lecture - Work on projects\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 24\nLecture\nNo lecture - Thanksgiving\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nF\nNov 25\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam retake (optional)\n\n\n\nSu\nNov 27\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 2 (optional)\n\n\n14\nM\nNov 28\nLab\nWork on project peer review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project peer review\n\n\n\nT\nNov 29\nLec 25\nCommunicating data science results effectively\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 2\n\n\n\nTh\nDec 1\nLec 26\nCustomizing Quarto reports and presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nM\nDec 5\nLab\nProject presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nDec 6\nLec 25\nLooking further: Text analysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nDec 8\nLec 26\nLooking further: Interactive web applications with Shiny\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project everything\n\n\n\nF\nDec 9\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 6 / Statistics experience\n\n\n16\nTh\nDec 15\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam retake (optional)",
-    "crumbs": [
-      "Teaching",
-      "Class-name",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "teaching/prob.html",
-    "href": "teaching/prob.html",
-    "title": "Probability theory",
-    "section": "",
-    "text": "This pages contains log for my self-study on probability theory.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndate\ntopic\nhw\nhw_sol\nexam\nnotes\n\n\n\n\n1\nAug 29\nNo lab\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAug 30\nWelcome to STA 199\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 1\nMeet the toolkit\n\n\n\n\n\n\n\n\n\n\n\n\n\n2\nSep 5\nHello R!\n\n\n\n\n\n\n\n\n\nRelease: Lab 0\n\n\n\nSep 6\nGrammar of graphics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 8\nVisualizing various types of data\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 1\n\n\n\nSep 9\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 0 + AE 1\n\n\n\nSep 11\n\n\n\n\n\n\n\n\n\n\n\nDue: AE 2\n\n\n3\nSep 12\nData visualization\n\n\n\n\n\n\n\n\n\nRelease: Lab 1\n\n\n\nSep 13\nGrammar of data wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 15\nWorking with multiple data frames\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 1 / Release: HW 2\n\n\n\nSep 16\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 1\n\n\n4\nSep 19\nData wrangling\n\n\n\n\n\n\n\n\n\nRelease: Lab 2\n\n\n\nSep 20\nTidying data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 22\nData types and classes\n\n\n\n\n\n\n\n\n\nDue HW 2\n\n\n\nSep 23\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 2\n\n\n5\nSep 26\nData tidying\n\n\n\n\n\n\n\n\n\nRelease: Lab 3\n\n\n\nSep 27\nImporting and recoding data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 29\nExam 1 Review\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 1 at 12pm\n\n\n\nSep 30\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 3\n\n\n6\nOct 3\nNo lab - Work on Exam 1\n\n\n\n\n\n\n\n\n\nDue: Exam 1 at 2pm\n\n\n\nOct 4\nData science ethics - Misrepresentation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 6\nData science ethics - Algorithmic bias + data privacy\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 3\n\n\n7\nOct 10\nNo lab - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 11\nNo Lec - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 13\nWeb scraping\n\n\n\n\n\n\n\n\n\nDue: HW 3\n\n\n8\nOct 17\nWork on project proposal\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 18\nFunctions + iteration\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 20\nThe language of models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 21\n\n\n\n\n\n\n\n\n\n\n\nDue: Project proposal\n\n\n9\nOct 24\nProbability + Simpson's Paradox\n\n\n\n\n\n\n\n\n\nRelease: Lab 4\n\n\n\nOct 25\nModels with a single predictor\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 27\nModels with multiple predictors\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 4\n\n\n\nOct 28\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 4\n\n\n10\nOct 31\nPredicting a numerical outcome\n\n\n\n\n\n\n\n\n\nRelease: Lab 5\n\n\n\nNov 1\nModels with multiple predictors + Overfitting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 3\nLogistic regression\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 4 / Release: HW 5\n\n\n\nNov 4\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 5 / Release: HW 6\n\n\n\nNov 5\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 1\n\n\n11\nNov 7\nWork on project draft\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 8\nQuantifying uncertainty with bootstrap intervals\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 10\nHypothesis testing via simulation\n\n\n\n\n\n\n\n\n\nDue: HW 5\n\n\n\nNov 11\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 1\n\n\n12\nNov 14\nPrediction + Bootstrapping\n\n\n\n\n\n\n\n\n\nRelease: Lab 6\n\n\n\nNov 15\nInference overview\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 17\nExam 2 Review\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 2 at 12pm\n\n\n\nNov 18\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 6\n\n\n13\nNov 21\nNo lab - Work on Exam 2\n\n\n\n\n\n\n\n\n\nDue: Exam 2 at 2pm\n\n\n\nNov 22\nNo lecture - Work on projects\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 24\nNo lecture - Thanksgiving\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 25\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam retake (optional)\n\n\n\nNov 27\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 2 (optional)\n\n\n14\nNov 28\nWork on project peer review\n\n\n\n\n\n\n\n\n\n\n\nDue: Project peer review\n\n\n\nNov 29\nCommunicating data science results effectively\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 2\n\n\n\nDec 1\nCustomizing Quarto reports and presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nDec 5\nProject presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6\nLooking further: Text analysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDec 8\nLooking further: Interactive web applications with Shiny\n\n\n\n\n\n\n\n\n\nDue: Project everything\n\n\n\nDec 9\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 6 / Statistics experience\n\n\n16\nDec 15\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam retake (optional)",
-    "crumbs": [
-      "Teaching",
-      "Mathematics",
-      "Probability theory resources"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "tools",
-    "section": "",
-    "text": "This site is an archive that contains my tools.\n\nWho am I?\nI am a Ph.D student in Applied Economics at The Wharton School: [Website]"
-  },
-  {
-    "objectID": "teaching/metrics.html",
-    "href": "teaching/metrics.html",
-    "title": "Metric theory",
-    "section": "",
-    "text": "This pages contains log for my self-study on metric theory.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndate\ntopic\nhw\nhw_sol\nexam\nnotes\n\n\n\n\n1\nAug 29\nNo lab\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAug 30\nWelcome to STA 199\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 1\nMeet the toolkit\n\n\n\n\n\n\n\n\n\n\n\n\n\n2\nSep 5\nHello R!\n\n\n\n\n\n\n\n\n\nRelease: Lab 0\n\n\n\nSep 6\nGrammar of graphics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 8\nVisualizing various types of data\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 1\n\n\n\nSep 9\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 0 + AE 1\n\n\n\nSep 11\n\n\n\n\n\n\n\n\n\n\n\nDue: AE 2\n\n\n3\nSep 12\nData visualization\n\n\n\n\n\n\n\n\n\nRelease: Lab 1\n\n\n\nSep 13\nGrammar of data wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 15\nWorking with multiple data frames\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 1 / Release: HW 2\n\n\n\nSep 16\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 1\n\n\n4\nSep 19\nData wrangling\n\n\n\n\n\n\n\n\n\nRelease: Lab 2\n\n\n\nSep 20\nTidying data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 22\nData types and classes\n\n\n\n\n\n\n\n\n\nDue HW 2\n\n\n\nSep 23\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 2\n\n\n5\nSep 26\nData tidying\n\n\n\n\n\n\n\n\n\nRelease: Lab 3\n\n\n\nSep 27\nImporting and recoding data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 29\nExam 1 Review\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 1 at 12pm\n\n\n\nSep 30\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 3\n\n\n6\nOct 3\nNo lab - Work on Exam 1\n\n\n\n\n\n\n\n\n\nDue: Exam 1 at 2pm\n\n\n\nOct 4\nData science ethics - Misrepresentation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 6\nData science ethics - Algorithmic bias + data privacy\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 3\n\n\n7\nOct 10\nNo lab - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 11\nNo Lec - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 13\nWeb scraping\n\n\n\n\n\n\n\n\n\nDue: HW 3\n\n\n8\nOct 17\nWork on project proposal\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 18\nFunctions + iteration\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 20\nThe language of models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 21\n\n\n\n\n\n\n\n\n\n\n\nDue: Project proposal\n\n\n9\nOct 24\nProbability + Simpson's Paradox\n\n\n\n\n\n\n\n\n\nRelease: Lab 4\n\n\n\nOct 25\nModels with a single predictor\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 27\nModels with multiple predictors\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 4\n\n\n\nOct 28\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 4\n\n\n10\nOct 31\nPredicting a numerical outcome\n\n\n\n\n\n\n\n\n\nRelease: Lab 5\n\n\n\nNov 1\nModels with multiple predictors + Overfitting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 3\nLogistic regression\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 4 / Release: HW 5\n\n\n\nNov 4\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 5 / Release: HW 6\n\n\n\nNov 5\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 1\n\n\n11\nNov 7\nWork on project draft\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 8\nQuantifying uncertainty with bootstrap intervals\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 10\nHypothesis testing via simulation\n\n\n\n\n\n\n\n\n\nDue: HW 5\n\n\n\nNov 11\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 1\n\n\n12\nNov 14\nPrediction + Bootstrapping\n\n\n\n\n\n\n\n\n\nRelease: Lab 6\n\n\n\nNov 15\nInference overview\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 17\nExam 2 Review\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 2 at 12pm\n\n\n\nNov 18\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 6\n\n\n13\nNov 21\nNo lab - Work on Exam 2\n\n\n\n\n\n\n\n\n\nDue: Exam 2 at 2pm\n\n\n\nNov 22\nNo lecture - Work on projects\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 24\nNo lecture - Thanksgiving\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 25\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam retake (optional)\n\n\n\nNov 27\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 2 (optional)\n\n\n14\nNov 28\nWork on project peer review\n\n\n\n\n\n\n\n\n\n\n\nDue: Project peer review\n\n\n\nNov 29\nCommunicating data science results effectively\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 2\n\n\n\nDec 1\nCustomizing Quarto reports and presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nDec 5\nProject presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6\nLooking further: Text analysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDec 8\nLooking further: Interactive web applications with Shiny\n\n\n\n\n\n\n\n\n\nDue: Project everything\n\n\n\nDec 9\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 6 / Statistics experience\n\n\n16\nDec 15\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam retake (optional)",
-    "crumbs": [
-      "Teaching",
-      "Mathematics",
-      "Metric theory resources"
+      "Computing",
+      "Polars (R + Python)"
     ]
   },
   {
@@ -88,25 +45,189 @@
     ]
   },
   {
-    "objectID": "computing/polars.html",
-    "href": "computing/polars.html",
-    "title": "Polars from Python and R",
+    "objectID": "teaching/metrics.html",
+    "href": "teaching/metrics.html",
+    "title": "Metric theory",
     "section": "",
-    "text": "This is example templates that use Polars for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(polars)\n\nnyc = pl$scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning = TRUE)\nnyc\n\nq1 = (\n    nyc\n    $group_by(\"passenger_count\")\n    $agg(\n        pl$mean(\"tip_amount\")#$alias(\"mean_tip\") ## alias is optional\n    )\n    $sort(\"passenger_count\")\n)\nq1 \n\ntic = Sys.time()\ndat1 = q1$collect()\ntoc = Sys.time()\n\ndat1\n\nq2 = (\n    nyc\n    $filter(pl$col(\"month\") &lt;= 3)\n    $group_by(\"month\", \"passenger_count\")\n    $agg(pl$mean(\"tip_amount\")$alias(\"mean_tip\"))\n    $sort(\"passenger_count\")\n) \n\n# q2              # naive\ncat(q2$explain()) # optimized\n\ntic = Sys.time()\ndat2 = q2$collect()\ntoc = Sys.time()\n\ndat2\n\nq3 = (\n    nyc\n    $group_by(\"passenger_count\", \"trip_distance\")\n    $agg(\n        pl$mean(\"tip_amount\")$alias(\"mean_tip\"),\n        pl$mean(\"fare_amount\")$alias(\"mean_fare\")\n        )\n    $sort(\"passenger_count\", \"trip_distance\")\n)\n\ntic = Sys.time()\ndat3 = q3$collect()\ntoc = Sys.time()\n \ndat3\n\ndat3$unpivot(index = c(\"passenger_count\", \"trip_distance\"))\n\nmean_tips  = nyc$group_by(\"month\")$agg(pl$col(\"tip_amount\")$mean())\nmean_fares = nyc$group_by(\"month\")$agg(pl$col(\"fare_amount\")$mean())\n\n(\n    mean_tips\n    $join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\"  # default is inner join\n    )\n    $collect()\n)\n\n# You can also try tidypolars\n\nlibrary(polars) ## Already loaded\nlibrary(tidypolars)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)\n\nnyc = scan_parquet_polars(\"nyc-taxi/**/*.parquet\")\n\nnyc |&gt; \n    summarise(mean_tip = mean(tip_amount), .by = passenger_count) |&gt;\n    compute()\n\n# Aside: Use collect() instead of compute() at the end if you would prefer to return a standard R data.frame instead of a Polars DataFrame.\n\n\n\n\nimport polars as pl\nimport time\nimport matplotlib\n\nnyc = pl.scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning=True)\nnyc\n\nq1 = (\n    nyc\n    .group_by([\"passenger_count\"])\n    .agg([\n            pl.mean(\"tip_amount\")#.alias(\"mean_tip\") ## alias is optional\n        ])\n    .sort(\"passenger_count\")\n)\nq1\n\ntic = time.time()\ndat1 = q1.collect()\ntoc = time.time()\n\ndat1\n\nq2 = (\n    nyc\n    .filter(pl.col(\"month\") &lt;= 3)\n    .group_by([\"month\", \"passenger_count\"])\n    .agg([pl.mean(\"tip_amount\").alias(\"mean_tip\")])\n    .sort(\"passenger_count\")\n)\n\n# q2             # naive\nq2.show_graph()  # optimized\n\ntic = time.time()\ndat2 = q2.collect()\ntoc = time.time()\n\ndat2\n\nq3 = (\n    nyc\n    .group_by([\"passenger_count\", \"trip_distance\"])\n    .agg([\n        pl.mean(\"tip_amount\").alias(\"mean_tip\"),\n        pl.mean(\"fare_amount\").alias(\"mean_fare\"),\n        ])\n    .sort([\"passenger_count\", \"trip_distance\"])\n)\n\ntic = time.time()\ndat3 = q3.collect()\ntoc = time.time()\n\ndat3\n\ndat3.unpivot(index = [\"passenger_count\", \"trip_distance\"])\n\nmean_tips  = nyc.group_by(\"month\").agg(pl.col(\"tip_amount\").mean())\nmean_fares = nyc.group_by(\"month\").agg(pl.col(\"fare_amount\").mean())\n\n(\n    mean_tips\n    .join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\" # default is inner join\n    )\n    .collect()\n)",
+    "text": "This pages contains log for my self-study on metric theory.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndate\ntopic\nhw\nhw_sol\nexam\nnotes\n\n\n\n\n1\nAug 29\nNo lab\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAug 30\nWelcome to STA 199\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 1\nMeet the toolkit\n\n\n\n\n\n\n\n\n\n\n\n\n\n2\nSep 5\nHello R!\n\n\n\n\n\n\n\n\n\nRelease: Lab 0\n\n\n\nSep 6\nGrammar of graphics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 8\nVisualizing various types of data\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 1\n\n\n\nSep 9\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 0 + AE 1\n\n\n\nSep 11\n\n\n\n\n\n\n\n\n\n\n\nDue: AE 2\n\n\n3\nSep 12\nData visualization\n\n\n\n\n\n\n\n\n\nRelease: Lab 1\n\n\n\nSep 13\nGrammar of data wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 15\nWorking with multiple data frames\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 1 / Release: HW 2\n\n\n\nSep 16\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 1\n\n\n4\nSep 19\nData wrangling\n\n\n\n\n\n\n\n\n\nRelease: Lab 2\n\n\n\nSep 20\nTidying data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 22\nData types and classes\n\n\n\n\n\n\n\n\n\nDue HW 2\n\n\n\nSep 23\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 2\n\n\n5\nSep 26\nData tidying\n\n\n\n\n\n\n\n\n\nRelease: Lab 3\n\n\n\nSep 27\nImporting and recoding data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 29\nExam 1 Review\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 1 at 12pm\n\n\n\nSep 30\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 3\n\n\n6\nOct 3\nNo lab - Work on Exam 1\n\n\n\n\n\n\n\n\n\nDue: Exam 1 at 2pm\n\n\n\nOct 4\nData science ethics - Misrepresentation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 6\nData science ethics - Algorithmic bias + data privacy\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 3\n\n\n7\nOct 10\nNo lab - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 11\nNo Lec - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 13\nWeb scraping\n\n\n\n\n\n\n\n\n\nDue: HW 3\n\n\n8\nOct 17\nWork on project proposal\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 18\nFunctions + iteration\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 20\nThe language of models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 21\n\n\n\n\n\n\n\n\n\n\n\nDue: Project proposal\n\n\n9\nOct 24\nProbability + Simpson's Paradox\n\n\n\n\n\n\n\n\n\nRelease: Lab 4\n\n\n\nOct 25\nModels with a single predictor\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 27\nModels with multiple predictors\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 4\n\n\n\nOct 28\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 4\n\n\n10\nOct 31\nPredicting a numerical outcome\n\n\n\n\n\n\n\n\n\nRelease: Lab 5\n\n\n\nNov 1\nModels with multiple predictors + Overfitting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 3\nLogistic regression\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 4 / Release: HW 5\n\n\n\nNov 4\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 5 / Release: HW 6\n\n\n\nNov 5\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 1\n\n\n11\nNov 7\nWork on project draft\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 8\nQuantifying uncertainty with bootstrap intervals\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 10\nHypothesis testing via simulation\n\n\n\n\n\n\n\n\n\nDue: HW 5\n\n\n\nNov 11\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 1\n\n\n12\nNov 14\nPrediction + Bootstrapping\n\n\n\n\n\n\n\n\n\nRelease: Lab 6\n\n\n\nNov 15\nInference overview\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 17\nExam 2 Review\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 2 at 12pm\n\n\n\nNov 18\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 6\n\n\n13\nNov 21\nNo lab - Work on Exam 2\n\n\n\n\n\n\n\n\n\nDue: Exam 2 at 2pm\n\n\n\nNov 22\nNo lecture - Work on projects\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 24\nNo lecture - Thanksgiving\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 25\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam retake (optional)\n\n\n\nNov 27\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 2 (optional)\n\n\n14\nNov 28\nWork on project peer review\n\n\n\n\n\n\n\n\n\n\n\nDue: Project peer review\n\n\n\nNov 29\nCommunicating data science results effectively\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 2\n\n\n\nDec 1\nCustomizing Quarto reports and presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nDec 5\nProject presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6\nLooking further: Text analysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDec 8\nLooking further: Interactive web applications with Shiny\n\n\n\n\n\n\n\n\n\nDue: Project everything\n\n\n\nDec 9\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 6 / Statistics experience\n\n\n16\nDec 15\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam retake (optional)",
     "crumbs": [
-      "Computing",
-      "Polars (R + Python)"
+      "Teaching",
+      "Mathematics",
+      "Metric theory resources"
     ]
   },
   {
-    "objectID": "computing/duckdb-sql.html",
-    "href": "computing/duckdb-sql.html",
-    "title": "DuckDB SQL",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "tools",
     "section": "",
-    "text": "This is example templates that use DuckDB with SQL for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(duckdb)\n\ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\n# con = dbConnect(duckdb(), dbdir = \"nyc.duck\")\n\n# SELECT\n#   passenger_count,\n#   AVG(tip_amount) AS mean_tip\n# FROM 'nyc-taxi/**/*.parquet'\n# GROUP BY passenger_count\n# ORDER BY passenger_count\n\ntic = Sys.time()\ndat1 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  GROUP BY ALL\n  ORDER BY ALL\n  \"\n)\ntoc = Sys.time()\n\ndat1\ntoc - tic\n\ntic = Sys.time()\ndat2 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    month,\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  WHERE month &lt;= 3\n  GROUP BY ALL\n  \"\n    )\ntoc = Sys.time()\n\nhead(dat2)\n\ndbDisconnect(con)\n\n\n\n\nimport duckdb\nimport time\n\ncon = duckdb.connect(database=':memory:', read_only=False)\n\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\ncon = duckdb.connect(database='nyc.duck', read_only=False)\n\ntic = time.time()\ndat1 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    GROUP BY ALL\n    ORDER BY ALL\n    '''\n    )\n)\ntoc = time.time()\n\ndat1\n\ntic = time.time()\ndat2 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      month,\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    WHERE month &lt;= 3\n    GROUP BY ALL\n    '''\n  )\n)\ntoc = time.time()\n\ndat2\n\ncon.close()",
+    "text": "This site is an archive that contains my tools.\n\nWho am I?\nI am a Ph.D student in Applied Economics at The Wharton School: [Website]"
+  },
+  {
+    "objectID": "teaching/prob.html",
+    "href": "teaching/prob.html",
+    "title": "Probability theory",
+    "section": "",
+    "text": "This pages contains log for my self-study on probability theory.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndate\ntopic\nhw\nhw_sol\nexam\nnotes\n\n\n\n\n1\nAug 29\nNo lab\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAug 30\nWelcome to STA 199\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 1\nMeet the toolkit\n\n\n\n\n\n\n\n\n\n\n\n\n\n2\nSep 5\nHello R!\n\n\n\n\n\n\n\n\n\nRelease: Lab 0\n\n\n\nSep 6\nGrammar of graphics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 8\nVisualizing various types of data\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 1\n\n\n\nSep 9\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 0 + AE 1\n\n\n\nSep 11\n\n\n\n\n\n\n\n\n\n\n\nDue: AE 2\n\n\n3\nSep 12\nData visualization\n\n\n\n\n\n\n\n\n\nRelease: Lab 1\n\n\n\nSep 13\nGrammar of data wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 15\nWorking with multiple data frames\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 1 / Release: HW 2\n\n\n\nSep 16\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 1\n\n\n4\nSep 19\nData wrangling\n\n\n\n\n\n\n\n\n\nRelease: Lab 2\n\n\n\nSep 20\nTidying data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 22\nData types and classes\n\n\n\n\n\n\n\n\n\nDue HW 2\n\n\n\nSep 23\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 2\n\n\n5\nSep 26\nData tidying\n\n\n\n\n\n\n\n\n\nRelease: Lab 3\n\n\n\nSep 27\nImporting and recoding data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 29\nExam 1 Review\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 1 at 12pm\n\n\n\nSep 30\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 3\n\n\n6\nOct 3\nNo lab - Work on Exam 1\n\n\n\n\n\n\n\n\n\nDue: Exam 1 at 2pm\n\n\n\nOct 4\nData science ethics - Misrepresentation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 6\nData science ethics - Algorithmic bias + data privacy\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 3\n\n\n7\nOct 10\nNo lab - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 11\nNo Lec - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 13\nWeb scraping\n\n\n\n\n\n\n\n\n\nDue: HW 3\n\n\n8\nOct 17\nWork on project proposal\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 18\nFunctions + iteration\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 20\nThe language of models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 21\n\n\n\n\n\n\n\n\n\n\n\nDue: Project proposal\n\n\n9\nOct 24\nProbability + Simpson's Paradox\n\n\n\n\n\n\n\n\n\nRelease: Lab 4\n\n\n\nOct 25\nModels with a single predictor\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 27\nModels with multiple predictors\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 4\n\n\n\nOct 28\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 4\n\n\n10\nOct 31\nPredicting a numerical outcome\n\n\n\n\n\n\n\n\n\nRelease: Lab 5\n\n\n\nNov 1\nModels with multiple predictors + Overfitting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 3\nLogistic regression\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 4 / Release: HW 5\n\n\n\nNov 4\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 5 / Release: HW 6\n\n\n\nNov 5\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 1\n\n\n11\nNov 7\nWork on project draft\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 8\nQuantifying uncertainty with bootstrap intervals\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 10\nHypothesis testing via simulation\n\n\n\n\n\n\n\n\n\nDue: HW 5\n\n\n\nNov 11\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 1\n\n\n12\nNov 14\nPrediction + Bootstrapping\n\n\n\n\n\n\n\n\n\nRelease: Lab 6\n\n\n\nNov 15\nInference overview\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 17\nExam 2 Review\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 2 at 12pm\n\n\n\nNov 18\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 6\n\n\n13\nNov 21\nNo lab - Work on Exam 2\n\n\n\n\n\n\n\n\n\nDue: Exam 2 at 2pm\n\n\n\nNov 22\nNo lecture - Work on projects\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 24\nNo lecture - Thanksgiving\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 25\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam retake (optional)\n\n\n\nNov 27\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 2 (optional)\n\n\n14\nNov 28\nWork on project peer review\n\n\n\n\n\n\n\n\n\n\n\nDue: Project peer review\n\n\n\nNov 29\nCommunicating data science results effectively\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 2\n\n\n\nDec 1\nCustomizing Quarto reports and presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nDec 5\nProject presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6\nLooking further: Text analysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDec 8\nLooking further: Interactive web applications with Shiny\n\n\n\n\n\n\n\n\n\nDue: Project everything\n\n\n\nDec 9\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 6 / Statistics experience\n\n\n16\nDec 15\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam retake (optional)",
+    "crumbs": [
+      "Teaching",
+      "Mathematics",
+      "Probability theory resources"
+    ]
+  },
+  {
+    "objectID": "teaching/teaching.html",
+    "href": "teaching/teaching.html",
+    "title": "Class name",
+    "section": "",
+    "text": "This page contains an outline of the topics, content, and assignments for the semester. Note that this schedule will be updated as the semester progresses and the timeline of topics and assignments might be updated throughout the semester. Syllabus\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nprepare\nslides\nhw\nhw_sol\nexam\nnotes\n\n\n\n\n1\nM\nAug 29\nLab\nNo lab\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nAug 30\nLec 1\nWelcome to STA 199\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 1\nLec 2\nMeet the toolkit\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2\nM\nSep 5\nLab 0\nHello R!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 0\n\n\n\nT\nSep 6\nLec 3\nGrammar of graphics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 8\nLec 4\nVisualizing various types of data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 1\n\n\n\nF\nSep 9\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 0 + AE 1\n\n\n\nSu\nSep 11\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: AE 2\n\n\n3\nM\nSep 12\nLab 1\nData visualization\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 1\n\n\n\nT\nSep 13\nLec 5\nGrammar of data wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 15\nLec 6\nWorking with multiple data frames\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 1 / Release: HW 2\n\n\n\nF\nSep 16\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 1\n\n\n4\nM\nSep 19\nLab 2\nData wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 2\n\n\n\nT\nSep 20\nLec 7\nTidying data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 22\nLec 8\nData types and classes\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue HW 2\n\n\n\nF\nSep 23\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 2\n\n\n5\nM\nSep 26\nLab 3\nData tidying\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 3\n\n\n\nT\nSep 27\nLec 9\nImporting and recoding data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 29\nLec 10\nExam 1 Review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 1 at 12pm\n\n\n\nF\nSep 30\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 3\n\n\n6\nM\nOct 3\nLab\nNo lab - Work on Exam 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam 1 at 2pm\n\n\n\nT\nOct 4\nLec 11\nData science ethics - Misrepresentation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 6\nLec 12\nData science ethics - Algorithmic bias + data privacy\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 3\n\n\n7\nM\nOct 10\nLab\nNo lab - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nOct 11\nLecture\nNo Lec - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 13\nLec 13\nWeb scraping\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 3\n\n\n8\nM\nOct 17\nLab\nWork on project proposal\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nOct 18\nLec 14\nFunctions + iteration\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 20\nLec 15\nThe language of models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nF\nOct 21\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project proposal\n\n\n9\nM\nOct 24\nLab 4\nProbability + Simpson's Paradox\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 4\n\n\n\nT\nOct 25\nLec 16\nModels with a single predictor\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 27\nLec 17\nModels with multiple predictors\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 4\n\n\n\nF\nOct 28\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 4\n\n\n10\nM\nOct 31\nLab 5\nPredicting a numerical outcome\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 5\n\n\n\nT\nNov 1\nLec 18\nModels with multiple predictors + Overfitting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 3\nLec 19\nLogistic regression\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 4 / Release: HW 5\n\n\n\nF\nNov 4\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 5 / Release: HW 6\n\n\n\nS\nNov 5\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 1\n\n\n11\nM\nNov 7\nLab\nWork on project draft\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nNov 8\nLec 20\nQuantifying uncertainty with bootstrap intervals\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 10\nLec 21\nHypothesis testing via simulation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 5\n\n\n\nF\nNov 11\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 1\n\n\n12\nM\nNov 14\nLab 6\nPrediction + Bootstrapping\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 6\n\n\n\nT\nNov 15\nLec 22\nInference overview\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 17\nLec 23\nExam 2 Review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 2 at 12pm\n\n\n\nF\nNov 18\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 6\n\n\n13\nM\nNov 21\nLab\nNo lab - Work on Exam 2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam 2 at 2pm\n\n\n\nT\nNov 22\nLec 24\nNo lecture - Work on projects\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 24\nLecture\nNo lecture - Thanksgiving\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nF\nNov 25\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam retake (optional)\n\n\n\nSu\nNov 27\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 2 (optional)\n\n\n14\nM\nNov 28\nLab\nWork on project peer review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project peer review\n\n\n\nT\nNov 29\nLec 25\nCommunicating data science results effectively\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 2\n\n\n\nTh\nDec 1\nLec 26\nCustomizing Quarto reports and presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nM\nDec 5\nLab\nProject presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nDec 6\nLec 25\nLooking further: Text analysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nDec 8\nLec 26\nLooking further: Interactive web applications with Shiny\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project everything\n\n\n\nF\nDec 9\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 6 / Statistics experience\n\n\n16\nTh\nDec 15\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam retake (optional)",
+    "crumbs": [
+      "Teaching",
+      "Class-name",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "misc/links.html",
+    "href": "misc/links.html",
+    "title": "Useful links",
+    "section": "",
+    "text": "Category\nLinks\n\n\n\n\nPersonal website\n🔗 GitHub site\n\n\nCoffee chat (with me)\n🔗 Appointment link\n\n\nComputing and replication resources\n🔗 Web-scraping 1  🔗 Web-scraping 2  🔗 Parallel programming  🔗 Docker  🔗 Google compute engine 1  🔗 Google compute engine 2  🔗 Databases  🔗 Spark  🔗 DuckDB and polars  🔗 NYU Course Notes & Resources  🔗 Quantitative dynamic model\n\n\nJulia\n🔗 Julia for data science  🔗 Computational economics for PhDs  🔗 Computational Methods in Macroeconomics  🔗 BLPDemand.jl  🔗 Guide to Efficient Computational Work in Economics  🔗 Econometrics with Julia  🔗 Advanced Dynamic Programming\n\n\nUseful packages\n🔗 New DiD methods\n\n\nGraduate trade and spatial\n🔗 Treb Allen",
+    "crumbs": [
+      "Misc.",
+      "Useful links"
+    ]
+  },
+  {
+    "objectID": "computing/computing.html",
+    "href": "computing/computing.html",
+    "title": "Overview",
+    "section": "",
+    "text": "This section is a set of templates related to computing.",
     "crumbs": [
       "Computing",
-      "DuckDB SQL"
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html",
+    "href": "computing/duckdb-dplyr.html",
+    "title": "DuckDB + dplyr (R)",
+    "section": "",
+    "text": "This is just a direct copy of the resources from Grant McDermott. Thus, I do not have any credit for it. It is solely for the archive purpose.",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#load-libraries",
+    "href": "computing/duckdb-dplyr.html#load-libraries",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Load libraries",
+    "text": "Load libraries\n\nlibrary(duckdb)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#create-a-database-connection",
+    "href": "computing/duckdb-dplyr.html#create-a-database-connection",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Create a database connection",
+    "text": "Create a database connection\nFor the d(b)plyr workflow, the connection step is very similar to the pure SQL approach. The only difference is that, after instantiating the database connection, we need to register our parquet dataset as a table in our connection via the dplyr::tbl() function. Note that we also assign it to an object (here: nyc) that can be referenced from R.\n\n## Instantiate the in-memory DuckDB connection \ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n## Register our parquet dataset as table in our connection (and that assign it\n## to an object that R understands)\n# nyc = tbl(con, \"nyc-taxi/**/*.parquet\") # works, but safer to use the read_parquet func)\nnyc = tbl(con, \"read_parquet('nyc-taxi/**/*.parquet', hive_partitioning = true)\")",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#first-example",
+    "href": "computing/duckdb-dplyr.html#first-example",
+    "title": "DuckDB + dplyr (R)",
+    "section": "First example",
+    "text": "First example\nThis next command runs instantly because all computation is deferred (i.e., lazy eval). In other words, it is just a query object.\n\nq1 = nyc |&gt;\n  summarize(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  )\n\n\n\n\n\n\n\n.by versus group_by\n\n\n\nIn case you weren’t aware: summarize(..., .by = x) is a shorthand (and non-persistent) version of group_by(x) |&gt; summarize(...). More details here.\n\n\nWe can see what DuckDB’s query tree looks like by asking it to explain the plan\n\nexplain(q1)\n\nSimilarly, to show the SQL translation that will be implemented on the backend, using show_query.\n\nshow_query(q1)\n\nNote that printing the query object actually does enforce some computation. OTOH it’s still just a preview of the data (we haven’t pulled everything into R’s memory).\n\nq1\n\nTo actually pull all of the result data into R, we must call collect() on the query object\n\ntic = Sys.time()\ndat1 = collect(q1)\ntoc = Sys.time()\n\ndat1\ntoc - tic",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#aggregation",
+    "href": "computing/duckdb-dplyr.html#aggregation",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Aggregation",
+    "text": "Aggregation\nHere’s our earlier filtering example with multiple grouping + aggregation variables…\n\nq2 = nyc |&gt;\n  filter(month &lt;= 3) |&gt;\n  summarize(\n    across(c(tip_amount, fare_amount), mean),\n    .by = c(month, passenger_count)\n  )\nq2\n\nAside: note the optimised query includes hash groupings and projection (basically: fancy column subsetting, which is a suprisingly effective strategy in query optimization)\n\nexplain(q2)\n\nAnd our high-dimensional aggregation example. We’ll create a query for this first, since I’ll reuse it shortly again\n\nq3 = nyc |&gt;\n  group_by(passenger_count, trip_distance) |&gt;\n  summarize(\n    across(c(tip_amount, fare_amount), mean),\n  ) \ncollect(q3)",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#pivot-reshape",
+    "href": "computing/duckdb-dplyr.html#pivot-reshape",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Pivot (reshape)",
+    "text": "Pivot (reshape)\n\n# library(tidyr) ## already loaded\n\nq3 |&gt;\n  pivot_longer(tip_amount:fare_amount) |&gt;\n  collect()",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#joins-merges",
+    "href": "computing/duckdb-dplyr.html#joins-merges",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Joins (merges)",
+    "text": "Joins (merges)\n\nmean_tips  = nyc |&gt; summarise(mean_tips = mean(tip_amount), .by = month)\nmean_fares = nyc |&gt; summarise(mean_fares = mean(fare_amount), .by = month)\n\nAgain, these commands complete instantly because all computation has been deferred until absolutely necessary (i.e.,. lazy eval).\n\nleft_join(\n  mean_fares,\n  mean_tips\n  ) |&gt;\n  collect()",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#windowing",
+    "href": "computing/duckdb-dplyr.html#windowing",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Windowing",
+    "text": "Windowing\nIf you recall from the native SQL API, we sampled 1 percent of the data before creating decile bins to reduce the computation burden of sorting the entire table. Unfortunately, this approach doesn’t work as well for the dplyr frontend because the underlying SQL translation uses a generic sampling approach (rather than DuckDB’s optimised USING SAMPLE statement.)",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#close-connection",
+    "href": "computing/duckdb-dplyr.html#close-connection",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Close connection",
+    "text": "Close connection\n\ndbDisconnect(con)",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#appendix-related-interfaces",
+    "href": "computing/duckdb-dplyr.html#appendix-related-interfaces",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Appendix: Related interfaces",
+    "text": "Appendix: Related interfaces\n\narrow+duckdb\n\nlibrary(arrow)\nlibrary(duckdb) ## Already loaded\nlibrary(dplyr)  ## Already loaded\nlibrary(tidyr)  ## Already loaded\n\nWhen going through the arrow intermediary, we don’t need to establish a database with DBI::dbConnect like we did above. Instead, we can create a link (pointers) to the dataset on disk directly via the arrow::open_dataset() convience function. Here I’ll assign it to a new R object called nyc2.\n\nnyc2 = open_dataset(\"nyc-taxi\")\n\n\n\n\n\n\n\nopen_dataset() versus read_parquet()\n\n\n\n(For individual parquet files, we could just read then via arrow::read_parquet(), perhaps efficiently subsetting columns at the same time. But I find the open_dataset is generally what I’m looking for.)\n\n\nNote that printing our nyc2 dataset to the R console will just display the data schema. This is a cheap and convenient way to quickly interrogate the basic structure of your data, including column types, etc.\n\nnyc2\n\nThe key step for this “arrow + duckdb” dplyr workflow is to pass our arrow dataset to DuckDB via the to_duckdb() function.\n\nto_duckdb(nyc2)\n\nNote that this transfer from Arrow to DuckDB is very quick (and memory cheap) because it is a zero copy. We are just passing around pointers instead of actually moving any data. See this blog post for more details, but the high-level take away is that we are benefitting from the tightly integrated architectures of these two libraries.1\nAt this, point all of the regular dplyr workflow logic from above should carry over. Just remember to first pass the arrow dataset via the to_duckdb() funciton. For example, here’s our initial aggregation query again:\n\nnyc2 |&gt;\n  to_duckdb() |&gt; ## &lt;= key step\n  summarise(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  ) |&gt;\n  collect()\n\n\n\n\n\n\n\nArrow’s native acero engine\n\n\n\nSome of you may be used to performing computation with the arrow package without going through DuckDB. What’s happening here is that arrow provides its own computation engine called “acero”. This Arrow-native engine is actually pretty performant… albeit not a fast as DuckDB, nor as feature rich. So I personally recommend always passing to DuckDB if you can. Still, if you’re curious then you can test yourself by re-trying the code chunk, but commenting out the to_duckdb() line. For more details, see here.\n\n\n\n\nduckplyr\nThe new kid on the block is duckplyr (announcement / homepage). Without going into too much depth, the promise of duckplyr is that it can provide a “fully native” dplyr experience that is directly coupled to DuckDB’s query engine. So, for example, it won’t have to rely on DBI’s generic’ SQL translations. Instead, the relevant dplyr “verbs” are being directly translated to DuckDB’s relational API to construct logical query plans. If that’s too much jargon, just know that it should involve less overhead, fewer translation errors, and better optimization. Moreover, a goal of duckplyr is for it to be a drop-in replace for dplyr in general. In other words, you could just swap out library(dplyr) for library(duckplyr) and all of your data wrangling operations will come backed by the power of DuckDB. This includes for working on “regular” R data frames in memory.\nAll of this is exciting and I would urge you stay tuned. Right now, duckplyr is still marked as experimental and has a few rough edges. But the basics are there. For example:\n\nlibrary(duckplyr, warn.conflicts = FALSE)\n\nduckplyr_df_from_parquet(\"nyc-taxi/**/*.parquet\") |&gt;\n  summarise(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  )",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#footnotes",
+    "href": "computing/duckdb-dplyr.html#footnotes",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\n“Similar” might be a better description than “integrated”, since DuckdB does not use the Arrow memory model. But they are both columnar-orientated (among other things) and so the end result is pretty seamless integration.↩︎",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
     ]
   }
 ]
