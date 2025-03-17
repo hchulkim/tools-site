@@ -5,7 +5,7 @@ execute:
   freeze: auto
 ---
 
-This is example templates that use Polars for `R` and `Python`. Note that there are short examples. If you want to know more about what they can do, check out this [site](https://grantmcdermott.com/duckdb-polars/polars-rpy.html). 
+This is example templates that use Polars for `R` and `Python`. Note that these are short examples. If you want to know more about what they can do, check out this [site](https://grantmcdermott.com/duckdb-polars/polars-rpy.html). 
 
 ::: {.panel-tabset group="language"}
 
