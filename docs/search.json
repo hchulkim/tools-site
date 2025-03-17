@@ -131,12 +131,144 @@
   {
     "objectID": "computing/duckdb-sql.html",
     "href": "computing/duckdb-sql.html",
-    "title": "Overview",
+    "title": "DuckDB SQL",
     "section": "",
-    "text": "This is example templates that use DuckDB with SQL for R and Python. Note that there are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(duckdb)\n\ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\n# con = dbConnect(duckdb(), dbdir = \"nyc.duck\")\n\n# SELECT\n#   passenger_count,\n#   AVG(tip_amount) AS mean_tip\n# FROM 'nyc-taxi/**/*.parquet'\n# GROUP BY passenger_count\n# ORDER BY passenger_count\n\ntic = Sys.time()\ndat1 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  GROUP BY ALL\n  ORDER BY ALL\n  \"\n)\ntoc = Sys.time()\n\ndat1\ntoc - tic\n\ntic = Sys.time()\ndat2 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    month,\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  WHERE month &lt;= 3\n  GROUP BY ALL\n  \"\n    )\ntoc = Sys.time()\n\nhead(dat2)\n\ndbDisconnect(con)\n\n\n\n\nimport duckdb\nimport time\n\ncon = duckdb.connect(database=':memory:', read_only=False)\n\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\ncon = duckdb.connect(database='nyc.duck', read_only=False)\n\ntic = time.time()\ndat1 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    GROUP BY ALL\n    ORDER BY ALL\n    '''\n    )\n)\ntoc = time.time()\n\ndat1\n\ntic = time.time()\ndat2 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      month,\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    WHERE month &lt;= 3\n    GROUP BY ALL\n    '''\n  )\n)\ntoc = time.time()\n\ndat2\n\ncon.close()",
+    "text": "This is example templates that use DuckDB with SQL for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(duckdb)\n\ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\n# con = dbConnect(duckdb(), dbdir = \"nyc.duck\")\n\n# SELECT\n#   passenger_count,\n#   AVG(tip_amount) AS mean_tip\n# FROM 'nyc-taxi/**/*.parquet'\n# GROUP BY passenger_count\n# ORDER BY passenger_count\n\ntic = Sys.time()\ndat1 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  GROUP BY ALL\n  ORDER BY ALL\n  \"\n)\ntoc = Sys.time()\n\ndat1\ntoc - tic\n\ntic = Sys.time()\ndat2 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    month,\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  WHERE month &lt;= 3\n  GROUP BY ALL\n  \"\n    )\ntoc = Sys.time()\n\nhead(dat2)\n\ndbDisconnect(con)\n\n\n\n\nimport duckdb\nimport time\n\ncon = duckdb.connect(database=':memory:', read_only=False)\n\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\ncon = duckdb.connect(database='nyc.duck', read_only=False)\n\ntic = time.time()\ndat1 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    GROUP BY ALL\n    ORDER BY ALL\n    '''\n    )\n)\ntoc = time.time()\n\ndat1\n\ntic = time.time()\ndat2 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      month,\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    WHERE month &lt;= 3\n    GROUP BY ALL\n    '''\n  )\n)\ntoc = time.time()\n\ndat2\n\ncon.close()",
     "crumbs": [
       "Computing",
       "DuckDB SQL"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html",
+    "href": "computing/duckdb-dplyr.html",
+    "title": "DuckDB + dplyr (R)",
+    "section": "",
+    "text": "This is just a direct copy of the resources from Grant McDermott. Thus, I do not have any credit for it. It is solely for the archive purpose.",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#load-libraries",
+    "href": "computing/duckdb-dplyr.html#load-libraries",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Load libraries",
+    "text": "Load libraries\n\nlibrary(duckdb)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#create-a-database-connection",
+    "href": "computing/duckdb-dplyr.html#create-a-database-connection",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Create a database connection",
+    "text": "Create a database connection\nFor the d(b)plyr workflow, the connection step is very similar to the pure SQL approach. The only difference is that, after instantiating the database connection, we need to register our parquet dataset as a table in our connection via the dplyr::tbl() function. Note that we also assign it to an object (here: nyc) that can be referenced from R.\n\n## Instantiate the in-memory DuckDB connection \ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n## Register our parquet dataset as table in our connection (and that assign it\n## to an object that R understands)\n# nyc = tbl(con, \"nyc-taxi/**/*.parquet\") # works, but safer to use the read_parquet func)\nnyc = tbl(con, \"read_parquet('nyc-taxi/**/*.parquet', hive_partitioning = true)\")",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#first-example",
+    "href": "computing/duckdb-dplyr.html#first-example",
+    "title": "DuckDB + dplyr (R)",
+    "section": "First example",
+    "text": "First example\nThis next command runs instantly because all computation is deferred (i.e., lazy eval). In other words, it is just a query object.\n\nq1 = nyc |&gt;\n  summarize(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  )\n\n\n\n\n\n\n\n.by versus group_by\n\n\n\nIn case you weren’t aware: summarize(..., .by = x) is a shorthand (and non-persistent) version of group_by(x) |&gt; summarize(...). More details here.\n\n\nWe can see what DuckDB’s query tree looks like by asking it to explain the plan\n\nexplain(q1)\n\nSimilarly, to show the SQL translation that will be implemented on the backend, using show_query.\n\nshow_query(q1)\n\nNote that printing the query object actually does enforce some computation. OTOH it’s still just a preview of the data (we haven’t pulled everything into R’s memory).\n\nq1\n\nTo actually pull all of the result data into R, we must call collect() on the query object\n\ntic = Sys.time()\ndat1 = collect(q1)\ntoc = Sys.time()\n\ndat1\ntoc - tic",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#aggregation",
+    "href": "computing/duckdb-dplyr.html#aggregation",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Aggregation",
+    "text": "Aggregation\nHere’s our earlier filtering example with multiple grouping + aggregation variables…\n\nq2 = nyc |&gt;\n  filter(month &lt;= 3) |&gt;\n  summarize(\n    across(c(tip_amount, fare_amount), mean),\n    .by = c(month, passenger_count)\n  )\nq2\n\nAside: note the optimised query includes hash groupings and projection (basically: fancy column subsetting, which is a suprisingly effective strategy in query optimization)\n\nexplain(q2)\n\nAnd our high-dimensional aggregation example. We’ll create a query for this first, since I’ll reuse it shortly again\n\nq3 = nyc |&gt;\n  group_by(passenger_count, trip_distance) |&gt;\n  summarize(\n    across(c(tip_amount, fare_amount), mean),\n  ) \ncollect(q3)",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#pivot-reshape",
+    "href": "computing/duckdb-dplyr.html#pivot-reshape",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Pivot (reshape)",
+    "text": "Pivot (reshape)\n\n# library(tidyr) ## already loaded\n\nq3 |&gt;\n  pivot_longer(tip_amount:fare_amount) |&gt;\n  collect()",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#joins-merges",
+    "href": "computing/duckdb-dplyr.html#joins-merges",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Joins (merges)",
+    "text": "Joins (merges)\n\nmean_tips  = nyc |&gt; summarise(mean_tips = mean(tip_amount), .by = month)\nmean_fares = nyc |&gt; summarise(mean_fares = mean(fare_amount), .by = month)\n\nAgain, these commands complete instantly because all computation has been deferred until absolutely necessary (i.e.,. lazy eval).\n\nleft_join(\n  mean_fares,\n  mean_tips\n  ) |&gt;\n  collect()",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#windowing",
+    "href": "computing/duckdb-dplyr.html#windowing",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Windowing",
+    "text": "Windowing\nIf you recall from the native SQL API, we sampled 1 percent of the data before creating decile bins to reduce the computation burden of sorting the entire table. Unfortunately, this approach doesn’t work as well for the dplyr frontend because the underlying SQL translation uses a generic sampling approach (rather than DuckDB’s optimised USING SAMPLE statement.)",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#close-connection",
+    "href": "computing/duckdb-dplyr.html#close-connection",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Close connection",
+    "text": "Close connection\n\ndbDisconnect(con)",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#appendix-related-interfaces",
+    "href": "computing/duckdb-dplyr.html#appendix-related-interfaces",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Appendix: Related interfaces",
+    "text": "Appendix: Related interfaces\n\narrow+duckdb\n\nlibrary(arrow)\nlibrary(duckdb) ## Already loaded\nlibrary(dplyr)  ## Already loaded\nlibrary(tidyr)  ## Already loaded\n\nWhen going through the arrow intermediary, we don’t need to establish a database with DBI::dbConnect like we did above. Instead, we can create a link (pointers) to the dataset on disk directly via the arrow::open_dataset() convience function. Here I’ll assign it to a new R object called nyc2.\n\nnyc2 = open_dataset(\"nyc-taxi\")\n\n\n\n\n\n\n\nopen_dataset() versus read_parquet()\n\n\n\n(For individual parquet files, we could just read then via arrow::read_parquet(), perhaps efficiently subsetting columns at the same time. But I find the open_dataset is generally what I’m looking for.)\n\n\nNote that printing our nyc2 dataset to the R console will just display the data schema. This is a cheap and convenient way to quickly interrogate the basic structure of your data, including column types, etc.\n\nnyc2\n\nThe key step for this “arrow + duckdb” dplyr workflow is to pass our arrow dataset to DuckDB via the to_duckdb() function.\n\nto_duckdb(nyc2)\n\nNote that this transfer from Arrow to DuckDB is very quick (and memory cheap) because it is a zero copy. We are just passing around pointers instead of actually moving any data. See this blog post for more details, but the high-level take away is that we are benefitting from the tightly integrated architectures of these two libraries.1\nAt this, point all of the regular dplyr workflow logic from above should carry over. Just remember to first pass the arrow dataset via the to_duckdb() funciton. For example, here’s our initial aggregation query again:\n\nnyc2 |&gt;\n  to_duckdb() |&gt; ## &lt;= key step\n  summarise(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  ) |&gt;\n  collect()\n\n\n\n\n\n\n\nArrow’s native acero engine\n\n\n\nSome of you may be used to performing computation with the arrow package without going through DuckDB. What’s happening here is that arrow provides its own computation engine called “acero”. This Arrow-native engine is actually pretty performant… albeit not a fast as DuckDB, nor as feature rich. So I personally recommend always passing to DuckDB if you can. Still, if you’re curious then you can test yourself by re-trying the code chunk, but commenting out the to_duckdb() line. For more details, see here.\n\n\n\n\nduckplyr\nThe new kid on the block is duckplyr (announcement / homepage). Without going into too much depth, the promise of duckplyr is that it can provide a “fully native” dplyr experience that is directly coupled to DuckDB’s query engine. So, for example, it won’t have to rely on DBI’s generic’ SQL translations. Instead, the relevant dplyr “verbs” are being directly translated to DuckDB’s relational API to construct logical query plans. If that’s too much jargon, just know that it should involve less overhead, fewer translation errors, and better optimization. Moreover, a goal of duckplyr is for it to be a drop-in replace for dplyr in general. In other words, you could just swap out library(dplyr) for library(duckplyr) and all of your data wrangling operations will come backed by the power of DuckDB. This includes for working on “regular” R data frames in memory.\nAll of this is exciting and I would urge you stay tuned. Right now, duckplyr is still marked as experimental and has a few rough edges. But the basics are there. For example:\n\nlibrary(duckplyr, warn.conflicts = FALSE)\n\nduckplyr_df_from_parquet(\"nyc-taxi/**/*.parquet\") |&gt;\n  summarise(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  )",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#footnotes",
+    "href": "computing/duckdb-dplyr.html#footnotes",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\n“Similar” might be a better description than “integrated”, since DuckdB does not use the Arrow memory model. But they are both columnar-orientated (among other things) and so the end result is pretty seamless integration.↩︎",
+    "crumbs": [
+      "Computing",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/polars.html",
+    "href": "computing/polars.html",
+    "title": "Polars from Python and R",
+    "section": "",
+    "text": "This is example templates that use Polars for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(polars)\n\nnyc = pl$scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning = TRUE)\nnyc\n\nq1 = (\n    nyc\n    $group_by(\"passenger_count\")\n    $agg(\n        pl$mean(\"tip_amount\")#$alias(\"mean_tip\") ## alias is optional\n    )\n    $sort(\"passenger_count\")\n)\nq1 \n\ntic = Sys.time()\ndat1 = q1$collect()\ntoc = Sys.time()\n\ndat1\n\nq2 = (\n    nyc\n    $filter(pl$col(\"month\") &lt;= 3)\n    $group_by(\"month\", \"passenger_count\")\n    $agg(pl$mean(\"tip_amount\")$alias(\"mean_tip\"))\n    $sort(\"passenger_count\")\n) \n\n# q2              # naive\ncat(q2$explain()) # optimized\n\ntic = Sys.time()\ndat2 = q2$collect()\ntoc = Sys.time()\n\ndat2\n\nq3 = (\n    nyc\n    $group_by(\"passenger_count\", \"trip_distance\")\n    $agg(\n        pl$mean(\"tip_amount\")$alias(\"mean_tip\"),\n        pl$mean(\"fare_amount\")$alias(\"mean_fare\")\n        )\n    $sort(\"passenger_count\", \"trip_distance\")\n)\n\ntic = Sys.time()\ndat3 = q3$collect()\ntoc = Sys.time()\n \ndat3\n\ndat3$unpivot(index = c(\"passenger_count\", \"trip_distance\"))\n\nmean_tips  = nyc$group_by(\"month\")$agg(pl$col(\"tip_amount\")$mean())\nmean_fares = nyc$group_by(\"month\")$agg(pl$col(\"fare_amount\")$mean())\n\n(\n    mean_tips\n    $join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\"  # default is inner join\n    )\n    $collect()\n)\n\n# You can also try tidypolars\n\nlibrary(polars) ## Already loaded\nlibrary(tidypolars)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)\n\nnyc = scan_parquet_polars(\"nyc-taxi/**/*.parquet\")\n\nnyc |&gt; \n    summarise(mean_tip = mean(tip_amount), .by = passenger_count) |&gt;\n    compute()\n\n# Aside: Use collect() instead of compute() at the end if you would prefer to return a standard R data.frame instead of a Polars DataFrame.\n\n\n\n\nimport polars as pl\nimport time\nimport matplotlib\n\nnyc = pl.scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning=True)\nnyc\n\nq1 = (\n    nyc\n    .group_by([\"passenger_count\"])\n    .agg([\n            pl.mean(\"tip_amount\")#.alias(\"mean_tip\") ## alias is optional\n        ])\n    .sort(\"passenger_count\")\n)\nq1\n\ntic = time.time()\ndat1 = q1.collect()\ntoc = time.time()\n\ndat1\n\nq2 = (\n    nyc\n    .filter(pl.col(\"month\") &lt;= 3)\n    .group_by([\"month\", \"passenger_count\"])\n    .agg([pl.mean(\"tip_amount\").alias(\"mean_tip\")])\n    .sort(\"passenger_count\")\n)\n\n# q2             # naive\nq2.show_graph()  # optimized\n\ntic = time.time()\ndat2 = q2.collect()\ntoc = time.time()\n\ndat2\n\nq3 = (\n    nyc\n    .group_by([\"passenger_count\", \"trip_distance\"])\n    .agg([\n        pl.mean(\"tip_amount\").alias(\"mean_tip\"),\n        pl.mean(\"fare_amount\").alias(\"mean_fare\"),\n        ])\n    .sort([\"passenger_count\", \"trip_distance\"])\n)\n\ntic = time.time()\ndat3 = q3.collect()\ntoc = time.time()\n\ndat3\n\ndat3.unpivot(index = [\"passenger_count\", \"trip_distance\"])\n\nmean_tips  = nyc.group_by(\"month\").agg(pl.col(\"tip_amount\").mean())\nmean_fares = nyc.group_by(\"month\").agg(pl.col(\"fare_amount\").mean())\n\n(\n    mean_tips\n    .join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\" # default is inner join\n    )\n    .collect()\n)",
+    "crumbs": [
+      "Computing",
+      "Polars (R + Python)"
     ]
   }
 ]

@@ -50,6 +50,14 @@
   </url>
   <url>
     <loc>https://tools.github.io/computing/duckdb-sql.html</loc>
-    <lastmod>2025-03-17T13:10:55.562Z</lastmod>
+    <lastmod>2025-03-17T14:06:49.799Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/computing/duckdb-dplyr.html</loc>
+    <lastmod>2025-03-17T17:03:17.271Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/computing/polars.html</loc>
+    <lastmod>2025-03-17T14:07:02.299Z</lastmod>
   </url>
 </urlset>
