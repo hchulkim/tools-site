@@ -1,0 +1,17 @@
+{
+  "hash": "564276b2bfaf65a5942768b1ca9a891a",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Overview\"\nsubtitle: \"Templates for computing\"\nexecute:\n  freeze: auto\n---\n\n\n\n\nThis is example templates that use DuckDB with SQL for `R` and `Python`. Note that there are short examples. If you want to know more about what they can do, check out this [site](https://grantmcdermott.com/duckdb-polars/duckdb-sql.html). \n\n::: {.panel-tabset group=\"language\"}\n\n### R\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(duckdb)\n\ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\n# con = dbConnect(duckdb(), dbdir = \"nyc.duck\")\n\n# SELECT\n#   passenger_count,\n#   AVG(tip_amount) AS mean_tip\n# FROM 'nyc-taxi/**/*.parquet'\n# GROUP BY passenger_count\n# ORDER BY passenger_count\n\ntic = Sys.time()\ndat1 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  GROUP BY ALL\n  ORDER BY ALL\n  \"\n)\ntoc = Sys.time()\n\ndat1\ntoc - tic\n\ntic = Sys.time()\ndat2 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    month,\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  WHERE month <= 3\n  GROUP BY ALL\n  \"\n    )\ntoc = Sys.time()\n\nhead(dat2)\n\ndbDisconnect(con)\n```\n:::\n\n\n\n\n### Python\n\n\n\n\n::: {.cell}\n\n```{.python .cell-code}\nimport duckdb\nimport time\n\ncon = duckdb.connect(database=':memory:', read_only=False)\n\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\ncon = duckdb.connect(database='nyc.duck', read_only=False)\n\ntic = time.time()\ndat1 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    GROUP BY ALL\n    ORDER BY ALL\n    '''\n    )\n)\ntoc = time.time()\n\ndat1\n\ntic = time.time()\ndat2 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      month,\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    WHERE month <= 3\n    GROUP BY ALL\n    '''\n  )\n)\ntoc = time.time()\n\ndat2\n\ncon.close() \n```\n:::\n\n\n\n\n:::",
+    "supporting": [
+      "duckdb-sql_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

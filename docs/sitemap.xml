@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://tools.github.io/misc/links.html</loc>
-    <lastmod>2025-03-16T19:24:54.862Z</lastmod>
+    <lastmod>2025-03-17T01:58:25.241Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/teaching/teaching.html</loc>
@@ -46,6 +46,10 @@
   </url>
   <url>
     <loc>https://tools.github.io/computing/docker.html</loc>
-    <lastmod>2025-03-16T22:46:42.744Z</lastmod>
+    <lastmod>2025-03-16T22:56:32.856Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/computing/duckdb-sql.html</loc>
+    <lastmod>2025-03-17T13:10:55.562Z</lastmod>
   </url>
 </urlset>

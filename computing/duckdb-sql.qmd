@@ -1,0 +1,129 @@
+---
+title: "Overview"
+subtitle: "Templates for computing"
+execute:
+  freeze: auto
+---
+
+This is example templates that use DuckDB with SQL for `R` and `Python`. Note that there are short examples. If you want to know more about what they can do, check out this [site](https://grantmcdermott.com/duckdb-polars/duckdb-sql.html). 
+
+::: {.panel-tabset group="language"}
+
+### R
+
+```{r}
+#| echo: true
+#| eval: false 
+#| cache: false
+library(duckdb)
+
+con = dbConnect(duckdb(), shutdown = TRUE)
+
+# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.
+
+# con = dbConnect(duckdb(), dbdir = "nyc.duck")
+
+# SELECT
+#   passenger_count,
+#   AVG(tip_amount) AS mean_tip
+# FROM 'nyc-taxi/**/*.parquet'
+# GROUP BY passenger_count
+# ORDER BY passenger_count
+
+tic = Sys.time()
+dat1 = dbGetQuery(
+  con,
+  "
+  FROM 'nyc-taxi/**/*.parquet'
+  SELECT
+    passenger_count,
+    AVG(tip_amount) AS mean_tip
+  GROUP BY ALL
+  ORDER BY ALL
+  "
+)
+toc = Sys.time()
+
+dat1
+toc - tic
+
+tic = Sys.time()
+dat2 = dbGetQuery(
+  con,
+  "
+  FROM 'nyc-taxi/**/*.parquet'
+  SELECT
+    month,
+    passenger_count,
+    AVG(tip_amount) AS mean_tip
+  WHERE month <= 3
+  GROUP BY ALL
+  "
+    )
+toc = Sys.time()
+
+head(dat2)
+
+dbDisconnect(con)
+
+```
+
+### Python
+
+```{python}
+#| echo: true
+#| eval: false
+#| cache: false
+
+import duckdb
+import time
+
+con = duckdb.connect(database=':memory:', read_only=False)
+
+
+# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.
+
+con = duckdb.connect(database='nyc.duck', read_only=False)
+
+tic = time.time()
+dat1 = (
+  con.
+  query(
+    '''
+    FROM 'nyc-taxi/**/*.parquet'
+    SELECT
+      passenger_count,
+      AVG(tip_amount) AS mean_tip
+    GROUP BY ALL
+    ORDER BY ALL
+    '''
+    )
+)
+toc = time.time()
+
+dat1
+
+tic = time.time()
+dat2 = (
+  con.
+  query(
+    '''
+    FROM 'nyc-taxi/**/*.parquet'
+    SELECT
+      month,
+      passenger_count,
+      AVG(tip_amount) AS mean_tip
+    WHERE month <= 3
+    GROUP BY ALL
+    '''
+  )
+)
+toc = time.time()
+
+dat2
+
+con.close() 
+
+```
+
+:::
