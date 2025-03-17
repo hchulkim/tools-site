@@ -1,0 +1,184 @@
+---
+title: "Polars from Python and R"
+subtitle: "Templates for using Polars in Python and R"
+execute:
+  freeze: auto
+---
+
+This is example templates that use Polars for `R` and `Python`. Note that there are short examples. If you want to know more about what they can do, check out this [site](https://grantmcdermott.com/duckdb-polars/polars-rpy.html). 
+
+::: {.panel-tabset group="language"}
+
+### R
+
+```{r}
+#| echo: true
+#| eval: false 
+#| cache: false
+
+library(polars)
+
+nyc = pl$scan_parquet("nyc-taxi/**/*.parquet", hive_partitioning = TRUE)
+nyc
+
+q1 = (
+    nyc
+    $group_by("passenger_count")
+    $agg(
+        pl$mean("tip_amount")#$alias("mean_tip") ## alias is optional
+    )
+    $sort("passenger_count")
+)
+q1 
+
+tic = Sys.time()
+dat1 = q1$collect()
+toc = Sys.time()
+
+dat1
+
+q2 = (
+    nyc
+    $filter(pl$col("month") <= 3)
+    $group_by("month", "passenger_count")
+    $agg(pl$mean("tip_amount")$alias("mean_tip"))
+    $sort("passenger_count")
+) 
+
+# q2              # naive
+cat(q2$explain()) # optimized
+
+tic = Sys.time()
+dat2 = q2$collect()
+toc = Sys.time()
+
+dat2
+
+q3 = (
+    nyc
+    $group_by("passenger_count", "trip_distance")
+    $agg(
+        pl$mean("tip_amount")$alias("mean_tip"),
+        pl$mean("fare_amount")$alias("mean_fare")
+        )
+    $sort("passenger_count", "trip_distance")
+)
+
+tic = Sys.time()
+dat3 = q3$collect()
+toc = Sys.time()
+ 
+dat3
+
+dat3$unpivot(index = c("passenger_count", "trip_distance"))
+
+mean_tips  = nyc$group_by("month")$agg(pl$col("tip_amount")$mean())
+mean_fares = nyc$group_by("month")$agg(pl$col("fare_amount")$mean())
+
+(
+    mean_tips
+    $join(
+        mean_fares,
+        on = "month",
+        how = "left"  # default is inner join
+    )
+    $collect()
+)
+
+# You can also try tidypolars
+
+library(polars) ## Already loaded
+library(tidypolars)
+library(dplyr, warn.conflicts = FALSE)
+library(tidyr, warn.conflicts = FALSE)
+
+nyc = scan_parquet_polars("nyc-taxi/**/*.parquet")
+
+nyc |> 
+    summarise(mean_tip = mean(tip_amount), .by = passenger_count) |>
+    compute()
+
+# Aside: Use collect() instead of compute() at the end if you would prefer to return a standard R data.frame instead of a Polars DataFrame.
+```
+
+### Python
+
+```{python}
+#| echo: true
+#| eval: false
+#| cache: false
+ 
+import polars as pl
+import time
+import matplotlib
+
+nyc = pl.scan_parquet("nyc-taxi/**/*.parquet", hive_partitioning=True)
+nyc
+
+q1 = (
+    nyc
+    .group_by(["passenger_count"])
+    .agg([
+            pl.mean("tip_amount")#.alias("mean_tip") ## alias is optional
+        ])
+    .sort("passenger_count")
+)
+q1
+
+tic = time.time()
+dat1 = q1.collect()
+toc = time.time()
+
+dat1
+
+q2 = (
+    nyc
+    .filter(pl.col("month") <= 3)
+    .group_by(["month", "passenger_count"])
+    .agg([pl.mean("tip_amount").alias("mean_tip")])
+    .sort("passenger_count")
+)
+
+# q2             # naive
+q2.show_graph()  # optimized
+
+tic = time.time()
+dat2 = q2.collect()
+toc = time.time()
+
+dat2
+
+q3 = (
+    nyc
+    .group_by(["passenger_count", "trip_distance"])
+    .agg([
+        pl.mean("tip_amount").alias("mean_tip"),
+        pl.mean("fare_amount").alias("mean_fare"),
+        ])
+    .sort(["passenger_count", "trip_distance"])
+)
+
+tic = time.time()
+dat3 = q3.collect()
+toc = time.time()
+
+dat3
+
+dat3.unpivot(index = ["passenger_count", "trip_distance"])
+
+mean_tips  = nyc.group_by("month").agg(pl.col("tip_amount").mean())
+mean_fares = nyc.group_by("month").agg(pl.col("fare_amount").mean())
+
+(
+    mean_tips
+    .join(
+        mean_fares,
+        on = "month",
+        how = "left" # default is inner join
+    )
+    .collect()
+)
+
+```
+
+:::

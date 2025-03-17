@@ -1,6 +1,6 @@
 ---
-title: "Overview"
-subtitle: "Templates for computing"
+title: "DuckDB SQL"
+subtitle: "Templates for DuckDB SQL"
 execute:
   freeze: auto
 ---

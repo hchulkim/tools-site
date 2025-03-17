@@ -39,6 +39,8 @@ website:
           text: "Dockerfile"
         - href: computing/duckdb-sql.qmd
           text: "DuckDB SQL"
+        - href: computing/polars.qmd
+          text: "Polars (R + Python)"
         - href: computing/blp.qmd
           text: "BLP code (Julia)"
         - href: computing/google-big-query.qmd
