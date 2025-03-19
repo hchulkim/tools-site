@@ -1,0 +1,177 @@
+---
+title: "BLP Demystified: From Basics to Brain-Busting Models!"
+author: "Hyoungchul Kim"
+engine: julia
+execute: 
+  freeze: auto
+format: 
+  html:
+    toc: false
+    number-sections: true
+    code-overflow: wrap
+bibliography: references.bib
+---
+
+Install necessary julia packages for later computation:
+```{julia}
+#| echo: true
+#| warning: false
+
+# You might need these commented codes to install packages
+# using Pkg
+# Pkg.add(["DataFrames", "CSV", "GLM", "Statistics", "LinearAlgebra", "Distributions", "NLopt", "FixedEffectModels", "RegressionTables"])
+```
+
+# BLP
+
+This exercise estimates the demand-side BLP model.
+
+## Motivation
+
+Why do this? Demand estimation is very important in IO literature because measuring market power is important in IO. How do we quantify market power? Usually we use markup as the measure. But it is hard to directly calculate markup because it depends on the cost function of the firm which is not observed. But IO theory shows that we can actually get the markup using demand elasticity. Thus estimating demand is important. 
+
+## Basic: McFadden (1973) style logit model
+
+### Model setup
+
+We will first estimate a basic logit model with no unobserved demand shifters and no random coefficents. But let's just talk bit about the background of this discrete choice model. Note that most of it is from @train. 
+
+Even before @mcfadden74, there has been a long history of the development of the logit model. But @mcfadden74 provides a complete, well-defined econometric model that is consistent with the utility maximization behavior of individuals.
+
+
+Individual's ($i$) utility maximizing behavior (indirect utility) can be specified as follows:
+
+$$
+u_{ij} = \underbrace{x_j \beta + \alpha p_j}_{\delta_j} + \varepsilon_{ij}
+$$
+
+where mean utility of outside option is normalized to zero. Also, idiosyncratic shock (i.i.d) follows Type 1 Extreme Value distribution (T1EV). We also assume there are $0, \ldots, J$ products (denote $0$ as the outside option) where one option is outside option. We can think of $\delta_j$ as the mean utility from the product $j$. This is because in this parameterization, $\delta_j$ does not depend on $i$.
+
+Now let's do some math to derive the logit choice probabilities. One benefit about logit model is that we can get a close-form solution. We are going to compute the probability of individuals choosing product $j$ given $p_j$, and $x_j$.
+
+\begin{align}
+  P (u_{ij} \geq \forall_{j' \neq j} u_{ij'} \mid x_j, p_j) &= P (x_j \beta + \alpha p_j + \varepsilon_{ij} \geq \forall_{j' \neq j} x_{j'}\beta + \alpha p_{j'} + \varepsilon_{ij'} \mid x_j, p_j) \\
+  &= P ( \varepsilon_{ij'} \leq \varepsilon_{ij} + \delta_j - \delta_{j'} \, \forall j' \neq j).
+\end{align}
+
+If we assume that $\varepsilon_{ij}$ is given, we can think of the last term as the cumulative distribution of the T1EV where $F(\varepsilon_{ij}) = e^{-e^{- \varepsilon_{ij}}}$. Since we assumed i.i.d., we can express the last term as the product of the individual cumulative distributions (For brevity, we will now denote the conditional logit choice probability as $P_{ij}$):
+
+$$
+  P_{ij} \mid \varepsilon_{ij} = \prod_{j' \neq j} e^{ - e^{-(\varepsilon_{ij} + \delta_j - \delta_{j'})}}.
+$$
+
+Since $\varepsilon_{ij}$ is not given, we need o integrate it over density of $\varepsilon_{ij}$:
+
+$$
+  P_{ij} = \int \left(\prod_{j' \neq j} e^{ - e^{-(\varepsilon_{ij} + \delta_j - \delta_{j'})}} \right) e^{- \varepsilon_{ij}} e^{-e^{\varepsilon_{ij}}} d \varepsilon_{ij}.
+$$
+
+Now let's get this into a closed-form expression:
+
+As a result, we can get the closed-form expression:
+
+$$
+  P_{ij} = \frac{e^{\delta_{ij}}}{\sum_{j'} e^{\delta_{ij'}}}
+$$
+
+This could be understood as the *predicted share* function given the fixed values of the parameters.
+
+Note that this is a very simple model because we are not assuming any unobserved product demand shifters that could be affected the utility gained from the product. In fact, we are assuming that econometricians can fully observe all the necessary variables that constructs the mean utility. Thus there is not much econometrics involved. You can just get the parameters as follows:
+
+1. Assuming you have the data on market share, you can use it to match it to $P_{ij} \cdot M$ where $M$is the total market size.
+
+2. Then since we will get $J$ equations using $J$ market share, we can do simple algebra to get the mean utility $\delta_j$.
+
+3. Then you can do some nonlinear least squares that minimize the sum of the differences between oberved and predicted shares of all products. This will get you the parameters that best fit the data.
+
+### Adding unobserved demand shifters
+
+We can add the additional unobserved variables $\xi_j$ which can be thought of as some demand shifter for product $j$. This allows the model to be more flexible to incorporate the realistic situation where econometrician might not be able to observe some components that might be affecting the utility of getting some product. Thus most of what we did above does not change much. The only problem would be understanding the nature of this unobserved terms with other main parameters of interest. If there is endogeneity, we would need some IV to estimate the parameter. In this section, we will do both cases (OLS, IV).
+
+### Computation (Following @berry1994)
+
+So how can we retrieve the parameters of interest? Naive way to think about it would be doing some **nonlinear least squares** where you minimize the sum of differences between predicted share and observed shares of all products. The problem is that this directy way is implausible: You would need to know the $\xi_j$. Since this is unobservable, it is problematic.
+
+**This is where @berry1994 comes in.** He introduces this clever two steps estimation process.
+
+**Step 1: Inversion**
+
+Notation: Let $\hat{s}_j (\delta)$ be predicted shares and let $s_j$ be observed shares.[^1]
+
+Then you can use the system of equations from matching actual to predicted shares and invert them to get the mean utility. For this simple case, we can get the following equations:
+
+$$
+  \delta_j = \log s_j - \log \hat{s}_0, \quad j = 1, \ldots, J.
+$$
+
+So this inversion gets us the value of the mean utility. Then we have the second step.
+
+**Step 2: IV estimation**
+
+By definition, we have $\delta_j = x_j \beta + \alpha p_j + \xi_j$. So we can do the regression to retrieve the parameters. I put IV, but this could be just OLS if you can assume the unobserved term is uncorrelated with the price.
+
+[^1]: You might have already noticed, but I kind of use variables without subscript as the vector of the variables. For example, $\delta$ is just $(\delta_1, \ldots, \delta_J).$
+
+### Coding (with `Julia`)
+
+Finally we will do some coding to get the result we just talked about.
+
+```{julia}
+#| echo: true
+#| warning: false 
+ 
+using FixedEffectModels, DataFrames, CSV, RegressionTables 
+
+# read in the data
+otc = CSV.read("data/otc.csv", DataFrame)
+
+# Run regressions
+ols1 = reg(otc, @formula(ln_mkt_share_diff ~ price + promotion)) 
+ols2 = reg(otc, @formula(ln_mkt_share_diff ~ price + promotion + fe(product)))
+ols3 = reg(otc, @formula(ln_mkt_share_diff ~ price + promotion + fe(product) + fe(store)))
+iv1 = reg(otc, @formula(ln_mkt_share_diff ~ (price ~ cost) + promotion))
+iv2 = reg(otc, @formula(ln_mkt_share_diff ~ (price ~ cost) + promotion + fe(product)))
+
+regtable(ols1, ols2, ols3, iv1, iv2, order = ["price"], drop = ["(Intercept)"], regression_statistics = [FStatIV, Nobs, R2],
+  labels = Dict(
+    "price" => "Price",
+    "promotion" => "Promotion",
+    "ln_mkt_share_diff" => "Log Mkt share difference"
+  ))
+## Some R codes that I followed
+
+# m1 <- lm(ln_mkt_share_diff ~ price + promotion , data = otc)
+# m2 <- lm(ln_mkt_share_diff ~ price + promotion + factor(product), data = otc)
+# m3 <- lm(ln_mkt_share_diff ~ price + promotion + factor(product) + factor(store), data = otc)
+# m4 <- ivreg(ln_mkt_share_diff ~ price + promotion | . - price + cost, data = otc)
+# m5 <- ivreg(ln_mkt_share_diff ~ price + promotion + factor(product) | . - price + cost, data = otc)
+# stargazer(m1, m2, m3, m4, m5, 
+#           omit = c("product", "store"),
+#           type = "text")
+
+```
+
+### Caveats
+
+But we don't usually use this basic setup in IO. This is because the model is bit too simple to fully capture the reality. One of the well known problem is the **Independence of irrelevant alternatives (IIA)**. Basically what this means is that we don't get a realistic demand elasticities. If you want to know more about it, google the famouse ***Red bus, blue bus*** story. 
+
+### Solutions?
+
+There are some ways to alleviate this problem. One of them (which we will not discuss), is using nested logit. Basically we are defining certain group of products where IIA holds within the group but may not hold across the group. So for the case of red bus, blue bus, they would be in a same group.
+
+Another way is to do enhance the random utility model into logit model with random coefficients. In essence, this is sort of introducing preference heterogeneity of consumers into the model. This is done by interacting consumer preferences with product characteristics.
+
+## Advanced: @blp (Random coefficients logit model)
+
+We again start with the individual utility function. But now something is added (we will now also explicitly denote markets as $t$):
+
+$$
+u_{ijt} = x_{jt} \beta_i + \alpha_i p_{jt} + \varepsilon_{ijt}
+$$
+
+The difference is that slope coefficients can now vary across individuals $i$.
+
+## References {.unnumbered}
+
+::: {#refs}
+:::
