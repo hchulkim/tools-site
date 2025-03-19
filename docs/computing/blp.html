@@ -443,9 +443,9 @@ u_{ij} = \underbrace{x_j \beta + \alpha p_j}_{\delta_j} + \varepsilon_{ij}
 <p>We can add the additional unobserved variables <span class="math inline">\(\xi_j\)</span> which can be thought of as some demand shifter for product <span class="math inline">\(j\)</span>. This allows the model to be more flexible to incorporate the realistic situation where econometrician might not be able to observe some components that might be affecting the utility of getting some product. Thus most of what we did above does not change much. The only problem would be understanding the nature of this unobserved terms with other main parameters of interest. If there is endogeneity, we would need some IV to estimate the parameter. In this section, we will do both cases (OLS, IV).</p>
 </section>
 <section id="computation-following-berry1994" class="level3" data-number="1.2.3">
-<h3 data-number="1.2.3" class="anchored" data-anchor-id="computation-following-berry1994"><span class="header-section-number">1.2.3</span> Computation (Following <span class="citation" data-cites="berry1994">S. T. Berry (<a href="#ref-berry1994" role="doc-biblioref">1994</a>)</span>)</h3>
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="computation-following-berry1994"><span class="header-section-number">1.2.3</span> Computation (Following <span class="citation" data-cites="berry1994">Berry (<a href="#ref-berry1994" role="doc-biblioref">1994</a>)</span>)</h3>
 <p>So how can we retrieve the parameters of interest? Naive way to think about it would be doing some <strong>nonlinear least squares</strong> where you minimize the sum of differences between predicted share and observed shares of all products. The problem is that this directy way is implausible: You would need to know the <span class="math inline">\(\xi_j\)</span>. Since this is unobservable, it is problematic.</p>
-<p><strong>This is where <span class="citation" data-cites="berry1994">S. T. Berry (<a href="#ref-berry1994" role="doc-biblioref">1994</a>)</span> comes in.</strong> He introduces this clever two steps estimation process.</p>
+<p><strong>This is where <span class="citation" data-cites="berry1994">Berry (<a href="#ref-berry1994" role="doc-biblioref">1994</a>)</span> comes in.</strong> He introduces this clever two steps estimation process.</p>
 <p><strong>Step 1: Inversion</strong></p>
 <p>Notation: Let <span class="math inline">\(\hat{s}_j (\delta)\)</span> be predicted shares and let <span class="math inline">\(s_j\)</span> be observed shares.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p>Then you can use the system of equations from matching actual to predicted shares and invert them to get the mean utility. For this simple case, we can get the following equations:</p>
@@ -522,25 +522,29 @@ R2                          0.003      0.440     0.456      -0.008      0.420
 <section id="solutions" class="level3" data-number="1.2.6">
 <h3 data-number="1.2.6" class="anchored" data-anchor-id="solutions"><span class="header-section-number">1.2.6</span> Solutions?</h3>
 <p>There are some ways to alleviate this problem. One of them (which we will not discuss), is using nested logit. Basically we are defining certain group of products where IIA holds within the group but may not hold across the group. So for the case of red bus, blue bus, they would be in a same group.</p>
-<p>Another way is to do enhance the random utility model into logit model with random coefficients. In essence, this is sort of introducing preference heterogeneity of consumers into the model. This is done by interacting consumer preferences with product characteristics.</p>
+<p>Another way is to do enhance the random utility model into logit model with random coefficients. In essence, this is sort of introducing preference heterogeneity of consumers into the model. This is done by interacting consumer preferences with product characteristics. The nuisance with this case is that now closed-form expression for choice probability is not obtainable. We need to do some numerical computation.</p>
 </section>
 </section>
 <section id="advanced-blp-random-coefficients-logit-model" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="advanced-blp-random-coefficients-logit-model"><span class="header-section-number">1.3</span> Advanced: <span class="citation" data-cites="blp">Berry, Levinsohn, and Pakes (<a href="#ref-blp" role="doc-biblioref">1995</a>)</span> (Random coefficients logit model)</h2>
 <p>We again start with the individual utility function. But now something is added (we will now also explicitly denote markets as <span class="math inline">\(t\)</span>):</p>
 <p><span class="math display">\[
-u_{ijt} = x_{jt} \beta_i + \alpha_i p_{jt} + \varepsilon_{ijt}
+u_{ijt} = x_{jt} \beta_i + \alpha p_{jt} + \xi_jt + \varepsilon_{ijt}
 \]</span></p>
-<p>The difference is that slope coefficients can now vary across individuals <span class="math inline">\(i\)</span>.</p>
+<p>The difference is that slope coefficients can now vary across individuals <span class="math inline">\(i\)</span>. usually, BLP assumes that <span class="math inline">\(beta_i \sim N(\beta, \Sigma)\)</span>. Note that we are assuming that the variance is 1. Also, we will denote <span class="math inline">\(k\)</span> as the product characteristics which sums up to <span class="math inline">\(K\)</span>.</p>
+<p>Now we can expand the model:</p>
+<p><span class="math display">\[
+  u_{ijt} = (x_{j1}, \ldots, x_{jK}) \cdot  
+\]</span></p>
 </section>
 <section id="references" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-berry1994" class="csl-entry" role="listitem">
-Berry, Steven T. 1994. <span>“Estimating Discrete-Choice Models of Product Differentiation.”</span> <em>The RAND Journal of Economics</em> 25 (2): 242–62. <a href="http://www.jstor.org/stable/2555829">http://www.jstor.org/stable/2555829</a>.
+Berry, Steven. 1994. <span>“Estimating Discrete-Choice Models of Product Differentiation.”</span> <em>The RAND Journal of Economics</em> 25 (2): 242–62. <a href="http://www.jstor.org/stable/2555829">http://www.jstor.org/stable/2555829</a>.
 </div>
 <div id="ref-blp" class="csl-entry" role="listitem">
-Berry, James Levinsohn, and Ariel Pakes. 1995. <span>“Automobile Prices in Market Equilibrium.”</span> <em>Econometrica</em> 63 (4): 841–90. <a href="http://www.jstor.org/stable/2171802">http://www.jstor.org/stable/2171802</a>.
+Berry, Steven, James Levinsohn, and Ariel Pakes. 1995. <span>“Automobile Prices in Market Equilibrium.”</span> <em>Econometrica</em> 63 (4): 841–90. <a href="http://www.jstor.org/stable/2171802">http://www.jstor.org/stable/2171802</a>.
 </div>
 <div id="ref-mcfadden74" class="csl-entry" role="listitem">
 McFadden, Daniel. 1974. <span>“Conditional Logit Analysis of Qualitative Choice Behavior.”</span> In <em>Fontiers in <span>Econometrics</span></em>, edited by Paul Zarembka, 105–42. New York: Academic press.

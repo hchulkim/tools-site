@@ -159,17 +159,23 @@ But we don't usually use this basic setup in IO. This is because the model is bi
 
 There are some ways to alleviate this problem. One of them (which we will not discuss), is using nested logit. Basically we are defining certain group of products where IIA holds within the group but may not hold across the group. So for the case of red bus, blue bus, they would be in a same group.
 
-Another way is to do enhance the random utility model into logit model with random coefficients. In essence, this is sort of introducing preference heterogeneity of consumers into the model. This is done by interacting consumer preferences with product characteristics.
+Another way is to do enhance the random utility model into logit model with random coefficients. In essence, this is sort of introducing preference heterogeneity of consumers into the model. This is done by interacting consumer preferences with product characteristics. The nuisance with this case is that now closed-form expression for choice probability is not obtainable. We need to do some numerical computation.
 
 ## Advanced: @blp (Random coefficients logit model)
 
 We again start with the individual utility function. But now something is added (we will now also explicitly denote markets as $t$):
 
 $$
-u_{ijt} = x_{jt} \beta_i + \alpha_i p_{jt} + \varepsilon_{ijt}
+u_{ijt} = x_{jt} \beta_i + \alpha p_{jt} + \xi_jt + \varepsilon_{ijt}
 $$
 
-The difference is that slope coefficients can now vary across individuals $i$.
+The difference is that slope coefficients can now vary across individuals $i$. usually, BLP assumes that $beta_i \sim N(\beta, \Sigma)$. Note that we are assuming that the variance is 1. Also, we will denote $k$ as the product characteristics which sums up to $K$.
+
+Now we can expand the model:
+
+$$
+  u_{ijt} = (x_{j1}, \ldots, x_{jK}) \cdot  
+$$
 
 ## References {.unnumbered}
 
