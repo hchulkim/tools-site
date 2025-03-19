@@ -522,16 +522,20 @@ R2                          0.003      0.440     0.456      -0.008      0.420
 <section id="solutions" class="level3" data-number="1.2.6">
 <h3 data-number="1.2.6" class="anchored" data-anchor-id="solutions"><span class="header-section-number">1.2.6</span> Solutions?</h3>
 <p>There are some ways to alleviate this problem. One of them (which we will not discuss), is using nested logit. Basically we are defining certain group of products where IIA holds within the group but may not hold across the group. So for the case of red bus, blue bus, they would be in a same group.</p>
-<p>Another way is to do enhance the random utility model into logit model with random coefficients. In essence, this is sort of introducing preference heterogeneity of consumers into the model. This is done by interacting consumer preferences with product characteristics.</p>
+<p>Another way is to do enhance the random utility model into logit model with random coefficients. In essence, this is sort of introducing preference heterogeneity of consumers into the model. This is done by interacting consumer preferences with product characteristics. The nuisance with this case is that now closed-form expression for choice probability is not obtainable. We need to do some numerical computation.</p>
 </section>
 </section>
 <section id="advanced-blp-random-coefficients-logit-model" class="level2" data-number="1.3">
 <h2 data-number="1.3" class="anchored" data-anchor-id="advanced-blp-random-coefficients-logit-model"><span class="header-section-number">1.3</span> Advanced: <span class="citation" data-cites="blp">Berry, Levinsohn, and Pakes (<a href="#ref-blp" role="doc-biblioref">1995</a>)</span> (Random coefficients logit model)</h2>
 <p>We again start with the individual utility function. But now something is added (we will now also explicitly denote markets as <span class="math inline">\(t\)</span>):</p>
 <p><span class="math display">\[
-u_{ijt} = x_{jt} \beta_i + \alpha_i p_{jt} + \varepsilon_{ijt}
+u_{ijt} = x_{jt} \beta_i + \alpha p_{jt} + \xi_jt + \varepsilon_{ijt}
 \]</span></p>
-<p>The difference is that slope coefficients can now vary across individuals <span class="math inline">\(i\)</span>.</p>
+<p>The difference is that slope coefficients can now vary across individuals <span class="math inline">\(i\)</span>. usually, BLP assumes that <span class="math inline">\(beta_i \sim N(\beta, \Sigma)\)</span>. Note that we are assuming that the variance is 1. Also, we will denote <span class="math inline">\(k\)</span> as the product characteristics which sums up to <span class="math inline">\(K\)</span>.</p>
+<p>Now we can expand the model:</p>
+<p><span class="math display">\[
+  u_{ijt} = (x_{j1}, \ldots, x_{jK}) \cdot  
+\]</span></p>
 </section>
 <section id="references" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
