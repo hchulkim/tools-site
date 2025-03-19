@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Hyoungchul Kim">
 
-<title>Useful links – tools</title>
+<title>BLP Demystified: From Basics to Brain-Busting Models! – tools</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +21,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -29,7 +84,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../teaching/prob.html" rel="prev">
+<link href="../computing/google-big-query.qmd" rel="next">
+<link href="../computing/polars.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -69,16 +125,47 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<meta property="og:title" content="Useful links – tools">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="BLP Demystified: From Basics to Brain-Busting Models! – tools">
+<meta property="og:description" content="Homepage for my tools.">
 <meta property="og:site_name" content="tools">
-<meta name="twitter:title" content="Useful links – tools">
-<meta name="twitter:image" content="https://tools.github.io/misc/images/pic.png">
+<meta name="twitter:title" content="BLP Demystified: From Basics to Brain-Busting Models! – tools">
+<meta name="twitter:description" content="Homepage for my tools.">
+<meta name="twitter:image" content="https://tools.github.io/computing/images/pic.png">
 <meta name="twitter:creator" content="@hckim_econ">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar docked">
+<body class="nav-sidebar docked fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -87,7 +174,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../misc/links.html">Misc.</a></li><li class="breadcrumb-item"><a href="../misc/links.html">Useful links</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../computing/computing.html">Computing</a></li><li class="breadcrumb-item"><a href="../computing/blp.html">BLP code (Julia)</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -118,13 +205,13 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Computing</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../computing/computing.html" class="sidebar-item-text sidebar-link">
@@ -157,7 +244,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../computing/blp.html" class="sidebar-item-text sidebar-link">
+  <a href="../computing/blp.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">BLP code (Julia)</span></a>
   </div>
 </li>
@@ -252,16 +339,16 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
  <span class="menu-text">Misc.</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../misc/links.html" class="sidebar-item-text sidebar-link active">
+  <a href="../misc/links.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Useful links</span></a>
   </div>
 </li>
@@ -272,21 +359,25 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../misc/links.html">Misc.</a></li><li class="breadcrumb-item"><a href="../misc/links.html">Useful links</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../computing/computing.html">Computing</a></li><li class="breadcrumb-item"><a href="../computing/blp.html">BLP code (Julia)</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Useful links</h1>
+<h1 class="title">BLP Demystified: From Basics to Brain-Busting Models!</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Hyoungchul Kim </p>
+          </div>
+  </div>
     
   
     
@@ -297,44 +388,179 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Category</th>
-<th>Links</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Personal website</strong></td>
-<td>🔗 <a href="https://hchulkim.github.io">GitHub site</a></td>
-</tr>
-<tr class="even">
-<td><strong>Coffee chat (with me)</strong></td>
-<td>🔗 <a href="https://appt.link/meet-with-hyoungchul-kim-beUIhP3Q/in-person-meeting">Appointment link</a></td>
-</tr>
-<tr class="odd">
-<td><strong>Computing and replication resources</strong></td>
-<td>🔗 <a href="06-web-css.pdf">Web-scraping 1</a> <br> 🔗 <a href="07-web-apis.pdf">Web-scraping 2</a> <br> 🔗 <a href="12-parallel.pdf">Parallel programming</a> <br> 🔗 <a href="13-docker.pdf">Docker</a> <br> 🔗 <a href="14-gce-i.pdf">Google compute engine 1</a> <br> 🔗 <a href="14-gce-ii.pdf">Google compute engine 2</a> <br> 🔗 <a href="16-databases.pdf">Databases</a> <br> 🔗 <a href="17-spark.pdf">Spark</a> <br> 🔗 <a href="https://grantmcdermott.com/duckdb-polars">DuckDB and polars</a> <br> 🔗 <a href="https://github.com/jianqih/NYU-Course-Notes-and-Resources">NYU Course Notes &amp; Resources</a> <br> 🔗 <a href="https://sites.google.com/site/yixusite/econ881-32-quantitative-dynamic-model">Quantitative dynamic model</a></td>
-</tr>
-<tr class="even">
-<td><strong>Julia</strong></td>
-<td>🔗 <a href="https://juliadatascience.io/">Julia for data science</a> <br> 🔗 <a href="https://floswald.github.io/NumericalMethods/">Computational economics for PhDs</a> <br> 🔗 <a href="https://github.com/jlperla/ECON408">Computational Methods in Macroeconomics</a> <br> 🔗 <a href="https://github.com/UBCECON567/BLPDemand.jl/tree/master">BLPDemand.jl</a> <br> 🔗 <a href="https://github.com/jianqih/Guide2EconRA?tab=readme-ov-file">Guide to Efficient Computational Work in Economics</a> <br> 🔗 <a href="https://github.com/mcreel/Econometrics">Econometrics with Julia</a> <br> 🔗 <a href="https://github.com/jianqih/minnesota_2023/tree/main">Advanced Dynamic Programming</a></td>
-</tr>
-<tr class="odd">
-<td><strong>Useful packages</strong></td>
-<td>🔗 <a href="https://yiqingxu.org/packages/fect/05-panel.html">New DiD methods</a></td>
-</tr>
-<tr class="even">
-<td><strong>Graduate trade and spatial</strong></td>
-<td>🔗 <a href="https://sites.google.com/site/treballen/graduate-trade">Treb Allen</a></td>
-</tr>
-</tbody>
-</table>
+<p>Install necessary julia packages for later computation:</p>
+<div id="2" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># You might need these commented codes to install packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># using Pkg</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Pkg.add(["DataFrames", "CSV", "GLM", "Statistics", "LinearAlgebra", "Distributions", "NLopt", "FixedEffectModels", "RegressionTables"])</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="blp" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> BLP</h1>
+<p>This exercise estimates the demand-side BLP model.</p>
+<section id="motivation" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="motivation"><span class="header-section-number">1.1</span> Motivation</h2>
+<p>Why do this? Demand estimation is very important in IO literature because measuring market power is important in IO. How do we quantify market power? Usually we use markup as the measure. But it is hard to directly calculate markup because it depends on the cost function of the firm which is not observed. But IO theory shows that we can actually get the markup using demand elasticity. Thus estimating demand is important.</p>
+</section>
+<section id="basic-mcfadden-1973-style-logit-model" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="basic-mcfadden-1973-style-logit-model"><span class="header-section-number">1.2</span> Basic: McFadden (1973) style logit model</h2>
+<section id="model-setup" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="model-setup"><span class="header-section-number">1.2.1</span> Model setup</h3>
+<p>We will first estimate a basic logit model with no unobserved demand shifters and no random coefficents. But let’s just talk bit about the background of this discrete choice model. Note that most of it is from <span class="citation" data-cites="train">Train (<a href="#ref-train" role="doc-biblioref">2009</a>)</span>.</p>
+<p>Even before <span class="citation" data-cites="mcfadden74">McFadden (<a href="#ref-mcfadden74" role="doc-biblioref">1974</a>)</span>, there has been a long history of the development of the logit model. But <span class="citation" data-cites="mcfadden74">McFadden (<a href="#ref-mcfadden74" role="doc-biblioref">1974</a>)</span> provides a complete, well-defined econometric model that is consistent with the utility maximization behavior of individuals.</p>
+<p>Individual’s (<span class="math inline">\(i\)</span>) utility maximizing behavior (indirect utility) can be specified as follows:</p>
+<p><span class="math display">\[
+u_{ij} = \underbrace{x_j \beta + \alpha p_j}_{\delta_j} + \varepsilon_{ij}
+\]</span></p>
+<p>where mean utility of outside option is normalized to zero. Also, idiosyncratic shock (i.i.d) follows Type 1 Extreme Value distribution (T1EV). We also assume there are <span class="math inline">\(0, \ldots, J\)</span> products (denote <span class="math inline">\(0\)</span> as the outside option) where one option is outside option. We can think of <span class="math inline">\(\delta_j\)</span> as the mean utility from the product <span class="math inline">\(j\)</span>. This is because in this parameterization, <span class="math inline">\(\delta_j\)</span> does not depend on <span class="math inline">\(i\)</span>.</p>
+<p>Now let’s do some math to derive the logit choice probabilities. One benefit about logit model is that we can get a close-form solution. We are going to compute the probability of individuals choosing product <span class="math inline">\(j\)</span> given <span class="math inline">\(p_j\)</span>, and <span class="math inline">\(x_j\)</span>.</p>
+<p><span class="math display">\[\begin{align}
+  P (u_{ij} \geq \forall_{j' \neq j} u_{ij'} \mid x_j, p_j) &amp;= P (x_j \beta + \alpha p_j + \varepsilon_{ij} \geq \forall_{j' \neq j} x_{j'}\beta + \alpha p_{j'} + \varepsilon_{ij'} \mid x_j, p_j) \\
+  &amp;= P ( \varepsilon_{ij'} \leq \varepsilon_{ij} + \delta_j - \delta_{j'} \, \forall j' \neq j).
+\end{align}\]</span></p>
+<p>If we assume that <span class="math inline">\(\varepsilon_{ij}\)</span> is given, we can think of the last term as the cumulative distribution of the T1EV where <span class="math inline">\(F(\varepsilon_{ij}) = e^{-e^{- \varepsilon_{ij}}}\)</span>. Since we assumed i.i.d., we can express the last term as the product of the individual cumulative distributions (For brevity, we will now denote the conditional logit choice probability as <span class="math inline">\(P_{ij}\)</span>):</p>
+<p><span class="math display">\[
+  P_{ij} \mid \varepsilon_{ij} = \prod_{j' \neq j} e^{ - e^{-(\varepsilon_{ij} + \delta_j - \delta_{j'})}}.
+\]</span></p>
+<p>Since <span class="math inline">\(\varepsilon_{ij}\)</span> is not given, we need o integrate it over density of <span class="math inline">\(\varepsilon_{ij}\)</span>:</p>
+<p><span class="math display">\[
+  P_{ij} = \int \left(\prod_{j' \neq j} e^{ - e^{-(\varepsilon_{ij} + \delta_j - \delta_{j'})}} \right) e^{- \varepsilon_{ij}} e^{-e^{\varepsilon_{ij}}} d \varepsilon_{ij}.
+\]</span></p>
+<p>Now let’s get this into a closed-form expression:</p>
+<p>As a result, we can get the closed-form expression:</p>
+<p><span class="math display">\[
+  P_{ij} = \frac{e^{\delta_{ij}}}{\sum_{j'} e^{\delta_{ij'}}}
+\]</span></p>
+<p>This could be understood as the <em>predicted share</em> function given the fixed values of the parameters.</p>
+<p>Note that this is a very simple model because we are not assuming any unobserved product demand shifters that could be affected the utility gained from the product. In fact, we are assuming that econometricians can fully observe all the necessary variables that constructs the mean utility. Thus there is not much econometrics involved. You can just get the parameters as follows:</p>
+<ol type="1">
+<li><p>Assuming you have the data on market share, you can use it to match it to <span class="math inline">\(P_{ij} \cdot M\)</span> where <span class="math inline">\(M\)</span>is the total market size.</p></li>
+<li><p>Then since we will get <span class="math inline">\(J\)</span> equations using <span class="math inline">\(J\)</span> market share, we can do simple algebra to get the mean utility <span class="math inline">\(\delta_j\)</span>.</p></li>
+<li><p>Then you can do some nonlinear least squares that minimize the sum of the differences between oberved and predicted shares of all products. This will get you the parameters that best fit the data.</p></li>
+</ol>
+</section>
+<section id="adding-unobserved-demand-shifters" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="adding-unobserved-demand-shifters"><span class="header-section-number">1.2.2</span> Adding unobserved demand shifters</h3>
+<p>We can add the additional unobserved variables <span class="math inline">\(\xi_j\)</span> which can be thought of as some demand shifter for product <span class="math inline">\(j\)</span>. This allows the model to be more flexible to incorporate the realistic situation where econometrician might not be able to observe some components that might be affecting the utility of getting some product. Thus most of what we did above does not change much. The only problem would be understanding the nature of this unobserved terms with other main parameters of interest. If there is endogeneity, we would need some IV to estimate the parameter. In this section, we will do both cases (OLS, IV).</p>
+</section>
+<section id="computation-following-berry1994" class="level3" data-number="1.2.3">
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="computation-following-berry1994"><span class="header-section-number">1.2.3</span> Computation (Following <span class="citation" data-cites="berry1994">S. T. Berry (<a href="#ref-berry1994" role="doc-biblioref">1994</a>)</span>)</h3>
+<p>So how can we retrieve the parameters of interest? Naive way to think about it would be doing some <strong>nonlinear least squares</strong> where you minimize the sum of differences between predicted share and observed shares of all products. The problem is that this directy way is implausible: You would need to know the <span class="math inline">\(\xi_j\)</span>. Since this is unobservable, it is problematic.</p>
+<p><strong>This is where <span class="citation" data-cites="berry1994">S. T. Berry (<a href="#ref-berry1994" role="doc-biblioref">1994</a>)</span> comes in.</strong> He introduces this clever two steps estimation process.</p>
+<p><strong>Step 1: Inversion</strong></p>
+<p>Notation: Let <span class="math inline">\(\hat{s}_j (\delta)\)</span> be predicted shares and let <span class="math inline">\(s_j\)</span> be observed shares.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Then you can use the system of equations from matching actual to predicted shares and invert them to get the mean utility. For this simple case, we can get the following equations:</p>
+<p><span class="math display">\[
+  \delta_j = \log s_j - \log \hat{s}_0, \quad j = 1, \ldots, J.
+\]</span></p>
+<p>So this inversion gets us the value of the mean utility. Then we have the second step.</p>
+<p><strong>Step 2: IV estimation</strong></p>
+<p>By definition, we have <span class="math inline">\(\delta_j = x_j \beta + \alpha p_j + \xi_j\)</span>. So we can do the regression to retrieve the parameters. I put IV, but this could be just OLS if you can assume the unobserved term is uncorrelated with the price.</p>
+</section>
+<section id="coding-with-julia" class="level3" data-number="1.2.4">
+<h3 data-number="1.2.4" class="anchored" data-anchor-id="coding-with-julia"><span class="header-section-number">1.2.4</span> Coding (with <code>Julia</code>)</h3>
+<p>Finally we will do some coding to get the result we just talked about.</p>
+<div id="4" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">FixedEffectModels</span>, <span class="bu">DataFrames</span>, <span class="bu">CSV</span>, <span class="bu">RegressionTables</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># read in the data</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>otc <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"data/otc.csv"</span>, DataFrame)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Run regressions</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>ols1 <span class="op">=</span> <span class="fu">reg</span>(otc, <span class="pp">@formula</span>(ln_mkt_share_diff <span class="op">~</span> price <span class="op">+</span> promotion)) </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>ols2 <span class="op">=</span> <span class="fu">reg</span>(otc, <span class="pp">@formula</span>(ln_mkt_share_diff <span class="op">~</span> price <span class="op">+</span> promotion <span class="op">+</span> <span class="fu">fe</span>(product)))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>ols3 <span class="op">=</span> <span class="fu">reg</span>(otc, <span class="pp">@formula</span>(ln_mkt_share_diff <span class="op">~</span> price <span class="op">+</span> promotion <span class="op">+</span> <span class="fu">fe</span>(product) <span class="op">+</span> <span class="fu">fe</span>(store)))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>iv1 <span class="op">=</span> <span class="fu">reg</span>(otc, <span class="pp">@formula</span>(ln_mkt_share_diff <span class="op">~</span> (price <span class="op">~</span> cost) <span class="op">+</span> promotion))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>iv2 <span class="op">=</span> <span class="fu">reg</span>(otc, <span class="pp">@formula</span>(ln_mkt_share_diff <span class="op">~</span> (price <span class="op">~</span> cost) <span class="op">+</span> promotion <span class="op">+</span> <span class="fu">fe</span>(product)))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">regtable</span>(ols1, ols2, ols3, iv1, iv2, order <span class="op">=</span> [<span class="st">"price"</span>], drop <span class="op">=</span> [<span class="st">"(Intercept)"</span>], regression_statistics <span class="op">=</span> [FStatIV, Nobs, R2],</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  labels <span class="op">=</span> <span class="fu">Dict</span>(</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"price"</span> <span class="op">=&gt;</span> <span class="st">"Price"</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"promotion"</span> <span class="op">=&gt;</span> <span class="st">"Promotion"</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ln_mkt_share_diff"</span> <span class="op">=&gt;</span> <span class="st">"Log Mkt share difference"</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">## Some R codes that I followed</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># m1 &lt;- lm(ln_mkt_share_diff ~ price + promotion , data = otc)</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># m2 &lt;- lm(ln_mkt_share_diff ~ price + promotion + factor(product), data = otc)</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># m3 &lt;- lm(ln_mkt_share_diff ~ price + promotion + factor(product) + factor(store), data = otc)</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co"># m4 &lt;- ivreg(ln_mkt_share_diff ~ price + promotion | . - price + cost, data = otc)</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co"># m5 &lt;- ivreg(ln_mkt_share_diff ~ price + promotion + factor(product) | . - price + cost, data = otc)</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># stargazer(m1, m2, m3, m4, m5, </span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#           omit = c("product", "store"),</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#           type = "text")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>
+-----------------------------------------------------------------------------
+                                        Log Mkt share difference             
+                          ---------------------------------------------------
+                              (1)        (2)       (3)         (4)        (5)
+-----------------------------------------------------------------------------
+Price                       0.020   -0.189**   -0.145*    0.069***      0.169
+                          (0.014)    (0.059)   (0.059)     (0.015)    (0.115)
+Promotion                   0.121     0.187*   0.201**       0.149   0.308***
+                          (0.093)    (0.074)   (0.073)     (0.093)    (0.082)
+-----------------------------------------------------------------------------
+product Fixed Effects                    Yes       Yes                    Yes
+store Fixed Effects                                Yes                       
+-----------------------------------------------------------------------------
+Estimator                     OLS        OLS       OLS          IV         IV
+-----------------------------------------------------------------------------
+Controls                      Yes                              Yes           
+-----------------------------------------------------------------------------
+First-stage F statistic                                  8,147.921    394.113
+N                           1,056      1,056     1,056       1,056      1,056
+R2                          0.003      0.440     0.456      -0.008      0.420
+-----------------------------------------------------------------------------
+</code></pre>
+</div>
+</div>
+</section>
+<section id="caveats" class="level3" data-number="1.2.5">
+<h3 data-number="1.2.5" class="anchored" data-anchor-id="caveats"><span class="header-section-number">1.2.5</span> Caveats</h3>
+<p>But we don’t usually use this basic setup in IO. This is because the model is bit too simple to fully capture the reality. One of the well known problem is the <strong>Independence of irrelevant alternatives (IIA)</strong>. Basically what this means is that we don’t get a realistic demand elasticities. If you want to know more about it, google the famouse <strong><em>Red bus, blue bus</em></strong> story.</p>
+</section>
+<section id="solutions" class="level3" data-number="1.2.6">
+<h3 data-number="1.2.6" class="anchored" data-anchor-id="solutions"><span class="header-section-number">1.2.6</span> Solutions?</h3>
+<p>There are some ways to alleviate this problem. One of them (which we will not discuss), is using nested logit. Basically we are defining certain group of products where IIA holds within the group but may not hold across the group. So for the case of red bus, blue bus, they would be in a same group.</p>
+<p>Another way is to do enhance the random utility model into logit model with random coefficients. In essence, this is sort of introducing preference heterogeneity of consumers into the model. This is done by interacting consumer preferences with product characteristics.</p>
+</section>
+</section>
+<section id="advanced-blp-random-coefficients-logit-model" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="advanced-blp-random-coefficients-logit-model"><span class="header-section-number">1.3</span> Advanced: <span class="citation" data-cites="blp">Berry, Levinsohn, and Pakes (<a href="#ref-blp" role="doc-biblioref">1995</a>)</span> (Random coefficients logit model)</h2>
+<p>We again start with the individual utility function. But now something is added (we will now also explicitly denote markets as <span class="math inline">\(t\)</span>):</p>
+<p><span class="math display">\[
+u_{ijt} = x_{jt} \beta_i + \alpha_i p_{jt} + \varepsilon_{ijt}
+\]</span></p>
+<p>The difference is that slope coefficients can now vary across individuals <span class="math inline">\(i\)</span>.</p>
+</section>
+<section id="references" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-berry1994" class="csl-entry" role="listitem">
+Berry, Steven T. 1994. <span>“Estimating Discrete-Choice Models of Product Differentiation.”</span> <em>The RAND Journal of Economics</em> 25 (2): 242–62. <a href="http://www.jstor.org/stable/2555829">http://www.jstor.org/stable/2555829</a>.
+</div>
+<div id="ref-blp" class="csl-entry" role="listitem">
+Berry, James Levinsohn, and Ariel Pakes. 1995. <span>“Automobile Prices in Market Equilibrium.”</span> <em>Econometrica</em> 63 (4): 841–90. <a href="http://www.jstor.org/stable/2171802">http://www.jstor.org/stable/2171802</a>.
+</div>
+<div id="ref-mcfadden74" class="csl-entry" role="listitem">
+McFadden, Daniel. 1974. <span>“Conditional Logit Analysis of Qualitative Choice Behavior.”</span> In <em>Fontiers in <span>Econometrics</span></em>, edited by Paul Zarembka, 105–42. New York: Academic press.
+</div>
+<div id="ref-train" class="csl-entry" role="listitem">
+Train, Kenneth E. 2009. <em>Discrete Choice Methods with Simulation</em>. 2nd ed. Cambridge University Press.
+</div>
+</div>
 
 
+</section>
+</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>You might have already noticed, but I kind of use variables without subscript as the vector of the variables. For example, <span class="math inline">\(\delta\)</span> is just <span class="math inline">\((\delta_1, \ldots, \delta_J).\)</span><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -898,11 +1124,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../teaching/prob.html" class="pagination-link" aria-label="Probability theory resources">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Probability theory resources</span>
+      <a href="../computing/polars.html" class="pagination-link" aria-label="Polars (R + Python)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Polars (R + Python)</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../computing/google-big-query.qmd" class="pagination-link" aria-label="Google Big Query: example">
+        <span class="nav-page-text">Google Big Query: example</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -913,7 +1142,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/misc/links.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/computing/blp.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This page is built using <a href="https://quarto.org/">Quarto</a>.</p>
 </div>
