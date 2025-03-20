@@ -30,7 +30,7 @@ This exercise estimates the demand-side BLP model.
 
 Why do this? Demand estimation is very important in IO literature because measuring market power is important in IO. How do we quantify market power? Usually we use markup as the measure. But it is hard to directly calculate markup because it depends on the cost function of the firm which is not observed. But IO theory shows that we can actually get the markup using demand elasticity. Thus estimating demand is important. 
 
-## Basic: McFadden (1973) style logit model
+## Basic: @mcfadden74 style logit model
 
 ### Model setup
 
