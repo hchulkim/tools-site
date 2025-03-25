@@ -2,12 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.6.40">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Hyoungchul Kim">
 
-<title>Useful links – tools</title>
+<title>Google Big Query example – tools</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -29,18 +30,19 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../teaching/prob.html" rel="prev">
+<link href="../teaching/teaching.html" rel="next">
+<link href="../computing/blp.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-b53751a350365c71b6c909e95f209ed1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-8ea72dc5fed832574809a9c94082fbbb.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-73ccfa9290d908556efc93e07998db97.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-864f35fabda0a24f6ab610eb25b40235.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-23115d98ab80971b614850db06197979.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b42f7cebfd6b830e80fb2a076e521d3f.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -70,15 +72,17 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<meta property="og:title" content="Useful links – tools">
+<meta property="og:title" content="Google Big Query example – tools">
+<meta property="og:description" content="Homepage for my tools.">
 <meta property="og:site_name" content="tools">
-<meta name="twitter:title" content="Useful links – tools">
-<meta name="twitter:image" content="https://tools.github.io/misc/images/pic.png">
+<meta name="twitter:title" content="Google Big Query example – tools">
+<meta name="twitter:description" content="Homepage for my tools.">
+<meta name="twitter:image" content="https://tools.github.io/computing/images/pic.png">
 <meta name="twitter:creator" content="@hckim_econ">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-sidebar docked">
+<body class="nav-sidebar docked fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -87,7 +91,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../misc/links.html">Misc.</a></li><li class="breadcrumb-item"><a href="../misc/links.html">Useful links</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../computing/computing.html">Computing</a></li><li class="breadcrumb-item"><a href="../computing/fish.html">Google Big Query: example</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -118,13 +122,13 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Computing</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../computing/computing.html" class="sidebar-item-text sidebar-link">
@@ -161,6 +165,12 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">BLP code (Julia)</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../computing/fish.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Google Big Query: example</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -189,19 +199,25 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../teaching/office-hours.html" class="sidebar-item-text sidebar-link">
+  <a href="../teaching/syllabus.pdf" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Syllabus</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../teaching/office-hours.qmd" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Office hours</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../teaching/assignments.html" class="sidebar-item-text sidebar-link">
+  <a href="../teaching/assignments.qmd" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Assignments</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../teaching/faq.html" class="sidebar-item-text sidebar-link">
+  <a href="../teaching/faq.qmd" class="sidebar-item-text sidebar-link">
  <span class="menu-text">FAQ</span></a>
   </div>
 </li>
@@ -240,16 +256,16 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
  <span class="menu-text">Misc.</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../misc/links.html" class="sidebar-item-text sidebar-link active">
+  <a href="../misc/links.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Useful links</span></a>
   </div>
 </li>
@@ -260,21 +276,25 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../misc/links.html">Misc.</a></li><li class="breadcrumb-item"><a href="../misc/links.html">Useful links</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../computing/computing.html">Computing</a></li><li class="breadcrumb-item"><a href="../computing/fish.html">Google Big Query: example</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Useful links</h1>
+<h1 class="title">Google Big Query example</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Hyoungchul Kim </p>
+          </div>
+  </div>
     
   
     
@@ -285,40 +305,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Category</th>
-<th>Links</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Personal website</strong></td>
-<td>🔗 <a href="https://hchulkim.github.io">GitHub site</a></td>
-</tr>
-<tr class="even">
-<td><strong>Coffee chat (with me)</strong></td>
-<td>🔗 <a href="https://appt.link/meet-with-hyoungchul-kim-beUIhP3Q/in-person-meeting">Appointment link</a></td>
-</tr>
-<tr class="odd">
-<td><strong>Computing and replication resources</strong></td>
-<td>🔗 <a href="06-web-css.pdf">Web-scraping 1</a> <br> 🔗 <a href="07-web-apis.pdf">Web-scraping 2</a> <br> 🔗 <a href="12-parallel.pdf">Parallel programming</a> <br> 🔗 <a href="13-docker.pdf">Docker</a> <br> 🔗 <a href="14-gce-i.pdf">Google compute engine 1</a> <br> 🔗 <a href="14-gce-ii.pdf">Google compute engine 2</a> <br> 🔗 <a href="16-databases.pdf">Databases</a> <br> 🔗 <a href="17-spark.pdf">Spark</a> <br> 🔗 <a href="https://grantmcdermott.com/duckdb-polars">DuckDB and polars</a> <br> 🔗 <a href="https://github.com/jianqih/NYU-Course-Notes-and-Resources">NYU Course Notes &amp; Resources</a> <br> 🔗 <a href="https://sites.google.com/site/yixusite/econ881-32-quantitative-dynamic-model">Quantitative dynamic model</a></td>
-</tr>
-<tr class="even">
-<td><strong>Julia</strong></td>
-<td>🔗 <a href="https://juliadatascience.io/">Julia for data science</a> <br> 🔗 <a href="https://floswald.github.io/NumericalMethods/">Computational economics for PhDs</a> <br> 🔗 <a href="https://github.com/jlperla/ECON408">Computational Methods in Macroeconomics</a> <br> 🔗 <a href="https://github.com/UBCECON567/BLPDemand.jl/tree/master">BLPDemand.jl</a> <br> 🔗 <a href="https://github.com/jianqih/Guide2EconRA?tab=readme-ov-file">Guide to Efficient Computational Work in Economics</a> <br> 🔗 <a href="https://github.com/mcreel/Econometrics">Econometrics with Julia</a> <br> 🔗 <a href="https://github.com/jianqih/minnesota_2023/tree/main">Advanced Dynamic Programming</a></td>
-</tr>
-<tr class="odd">
-<td><strong>Useful packages</strong></td>
-<td>🔗 <a href="https://yiqingxu.org/packages/fect/05-panel.html">New DiD methods</a></td>
-</tr>
-<tr class="even">
-<td><strong>Graduate trade and spatial</strong></td>
-<td>🔗 <a href="https://sites.google.com/site/treballen/graduate-trade">Treb Allen</a></td>
-</tr>
-</tbody>
-</table>
+<p><strong>TBD</strong></p>
 
 
 
@@ -886,11 +873,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../teaching/prob.html" class="pagination-link" aria-label="Probability theory resources">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Probability theory resources</span>
+      <a href="../computing/blp.html" class="pagination-link" aria-label="BLP code (Julia)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">BLP code (Julia)</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../teaching/teaching.html" class="pagination-link" aria-label="Overview">
+        <span class="nav-page-text">Overview</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
@@ -901,7 +891,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/misc/links.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/computing/fish.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This page is built using <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

@@ -209,6 +209,18 @@
     ]
   },
   {
+    "objectID": "teaching/assignments.html",
+    "href": "teaching/assignments.html",
+    "title": "General logistics on assignments",
+    "section": "",
+    "text": "TBD",
+    "crumbs": [
+      "Teaching",
+      "Class-name",
+      "Assignments"
+    ]
+  },
+  {
     "objectID": "teaching/teaching.html",
     "href": "teaching/teaching.html",
     "title": "Class name",
@@ -240,6 +252,18 @@
     "text": "This site is an archive that contains my tools.\n\nWho am I?\nI am a Ph.D student in Applied Economics at The Wharton School: [Website]"
   },
   {
+    "objectID": "teaching/faq.html",
+    "href": "teaching/faq.html",
+    "title": "FAQ",
+    "section": "",
+    "text": "TBD",
+    "crumbs": [
+      "Teaching",
+      "Class-name",
+      "FAQ"
+    ]
+  },
+  {
     "objectID": "teaching/metrics.html",
     "href": "teaching/metrics.html",
     "title": "Metric theory",
@@ -261,6 +285,18 @@
       "Teaching",
       "Mathematics",
       "Topology resources"
+    ]
+  },
+  {
+    "objectID": "teaching/office-hours.html",
+    "href": "teaching/office-hours.html",
+    "title": "Overview on OH",
+    "section": "",
+    "text": "TBD",
+    "crumbs": [
+      "Teaching",
+      "Class-name",
+      "Office hours"
     ]
   },
   {
