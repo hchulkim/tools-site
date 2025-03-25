@@ -45,8 +45,6 @@ website:
           text: "Polars (R + Python)"
         - href: computing/blp.qmd
           text: "BLP code (Julia)"
-        - href: computing/fish.qmd
-          text: "Google Big Query: example"
       - section: "Teaching"
         contents:
           - section: "Class-name"
