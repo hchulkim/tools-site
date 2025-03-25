@@ -347,5 +347,52 @@
       "Computing",
       "BLP code (Julia)"
     ]
+  },
+  {
+    "objectID": "computing/fish.html",
+    "href": "computing/fish.html",
+    "title": "Google Big Query example",
+    "section": "",
+    "text": "TBD",
+    "crumbs": [
+      "Computing",
+      "Google Big Query: example"
+    ]
+  },
+  {
+    "objectID": "teaching/office-hours.html",
+    "href": "teaching/office-hours.html",
+    "title": "Overview on OH",
+    "section": "",
+    "text": "TBD",
+    "crumbs": [
+      "Teaching",
+      "Class-name",
+      "Office hours"
+    ]
+  },
+  {
+    "objectID": "teaching/faq.html",
+    "href": "teaching/faq.html",
+    "title": "FAQ",
+    "section": "",
+    "text": "TBD",
+    "crumbs": [
+      "Teaching",
+      "Class-name",
+      "FAQ"
+    ]
+  },
+  {
+    "objectID": "teaching/assignments.html",
+    "href": "teaching/assignments.html",
+    "title": "General logistics on assignments",
+    "section": "",
+    "text": "TBD",
+    "crumbs": [
+      "Teaching",
+      "Class-name",
+      "Assignments"
+    ]
   }
 ]

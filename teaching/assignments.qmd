@@ -1,0 +1,12 @@
+---
+title: "General logistics on assignments"
+author: "Hyoungchul Kim"
+format: 
+  html:
+    toc: false
+    number-sections: true
+    code-overflow: wrap
+---
+
+**TBD**
+

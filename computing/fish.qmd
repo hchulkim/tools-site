@@ -1,0 +1,16 @@
+---
+title: "Google Big Query example"
+author: "Hyoungchul Kim"
+execute: 
+  freeze: true
+format: 
+  html:
+    toc: false
+    number-sections: true
+    code-overflow: wrap
+---
+
+**TBD**
+
+
+

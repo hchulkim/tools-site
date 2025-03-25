@@ -45,7 +45,7 @@ website:
           text: "Polars (R + Python)"
         - href: computing/blp.qmd
           text: "BLP code (Julia)"
-        - href: computing/google-big-query.qmd
+        - href: computing/fish.qmd
           text: "Google Big Query: example"
       - section: "Teaching"
         contents:
@@ -53,8 +53,6 @@ website:
             contents:
               - href: teaching/teaching.qmd
                 text: "Overview"
-              - href: teaching/syllabus.pdf
-                text: "Syllabus"
               - href: teaching/office-hours.qmd
                 text: "Office hours"
               - href: teaching/assignments.qmd
