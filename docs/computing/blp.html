@@ -78,7 +78,7 @@ div.csl-indent {
 }</style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
@@ -124,6 +124,9 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -610,7 +613,7 @@ s_{jt} = \int \frac{\exp(\delta_{jt} + x_{jt} \sigma_t v_{it})}{1 + \sum_j \exp(
 <span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(delta_fp)</span>
 <span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="fu">std</span>(delta_fp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  1.454527 seconds (3.75 M allocations: 364.914 MiB, 3.16% gc time, 95.95% compilation time)</code></pre>
+<pre><code>  0.083346 seconds (68.19 k allocations: 174.658 MiB, 17.42% gc time, 39.60% compilation time)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>0.8537059827877238</code></pre>
@@ -648,7 +651,7 @@ s_{jt} = \int \frac{\exp(\delta_{jt} + x_{jt} \sigma_t v_{it})}{1 + \sum_j \exp(
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>delta <span class="op">=</span> <span class="fu">calc_delta</span>(sigma[<span class="fl">1</span>]);</span>
 <span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>theta1 <span class="op">=</span> <span class="fu">inv</span>(X<span class="op">'*</span>z<span class="op">*</span>inv_Phi<span class="op">*</span>z<span class="op">'*</span>X)<span class="op">*</span>X<span class="op">'*</span>z<span class="op">*</span>inv_Phi<span class="op">*</span>z<span class="op">'*</span>delta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> 22.079948 seconds (20.18 M allocations: 109.865 GiB, 16.18% gc time, 0.73% compilation time)
+<pre><code> 21.259029 seconds (19.91 M allocations: 109.851 GiB, 14.70% gc time, 0.22% compilation time)
 sigma = minx[1] = 28.720209709193362</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -666,6 +669,302 @@ sigma = minx[1] = 28.720209709193362</code></pre>
    0.2462099284926299
   -2.7352849052497947
    0.011924728064080292</code></pre>
+</div>
+</div>
+</section>
+<section id="my-personal-coding-again-julia" class="level3" data-number="1.3.2">
+<h3 data-number="1.3.2" class="anchored" data-anchor-id="my-personal-coding-again-julia"><span class="header-section-number">1.3.2</span> My personal coding (again <code>Julia</code>)</h3>
+<p>I will write my own code using cereal data.</p>
+<div id="10" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># read in the data</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>cereal <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"data/raw/cereal.csv"</span>, DataFrame);</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># check the data</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">first</span>(cereal, <span class="fl">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div><div style="float: left;"><span>6×31 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
+<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Column1</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">market_ids</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">city_ids</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">quarter</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">product_ids</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">firm_ids</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">brand_ids</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">shares</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">prices</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">sugar</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">mushy</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments0</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments1</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments2</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments3</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments4</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments5</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments6</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments7</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments8</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments9</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments10</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments11</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments12</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments13</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments14</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments15</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments16</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments17</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments18</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments19</th>
+</tr>
+<tr class="subheader headerLastRow even">
+<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="InlineStrings.String7">String7</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="InlineStrings.String7">String7</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">C01Q1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">F1B04</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.0124172</td>
+<td style="text-align: right;">0.0720879</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.215973</td>
+<td style="text-align: right;">0.0405734</td>
+<td style="text-align: right;">-3.24795</td>
+<td style="text-align: right;">-0.523938</td>
+<td style="text-align: right;">-0.23246</td>
+<td style="text-align: right;">0.00683266</td>
+<td style="text-align: right;">3.13974</td>
+<td style="text-align: right;">-0.574786</td>
+<td style="text-align: right;">0.20622</td>
+<td style="text-align: right;">0.177466</td>
+<td style="text-align: right;">2.11636</td>
+<td style="text-align: right;">-0.154708</td>
+<td style="text-align: right;">-0.00579641</td>
+<td style="text-align: right;">0.014538</td>
+<td style="text-align: right;">0.126244</td>
+<td style="text-align: right;">0.0673446</td>
+<td style="text-align: right;">0.0684226</td>
+<td style="text-align: right;">0.0348005</td>
+<td style="text-align: right;">0.126346</td>
+<td style="text-align: right;">0.0354837</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">C01Q1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">F1B06</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.00780939</td>
+<td style="text-align: right;">0.114178</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.245239</td>
+<td style="text-align: right;">0.0547423</td>
+<td style="text-align: right;">-19.8325</td>
+<td style="text-align: right;">-0.18052</td>
+<td style="text-align: right;">0.0146886</td>
+<td style="text-align: right;">0.000798803</td>
+<td style="text-align: right;">0.287654</td>
+<td style="text-align: right;">0.0329396</td>
+<td style="text-align: right;">0.105121</td>
+<td style="text-align: right;">-0.287562</td>
+<td style="text-align: right;">-7.37409</td>
+<td style="text-align: right;">-0.576412</td>
+<td style="text-align: right;">0.0129909</td>
+<td style="text-align: right;">0.0761432</td>
+<td style="text-align: right;">0.0297357</td>
+<td style="text-align: right;">0.0878667</td>
+<td style="text-align: right;">0.110501</td>
+<td style="text-align: right;">0.0877838</td>
+<td style="text-align: right;">0.0498719</td>
+<td style="text-align: right;">0.0725791</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">C01Q1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">F1B07</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.0129945</td>
+<td style="text-align: right;">0.132391</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.176459</td>
+<td style="text-align: right;">0.046596</td>
+<td style="text-align: right;">-2.87853</td>
+<td style="text-align: right;">-0.284219</td>
+<td style="text-align: right;">-0.215537</td>
+<td style="text-align: right;">-0.0318693</td>
+<td style="text-align: right;">2.88627</td>
+<td style="text-align: right;">-0.749765</td>
+<td style="text-align: right;">-0.478956</td>
+<td style="text-align: right;">0.214739</td>
+<td style="text-align: right;">2.18787</td>
+<td style="text-align: right;">-0.207346</td>
+<td style="text-align: right;">0.00350928</td>
+<td style="text-align: right;">0.0917812</td>
+<td style="text-align: right;">0.163773</td>
+<td style="text-align: right;">0.111881</td>
+<td style="text-align: right;">0.108226</td>
+<td style="text-align: right;">0.086439</td>
+<td style="text-align: right;">0.122347</td>
+<td style="text-align: right;">0.101842</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">4</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">C01Q1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">F1B09</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.00576996</td>
+<td style="text-align: right;">0.130344</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.121401</td>
+<td style="text-align: right;">0.0487604</td>
+<td style="text-align: right;">-2.05992</td>
+<td style="text-align: right;">-0.328412</td>
+<td style="text-align: right;">-0.22207</td>
+<td style="text-align: right;">-0.031474</td>
+<td style="text-align: right;">4.45311</td>
+<td style="text-align: right;">0.255675</td>
+<td style="text-align: right;">-0.472967</td>
+<td style="text-align: right;">0.356098</td>
+<td style="text-align: right;">2.70458</td>
+<td style="text-align: right;">0.040748</td>
+<td style="text-align: right;">-0.00372427</td>
+<td style="text-align: right;">0.0947317</td>
+<td style="text-align: right;">0.135274</td>
+<td style="text-align: right;">0.08809</td>
+<td style="text-align: right;">0.101767</td>
+<td style="text-align: right;">0.101777</td>
+<td style="text-align: right;">0.110741</td>
+<td style="text-align: right;">0.104332</td>
+</tr>
+<tr class="odd">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">5</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">C01Q1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">F1B11</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">0.0179341</td>
+<td style="text-align: right;">0.154823</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.132611</td>
+<td style="text-align: right;">0.0396284</td>
+<td style="text-align: right;">-6.1376</td>
+<td style="text-align: right;">-0.138625</td>
+<td style="text-align: right;">-0.189365</td>
+<td style="text-align: right;">-0.0437471</td>
+<td style="text-align: right;">-3.55465</td>
+<td style="text-align: right;">0.138821</td>
+<td style="text-align: right;">-0.688678</td>
+<td style="text-align: right;">0.260273</td>
+<td style="text-align: right;">1.26124</td>
+<td style="text-align: right;">0.0348356</td>
+<td style="text-align: right;">-0.000567637</td>
+<td style="text-align: right;">0.102451</td>
+<td style="text-align: right;">0.13064</td>
+<td style="text-align: right;">0.0848182</td>
+<td style="text-align: right;">0.101075</td>
+<td style="text-align: right;">0.125169</td>
+<td style="text-align: right;">0.133464</td>
+<td style="text-align: right;">0.121111</td>
+</tr>
+<tr class="even">
+<td class="rowNumber" style="text-align: right; font-weight: bold;">6</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">C01Q1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">F1B13</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0.0266019</td>
+<td style="text-align: right;">0.137049</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.1535</td>
+<td style="text-align: right;">0.0429884</td>
+<td style="text-align: right;">-8.41733</td>
+<td style="text-align: right;">0.00782909</td>
+<td style="text-align: right;">-0.138501</td>
+<td style="text-align: right;">-0.0210582</td>
+<td style="text-align: right;">-2.75948</td>
+<td style="text-align: right;">0.0502005</td>
+<td style="text-align: right;">-0.273444</td>
+<td style="text-align: right;">0.127306</td>
+<td style="text-align: right;">0.337554</td>
+<td style="text-align: right;">0.0235104</td>
+<td style="text-align: right;">0.000263778</td>
+<td style="text-align: right;">0.0862798</td>
+<td style="text-align: right;">0.0723358</td>
+<td style="text-align: right;">0.0222505</td>
+<td style="text-align: right;">0.105644</td>
+<td style="text-align: right;">0.116037</td>
+<td style="text-align: right;">0.0996506</td>
+<td style="text-align: right;">0.105727</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 </section>

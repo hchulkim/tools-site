@@ -313,6 +313,37 @@ delta = calc_delta(sigma[1]);
 theta1 = inv(X'*z*inv_Phi*z'*X)*X'*z*inv_Phi*z'*delta
 ```
 
+### My personal coding (again `Julia`)
+
+I will write my own code using cereal data.
+
+```{julia}
+#| echo: true
+
+using CSV
+using DataFrames
+
+# read in the data
+cereal = CSV.read("data/raw/cereal.csv", DataFrame);
+
+# check the data
+first(cereal, 6)
+```
+
+Some words about variables: 
+
+1. `market_ids` indicates unique market identifiers. This corresponds to `t` in the equation.
+
+2. `shares` is the market share.
+
+3. Other variables are pretty self-explanatory.
+
+Some simplifications:
+
+1. We will only have random coefficients on $x$. 
+
+2. We solve the problem without demographics.
+
 ## References {.unnumbered}
 
 ::: {#refs}
