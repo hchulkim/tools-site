@@ -211,6 +211,8 @@ Now let's do some coding!
 
 ### Another coding (with `Julia`)
 
+This portion of the code is from [here](https://github.com/leima0521/baby_BLP)
+
 ```{julia}
 #| echo: true
  
