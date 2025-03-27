@@ -613,7 +613,7 @@ s_{jt} = \int \frac{\exp(\delta_{jt} + x_{jt} \sigma_t v_{it})}{1 + \sum_j \exp(
 <span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(delta_fp)</span>
 <span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="fu">std</span>(delta_fp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  0.083346 seconds (68.19 k allocations: 174.658 MiB, 17.42% gc time, 39.60% compilation time)</code></pre>
+<pre><code>  1.385911 seconds (3.75 M allocations: 364.914 MiB, 3.22% gc time, 96.16% compilation time)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>0.8537059827877238</code></pre>
@@ -651,7 +651,7 @@ s_{jt} = \int \frac{\exp(\delta_{jt} + x_{jt} \sigma_t v_{it})}{1 + \sum_j \exp(
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>delta <span class="op">=</span> <span class="fu">calc_delta</span>(sigma[<span class="fl">1</span>]);</span>
 <span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>theta1 <span class="op">=</span> <span class="fu">inv</span>(X<span class="op">'*</span>z<span class="op">*</span>inv_Phi<span class="op">*</span>z<span class="op">'*</span>X)<span class="op">*</span>X<span class="op">'*</span>z<span class="op">*</span>inv_Phi<span class="op">*</span>z<span class="op">'*</span>delta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> 21.259029 seconds (19.91 M allocations: 109.851 GiB, 14.70% gc time, 0.22% compilation time)
+<pre><code> 20.458110 seconds (20.18 M allocations: 109.865 GiB, 15.57% gc time, 0.70% compilation time)
 sigma = minx[1] = 28.720209709193362</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -967,6 +967,17 @@ sigma = minx[1] = 28.720209709193362</code></pre>
 </div>
 </div>
 </div>
+<p>Some words about variables:</p>
+<ol type="1">
+<li><p><code>market_ids</code> indicates unique market identifiers. This corresponds to <code>t</code> in the equation.</p></li>
+<li><p><code>shares</code> is the market share.</p></li>
+<li><p>Other variables are pretty self-explanatory.</p></li>
+</ol>
+<p>Some simplifications:</p>
+<ol type="1">
+<li><p>We will only have random coefficients on <span class="math inline">\(x\)</span>.</p></li>
+<li><p>We solve the problem without demographics.</p></li>
+</ol>
 </section>
 </section>
 <section id="references" class="level2 unnumbered">
