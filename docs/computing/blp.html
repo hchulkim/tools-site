@@ -84,7 +84,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../computing/google-big-query.qmd" rel="next">
+<link href="../teaching/teaching.html" rel="next">
 <link href="../computing/polars.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -248,12 +248,6 @@ window.Quarto = {
  <span class="menu-text">BLP code (Julia)</span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../computing/google-big-query.qmd" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Google Big Query: example</span></a>
-  </div>
-</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -282,25 +276,19 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../teaching/syllabus.pdf" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Syllabus</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../teaching/office-hours.qmd" class="sidebar-item-text sidebar-link">
+  <a href="../teaching/office-hours.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Office hours</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../teaching/assignments.qmd" class="sidebar-item-text sidebar-link">
+  <a href="../teaching/assignments.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Assignments</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../teaching/faq.qmd" class="sidebar-item-text sidebar-link">
+  <a href="../teaching/faq.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">FAQ</span></a>
   </div>
 </li>
@@ -529,13 +517,157 @@ R2                          0.003      0.440     0.456      -0.008      0.420
 <h2 data-number="1.3" class="anchored" data-anchor-id="advanced-blp-random-coefficients-logit-model"><span class="header-section-number">1.3</span> Advanced: <span class="citation" data-cites="blp">Berry, Levinsohn, and Pakes (<a href="#ref-blp" role="doc-biblioref">1995</a>)</span> (Random coefficients logit model)</h2>
 <p>We again start with the individual utility function. But now something is added (we will now also explicitly denote markets as <span class="math inline">\(t\)</span>):</p>
 <p><span class="math display">\[
-u_{ijt} = x_{jt} \beta_i + \alpha p_{jt} + \xi_jt + \varepsilon_{ijt}
+u_{ijt} = x_{jt} \beta_{it} + \alpha p_{jt} + \xi_{jt} + \varepsilon_{ijt}
 \]</span></p>
-<p>The difference is that slope coefficients can now vary across individuals <span class="math inline">\(i\)</span>. usually, BLP assumes that <span class="math inline">\(beta_i \sim N(\beta, \Sigma)\)</span>. Note that we are assuming that the variance is 1. Also, we will denote <span class="math inline">\(k\)</span> as the product characteristics which sums up to <span class="math inline">\(K\)</span>.</p>
+<p>The difference is that slope coefficients can now vary across individuals <span class="math inline">\(i\)</span>. For now, we will assume <span class="math inline">\(\beta_{it}^k = \beta_0^k + \sigma_{kt} v_{it}^k\)</span>. We now have <span class="math inline">\(k\)</span> which is the dimension of <span class="math inline">\(\beta\)</span>. <span class="math inline">\(\beta_0^k\)</span> are fixed taste for characteristics <span class="math inline">\(k\)</span> and <span class="math inline">\(v_{it}^k\)</span> are random tastes that follow standard normal distribution.</p>
 <p>Now we can expand the model:</p>
+<p><span class="math display">\[\begin{align}
+  u_{ijt} &amp;= (x_{j1t}, \ldots, x_{jKt}) \cdot (\beta_{0}^1 + \sigma_1 v_{it}^1, \ldots, \beta_{0}^K + \sigma_K v_{it}^K)^T + \alpha p_{jt} + \xi_{jt} + \varepsilon_{ijt}\\
+  &amp;= x_{jt}\beta_{it} + \sum_k x_{jkt} \sigma_{k}v_{ikt} + \alpha p_{jt} + \xi_{jt} + \varepsilon_{ijt}\\
+  &amp;= \underbrace{x_{jt}\beta_{it} + \alpha p_{jt} + \xi_{jt}}_{\delta_{jt}} + \underbrace{\sum_k x_{jkt} \sigma_{k}v_{ikt}}_{\mu_{ijt}} +  \varepsilon_{ijt}.
+
+\end{align}\]</span></p>
+<p>We can easily see that this is just an extension of what we did for the basic random utility model. Indirect utility is made up of mean utility <span class="math inline">\(\delta_{jt}\)</span> and random coefficient term <span class="math inline">\(\mu_{ijt} + \varepsilon_{ijt}\)</span>.</p>
+<p>Now we will make some simplication. We will assume that characteristics dimension of individual is one: <span class="math inline">\(K = 1\)</span>. Using this simplication, we can again use the assumption that idiosyncratic shock follows T1EV to get aggregate share:</p>
 <p><span class="math display">\[
-  u_{ijt} = (x_{j1}, \ldots, x_{jK}) \cdot  
+s_{jt} = \int \frac{\exp(\delta_{jt} + x_{jt} \sigma_t v_{it})}{1 + \sum_j \exp(\delta_{jt} + x_{jt} \sigma_t v_{it})} f(v_i)dv_i
 \]</span></p>
+<p>The integral has no analytical solution in the random coefficient model, so we need to compute the integral by simulation. One way to do it is as follows:</p>
+<p><span class="math display">\[
+\hat{s}_{jt} = \frac{1}{ns} \sum_{i=1}^{ns} \frac{\exp(\delta_{jt} + x_{jt} \sigma_t v_{it})}{1 + \sum_j \exp(\delta_{jt} + x_{jt} \sigma_t v_{it})}
+\]</span></p>
+<p>where <span class="math inline">\(ns\)</span> is number of random draws from <span class="math inline">\(v_i\)</span>.</p>
+<p>Now we can see the inversion method we did before is not easy to implement. This is because we now have additional parameters that we do not know the values.</p>
+<p>So in BLP, we need to do <strong>nested estimation algorithm</strong>.</p>
+<ol type="1">
+<li><p>In the <strong>outer loop</strong>, we iterate over different values of the parameters.</p></li>
+<li><p>In the <strong>inner loop</strong>, for a given parameter value, we do the inversion to get the mean utility and estimate the GMM objective function.</p></li>
+<li><p>We keep on doing this iteration until we get the parameters that minimize the GMM function.</p></li>
+</ol>
+<p>Now let’s do some coding!</p>
+<section id="another-coding-with-julia" class="level3" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="another-coding-with-julia"><span class="header-section-number">1.3.1</span> Another coding (with <code>Julia</code>)</h3>
+<div id="6" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">###############################################################################</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">####  BLP fixed-point algorithm, inverting mkt shares to get mean utility  ####</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">###############################################################################</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">GLM</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Statistics</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">LinearAlgebra</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Distributions</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">NLopt</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>otc <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"data/otc.csv"</span>, DataFrame)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>ns <span class="op">=</span> <span class="fl">500</span>;</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>nmkt <span class="op">=</span> <span class="fu">maximum</span>(otc.mkt);</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>mkt <span class="op">=</span> <span class="fu">unique</span>(otc.mkt);</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>nprod <span class="op">=</span> <span class="fu">maximum</span>(otc.product);</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>vi <span class="op">=</span> <span class="fu">quantile</span>.(<span class="fu">Normal</span>(), <span class="fu">collect</span>(<span class="fu">range</span>(<span class="fl">0.5</span><span class="op">/</span>ns, step <span class="op">=</span> <span class="fl">1</span><span class="op">/</span>ns, length <span class="op">=</span> ns)));</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>sigma <span class="op">=</span> <span class="fl">1</span>;</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">calc_mkt_share_t</span>(delta_t, sigma_t, x_t, vi_t)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Dimension: delta_t 11*1, simga_t 1*1, x_t 11*1</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    delta_t <span class="op">=</span> delta_t <span class="op">.*</span> <span class="fu">ones</span>(nprod, ns)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    mu_t <span class="op">=</span> x_t<span class="op">*</span>sigma_t<span class="op">*</span>vi_t<span class="op">'</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    numerator <span class="op">=</span> <span class="fu">exp</span>.(delta_t <span class="op">.+</span> mu_t)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    denominator <span class="op">=</span> <span class="fu">ones</span>(nprod, ns) <span class="op">.+</span> <span class="fu">sum</span>(numerator, dims <span class="op">=</span> <span class="fl">1</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    mkt_share_t <span class="op">=</span> <span class="fu">mean</span>(numerator<span class="op">./</span>denominator, dims <span class="op">=</span> <span class="fl">2</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">contraction_t</span>(d0, sigma_t, x_t, vi_t, mkt_t, tol <span class="op">=</span> <span class="fl">1e-5</span>, maxiter <span class="op">=</span> <span class="fl">1e5</span>)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    obs_mkt_share_t <span class="op">=</span> mkt_t.mkt_share</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    d_old <span class="op">=</span> d0</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    normdiff <span class="op">=</span> <span class="cn">Inf</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    iter <span class="op">=</span> <span class="fl">0</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> normdiff <span class="op">&gt;</span> tol <span class="op">&amp;&amp;</span> iter <span class="op">&lt;=</span> maxiter</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>        model_mkt_share_t <span class="op">=</span> <span class="fu">calc_mkt_share_t</span>(d_old, sigma_t, x_t, vi_t)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>        d_new <span class="op">=</span> d_old <span class="op">.+</span> <span class="fu">log</span>.(obs_mkt_share_t) <span class="op">.-</span> <span class="fu">log</span>.(model_mkt_share_t)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>        normdiff <span class="op">=</span> <span class="fu">maximum</span>(<span class="fu">norm</span>.(d_new <span class="op">.-</span> d_old))</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>        d_old <span class="op">=</span> d_new</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>        iter <span class="op">+=</span> <span class="fl">1</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> d_old</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">calc_delta</span>(sigma)</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    delta_fp <span class="op">=</span> <span class="fu">zeros</span>(nprod, nmkt);</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> mkt</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>        mkt_t <span class="op">=</span> otc[otc.mkt <span class="op">.==</span> t, <span class="op">:</span>];</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>        x_t <span class="op">=</span> <span class="fu">ones</span>(nprod, <span class="fl">1</span>);</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>        delta_t <span class="op">=</span> <span class="fu">zeros</span>(nprod, <span class="fl">1</span>);</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>        sigma_t <span class="op">=</span> sigma;</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>        vi_t <span class="op">=</span> vi;</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>        delta_fp[<span class="op">:</span>, t] <span class="op">=</span> <span class="fu">contraction_t</span>(delta_t, sigma_t, x_t, vi_t, mkt_t);</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">vec</span>(delta_fp);</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> delta_fp <span class="op">=</span> <span class="fu">calc_delta</span>(sigma);</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(delta_fp)</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="fu">std</span>(delta_fp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  1.516659 seconds (3.74 M allocations: 364.910 MiB, 2.94% gc time, 95.76% compilation time)</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>0.8537059827877238</code></pre>
+</div>
+</div>
+<div id="8" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">################################################################</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#### Estimate beta and sigma using GMM (cost as instrument) ####</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">################################################################</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">hcat</span>(<span class="fu">ones</span>(nprod<span class="op">*</span>nmkt, <span class="fl">1</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>         otc.price, otc.promotion,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>         otc.product_2, otc.product_3, otc.product_4, otc.product_5,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>         otc.product_6, otc.product_7, otc.product_8, otc.product_9,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>         otc.product_10, otc.product_11);</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> <span class="fu">hcat</span>(X, otc.cost);</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>Phi <span class="op">=</span> z<span class="op">'*</span>z<span class="op">/</span><span class="fl">1056</span>;</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>inv_Phi <span class="op">=</span> <span class="fu">inv</span>(Phi);</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">GMMObjFunc</span>(theta2<span class="op">::</span><span class="dt">Vector</span>, grad<span class="op">::</span><span class="dt">Vector</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> theta2[<span class="fl">1</span>]</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    delta <span class="op">=</span> <span class="fu">calc_delta</span>(sigma)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    theta1 <span class="op">=</span> <span class="fu">inv</span>(X<span class="op">'*</span>z<span class="op">*</span>inv_Phi<span class="op">*</span>z<span class="op">'*</span>X)<span class="op">*</span>X<span class="op">'*</span>z<span class="op">*</span>inv_Phi<span class="op">*</span>z<span class="op">'*</span>delta</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    error <span class="op">=</span> delta <span class="op">-</span> X<span class="op">*</span>theta1</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    obj <span class="op">=</span> error<span class="op">'*</span>z<span class="op">*</span>inv_Phi<span class="op">*</span>z<span class="op">'*</span>error</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> obj</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>opt <span class="op">=</span> <span class="fu">Opt</span>(<span class="op">:</span>LN_COBYLA, <span class="fl">1</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>opt.xtol_rel <span class="op">=</span> <span class="fl">1e-4</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>opt.lower_bounds <span class="op">=</span> [<span class="fl">0.00001</span>]</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>opt.min_objective <span class="op">=</span> GMMObjFunc</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="pp">@time</span> (minf,minx,ret) <span class="op">=</span> <span class="fu">optimize</span>(opt, [<span class="fl">1</span>])</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="pp">@show</span> sigma <span class="op">=</span> minx[<span class="fl">1</span>]</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>delta <span class="op">=</span> <span class="fu">calc_delta</span>(sigma[<span class="fl">1</span>]);</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>theta1 <span class="op">=</span> <span class="fu">inv</span>(X<span class="op">'*</span>z<span class="op">*</span>inv_Phi<span class="op">*</span>z<span class="op">'*</span>X)<span class="op">*</span>X<span class="op">'*</span>z<span class="op">*</span>inv_Phi<span class="op">*</span>z<span class="op">'*</span>delta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> 21.752781 seconds (20.18 M allocations: 109.865 GiB, 15.53% gc time, 0.68% compilation time)
+sigma = minx[1] = 28.720209709193362</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>13-element Vector{Float64}:
+ -71.52085329511755
+  -1.0852292863458644
+   0.22206483339059624
+   1.903952993172239
+   3.990433860485858
+  -0.6194995526125144
+   1.2498418962356002
+   3.9120756908464607
+  -2.12500554825884
+  -1.1737916667530266
+   0.2462099284926299
+  -2.7352849052497947
+   0.011924728064080292</code></pre>
+</div>
+</div>
+</section>
 </section>
 <section id="references" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
@@ -1133,8 +1265,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../computing/google-big-query.qmd" class="pagination-link" aria-label="Google Big Query: example">
-        <span class="nav-page-text">Google Big Query: example</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../teaching/teaching.html" class="pagination-link" aria-label="Overview">
+        <span class="nav-page-text">Overview</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
