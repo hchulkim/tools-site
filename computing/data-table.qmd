@@ -1,0 +1,14 @@
+---
+title: "Data.table practice"
+subtitle: "Practicing data.table package in R"
+execute:
+  freeze: auto
+---
+
+First load the packages:
+
+```{r}
+#| echo: true
+
+library(data.table) 
+```

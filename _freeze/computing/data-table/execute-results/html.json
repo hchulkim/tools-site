@@ -1,0 +1,15 @@
+{
+  "hash": "3cd390293102398bfa07ba4bb5f4ea04",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Data.table practice\"\nsubtitle: \"Practicing data.table package in R\"\nexecute:\n  freeze: auto\n---\n\n\n\n\nFirst load the packages:\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(data.table) \n```\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

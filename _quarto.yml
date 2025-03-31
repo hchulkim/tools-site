@@ -45,6 +45,8 @@ website:
           text: "Polars (R + Python)"
         - href: computing/blp.qmd
           text: "BLP code (Julia)"
+        - href: computing/data-table.qmd
+          text: "Data.table (R)"
       - section: "Teaching"
         contents:
           - section: "Class-name"

@@ -394,5 +394,16 @@
       "Class-name",
       "Assignments"
     ]
+  },
+  {
+    "objectID": "computing/data-table.html",
+    "href": "computing/data-table.html",
+    "title": "Data.table practice",
+    "section": "",
+    "text": "First load the packages:\n\nlibrary(data.table)",
+    "crumbs": [
+      "Computing",
+      "Data.table (R)"
+    ]
   }
 ]
