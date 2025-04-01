@@ -78,13 +78,13 @@ div.csl-indent {
 }</style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../teaching/teaching.html" rel="next">
+<link href="../computing/data-table.html" rel="next">
 <link href="../computing/polars.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -124,9 +124,6 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -249,6 +246,12 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../computing/blp.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">BLP code (Julia)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../computing/data-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data.table (R)</span></a>
   </div>
 </li>
       </ul>
@@ -613,7 +616,7 @@ s_{jt} = \int \frac{\exp(\delta_{jt} + x_{jt} \sigma_t v_{it})}{1 + \sum_j \exp(
 <span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(delta_fp)</span>
 <span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="fu">std</span>(delta_fp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  1.385911 seconds (3.75 M allocations: 364.914 MiB, 3.22% gc time, 96.16% compilation time)</code></pre>
+<pre><code>  0.104584 seconds (68.19 k allocations: 174.658 MiB, 8.87% gc time, 31.12% compilation time)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>0.8537059827877238</code></pre>
@@ -651,7 +654,7 @@ s_{jt} = \int \frac{\exp(\delta_{jt} + x_{jt} \sigma_t v_{it})}{1 + \sum_j \exp(
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>delta <span class="op">=</span> <span class="fu">calc_delta</span>(sigma[<span class="fl">1</span>]);</span>
 <span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>theta1 <span class="op">=</span> <span class="fu">inv</span>(X<span class="op">'*</span>z<span class="op">*</span>inv_Phi<span class="op">*</span>z<span class="op">'*</span>X)<span class="op">*</span>X<span class="op">'*</span>z<span class="op">*</span>inv_Phi<span class="op">*</span>z<span class="op">'*</span>delta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> 20.458110 seconds (20.18 M allocations: 109.865 GiB, 15.57% gc time, 0.70% compilation time)
+<pre><code> 21.530331 seconds (19.91 M allocations: 109.851 GiB, 14.45% gc time, 0.19% compilation time)
 sigma = minx[1] = 28.720209709193362</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -674,310 +677,462 @@ sigma = minx[1] = 28.720209709193362</code></pre>
 </section>
 <section id="my-personal-coding-again-julia" class="level3" data-number="1.3.2">
 <h3 data-number="1.3.2" class="anchored" data-anchor-id="my-personal-coding-again-julia"><span class="header-section-number">1.3.2</span> My personal coding (again <code>Julia</code>)</h3>
-<p>I will write my own code using cereal data.</p>
-<div id="10" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># read in the data</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>cereal <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="st">"data/raw/cereal.csv"</span>, DataFrame);</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># check the data</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">first</span>(cereal, <span class="fl">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="1">
-<div><div style="float: left;"><span>6×31 DataFrame</span></div><div style="clear: both;"></div></div><div class="data-frame" style="overflow-x: scroll;">
-<table class="data-frame caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<p>I will try to write my personal code using <code>Julia</code> following the exercises in <a href="https://github.com/Mixtape-Sessions/Demand-Estimation/tree/main">Mixtape session for Demand Estimation</a>. Note that I will be just copying the exercise questions from that site below. Also, I am going to use <code>Julia</code>.</p>
+</section>
+</section>
+</section>
+<section id="exercise-1" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Exercise 1</h1>
+<section id="introduction" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">2.1</span> Introduction</h2>
+<p>This is the first of three exercises that will give you a solid foundation for doing BLP-style estimation. The running example is the same as in lecture: what if we halved an important product’s price?</p>
+</section>
+<section id="setup" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="setup"><span class="header-section-number">2.2</span> Setup</h2>
+<p>Most of the computational heavy-lifting in these exercises will be done by the open-source Python package <a href="https://github.com/jeffgortmaker/pyblp">PyBLP</a>. It is easiest to use PyBLP in Python, and the hints/solutions for the exercises will be given in Python. But for those who are more familiar with R, it is straightforward to <a href="https://github.com/jeffgortmaker/pyblp#other-languages">call PyBLP from R</a> with the <a href="https://rstudio.github.io/reticulate/">reticulate</a> package. It is technically possible to call PyBLP from other languages like Julia and MATLAB, but most users either use Python or R.</p>
+<p>You should install PyBLP on top of the <a href="https://www.anaconda.com/">Anaconda Distribution</a>. Anaconda comes pre-packaged with all of PyBLP’s dependencies and many more Python packages that are useful for statistical computing. Steps:</p>
+<ol type="1">
+<li><a href="https://docs.anaconda.com/free/anaconda/install/">Install Anaconda</a> if you haven’t already. You may wish to <a href="https://docs.anaconda.com/free/anacondaorg/user-guide/work-with-environments/">create a new environment</a> for just these exercises, but this isn’t strictly necessary.</li>
+<li><a href="https://github.com/jeffgortmaker/pyblp#installation">Install PyBLP</a>. On the Anaconda command line, you can run the command <code>pip install pyblp</code>.</li>
+</ol>
+<p>If you’re using Python, you have two broad options for how to do the coding exercises.</p>
+<ul>
+<li>Use a <a href="https://jupyter.org/install#jupyter-notebook">Jupyter Notebook</a>. The solutions to each exercise will be in a notebook. In general, notebooks are a good way to weave text and code for short exercises, and to distribute quick snippets of code with others.</li>
+<li>Use an integrated development environment (IDE). Once you get beyond a few hundred lines of code, I strongly recommend using an IDE and not notebooks. For Python, I recommend <a href="https://code.visualstudio.com/">VS Code</a> or <a href="https://www.jetbrains.com/pycharm/">PyCharm</a>. The former is free and the latter has a free community edition with all the features you’ll need for standard Python development. Both <a href="https://docs.anaconda.com/free/anaconda/ide-tutorials/">integrate well</a> with Anaconda.</li>
+</ul>
+<p>If using a notebook, you can right click and save the following notebook template: <a href="https://github.com/Mixtape-Sessions/Demand-Estimation/raw/main/Exercises/Templates/notebook.ipynb">notebook.ipynb</a>. If using an IDE, you can right click and save the following script template: <a href="https://github.com/Mixtape-Sessions/Demand-Estimation/raw/main/Exercises/Templates/script.py">script.py</a>. Both import various packages used throughout the exercise.</p>
+<pre class="{python}"><code>#| eval: false
+ 
+import pyblp
+import numpy as np
+import pandas as pd
+import statsmodels.formula.api as smf</code></pre>
+<p>The notebook additionally configures these packages to reduce the amount of information printed to the screen.</p>
+<pre class="{python}"><code>#| eval: false
+ 
+pyblp.options.digits = 3
+pyblp.options.verbose = False
+pd.options.display.precision = 3
+pd.options.display.max_columns = 50
+
+import IPython.display
+IPython.display.display(IPython.display.HTML('&lt;style&gt;pre { white-space: pre !important; }&lt;/style&gt;'))</code></pre>
+<p>Finally, both show how to load the data that we’ll be using today.</p>
+</section>
+<section id="data" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="data"><span class="header-section-number">2.3</span> Data</h2>
+<p>Today, you’ll use the <a href="https://github.com/Mixtape-Sessions/Demand-Estimation/raw/main/Exercises/Data/products.csv"><code>products.csv</code></a> dataset, which is a simplified version of <a href="https://nbviewer.org/github/Mixtape-Sessions/Demand-Estimation/raw/main/Readings/5-Nevo-2000.pdf">Nevo’s (2000)</a> fake cereal data with less information and fewer derived columns. The data were motivated by real grocery store scanner data, but due to the proprietary nature of this type of data, the provided data are not entirely real. This dataset has been used as a standard example in much of the literature on BLP estimation.</p>
+<p>Compared to typical datasets you might use in your own work, the number of observations in this example dataset is quite small. This helps with making these exercises run very fast, but in practice one would want more data than just a couple thousand data points to estimate a flexible model of demand. Typical datasets will also include many more product characteristics. This one only includes a couple to keep the length of the exercises manageable.</p>
+<p>The data contains information about 24 breakfast cereals across 94 markets. Each row is a product-market pair. Each market has the same set of breakfast cereals, although with different prices and quantities. The columns in the data are as follows.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 48%">
+<col style="width: 23%">
+<col style="width: 28%">
+</colgroup>
 <thead>
 <tr class="header">
-<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;">Row</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Column1</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">market_ids</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">city_ids</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">quarter</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">product_ids</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">firm_ids</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">brand_ids</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">shares</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">prices</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">sugar</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">mushy</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments0</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments1</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments2</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments3</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments4</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments5</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments6</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments7</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments8</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments9</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments10</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments11</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments12</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments13</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments14</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments15</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments16</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments17</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments18</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">demand_instruments19</th>
-</tr>
-<tr class="subheader headerLastRow even">
-<th class="rowNumber" data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold;"></th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="InlineStrings.String7">String7</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="InlineStrings.String7">String7</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Int64">Int64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th" title="Float64">Float64</th>
+<th>Column</th>
+<th>Data Type</th>
+<th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">1</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: left;">C01Q1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">F1B04</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">0.0124172</td>
-<td style="text-align: right;">0.0720879</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-0.215973</td>
-<td style="text-align: right;">0.0405734</td>
-<td style="text-align: right;">-3.24795</td>
-<td style="text-align: right;">-0.523938</td>
-<td style="text-align: right;">-0.23246</td>
-<td style="text-align: right;">0.00683266</td>
-<td style="text-align: right;">3.13974</td>
-<td style="text-align: right;">-0.574786</td>
-<td style="text-align: right;">0.20622</td>
-<td style="text-align: right;">0.177466</td>
-<td style="text-align: right;">2.11636</td>
-<td style="text-align: right;">-0.154708</td>
-<td style="text-align: right;">-0.00579641</td>
-<td style="text-align: right;">0.014538</td>
-<td style="text-align: right;">0.126244</td>
-<td style="text-align: right;">0.0673446</td>
-<td style="text-align: right;">0.0684226</td>
-<td style="text-align: right;">0.0348005</td>
-<td style="text-align: right;">0.126346</td>
-<td style="text-align: right;">0.0354837</td>
+<td><code>market</code></td>
+<td>String</td>
+<td>The city-quarter pair that defines markets <span class="math inline">\(t\)</span> used in these exercises. The data were motivated by real cereal purchase data across 47 US cities in the first 2 quarters of 1988.</td>
 </tr>
 <tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">2</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">C01Q1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">F1B06</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">0.00780939</td>
-<td style="text-align: right;">0.114178</td>
-<td style="text-align: right;">18</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-0.245239</td>
-<td style="text-align: right;">0.0547423</td>
-<td style="text-align: right;">-19.8325</td>
-<td style="text-align: right;">-0.18052</td>
-<td style="text-align: right;">0.0146886</td>
-<td style="text-align: right;">0.000798803</td>
-<td style="text-align: right;">0.287654</td>
-<td style="text-align: right;">0.0329396</td>
-<td style="text-align: right;">0.105121</td>
-<td style="text-align: right;">-0.287562</td>
-<td style="text-align: right;">-7.37409</td>
-<td style="text-align: right;">-0.576412</td>
-<td style="text-align: right;">0.0129909</td>
-<td style="text-align: right;">0.0761432</td>
-<td style="text-align: right;">0.0297357</td>
-<td style="text-align: right;">0.0878667</td>
-<td style="text-align: right;">0.110501</td>
-<td style="text-align: right;">0.0877838</td>
-<td style="text-align: right;">0.0498719</td>
-<td style="text-align: right;">0.0725791</td>
+<td><code>product</code></td>
+<td>String</td>
+<td>The firm-brand pair that defines products <span class="math inline">\(j\)</span> used in these exercises. Each of 5 firms produces between 1 and 9 brands of cereal.</td>
 </tr>
 <tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">3</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: left;">C01Q1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">F1B07</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">0.0129945</td>
-<td style="text-align: right;">0.132391</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-0.176459</td>
-<td style="text-align: right;">0.046596</td>
-<td style="text-align: right;">-2.87853</td>
-<td style="text-align: right;">-0.284219</td>
-<td style="text-align: right;">-0.215537</td>
-<td style="text-align: right;">-0.0318693</td>
-<td style="text-align: right;">2.88627</td>
-<td style="text-align: right;">-0.749765</td>
-<td style="text-align: right;">-0.478956</td>
-<td style="text-align: right;">0.214739</td>
-<td style="text-align: right;">2.18787</td>
-<td style="text-align: right;">-0.207346</td>
-<td style="text-align: right;">0.00350928</td>
-<td style="text-align: right;">0.0917812</td>
-<td style="text-align: right;">0.163773</td>
-<td style="text-align: right;">0.111881</td>
-<td style="text-align: right;">0.108226</td>
-<td style="text-align: right;">0.086439</td>
-<td style="text-align: right;">0.122347</td>
-<td style="text-align: right;">0.101842</td>
+<td><code>mushy</code></td>
+<td>Binary</td>
+<td>A dummy product characteristic equal to one if the product gets soggy in milk.</td>
 </tr>
 <tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">4</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: left;">C01Q1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">F1B09</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">0.00576996</td>
-<td style="text-align: right;">0.130344</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.121401</td>
-<td style="text-align: right;">0.0487604</td>
-<td style="text-align: right;">-2.05992</td>
-<td style="text-align: right;">-0.328412</td>
-<td style="text-align: right;">-0.22207</td>
-<td style="text-align: right;">-0.031474</td>
-<td style="text-align: right;">4.45311</td>
-<td style="text-align: right;">0.255675</td>
-<td style="text-align: right;">-0.472967</td>
-<td style="text-align: right;">0.356098</td>
-<td style="text-align: right;">2.70458</td>
-<td style="text-align: right;">0.040748</td>
-<td style="text-align: right;">-0.00372427</td>
-<td style="text-align: right;">0.0947317</td>
-<td style="text-align: right;">0.135274</td>
-<td style="text-align: right;">0.08809</td>
-<td style="text-align: right;">0.101767</td>
-<td style="text-align: right;">0.101777</td>
-<td style="text-align: right;">0.110741</td>
-<td style="text-align: right;">0.104332</td>
+<td><code>servings_sold</code></td>
+<td>Float</td>
+<td>Total quantity <span class="math inline">\(q_{jt}\)</span> of servings of the product sold in a market, which will be used to compute market shares.</td>
 </tr>
 <tr class="odd">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">5</td>
-<td style="text-align: right;">4</td>
-<td style="text-align: left;">C01Q1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">F1B11</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">11</td>
-<td style="text-align: right;">0.0179341</td>
-<td style="text-align: right;">0.154823</td>
-<td style="text-align: right;">12</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.132611</td>
-<td style="text-align: right;">0.0396284</td>
-<td style="text-align: right;">-6.1376</td>
-<td style="text-align: right;">-0.138625</td>
-<td style="text-align: right;">-0.189365</td>
-<td style="text-align: right;">-0.0437471</td>
-<td style="text-align: right;">-3.55465</td>
-<td style="text-align: right;">0.138821</td>
-<td style="text-align: right;">-0.688678</td>
-<td style="text-align: right;">0.260273</td>
-<td style="text-align: right;">1.26124</td>
-<td style="text-align: right;">0.0348356</td>
-<td style="text-align: right;">-0.000567637</td>
-<td style="text-align: right;">0.102451</td>
-<td style="text-align: right;">0.13064</td>
-<td style="text-align: right;">0.0848182</td>
-<td style="text-align: right;">0.101075</td>
-<td style="text-align: right;">0.125169</td>
-<td style="text-align: right;">0.133464</td>
-<td style="text-align: right;">0.121111</td>
+<td><code>city_population</code></td>
+<td>Float</td>
+<td>Total population of the city, which will be used to define a market size.</td>
 </tr>
 <tr class="even">
-<td class="rowNumber" style="text-align: right; font-weight: bold;">6</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: left;">C01Q1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">F1B13</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">13</td>
-<td style="text-align: right;">0.0266019</td>
-<td style="text-align: right;">0.137049</td>
-<td style="text-align: right;">14</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.1535</td>
-<td style="text-align: right;">0.0429884</td>
-<td style="text-align: right;">-8.41733</td>
-<td style="text-align: right;">0.00782909</td>
-<td style="text-align: right;">-0.138501</td>
-<td style="text-align: right;">-0.0210582</td>
-<td style="text-align: right;">-2.75948</td>
-<td style="text-align: right;">0.0502005</td>
-<td style="text-align: right;">-0.273444</td>
-<td style="text-align: right;">0.127306</td>
-<td style="text-align: right;">0.337554</td>
-<td style="text-align: right;">0.0235104</td>
-<td style="text-align: right;">0.000263778</td>
-<td style="text-align: right;">0.0862798</td>
-<td style="text-align: right;">0.0723358</td>
-<td style="text-align: right;">0.0222505</td>
-<td style="text-align: right;">0.105644</td>
-<td style="text-align: right;">0.116037</td>
-<td style="text-align: right;">0.0996506</td>
-<td style="text-align: right;">0.105727</td>
+<td><code>price_per_serving</code></td>
+<td>Float</td>
+<td>The product’s price <span class="math inline">\(p_{jt}\)</span> used in these exercises.</td>
+</tr>
+<tr class="odd">
+<td><code>price_instrument</code></td>
+<td>Float</td>
+<td>An instrument to handle price endogeneity in these exercises. Think of it as a cost-shifter, a Hausman instrument, or any other valid IV that we discussed in class.</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</div>
-<p>Some words about variables:</p>
+<p>Throughout the exercises, we use these data to estimate an increasingly flexible BLP-style model of demand for cereal. We will use predictions from this model to see how our running example, cutting the price of one cereal, affects demand for that cereal and for its substitutes.</p>
+</section>
+<section id="questions" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="questions"><span class="header-section-number">2.4</span> Questions</h2>
+<section id="describe-the-data" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="describe-the-data"><span class="header-section-number">2.4.1</span> 1. Describe the data</h3>
+<p>You can download <code>products.csv</code> from <a href="https://github.com/Mixtape-Sessions/Demand-Estimation/raw/main/Exercises/Data/products.csv">this link</a>. To load it, you can use <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html"><code>pd.read_csv</code></a>. To look at a random sample of its rows, you can use <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sample.html"><code>.sample</code></a>. To compute summary statistics for different columns, you can use <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html"><code>.describe</code></a>. Throughout these exercises, you’ll be given links to functions and methods that can be used to answer the questions. If you’re unsure about how to use them, you should click on the link, where there is typically example code lower down on the page.</p>
+</section>
+<section id="compute-market-shares" class="level3" data-number="2.4.2">
+<h3 data-number="2.4.2" class="anchored" data-anchor-id="compute-market-shares"><span class="header-section-number">2.4.2</span> 2. Compute market shares</h3>
+<p>To transform observed quantities <span class="math inline">\(q_{jt}\)</span> into market shares <span class="math inline">\(s_{jt} = q_{jt} / M_t\)</span>, we first need to define a market size <span class="math inline">\(M_t\)</span>. We’ll assume that the potential number of servings sold in a market is the city’s total population multiplied by 90 days in the quarter. Create <a href="https://pandas.pydata.org/docs/getting_started/intro_tutorials/05_add_columns.html">a new column</a> called <code>market_size</code> equal to <code>city_population</code> times <code>90</code>. Note that this assumption is somewhat reasonable but also somewhat arbitrary. Perhaps a sizable portion of the population in a city would never even consider purchasing cereal. Or perhaps those who do tend to want more than one serving per day. In the third exercise, we’ll think more about how to discipline our market size assumption with data.</p>
+<p>Next, compute a new column <code>market_share</code> equal to <code>servings_sold</code> divided by <code>market_size</code>. This gives our market shares <span class="math inline">\(s_{jt}\)</span>. We’ll also need the outside share <span class="math inline">\(s_{0t} = 1 - \sum_{j \in J_t} s_{jt}\)</span>. Create a new column <code>outside_share</code> equal to this expression. You can use <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html"><code>.groupby</code></a> to group by market and <a href="https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.transform.html"><code>.transform('sum')</code></a> to compute the within-market sum of inside shares. Compute summary statistics for your inside and outside shares. If you computed market shares correctly, the smallest outside share should be <span class="math inline">\(s_{0t} \approx 0.305\)</span> and the largest should be <span class="math inline">\(s_{0t} \approx 0.815\)</span>.</p>
+</section>
+<section id="estimate-the-pure-logit-model-with-ols" class="level3" data-number="2.4.3">
+<h3 data-number="2.4.3" class="anchored" data-anchor-id="estimate-the-pure-logit-model-with-ols"><span class="header-section-number">2.4.3</span> 3. Estimate the pure logit model with OLS</h3>
+<p>Recall the pure logit estimating equation: <span class="math inline">\(\log(s_{jt} / s_{0t}) = \delta_{jt} = \alpha p_{jt} + x_{jt}' \beta + \xi_{jt}\)</span>. First, create a new column <code>logit_delta</code> equal to the left-hand side of this expression. You can use <a href="https://numpy.org/doc/stable/reference/generated/numpy.log.html"><code>np.log</code></a> to compute the log.</p>
+<p>Then, use the package of your choice to run an OLS regression of <code>logit_delta</code> on a constant, <code>mushy</code>, and <code>price_per_serving</code>. There are many packages for running OLS regressions in Python. One option is to use the <a href="https://www.statsmodels.org/stable/example_formulas.html#ols-regression-using-formulas">formula interface for <code>statsmodels</code></a>. To use robust standard errors, you can specify <code>cov_type='HC0'</code> in <a href="https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.fit.html"><code>OLS.fit</code></a>.</p>
+<p>Interpret your estimates. Your coefficient on <code>price_per_serving</code> should be around <code>-7.48</code>. In particular, can you re-express your estimate on <code>mushy</code> in terms of how much consumers are willing to pay for <code>mushy</code>, using your estimated price coefficient?</p>
+</section>
+<section id="run-the-same-regression-with-pyblp" class="level3" data-number="2.4.4">
+<h3 data-number="2.4.4" class="anchored" data-anchor-id="run-the-same-regression-with-pyblp"><span class="header-section-number">2.4.4</span> 4. Run the same regression with PyBLP</h3>
+<p>For the rest of the exercises, we’ll use PyBLP do to our demand estimation. This isn’t necessary for estimating the pure logit model, which can be done with linear regressions, but using PyBLP allows us to easily run our price cut counterfactual and make the model more flexible in subsequent days’ exercises.</p>
+<p>PyBLP requires that some key columns have specific names. You can use <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.rename.html"><code>.rename</code></a> to rename the following columns so that they can be understood by PyBLP.</p>
+<ul>
+<li><code>market</code> –&gt; <code>market_ids</code></li>
+<li><code>product</code> –&gt; <code>product_ids</code></li>
+<li><code>market_share</code> –&gt; <code>shares</code></li>
+<li><code>price_per_serving</code> –&gt; <code>prices</code></li>
+</ul>
+<p>By default, PyBLP treats <code>prices</code> as endogenous, so it won’t include them in its matrix of instruments. But the “instruments” for running an OLS regression are the same as the full set of regressors. So when running an OLS regression and not account for price endogeneity, we’ll “instrument” for <code>prices</code> with <code>prices</code> themselves. We can do this by creating a new column <code>demand_instruments0</code> equal to <code>prices</code>. PyBLP will recognize all columns that start with <code>demand_instruments</code> and end with <code>0</code>, <code>1</code>, <code>2</code>, etc., as “excluded” instruments to be stacked with the exogenous characteristics to create the full set of instruments.</p>
+<p>With the correct columns in hand, we can initialize our <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.html"><code>pyblp.Problem</code></a>. To specify the same R-style formula for our regressors, use <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Formulation.html"><code>pyblp.Formulation</code></a>. The full code should look like the following.</p>
+<pre class="{python}"><code>#| eval: false
+ 
+ols_problem = pyblp.Problem(pyblp.Formulation('1 + mushy + prices'), product_data)</code></pre>
+<p>If you <code>print(ols_problem)</code>, you’ll get information about the configured problem. There should be 94 markets (<code>T</code>), 2256 observations (<code>N</code>), 3 product characteristics (<code>K1</code>), and 3 total instruments (<code>MD</code>). You can verify that these instruments are simply the regressors by looking at <code>ols_problem.products.X1</code> and <code>ols_problem.products.ZD</code>, comparing these with <code>mushy</code> and <code>prices</code> in your dataframe. For the full set of notation used by PyBLP, which is very close to the notation used in the lectures, see <a href="https://pyblp.readthedocs.io/en/stable/notation.html">this page</a>.</p>
+<p>To estimate the configured problem, use <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.solve.html"><code>.solve</code></a>. Use <code>method='1s'</code> to just do 1-step GMM instead of the default 2-step GMM. In this case, this will just run a simple linear OLS regression. The full code should look like the following.</p>
+<pre class="{python}"><code>#| eval: false
+ 
+ols_results = ols_problem.solve(method='1s')</code></pre>
+<p>Again, if you <code>print(ols_results)</code>, you’ll get estimates from the logit model. Make sure that your estimates are the same as those you got from your OLS regression. If you used <code>'HC0'</code> standard errors like suggested above, you standard errors should also be the same.</p>
+</section>
+<section id="add-market-and-product-fixed-effects" class="level3" data-number="2.4.5">
+<h3 data-number="2.4.5" class="anchored" data-anchor-id="add-market-and-product-fixed-effects"><span class="header-section-number">2.4.5</span> 5. Add market and product fixed effects</h3>
+<p>Since we expect price <span class="math inline">\(p_{jt}\)</span> to be correlated with unobserved product quality <span class="math inline">\(\xi_{jt}\)</span>, we should be worried that our estimated <span class="math inline">\(\hat{\alpha}\)</span> on price is biased. Since we have multiple observations per market and product, and prices vary both across and within markets, it is feasible for us to add both market and product fixed effects. If <span class="math inline">\(\xi_{jt} = \xi_j + \xi_t + \Delta\xi_{jt}\)</span> and most of the correlation between <span class="math inline">\(p_{jt}\)</span> and <span class="math inline">\(\xi_{jt}\)</span> is due to correlation between <span class="math inline">\(p_{jt}\)</span> and either <span class="math inline">\(\xi_j\)</span> (product fixed effects) or <span class="math inline">\(\xi_t\)</span> (market fixed effects), then explicitly accounting for these fixed effects during estimation should help reduce the bias of our <span class="math inline">\(\hat{\alpha}\)</span>.</p>
+<p>The simplest way to add fixed effects is as dummy variables. We won’t do this today, but for your own reference, you could do this either by making a separate column for each possible market and product fixed effects and adding these to your formulation, or you could use the shorthand <code>mushy + prices + C(market_ids) + C(product_ids)</code>. See <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Formulation.html"><code>pyblp.Formulation</code></a> for different shorthands you can use. Since there are only 24 products and 94 markets for a total of 118 fixed effects, this approach is actually feasible in this case. But in a more realistic dataset with hundreds or thousands of products and markets, running an OLS regression with this many dummy variables starts to become computationally infeasible.</p>
+<p>The alternative, which we’ll do today, is to “absorb” the fixed effects. For a single fixed effect, we could just de-mean our outcome variable and each of our regressors within the fixed effects levels, and then run our regression. For multiple fixed effects, we need to <em>iteratively</em> de-mean. PyBLP does this automatically if you specify <code>absorb='C(market_ids) + C(product_ids)'</code> in your formulation instead of adding these as dummy variables.</p>
+<p>Since <code>mushy</code> is always either 1 or 0 for the same product across different markets, it’s collinear with product fixed effects, and you can drop it from your formula. Similarly, you can drop the constant. After dropping these, re-create your problem with absorbed fixed effects and re-solve it. Compare the new <span class="math inline">\(\hat{\alpha}\)</span> estimate with the last one. You should now be getting a coefficient on price of around <code>-28.6</code>. Does its change suggest that price was positively or negatively correlated with unobserved product-level/market-level quality?</p>
+</section>
+<section id="add-an-instrument-for-price" class="level3" data-number="2.4.6">
+<h3 data-number="2.4.6" class="anchored" data-anchor-id="add-an-instrument-for-price"><span class="header-section-number">2.4.6</span> 6. Add an instrument for price</h3>
+<p>Adding market and product fixed effects can be helpful, but since unobserved quality typically varies by both product <em>and</em> market, we really want to instrument for prices. The data comes with a column <code>price_instrument</code> that we should interpret as a valid instrument for price that satisfies the needed exclusion restriction. It could be a cost-shifter, a valid Hausman instrument, or similar.</p>
+<p>Before using it, we should first run a first-stage regression to make sure that it’s a relevant instrument for price. To do so, use the same package you used above to run an OLS regression to run a second OLS regression of prices on <code>price_instrument</code> and your market and product fixed effects. If using the <a href="https://www.statsmodels.org/stable/example_formulas.html#ols-regression-using-formulas">formula interface for <code>statsmodels</code></a>, you can use the same fixed effect shorthand as in PyBLP, with your full formula looking like <code>prices ~ price_instrument + C(market_ids) + C(product_ids)</code>. Does <code>price_instrument</code> seem like a relevant instrument for <code>prices</code>?</p>
+<p>Now that we’ve checked relevance, we can set our <code>demand_instruments0</code> column equal to <code>price_instrument</code>, re-create the problem, and re-solve it. You should get a new coefficient on price of around <code>-30.6</code>. Does the change in <span class="math inline">\(\hat{\alpha}\)</span> suggest that price was positively or negatively correlated with <span class="math inline">\(\Delta\xi_{jt}\)</span> in <span class="math inline">\(\xi_{jt} = \xi_j + \xi_t + \Delta\xi_{jt}\)</span>?</p>
+</section>
+<section id="cut-a-price-in-half-and-see-what-happens" class="level3" data-number="2.4.7">
+<h3 data-number="2.4.7" class="anchored" data-anchor-id="cut-a-price-in-half-and-see-what-happens"><span class="header-section-number">2.4.7</span> 7. Cut a price in half and see what happens</h3>
+<p>Now that we have our pure logit model estimated, we can run our counterfactual of interest: what if we halved an important product’s price? We’ll select a single market, the most recent quarter in the first city: <code>C01Q2</code>. Create a new dataframe called <code>counterfactual_data</code> by <a href="https://pandas.pydata.org/docs/getting_started/intro_tutorials/03_subset_data.html">selecting</a> data for just that market and inspect the data. We’ll pretend that we’re firm one, and deciding whether we want to cut the price of our brand four’s product <code>F1B04</code>. In particular, we might be worried about <em>cannibalization</em>, i.e.&nbsp;how much this price cut will result in consumers of our other 8 brands of cereal in this market just substituting from their old choice to the new, cheaper cereal. Alternatively, we could be a regulator or academic interested in how taxing that product would affect demand in the market.</p>
+<p>In your new dataframe with just data from <code>C01Q2</code>, create a <code>new_prices</code> column that is the same as <code>prices</code> but with the price of <code>F1B04</code> cut in half. To do this, you could use <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.loc.html"><code>DataFrame.loc</code></a>. Then, use <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.compute_shares.html"><code>.compute_shares</code></a> on your results from the last question, passing <code>market_id='C01Q2'</code> to only compute new market shares for our market of interest, and passing <code>prices=counterfactual_data['new_prices']</code> to specify that prices should be set to the new prices. This function will re-compute market shares at the changed prices implied by the model’s estimates. Store them in a <code>new_shares</code> column.</p>
+<p>Compute the percent change in shares for each product in the market. From firm one’s perspective, do the estimates of cannibalization make sense. That is, do the signs on the percent changes for product <code>F1B04</code> and for other products make sense? Would you normally expect percent changes for other products to be different depending on how other products compare to the one whose price is being changed?</p>
+</section>
+<section id="compute-demand-elasticities" class="level3" data-number="2.4.8">
+<h3 data-number="2.4.8" class="anchored" data-anchor-id="compute-demand-elasticities"><span class="header-section-number">2.4.8</span> 8. Compute demand elasticities</h3>
+<p>To better understand what’s going on, use <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.compute_elasticities.html"><code>.compute_elasticities</code></a>, again specifying <code>market_id='C01Q2'</code>, to compute price elasticities for our market of interest. These measure what the model predicts will happen to demand in percentage terms when there’s a 1% change in price of a product. The diagonal elements are own-price elasticities and the off-diagonal elements are cross-price elasticities. Does demand seem very elastic? Do the cross-price elasticities seem particularly reasonable?</p>
+</section>
+</section>
+<section id="supplemental-questions" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="supplemental-questions"><span class="header-section-number">2.5</span> Supplemental Questions</h2>
+<p>These questions will not be directly covered in lecture, but will be useful to think about when doing BLP-style estimation in your own work.</p>
+<section id="try-different-standard-errors" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="try-different-standard-errors"><span class="header-section-number">2.5.1</span> 1. Try different standard errors</h3>
+<p>By default, PyBLP computed standard errors that are robust to heteroskedasticity. But we may be concerned that unobserved quality <span class="math inline">\(\xi_{jt}\)</span> is systematically correlated across markets for a given product <span class="math inline">\(j\)</span>, or across products for a given market <span class="math inline">\(t\)</span>. Choose which one you think is more likely and try clustering your standard errors by that dimension. You can do this with <code>se_type='clustered'</code> in <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.solve.html"><code>.solve</code></a>, for which you’ll need a <code>clustering_ids</code> column in your product data. See how your standard error for <span class="math inline">\(\alpha\)</span> changes.</p>
+</section>
+<section id="compute-confidence-intervals-for-your-counterfactual" class="level3" data-number="2.5.2">
+<h3 data-number="2.5.2" class="anchored" data-anchor-id="compute-confidence-intervals-for-your-counterfactual"><span class="header-section-number">2.5.2</span> 2. Compute confidence intervals for your counterfactual</h3>
+<p>Your estimate of <span class="math inline">\(\hat{\alpha}\)</span> comes with a standard error, but your counterfactual demand predictions don’t. Ideally we’d like to not only have a point estimate for a counterfactual prediction, but also a measure (up to model misspecification) of how confident we are in these predictions. The easiest way to do this is with a “parametric bootstrap.” The intuition is we can draw from the estimated asymptotic distribution of our <span class="math inline">\(\hat{\alpha}\)</span>, and for each draw, re-compute demand, and see how demand responds to the same price cut.</p>
+<p>You can do a parametric bootstrap with the <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.bootstrap.html"><code>.bootstrap</code></a> method. Start with just a few draws (e.g., <code>draws=100</code>) and remember to set your <code>seed</code> so that you get the same draws every time you run the code. When new parameters are drawn, you get new <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.BootstrappedResults.html#pyblp.BootstrappedResults.bootstrapped_shares"><code>.boostrapped_shares</code></a>, which take the place of your old <code>shares</code>. You can use the same <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.compute_shares.html"><code>.compute_shares</code></a> method on the <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.BootstrappedResults.html"><code>BootstrapedResults</code></a> class, although you’ll have to pass a <code>prices</code> argument with prices replicated along a new axis by as many draws as you have.</p>
+<p>Once you have some bootstrapped shares, compute the same percent changes, and compute the 2.5th and 97.5th percentiles of these changes for each product. Are these 95% confidence intervals for your predictions particularly wide?</p>
+</section>
+<section id="impute-marginal-costs-from-pricing-optimality" class="level3" data-number="2.5.3">
+<h3 data-number="2.5.3" class="anchored" data-anchor-id="impute-marginal-costs-from-pricing-optimality"><span class="header-section-number">2.5.3</span> 3. Impute marginal costs from pricing optimality</h3>
+<p>The canonical demand side of the BLP model assumes firms set prices in static Bertrand-Nash equilibrium. See <a href="https://pyblp.readthedocs.io/en/stable/background.html#supply">this section</a> for a quick summary using PyBLP notation. Given an estimated demand model and such assumptions about pricing, we can impute marginal costs <code>c_{jt}</code>.</p>
+<p>To do so, you first need to tell PyBLP what firms own what products. Create a new <code>firm_ids</code> column in your data, re-initialize your problem, and re-solve it. Then, you should be able to run the <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.compute_costs.html"><code>.compute_costs</code></a> method to impute firms’ marginal cost of producing each cereal. Do these marginal costs look particularly reasonable? How might limitations of your demand model and supply model bias them? What would they and observed prices imply about firms’ markups and economic profits?</p>
+</section>
+<section id="check-your-code-by-simulating-data" class="level3" data-number="2.5.4">
+<h3 data-number="2.5.4" class="anchored" data-anchor-id="check-your-code-by-simulating-data"><span class="header-section-number">2.5.4</span> 4. Check your code by simulating data</h3>
+<p>Even experienced software developers make a lot of mistakes when writing code. Writing “unit tests” or “integration tests” that check whether the code you’ve written seems to be working properly is incredibly important when writing complicated code to estimate demand. Perhaps the most useful test you can write when doing demand estimation (or most other types of structural estimation) is the following.</p>
 <ol type="1">
-<li><p><code>market_ids</code> indicates unique market identifiers. This corresponds to <code>t</code> in the equation.</p></li>
-<li><p><code>shares</code> is the market share.</p></li>
-<li><p>Other variables are pretty self-explanatory.</p></li>
+<li>Simulate fake data under some true parameters.</li>
+<li>Estimate your model on the simulated data and make sure that you can recover the true parameters, up to sampling error.</li>
 </ol>
-<p>Some simplifications:</p>
+<p>If you do these steps many times, the resulting Monte Carlo experiment will also give you a good sense for the finite sample statistical properties of your estimator.</p>
+<p>PyBLP’s <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Simulation.html"><code>Simulation</code></a> class makes simulating data fairly straightforward. Its interface is similar to <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.html"><code>Problem</code></a>, but you also specify your parameter estimates and structural errors. In addition to checking your code, you can also use this class for more complicated counterfactuals. After initializing your simulation, you can use <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Simulation.replace_endogenous.html"><code>.replace_endogenous</code></a> to have PyBLP replace the prices <span class="math inline">\(p_{jt}\)</span> and market shares <span class="math inline">\(s_{jt}\)</span> with those that rationalize the chosen true parameters and other parts of the simulation. It does so by solving the pricing equilibrium. You’ll have to pass your imputed marginal costs via the <code>costs</code> argument.</p>
+<p>Initialize a simulation of the pure logit model with the same <code>product_data</code> and the same estimated <code>xi</code> but with an <span class="math inline">\(\alpha\)</span> somewhat different than the one you estimated. Make sure your chosen <span class="math inline">\(\alpha\)</span> is negative, otherwise demand will be upward sloping and PyBLP will have trouble solving for equilibrium prices. To the estimated <a href="https://pyblp.readthedocs.io/en/latest/_api/pyblp.ProblemResults.html#pyblp.ProblemResults.xi"><code>.xi</code></a> you can add the estimated fixed effects <a href="https://pyblp.readthedocs.io/en/latest/_api/pyblp.ProblemResults.html#pyblp.ProblemResults.xi_fe"><code>.xi_fe</code></a>, since the simulation class does not support fixed effects absorption.</p>
+<p>Have PyBLP solve for prices and market shares, and use the resulting data to re-estimate your pure logit regression. See if you can get an estimated <span class="math inline">\(\hat{\alpha}\)</span> close to the true one.</p>
+</section>
+</section>
+</section>
+<section id="exercise-2" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Exercise 2</h1>
+<section id="introduction-1" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="introduction-1"><span class="header-section-number">3.1</span> Introduction</h2>
+<p>This is the second of three exercises that will give you a solid foundation for doing BLP-style estimation. We’ll continue with the same running example: what if we halved an important product’s price? Our goal today is to relax some of the unrealistic substitution patterns implied by the pure logit model by incorporating preference heterogeneity. To do so, we will use cross-market variation in our product and some new demographic data to estimate parameters that govern preference heterogeneity.</p>
+</section>
+<section id="setup-1" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="setup-1"><span class="header-section-number">3.2</span> Setup</h2>
+<p>We’ll be continuing where we left off after the <a href="https://github.com/Mixtape-Sessions/Demand-Estimation/blob/main/Exercises/Exercise-1/README.md">first exercise</a>. You should just keep adding to your code, using <a href="https://github.com/Mixtape-Sessions/Demand-Estimation/blob/main/Exercises/Exercise-1/Solutions.ipynb">its solutions</a> if you had trouble with some parts.</p>
+</section>
+<section id="data-1" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="data-1"><span class="header-section-number">3.3</span> Data</h2>
+<p>Today, you’ll incorporate <a href="https://github.com/Mixtape-Sessions/Demand-Estimation/raw/main/Exercises/Data/demographics.csv"><code>demographics.csv</code></a> into estimation, which again is a simplified version of <a href="https://nbviewer.org/github/Mixtape-Sessions/Demand-Estimation/raw/main/Readings/5-Nevo-2000.pdf">Nevo’s (2000)</a> demographic data with less information and fewer derived columns. The data were originally draws from the Current Population Survey.</p>
+<p>In your own work, when incorporating demographic data into estimation, you will want to sample from the whole Current Population Survey (or whatever survey/census data you are using), not just from a subset of it. The small size of today’s demographic data helps with distributing the data, but in practice you should ideally be sampling from a much larger dataset of demographic information. In your own work you will also want to incorporate more demographic variables than the one included in this dataset. Like the product data, in these exercises we only consider a few columns to keep the exercises a manageable length.</p>
+<p>The demographic dataset contains information about 20 individuals drawn from the Current Population Survey for each of the 94 markets in the product data. Each row is a different individual. The columns in the data are as follows.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 47%">
+<col style="width: 23%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>market</code></td>
+<td>String</td>
+<td>The city-quarter pair that defines markets <span class="math inline">\(t\)</span> used in these exercises. The data were motivated by real cereal purchase data across 47 US cities in the first 2 quarters of 1988.</td>
+</tr>
+<tr class="even">
+<td><code>quarterly_income</code></td>
+<td>Float</td>
+<td>The quarterly income of the individual in dollars.</td>
+</tr>
+</tbody>
+</table>
+<p>In today and tomorrow’s exercises, we will use these demographic data to introduce income-specific preference heterogeneity into our BLP model of demand for cereal and see how our counterfactual changes. By incorporating income, we will also be able to speak to distributional concerns: how will counterfactual changes in the market differentially affect high- and low-income consumers?</p>
+</section>
+<section id="questions-1" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="questions-1"><span class="header-section-number">3.4</span> Questions</h2>
+<section id="describe-cross-market-variation" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="describe-cross-market-variation"><span class="header-section-number">3.4.1</span> 1. Describe cross-market variation</h3>
+<p>To get a sense for what types of preference heterogeneity we can feasibly estimate with variation in our product and demographic data, recall the linear regression intuition about identification from the lecture. To add parameters in <span class="math inline">\(\Sigma\)</span> we want cross-market choice set variation. To add parameters in <span class="math inline">\(\Pi\)</span> we want cross-market demographic variation.</p>
+<p>You should already have <code>products.csv</code> from the last exercise. You can download <code>demographics.csv</code> from <a href="https://github.com/Mixtape-Sessions/Demand-Estimation/raw/main/Exercises/Data/demographics.csv">this link</a>. Quarterly income has a long right tail that makes summarizing it difficult, so you should create a new column <code>log_income</code> equal to the log of <code>quarterly_income</code>.</p>
+<p>Across both datasets, describe the amount of cross-market variation in the number of products, <code>mushy</code>, <code>prices</code>, and <code>log_income</code>. You can use <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html"><code>.groupby</code></a> and <a href="https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.core.groupby.DataFrameGroupBy.agg.html"><code>.agg</code></a> to compute market-level statistics for these variables (e.g., counts, means, and standard deviations), and you can then use <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html"><code>.describe</code></a> to compute summary statistics for these market-level statistics.</p>
+<p>Which variables have <em>any</em> cross-market variation? In other words, referring back to the linear regression intuition about identification, which preference heterogeneity parameters do we have any hope of credibly estimating? Recall that we have both product and market fixed effects, which will be collinear with some regressors on potential parameters in <span class="math inline">\(\Sigma\)</span> and <span class="math inline">\(\Pi\)</span> in the approximate linear regression.</p>
+</section>
+<section id="estimate-a-parameter-on-mushy-times-log-income" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="estimate-a-parameter-on-mushy-times-log-income"><span class="header-section-number">3.4.2</span> 2. Estimate a parameter on mushy <span class="math inline">\(\times\)</span> log income</h3>
+<p>To estimate a parameter in <span class="math inline">\(\Pi\)</span> on the interaction between <code>mushy</code> and <code>log_income</code>, we first need to define a datset of consumer types that PyBLP can use for preference heterogeneity. From each market <span class="math inline">\(t\)</span>, take <span class="math inline">\(I_t = 1,000\)</span> draws with replacement from the demographic data, and call the resulting dataframe <code>agent_data</code>. Each of its rows will be a consumer type <span class="math inline">\(i \in I_t\)</span>. You can do this with <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html"><code>.groupby</code></a> and <a href="https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.sample.html"><code>.sample</code></a>. You can use <code>as_index=False</code> when grouping to keep your <code>market</code> column. Remember to set your seed with the <code>random_state</code> argument when sampling from each market.</p>
+<p>Like with product data, to get PyBLP to recognize the <code>market</code> column as markets <span class="math inline">\(t\)</span>, you’ll need to rename it to <code>market_ids</code>. You’ll also need to specify consumer type shares / sampling weights <span class="math inline">\(w_{it}\)</span>. Since we took each draw from the demographic data with equal probability, these should be uniform weights <span class="math inline">\(w_{it} = 1 / 1,000\)</span>. Make a new column <code>weights</code> equal to <code>1 / 1000</code>.</p>
+<p>Finally, later we’ll be adding some dimensions of unobserved preference heterogeneity in <span class="math inline">\(\nu_{it}\)</span>. PyBLP recognizes these with the column names <code>nodes0</code>, <code>nodes1</code>, <code>nodes2</code>, etc. Make three columns, <code>nodes0</code>, <code>nodes1</code>, and <code>nodes2</code>, each with a <em>different</em> set of draws from the standard normal distribution. You can do this with <a href="https://numpy.org/doc/stable/reference/random/generator.html"><code>np.random.default_rng</code></a>, remembering to set your <code>seed</code>, and <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.normal.html#numpy.random.Generator.normal"><code>.normal</code></a>, using <code>size=(len(agent_data), 3)</code>. Print some rows from your <code>agent_data</code> to make sure it looks like you’d expect.</p>
+<p>To identify our new parameter, we need a new instrument. We’ll use the recommendation from the lecture to use mean income <span class="math inline">\(m_t^y\)</span> interacted with <code>mushy</code> in <span class="math inline">\(x_{jt}\)</span>. To merge in the mean market-level income from the first question into the product data, you can use <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.merge.html"><code>.merge</code></a>. Recall that you already have one column <code>demand_instruments0</code> equal to your price instrument. To add a second instrument, create a new column <code>demand_instruments1</code> equal to the interaction between your merged-in market-level mean income and <code>mushy</code>.</p>
+<p>When initializing your new <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.html"><code>pyblp.Problem</code></a>, you’ll need two new <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Formulation.html"><code>pyblp.Formulation</code></a> instances to model the interaction between <code>mushy</code> and <code>log_income</code>. First, replace your old formulation with a tuple</p>
+<pre class="{python}"><code>#| eval: false
+ 
+product_formulations = (pyblp.Formulation('0 + prices', absorb='C(market_ids) + C(product_ids)'), pyblp.Formulation('0 + mushy'))</code></pre>
+<p>This defines, in PyBLP lingo, the formulations for the <code>X1</code> and <code>X2</code> matrices. The <code>X1</code> matrix is the one with <code>beta</code> coefficients. The <code>X2</code> matrix is interacted with consumer type-specific variables like your demographics <span class="math inline">\(y_{it}\)</span>. There <code>0</code> values in the formulations guarantee that they won’t have constant terms (by default a constant is added, unless there are absorbed fixed effects). You’ll also need a new formulation for consumer demographics.</p>
+<pre class="{python}"><code>#| eval: false
+ 
+agent_formulation = pyblp.Formulation('0 + log_income')</code></pre>
+<p>With these in hand, we can define the new problem. See the <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.html"><code>pyblp.Problem</code></a> documentation for the ordering and names of arguments.</p>
+<pre class="{python}"><code>#| eval: false
+ 
+pyblp.Problem(product_formulations, product_data, agent_formulation, agent_data)</code></pre>
+<p>Now that we want to set up a nonlinear GMM problem, we need to configure some nonlinear optimization arguments in <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.solve.html"><code>.solve</code></a>. First, we should configure our optimizer. We’ll use the lecture’s recommendation to use SciPy’s trust region algorithm <a href="https://docs.scipy.org/doc/scipy/reference/optimize.minimize-trustconstr.html"><code>trust-constr</code></a>. And we’ll be explicit about using its default termination tolerances of <code>1e-8</code>. You can do this by setting <code>optimization=pyblp.Optimization('trust-constr', method_options={'gtol': 1e-8, 'xtol': 1e-8})</code>. In <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Optimization.html"><code>pyblp.Optimization</code></a>, <code>method_options</code> is a <a href="https://docs.python.org/3/tutorial/datastructures.html#dictionaries">dictionary</a> mapping <a href="https://docs.scipy.org/doc/scipy/reference/optimize.minimize-trustconstr.html"><code>trust-constr</code></a> configuration options to their values.</p>
+<p>Second, we need to specify which parameters in <span class="math inline">\(\Sigma\)</span> and <span class="math inline">\(\Pi\)</span> to optimize over, and what their initial values will be. Since we’re starting without any parameters in <span class="math inline">\(\Sigma\)</span>, we’ll set <code>sigma=0</code>. Zeros in PyBLP mean that PyBLP should have the parameter <em>always</em> be set to zero, i.e.&nbsp;not there. There’s only one new parameter in <span class="math inline">\(\Pi\)</span> (there’s only one column in your <code>X2</code> formulation, <code>mushy</code>, and only one demographic in your agent formulation, <code>log_income</code>), and we’ll just set it to an arbitrary nonzero value for now (indicating that it should be optimized over), say <code>pi=1</code>.</p>
+<p>Before and after you solve the problem, you can set <code>pyblp.options.verbose = True</code> and <code>pyblp.options.verbose = False</code>. Make sure that the gradient norm (the optimization problem’s first-order conditions) is getting iteratively closer to zero. We call this “marching down the gradient” and not seeing it near the end of optimization indicates a problem. Since we have exactly as many parameters as moments/instruments, we’re <em>just identified</em> and should also have an approximately zero objective at the optimum, so make sure you see that as well. At the optimum, in addition to a near-zero objective and gradient norm, the Hessian (in this case just a single value) should be positive, indicating that the optimization’s second-order conditions are satisfied. The other columns outputted in the optimization progress have information about the inner loop, e.g.&nbsp;how many iterations it takes to solve it and how long this takes.</p>
+<p>Once you’re satisfied that optimization seems to have worked well, interpret the sign of your estimated parameter in <span class="math inline">\(\Pi\)</span>. If you’ve done all of the above correctly, you should get an estimate of around <code>0.251</code>. Can you use <span class="math inline">\(\hat{\alpha}\)</span> to interpret it in dollar terms, i.e.&nbsp;how much more a person with 1% higher income is willing to pay for mushyness?</p>
+</section>
+<section id="make-sure-you-get-the-same-estimate-with-random-starting-values" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="make-sure-you-get-the-same-estimate-with-random-starting-values"><span class="header-section-number">3.4.3</span> 3. Make sure you get the same estimate with random starting values</h3>
+<p>We can be fairly confident with our objective/gradient/Hessian checks that we’re at the global optimum with just one parameter in a just identified model. But with more complicated optimization problems in more realistic problems, we really want to try different starting values to make sure we always get the same estimates. Let’s try doing that here.</p>
+<p>First, configure some bounds for our new <span class="math inline">\(\Pi\)</span> parameter, say <code>pi_bounds = (-10, +10)</code>. Then in a <a href="https://wiki.python.org/moin/ForLoop">for loop</a> over different random number generator seeds, randomly draw an initial starting value from within these bounds (you can use <a href="https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.uniform.html"><code>.uniform</code></a>) and re-optimize. You may want to actually impose your bounds during optimization using the <code>pi_bounds</code> argument to <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.solve.html"><code>.solve</code></a>.</p>
+<p>Do you get the same estimate for each random starting value? If not, there may be an issue with optimization or your problem configuration. If you have a more complicated model with many parameters and many instruments, you may often get a global minimum, and sometimes get a local minimum. Optimizers aren’t perfect, and sometimes terminate prematurely, even with tight termination conditions. You should select the global one for your final estimates.</p>
+</section>
+<section id="evaluate-changes-to-the-price-cut-counterfactual" class="level3" data-number="3.4.4">
+<h3 data-number="3.4.4" class="anchored" data-anchor-id="evaluate-changes-to-the-price-cut-counterfactual"><span class="header-section-number">3.4.4</span> 4. Evaluate changes to the price cut counterfactual</h3>
+<p>Using the new estimates, re-run the same price cut counterfactual from last exercise. Re-compute percent changes and compare with those from the pure logit model. Are there any (small) differences, particularly for substitution from other products? Explain how the introduction of the new parameter induced these changes. Do cannibalization estimates seem more reasonable than before?</p>
+</section>
+<section id="estimate-parameters-on-price-times-log-income-and-unobserved-preferences" class="level3" data-number="3.4.5">
+<h3 data-number="3.4.5" class="anchored" data-anchor-id="estimate-parameters-on-price-times-log-income-and-unobserved-preferences"><span class="header-section-number">3.4.5</span> 5. Estimate parameters on price <span class="math inline">\(\times\)</span> log income and unobserved preferences</h3>
+<p>Like for mushy, our cross-market income variation allows us to estimate a second parameter in <span class="math inline">\(\Pi\)</span> on <code>prices</code> <span class="math inline">\(\times\)</span> <code>log_income</code>. Unlike mushy, which doesn’t vary across markets, we actually have cross-market variation in prices, which will allow us to potentially estimate a parameter in <span class="math inline">\(\Sigma\)</span> on <code>prices</code>.</p>
+<p>To add these two new parameters, we’ll need two new instruments. Since we can’t have endogenous prices in our instruments, we’ll first set a new column <code>predicted_prices</code> equal to the fitted values from the price IV first stage regression that we ran yesterday. If you used <code>statsmodels</code>, you can just get these from <a href="https://www.statsmodels.org/dev/generated/statsmodels.regression.linear_model.RegressionResults.fittedvalues.html"><code>.fittedvalues</code></a> of your regression results object. Verify that <code>prices</code> and <code>predicted_prices</code> are strongly correlated, for example with <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.corr.html"><code>.corr</code></a>.</p>
+<p>To target the new parameter in <span class="math inline">\(\Pi\)</span>, we’ll follow the lecture’s recommendation and add a new <code>demand_instruments2</code> equal to the interaction between the log income mean and <code>predicted_prices</code>. To target the new parameter in <span class="math inline">\(\Sigma\)</span>, we’ll also follow the lecture’s recommendation and add a new <code>demand_instruments3</code> equal to the sum of squared distances between <code>predicted_prices</code> and all other <code>predicted_prices</code> in the same market. You could construct this market-by-market by using <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html"><code>.groupby</code></a> and <a href="https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.transform.html"><code>.transform</code></a> with a custom <a href="https://docs.python.org/3/tutorial/controlflow.html#defining-functions">function</a> that accepts a market’s <code>predict_prices</code> as an argument, computes a matrix of all pairwise differences between these values (e.g., with <code>x[:, None] - x[None, :]</code>), squares them, and <a href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html">sums</a> them across columns.</p>
+<p>When initializing the problem, we’ll need to add a new <code>prices</code> term in the <code>X2</code> formulation: <code>0 + mushy + prices</code>. Otherwise, with the updated product data, initializing the problem is the same. When solving the problem, however, the extra column in the <code>X2</code> formulation means that we need an extra row in our configuration for <code>sigma</code> and <code>pi</code>. First, <code>sigma</code> should be a <span class="math inline">\(2 \times 2\)</span> matrix corresponding to the two columns in <code>X2</code>. All elements will be zero (indicating that the corresponding elements in <span class="math inline">\(\Sigma\)</span> will be fixed to zero), except for the bottom-right value, which we’ll set to some arbitrary non-zero starting values, say <code>1</code>. Similarly, <code>pi</code> should be a <span class="math inline">\(2 \times 1\)</span> matrix corresponding to the two columns in <code>X2</code> and the one column in the agent formulation. We’ll set the top element equal to some starting value that’s close to our last estimate, say <code>0.2</code>, and the bottom element equal to something arbitrary for the new parameter, say <code>1</code> again. Your <code>sigma</code> and <code>pi</code> arguments should look like</p>
+<pre class="{python}"><code>#| eval: false
+ 
+sigma=[
+    [0, 0],
+    [0, 1],
+], 
+pi=[
+    [0.2],
+    [1],
+]</code></pre>
+<p>When you solve the problem, there are two more parameters, so it will take a bit longer. As the optimizer nears convergence, we should again see “marching down the gradient” and, since we’re still just identified, an objective approaching zero. At the optimum, verify that the gradient norm is again near zero and that the Hessian’s eigenvalues are all positive. Usually, we would again draw multiple starting values to be sure everything’s working fine, but from here on out, to save time we’ll just use one set of starting values. Your <code>sigma</code> estimate should be around <code>6.02</code>.</p>
+<p>Note that your new random coefficient on price is <span class="math inline">\(\alpha_{it} = \alpha + \sigma_p \nu_{1it} + \pi_p y_{it}\)</span> where <span class="math inline">\(\nu_{1it}\)</span> is <code>nodes0</code> in your <code>agent_data</code> and <span class="math inline">\(y_{it}\)</span> is <code>log_income</code>. Compute the average log income <span class="math inline">\(\bar{y}\)</span> in your demographic data to verify that your estimate of the <em>average</em> price coefficient <span class="math inline">\(\alpha + \sigma_p \times 0 + \pi \times \bar{y}\)</span> is close to your old <span class="math inline">\(\hat{\alpha}\)</span>. Using this average price sensitivity, interpret the two new parameters. Does price sensitivity vary a lot or a little with income? Compare to heterogeneity induced by income, is there a lot or a little unobserved heterogeneity in price sensitivity?</p>
+</section>
+<section id="evaluate-changes-to-the-price-counterfactual" class="level3" data-number="3.4.6">
+<h3 data-number="3.4.6" class="anchored" data-anchor-id="evaluate-changes-to-the-price-counterfactual"><span class="header-section-number">3.4.6</span> 6. Evaluate changes to the price counterfactual</h3>
+<p>Re-run the price counterfactual and discuss new differences. Do substitution and cannibalization seem more reasonable than before? Does the price change seem to differentially affect high- vs.&nbsp;low-income consumers? Is there anything that we were unable to estimate with cross-market product-level variation that you think could have helped further improve substitution patterns?</p>
+</section>
+</section>
+<section id="supplemental-questions-1" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="supplemental-questions-1"><span class="header-section-number">3.5</span> Supplemental Questions</h2>
+<p>These questions will not be directly covered in lecture, but will be useful to think about when doing BLP-style estimation in your own work.</p>
+<section id="try-using-different-numbers-of-monte-carlo-draws" class="level3" data-number="3.5.1">
+<h3 data-number="3.5.1" class="anchored" data-anchor-id="try-using-different-numbers-of-monte-carlo-draws"><span class="header-section-number">3.5.1</span> 1. Try using different numbers of Monte Carlo draws</h3>
+<p>Above, you took <span class="math inline">\(I_t = 1,000\)</span> draws per market when constructing your agent data. Particularly for simple models like this, this is usually a sufficient number of draws. In practice, however, when there are many more markets and dimensions of heterogeneity, you may want to start with a smaller number like <span class="math inline">\(I_t = 100\)</span> to get started, and then increase this number until your estimates stop changing and optimization stops having any issues. Try re-estimating the model with 10, 100, 500, and 2,000 draws, and see how your estimates change, if at all.</p>
+</section>
+<section id="try-using-scrambled-halton-sequences" class="level3" data-number="3.5.2">
+<h3 data-number="3.5.2" class="anchored" data-anchor-id="try-using-scrambled-halton-sequences"><span class="header-section-number">3.5.2</span> 2. Try using scrambled Halton sequences</h3>
+<p>Using a random number generator like <a href="https://numpy.org/doc/stable/reference/random/generator.html"><code>np.random.default_rng</code></a> is perhaps the simplest approach to approximate an integral over a distribution like standard normals. However, using quasi-Monte Carlo sequences can do better with fewer draws. Instead of using <span class="math inline">\(N(0, 1)\)</span> draws from a random number generator, try using scrambled Halton draws.</p>
+<p>You can do so with <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.qmc.Halton.html"><code>scipy.stats.qmc.Halton</code></a> or <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.build_integration.html#pyblp.build_integration"><code>pyblp.build_integration</code></a> with <code>specification='halton'</code> in <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Integration.html"><code>pyblp.Integration</code></a>. Again, estimate the model with 10, 100, 500, 1,000, and 2,000 quasi-Halton numbers per market, and see how the stability of your estimates compares to when you use simple Monte Carlo draws.</p>
+</section>
+<section id="try-using-quadrature" class="level3" data-number="3.5.3">
+<h3 data-number="3.5.3" class="anchored" data-anchor-id="try-using-quadrature"><span class="header-section-number">3.5.3</span> 3. Try using quadrature</h3>
+<p>A particularly computationally-efficient approach to approximating a Gaussian distribution is with <a href="https://en.wikipedia.org/wiki/Gaussian_quadrature">quadrature</a>. If you’re working with a model where consumer preference heterogeneity is not particularly complicated, you may want to try to replace Monte Carlo or quasi-Monte Carlo draws with many fewer nodes/weights that very well approximate the distribution.</p>
+<p>You can construct quadrature nodes and weights with <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.build_integration.html#pyblp.build_integration"><code>pyblp.build_integration</code></a> with <code>specification='product'</code> in <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Integration.html"><code>pyblp.Integration</code></a>. The <code>'product'</code> specification means that PyBLP will take the cross-product of the quadrature nodes and weights for each univarate <span class="math inline">\(N(0, 1)\)</span>. If you have, say, <code>size=7</code> nodes/weights per market for each <span class="math inline">\(N(0, 1)\)</span> but 5 dimensions of heterogeneity (i.e., <code>nodes0</code>, <code>nodes1</code>, <code>nodes2</code>, <code>nodes3</code>, and <code>nodes4</code>), this will give <span class="math inline">\(7^5 = 16,807\)</span> consumer types per market. This is known as the <a href="https://en.wikipedia.org/wiki/Curse_of_dimensionality">curse of dimensionality</a>, which Monte Carlo integration does not suffer from as much. With this many dimensions of heterogeneity, you could either switch to back to Monte Carlo integration or try using <a href="https://en.wikipedia.org/wiki/Sparse_grid">sparse grid</a> integration, which more carefully chooses quadrature nodes/weights in higher dimensions. You can do this with <code>specification='grid'</code>.</p>
+<p>In our setting, we are only using one set of <span class="math inline">\(N(0, 1)\)</span> draws for unobserved preference heterogenity for price. We can use <code>specification='product'</code>, <code>size=7</code>, and <code>dimensions=2</code> to construct two <span class="math inline">\(N(0, 1)\)</span> draws, the second of which we’ll want to convert into income draws. We can do this by estimating a lognormal distribution for income in each market (you’ll need to compute market-specific means and standard deviations of log income), and transforming the second column of <span class="math inline">\(N(0, 1)\)</span> draws into log income draws. Try doing this and see if your estimates (and compute time) differs much from before. If they do, this indicates that a lognormal distribution for income may not be a great parametric assumption, and a Monte Carlo approach may have made more sense than quadrature.</p>
+</section>
+<section id="approximate-the-optimal-instruments" class="level3" data-number="3.5.4">
+<h3 data-number="3.5.4" class="anchored" data-anchor-id="approximate-the-optimal-instruments"><span class="header-section-number">3.5.4</span> 4. Approximate the optimal instruments</h3>
+<p>After estimating your model, let PyBLP approximate the optimal instruments with <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.compute_optimal_instruments.html"><code>.compute_optimal_instruments</code></a>. You can then use the method <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.OptimalInstrumentResults.to_problem.html"><code>.to_problem</code></a> to automatically update your problem to include the optimal instruments. Then you can re-solve it like before. Do your estimates change much? If they don’t what does this suggest?</p>
+</section>
+<section id="add-another-instrument-and-compute-the-optimal-weighting-matrix" class="level3" data-number="3.5.5">
+<h3 data-number="3.5.5" class="anchored" data-anchor-id="add-another-instrument-and-compute-the-optimal-weighting-matrix"><span class="header-section-number">3.5.5</span> 5. Add another instrument and compute the optimal weighting matrix</h3>
+<p>So far, we have been working with just-identified models with exactly as many moments as parameters. This means that in theory, the weighting matrix <span class="math inline">\(W\)</span> shouldn’t matter because we should always be able to find parameter values that set the objective exactly equal to zero, regardless of how the different components of the objective are weighted.</p>
+<p>But in some cases, you may want to have an over-identified model. Multiple instruments can increase the precision of estimates, and can also allow for overidentification tests. Try adding an additional instrument <code>demand_instruments4</code> equal to the interaction between the log income <em>standard deviation</em> and your differentiation instrument constructed from <code>predicted_prices</code>. Recall the linear regression intuition: this leverages cross-market variation in the standard deviation of income to target the parameter in <span class="math inline">\(\Pi\)</span> on prices and log income.</p>
+<p>First re-estimate the first step of your model. At the optimum, your objetive will now be nontrivially far from zero, but you should still verify that the other convergence checks pan out. Do your first-stage estimates look any different?</p>
+<p>Then re-run estimation but pass <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.html#pyblp.ProblemResults.updated_W"><code>.updated_W</code></a> to the <code>W</code> argument of <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.solve.html"><code>.solve</code></a>. You should still be using <code>method='1s'</code>. Technically, PyBLP will do the two steps for you with <code>method='2s'</code>. However, if this was a real problem and not just an exercise, you would want to again try optimization with multiple starting values, which is something that PyBLP doesn’t automatically do.</p>
+<p>Compare you first and second-stage estimates. Do they look particularly different? What about your standard errors?</p>
+</section>
+<section id="incorporate-supply-side-restrictions-into-estimation" class="level3" data-number="3.5.6">
+<h3 data-number="3.5.6" class="anchored" data-anchor-id="incorporate-supply-side-restrictions-into-estimation"><span class="header-section-number">3.5.6</span> 6. Incorporate supply-side restrictions into estimation</h3>
+<p>In the supplemental exercises of the first exercise, we used a canonical assumption about how firms set prices to impute marginal costs of producing each cereal from pricing optimality conditions. If we are further willing to model the functional form of marginal costs, for example as <span class="math inline">\(c_{jt} = x_{jt}'\gamma + \omega_{jt}\)</span>, we can stack our current moment conditions <span class="math inline">\(\mathbb{E}[\xi_{jt} z_{jt}^D]\)</span> with additional supply-side moment conditions <span class="math inline">\(\mathbb{E}[\omega_{jt} z_{jt}^S]\)</span>. These will allow us to efficiently estimate <span class="math inline">\(\gamma\)</span>, and in some cases can also help to add precision to our demand-side estimates.</p>
+<p>Like the the first exercise, you will need a column of <code>firm_ids</code> to tell PyBLP which firms produce what cereals. To impose the assumption that <span class="math inline">\(c_{jt} = x_{jt}'\gamma + \omega_{jt}\)</span> for some characteristics <span class="math inline">\(x_{jt}\)</span>, you’ll need to specify a third formulation in your <code>product_formulations</code> tuple. For simplicity, try assuming that the only observed characterstics that affect marginal costs are a constant and the <code>mushy</code> dummy.</p>
+<pre class="{python}"><code>#| eval: false
+ 
+product_formulations = (
+    pyblp.Formulation('0 + prices', absorb='C(market_ids) + C(product_ids)'), 
+    pyblp.Formulation('0 + mushy + prices'), 
+    pyblp.Formulation('1 + mushy'),
+)</code></pre>
+<p>By default, PyBLP knows that a constant and <code>mushy</code> are exogenous variables, so it will add them to the set of supply-side instruments <span class="math inline">\(z_{jt}^S\)</span>. If you wanted to model non-constant returns to scale, for example by including <code>I(market_size * shares)</code> to have a coefficient on quantities <span class="math inline">\(q_{jt} = M_t \cdot s_{jt}\)</span>, PyBLP would recognize that this term included endogenous market shares and not include it in <span class="math inline">\(z_{jt}^S\)</span>. Instead, you would have to specify a <code>supply_instruments0</code> column in your product data to give a valid demand-shifter for market shares. Ideally, you would want something that affects demand but that is uncorrelated with the unobserved portion of marginal costs <span class="math inline">\(\omega_{jt}\)</span>.</p>
+<p>Try estimating the model with supply-side restrictions. When calling <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.solve.html"><code>.solve</code></a>, you’ll need to specify an initial value for <span class="math inline">\(\alpha\)</span> with the <code>beta</code> argument because after adding a supply side, we can no longer “concentrate out” <span class="math inline">\(\alpha\)</span> as it’s needed to impute marginal costs. PyBLP will automatically concentrate out <span class="math inline">\(\gamma\)</span>.</p>
+<p>Interpret your new supply-side estimates. Your demand-side estimates should be essentially the same because you’re using the same moments to estimate them as before. When adding a supply side, demand-side estimates tend to become more precise when there are supply-side instruments that are relevant for demand-side parameters (e.g., optimal instruments).</p>
+</section>
+</section>
+</section>
+<section id="exercise-3" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Exercise 3</h1>
+<section id="introduction-2" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="introduction-2"><span class="header-section-number">4.1</span> Introduction</h2>
+<p>This is the last of three exercises that will give you a solid foundation for doing BLP-style estimation. We’ll continue with the same running example: what if we halved an important product’s price? Our goal today is to further relax some of the unrealistic substitution patterns that we were forced to bake-in to our model because of limited cross-market variation. To do so, we will use results from consumer surveys to introduce within-market variation.</p>
+</section>
+<section id="setup-2" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="setup-2"><span class="header-section-number">4.2</span> Setup</h2>
+<p>We’ll be continuing where we left off after the <a href="https://github.com/Mixtape-Sessions/Demand-Estimation/blob/main/Exercises/Exercise-2/README.md">second exercise</a>. You should just keep adding to your code, using <a href="https://github.com/Mixtape-Sessions/Demand-Estimation/blob/main/Exercises/Exercise-2/Solutions.ipynb">its solutions</a> if you had trouble with some parts.</p>
+</section>
+<section id="data-2" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="data-2"><span class="header-section-number">4.3</span> Data</h2>
+<p>Today, you won’t be including any new datasets into estimation, just a few carefully-chosen summary statistics from a couple of imaginary consumer surveys. These could have been from industry reports, from surveys administered by you, the researcher, or from any number of other places.</p>
+<p>The first survey randomly sampled consumers who purchased breakfast cereal in markets <code>C01Q1</code> and <code>C01Q2</code>, i.e.&nbsp;during the first two quarters in the first city covered by the product data. It elicited information about income. The second survey was another random sample of the same consumers, but it asked questions about second choice diversion.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 36%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Survey Name</th>
+<th>Observations</th>
+<th>Statistics</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>“Income”</td>
+<td>100</td>
+<td>Estimated mean log of quarterly income was <code>7.9</code>.</td>
+</tr>
+<tr class="even">
+<td>“Diversion”</td>
+<td>200</td>
+<td>When asked what they would have done had their chosen cereal not been available, <code>28%</code> said they would have purchased no cereal in the covered product data. Out of all respondents, <code>31%</code> both purchased a mushy cereal and would have purchased another mushy cereal had it not been available.</td>
+</tr>
+</tbody>
+</table>
+<p>In today’s exercise, we will match these three statistics to introduce some additional dimensions of heterogeneity into our BLP model of demand for cereal and see how our counterfactual changes.</p>
+</section>
+<section id="questions-2" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="questions-2"><span class="header-section-number">4.4</span> Questions</h2>
+<section id="use-the-income-statistic-to-match-a-parameter-on-log-income" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="use-the-income-statistic-to-match-a-parameter-on-log-income"><span class="header-section-number">4.4.1</span> 1. Use the income statistic to match a parameter on log income</h3>
+<p>In the last exercise, we were unable to estimate a parameter on log income <span class="math inline">\(y_{it}\)</span> alone because market fixed effects eliminate needed cross-market income variation. Instead, we simply assumed that this parameter is zero, i.e.&nbsp;that income does not shift individuals’ preference for cereal in general one way or another. Today, we’ll incorporate a micro moment <span class="math inline">\(\mathbb{E}[y_{it} | j &gt; 0] = 7.9\)</span> to estimate this parameter and see whether this assumption was reasonable.</p>
+<p>To do so, we’ll need first re-create our problem with a constant in our formulation for <code>X2</code>. This is because the parameter we want to add will be on the interaction between a constant from the product data and log income in the agent data. Your <code>X2</code> formulation should now be <code>1 + mushy + prices</code>.</p>
+<p>After re-initializing our problem with the extra constant, we need to configure our micro moment. To do so, you’ll have to configure three objects in the following order.</p>
 <ol type="1">
-<li><p>We will only have random coefficients on <span class="math inline">\(x\)</span>.</p></li>
-<li><p>We solve the problem without demographics.</p></li>
+<li>Define a <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroDataset.html"><code>pyblp.MicroDataset</code></a> <span class="math inline">\(d\)</span>.</li>
+<li>Define a <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroPart.html"><code>pyblp.MicroPart</code></a> <span class="math inline">\(p\)</span>.</li>
+<li>Define a <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroPart.html"><code>pyblp.MicroMoment</code></a> <span class="math inline">\(m\)</span>.</li>
 </ol>
+<p>First, define a <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroDataset.html"><code>pyblp.MicroDataset</code></a> <span class="math inline">\(d\)</span> to represent the “income” survey. Choose a useful <code>name</code>, set the number of <code>observations=100</code> from the survey, and set the <code>market_ids</code> to the list of market IDs that the survey covers. You also need to specify a function <code>compute_weights</code>, which defines how to compute sampling weights <span class="math inline">\(w_{dijt}\)</span>. You should look at the <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroDataset.html"><code>pyblp.MicroDataset</code></a> documentation to understand how this function works. Within the two surveyed markets, the survey did not differentially select consumers except to only select those who purchased a cereal, <span class="math inline">\(j \neq 0\)</span>. So our sampling weights should be <span class="math inline">\(w_{dijt} = 1\\{j \neq 0\\}\)</span>. To implement this, you should define a function that for market <span class="math inline">\(t\)</span> returns a <span class="math inline">\(I_t \times J_t\)</span> matrix of ones. Equivalently, your function could return a <span class="math inline">\(I_t \times (1 + J_t)\)</span> matrix with the first column being zeros, corresponding to <span class="math inline">\(j = 0\)</span>, and the final <span class="math inline">\(J_t\)</span> columns being ones, corresponding to <span class="math inline">\(j \neq 0\)</span>. Not having a first column is just convenient PyBLP shorthand for setting it to zeros. Your function should look like</p>
+<pre class="{python}"><code>#| eval: false
+ 
+compute_weights=lambda t, p, a: np.ones((a.size, p.size))</code></pre>
+<p>The arguments required for your function are <code>t</code>, the market ID, <code>p</code>, the <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Products.html#pyblp.Products"><code>Products</code></a> subsetted to this market, and <code>a</code>, the <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Agents.html#pyblp.Agents"><code>Agents</code></a> subsetted to this market. We’ll just return a matrix of the size required by the <code>compute_weights</code> argument.</p>
+<p>Next, define a <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroPart.html"><code>pyblp.MicroPart</code></a> <span class="math inline">\(p\)</span> to represent the expectation <span class="math inline">\(\mathbb{E}[y_{it} | j &gt; 0]\)</span>. Choose a useful <code>name</code>, specify the configured <code>dataset</code>, and also specify a second function <code>compute_values</code>, which defines how to compute micro values <span class="math inline">\(v_{pijt}\)</span>. The function has the same arguments and output size as <code>compute_weights</code> above, except here we want to have a matrix where the same <span class="math inline">\(y_{it}\)</span> value is repeated <span class="math inline">\(J_t\)</span> times for each column. One convenient way to do this is with the <a href="https://numpy.org/doc/stable/reference/generated/numpy.einsum.html"><code>np.einsum</code></a> function, although there are many other ways, such as using <a href="https://numpy.org/doc/stable/reference/generated/numpy.repeat.html"><code>np.repeat</code></a> or <a href="https://numpy.org/doc/stable/reference/generated/numpy.tile.html"><code>np.tile</code></a>.</p>
+<pre class="{python}"><code>#| eval: false
+ 
+compute_values=lambda t, p, a: np.einsum('i,j', a.demographics[:, 0], np.ones(p.size))</code></pre>
+<p>Here, we’re just selecting the first (and only) column of demographics, log income, and repeating it for as many products as there are in the market.</p>
+<p>Finally, define a <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroMoment.html"><code>pyblp.MicroMoment</code></a> <span class="math inline">\(m\)</span>. Choose a useful <code>name</code>, specify the observed <code>value=7.9</code> that we want to match, and for the <code>parts</code> argument, you can just pass the above configured micro part. This will specify the identity function <span class="math inline">\(f_m(v) = v\)</span>. You would use the other arguments <code>compute_value</code> and <code>compute_gradient</code> if you wanted to specify a more complicated function <span class="math inline">\(f_m(\cdot)\)</span> and its gradient. In this case, you could specify a list of micro <code>parts</code> and these additional functions would select from these.</p>
+<p>Given our micro moment, say <code>income_moment</code>, we can just pass a list with it as the only element to <code>micro_moments=[income_moment]</code> in <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.solve.html"><code>.solve</code></a>. Since our <code>X2</code> configuration has an additional column for the constant, our <code>sigma</code> matrix needs another column/row, and our <code>pi</code> matrix needs another row. Set the new elements in both equal to zeros, except for the one in <span class="math inline">\(\Pi\)</span> corresponding to the interaction between the new constant in <code>X2</code> and log income, which you can set to some nonzero initial value, say <code>1</code>. In practice, you’ll want to try out multiple random starting values.</p>
+<p>Again, we’re just identified, so we should get an approximately zero objective at the optimum. If we saw “marching down the gradient” and have a near-zero gradient norm and positive Hessian eigenvalues at the optimum, we can look at our estimates. You should get a new parameter estimate of around <code>-0.331</code>. Does the new parameter estimate suggest that the original assumption of it being zero was fairly okay, or not?</p>
+</section>
+<section id="use-the-diversion-statistics-to-estimate-unobserved-preference-heterogeneity-for-a-constant-and-mushy" class="level3" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="use-the-diversion-statistics-to-estimate-unobserved-preference-heterogeneity-for-a-constant-and-mushy"><span class="header-section-number">4.4.2</span> 2. Use the diversion statistics to estimate unobserved preference heterogeneity for a constant and mushy</h3>
+<p>In the last exercise, we were also unable to estimate parameters in <span class="math inline">\(\Sigma\)</span> on a constant and <code>mushy</code> because there was no cross-market variation in the number of products or <code>mushy</code>. Instead, we again simply assumed these parameters were zero, and all the preference heterogeneity was from income. We’ll incorporate the second choice moments <span class="math inline">\(\mathbb{P}(k = 0 | j &gt; 0) = 0.28\)</span> and <span class="math inline">\(\mathbb{P}(\text{mushy}_j \text{ and } \text{mushy}_k | j &gt; 0) = 0.31\)</span> to estimate these parameters.</p>
+<p>Since these numbers come from a different survey, you should define a new <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroDataset.html"><code>pyblp.MicroDataset</code></a>. If the latter two statistics were instead based on the same responses, we should be defining all our micro moments on the same dataset. When defining <code>compute_weights</code>, the one difference from the income micro moment is that to include information about second choices, your function now needs to return an array with three dimensions, not a two-dimensional matrix, in order to define weights <span class="math inline">\(w_{dijkt}\)</span>, which now have an additional index <span class="math inline">\(k\)</span>. The last dimension is what defines <span class="math inline">\(k\)</span>. To allow for selecting individuals who select <span class="math inline">\(k = 0\)</span>, the final dimension should be of size <span class="math inline">\(1 + J_t\)</span>, for an array of dimensions <span class="math inline">\(I_t \times J_t \times (1 + J_t)\)</span>. Again, it should just be an array of all ones, since beyond the two markets, there was no differential selection of consumers, except that they chose cereal.</p>
+<p>Then, you should define two new <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroPart.html"><code>pyblp.MicroPart</code></a>s, one for each of the statistics, and two new <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroMoment.html"><code>pyblp.MicroMoment</code></a>s in the same way as before. Both are also just averages on the micro dataset, not complicated functions, so these should look similar to the last micro moment. The main difference is that <code>compute_values</code> will now return a <span class="math inline">\(I_t \times J_t \times (1 + J_t)\)</span> array, with ones and zeros to choose micro values <span class="math inline">\(v_{pijkt}\)</span> that implement the desired statistics.</p>
+<p>When solving the problem, we just append the two new micro moments to our <code>micro_moments</code> list, set the new parameters in <code>sigma</code> to nonzero initial values, and re-optimize. Second choice computations can take some time, up to a few minutes.</p>
+<p>After confirming that optimization seemed to have been successful, interpret the new parameters. How large is the unobserved preference heterogeneity for the inside (or equivalently, the outside) option. How large is it for the mushy characteristic?</p>
+</section>
+<section id="evaluate-changes-to-the-price-cut-counterfactual-1" class="level3" data-number="4.4.3">
+<h3 data-number="4.4.3" class="anchored" data-anchor-id="evaluate-changes-to-the-price-cut-counterfactual-1"><span class="header-section-number">4.4.3</span> 3. Evaluate changes to the price cut counterfactual</h3>
+<p>Using the new estimates, re-run the same price cut counterfactual from the last two exercises. Re-compute percent changes and compare with those from day 2. Do substitution patterns and cannibalization estimates now look more reasonable?</p>
+</section>
+</section>
+<section id="supplemental-questions-2" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="supplemental-questions-2"><span class="header-section-number">4.5</span> Supplemental Questions</h2>
+<p>These additional questions will go beyond just defining micro moments, and will be useful to think about when doing BLP-style estimation in your own work.</p>
+<section id="see-how-your-market-size-assumption-affects-results" class="level3" data-number="4.5.1">
+<h3 data-number="4.5.1" class="anchored" data-anchor-id="see-how-your-market-size-assumption-affects-results"><span class="header-section-number">4.5.1</span> 1. See how your market size assumption affects results</h3>
+<p>In the first exercise, we made a somewhat arbitrary assumption about the size of the market. Vary this assumption, for example by assuming that the potential market size is <em>two</em> servings per day per individual in the city, instead of just one. Re-compute your market shares and re-estimate the model. See how the results of your price counterfactual change when you have a parameter in <span class="math inline">\(\Sigma\)</span> on the constant, and when you assume that parameter is zero. In particular, compute percent changes to the counterfactual outside share <span class="math inline">\(s_{0t}\)</span> and see how that changes.</p>
+<p>In general, outside diversion will scale with the assumed potential market size, unless we include sufficient preference heterogeneity, particularly for the outside option. Directly matching a moment to pin down diversion to the outside option is a fairly clear way to estimate what diversion to the outside option should look like in a counterfactual.</p>
+</section>
+<section id="simulate-some-micro-data-and-use-it-to-match-optimal-micro-moments" class="level3" data-number="4.5.2">
+<h3 data-number="4.5.2" class="anchored" data-anchor-id="simulate-some-micro-data-and-use-it-to-match-optimal-micro-moments"><span class="header-section-number">4.5.2</span> 2. Simulate some micro data and use it to match optimal micro moments</h3>
+<p>This exercise doesn’t come with a full dataset of consumer demographics and their choices, only with a few summary statistics, but we can simulate some to get a sense for how one might use all the information in a full micro dataset via optimal micro moments. To simulate some micro data, take one of your estimated models and use the <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.simulate_micro_data.html"><code>.simulate_micro_data</code></a> method, using your configured “Income” <code>dataset</code> and setting a <code>seed</code>. You may want to use <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.data_to_dict.html"><code>pyblp.data_to_dict</code></a> to get the simulated data into a format that you can pass to create a more easily-usable <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html"><code>pd.DataFrame</code></a>.</p>
+<p>The simulated data should look like the assumed micro data in the “Income” survey, with one exception. The <code>agent_indices</code> column corresponds to the within-market row index of individual types <span class="math inline">\(i_n\)</span> in your <code>agent_data</code>. This includes information about unobserved preference heterogenity, which the real micro dataset wouldn’t have. Compute the same <code>agent_indices</code> in your agent data using <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html"><code>.groupby</code></a> and <a href="https://pandas.pydata.org/pandas-docs/version/1.3/reference/api/pandas.core.groupby.GroupBy.cumcount.html"><code>.cumcount</code></a>, and merge <code>log_income</code> into your simulated micro dataset. You can then drop the <code>agent_indices</code> column. The <code>choice_indices</code> column just represents the within-market row index of the respondent’s choice <span class="math inline">\(j_nt\)</span>, which is presumably observed in the “Income” dataset.</p>
+<p>The resulting data should be in the same format as needed by <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.compute_micro_scores.html"><code>.compute_micro_scores</code></a>. You’ll just need to tell PyBLP how to over the unobserved preference heterogeneity you just dropped. One option is to use the <code>integrate</code> argument, but you can also replicate each row in your micro data for as many draws as you want, add a <code>weights</code> column equal to one over the number of draws, and add <code>nodes0</code>, <code>nodes1</code>, and <code>nodes2</code> columns with standard normal draws. These two options will do the same thing, if you use the <code>monte_carlo</code> specification when configuring your integration configuration.</p>
+<p>Given an estimated model and some micro data, this function computes the score (the derivative of the log likelihood of each micro observation with respect to the model’s nonlinear parameters) of each micro data observation. Specifically, the scores are returned as a list, one element for each parameter in <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.html#pyblp.ProblemResults.theta"><code>.theta</code></a>. For each element of <code>theta</code>, create a new micro moment that matches the mean score in the micro data.</p>
+<p>In order to do so, you’ll have to specify <code>compute_values</code> in the corresponding <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroPart.html"><code>pyblp.MicroPart</code></a>. Each <span class="math inline">\(v_{pijt}\)</span> should equal the score of a consumer of type <span class="math inline">\(i\)</span> who chooses <span class="math inline">\(j\)</span> in market <span class="math inline">\(t\)</span>. PyBLP has another convenient function for computing these: <a href="https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.compute_agent_scores.html"><code>.compute_agent_scores</code></a>. After passing your micro dataset to this function (and also configuring <code>integration</code>), it also return a list, one for each element of <code>theta</code>. Each element in the list is a dictionary mapping market IDs to the matrix that you need to pass to <code>compute_values</code>. In this function, you can use the <code>t</code> argument to directly select the right matrix.</p>
+<p>One approach would be to replace the single <span class="math inline">\(\mathbb{E}[y_{it} | j &gt; 0]\)</span> micro moment from this dataset with all the optimal micro moments from this dataset. But to keep results comparable with before (and to maintain a just-identified model), try replacing this sub-optimal micro moment with the optimal micro moment based on scores for the parameter in <span class="math inline">\(\Pi\)</span> that this original micro moment was supposed to target. Do results change much? What does this indicate?</p>
+</section>
+<section id="use-a-within-firm-diversion-ratio-to-estimate-a-nesting-parameter" class="level3" data-number="4.5.3">
+<h3 data-number="4.5.3" class="anchored" data-anchor-id="use-a-within-firm-diversion-ratio-to-estimate-a-nesting-parameter"><span class="header-section-number">4.5.3</span> 3. Use a within-firm diversion ratio to estimate a nesting parameter</h3>
+<p>One dimension of preference heterogeneity that we have not modelled is within firm. In our price cut counterfactual, beyond mushyness and prices, we do not see more substitution within firm than across firms. However, there are good reasons to think that we might see more substitution within firm in reality. Consumers tend to be loyal to firms, and may prefer some firms to others for reasons that aren’t captured by our other observed characteristics.</p>
+<p>Typically, a good way to estimate preference heterogeneity for a categorical variable is to have a separate random coefficient on a dummy variable for each category. We have done this for the categorical mushy category. However, for some categorical variables with <em>many</em> different categories, adding this many random coefficients would be computationally prohibitive, and there may not be enough variation in the data to do so. In our data, a dummy on each firm would be a lot of additional random coefficients.</p>
+<p>Instead, a common choice is to estimate a parameter that governs <em>within category</em> correlation of the idiosyncratic preferences <span class="math inline">\(\varepsilon_{ijt}\)</span>. These categories are called nests, <span class="math inline">\(h\)</span> in PyBLP notation, and the correlation parameter is called a nesting parameter, <span class="math inline">\(\rho\)</span> in PyBLP notation. Without any random coefficients, we have the nested logit model. With random coefficients, we have the random coefficients nested logit (RCNL) model. See the <a href="https://pyblp.readthedocs.io/en/stable/background.html#random-coefficients-nested-logit">RCNL</a> part of the PyBLP documentation for more details.</p>
+<p>Using aggregate variation, it is common to target a nesting parameter with an instrument that, for each product <span class="math inline">\(j\)</span>, counts the number of other products in the same nest in the same market <span class="math inline">\(t\)</span>. However, since we have no cross-market variation in this instrument, this is not a particularly credible way to identify <span class="math inline">\(\rho\)</span>, much in the same way that without cross-market variation, we have little hope of credibly identifying the parameters in <span class="math inline">\(\Sigma\)</span>. Indeed, a nesting structure is just a very particular type of random coefficient!</p>
+<p>Instead, we will match a within-firm diversion ratio. Assume that in our diversion survey, we have a third statistic: <span class="math inline">\(\mathbb{P}(f(j) = f(k)) = 0.35\)</span>. That is, in the survey, 35% of respondents said they would select a product made by the same firm had their first choice cereal been unavailable. When setting up your problem, create a new column <code>nesting_ids</code> equal to firm IDs in your <code>product_ids</code>. Then when solving the problem, add an additional micro moment that matches this share, and set some nonzero initial value for the <code>rho</code> parameter (it needs to be between 0 and 1). Optimization may take a while because many of the numerical tricks PyBLP uses to make estimation fast don’t work when there’s a nesting parameter (particularly with second choices). Re-run the counterfactual and see whether it seems more reasonable, paying close attention to changes to within-firm cannibalization vs.&nbsp;cross-firm substitution.</p>
 </section>
 </section>
 <section id="references" class="level2 unnumbered">
@@ -1576,8 +1731,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../teaching/teaching.html" class="pagination-link" aria-label="Overview">
-        <span class="nav-page-text">Overview</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../computing/data-table.html" class="pagination-link" aria-label="Data.table (R)">
+        <span class="nav-page-text">Data.table (R)</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
