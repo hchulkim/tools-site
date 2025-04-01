@@ -5,4 +5,4 @@ execute:
   freeze: auto
 ---
 
-This section is a set of templates related to computing.
+This section is a set of templates related to computing. It also contains some notes on various subjects in Economics.

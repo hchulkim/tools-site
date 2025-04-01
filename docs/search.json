@@ -122,9 +122,9 @@
     "href": "computing/computing.html",
     "title": "Overview",
     "section": "",
-    "text": "This section is a set of templates related to computing.",
+    "text": "This section is a set of templates related to computing. It also contains some notes on various subjects in Economics.",
     "crumbs": [
-      "Computing",
+      "Notes",
       "Overview"
     ]
   },
@@ -569,6 +569,17 @@
     "crumbs": [
       "Computing",
       "BLP code (Julia)"
+    ]
+  },
+  {
+    "objectID": "computing/trade-notes.html",
+    "href": "computing/trade-notes.html",
+    "title": "(Graduate) International trade notes",
+    "section": "",
+    "text": "These are some notes for my self-study on International Trade (graduate level).",
+    "crumbs": [
+      "Notes",
+      "Trade notes"
     ]
   }
 ]

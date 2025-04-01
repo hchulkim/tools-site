@@ -31,7 +31,7 @@ website:
     search: true
     collapse-level: 1
     contents:
-      - section: "Computing"
+      - section: "Notes"
         contents:
         - href: computing/computing.qmd
           text: "Overview"
@@ -47,6 +47,8 @@ website:
           text: "BLP code (Julia)"
         - href: computing/data-table.qmd
           text: "Data.table (R)"
+        - href: computing/trade-notes.qmd
+          text: "Trade notes"
       - section: "Teaching"
         contents:
           - section: "Class-name"
