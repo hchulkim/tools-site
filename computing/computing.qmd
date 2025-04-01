@@ -1,6 +1,6 @@
 ---
 title: "Overview"
-subtitle: "Templates for computing"
+subtitle: "Templates for computing and notes"
 execute:
   freeze: auto
 ---
