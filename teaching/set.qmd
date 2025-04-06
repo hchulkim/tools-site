@@ -1,0 +1,13 @@
+---
+title: "Set theory"
+subtitle: "My log for studying set theory"
+execute:
+  freeze: auto
+format: 
+  html:
+    toc: true
+    number-sections: true
+    code-overflow: wrap
+---
+
+This pages contains log for my self-study on set theory.

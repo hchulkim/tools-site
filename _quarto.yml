@@ -63,6 +63,8 @@ website:
                 text: "FAQ" 
           - section: "Mathematics"
             contents:
+            - href: teaching/set.qmd
+              text: "Set theory resources"
             - href: teaching/topology.qmd
               text: "Topology resources"
             - href: teaching/metrics.qmd
