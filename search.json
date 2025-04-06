@@ -421,6 +421,30 @@
     ]
   },
   {
+    "objectID": "teaching/set.html#chapter-1-sets",
+    "href": "teaching/set.html#chapter-1-sets",
+    "title": "Set theory",
+    "section": "Chapter 1: Sets",
+    "text": "Chapter 1: Sets\n\n3. The axioms\n\n3.1\nLet \\(P(x, A, B)\\) be the property: \\(x \\in A, \\, x \\notin B\\). Then this property implies that \\(x \\in A\\). Therefore, \\(\\{ x \\mid x \\in A, x \\in B \\} = \\{ x \\in A \\mid x \\in A, x \\in B \\} = \\{ x \\in A \\mid x \\in B \\}\\). This set exists by the Axiom schema of comprehension.\n\n\n3.2\nLet \\(A\\) be a set known to exist. Then using property \\(P(x) = x \\neq x\\), we can use Axiom schema of comprehension to say that there exists set \\(B = \\{ x \\in A \\mid x \\neq x \\}\\). Then we can easily see that such set is empty.\n\n\n3.3 (a)\nSuppose that there is a set of all sets \\(V\\). Then using Axiom schema of comprehension, there exists a set \\(T = \\{ x \\in V \\mid x \\notin x \\}\\). Now we will show contradiction by saying \\(T \\notin V\\) since this would mean \\(T\\) is not a set. Suppose \\(T \\in V\\). Suppose \\(T \\notin T\\). Then \\(T \\in T\\), contradiction. Suppose \\(T \\in T\\). Then \\(T \\notin T\\) must hold, again contradiction. Thus \\(T \\notin V\\).\n\n\n3.3 (b)\nThis is easily proven because if there is some set \\(A\\) where \\(x \\in A\\) for all \\(x\\), this would mean \\(A\\) is set of all sets.\n\n\n3.4\nThis can be proven by doing axiom of schema comprehension and then doing axiom of union.\n\n\n3.5\nThis can be proven by doing Axiom of pair and union.\n\n\n\n4. Elementary operations on sets",
+    "crumbs": [
+      "Teaching",
+      "Mathematics",
+      "Set theory resources"
+    ]
+  },
+  {
+    "objectID": "teaching/set.html#chapter-2",
+    "href": "teaching/set.html#chapter-2",
+    "title": "Set theory",
+    "section": "Chapter 2",
+    "text": "Chapter 2",
+    "crumbs": [
+      "Teaching",
+      "Mathematics",
+      "Set theory resources"
+    ]
+  },
+  {
     "objectID": "teaching/faq.html",
     "href": "teaching/faq.html",
     "title": "FAQ",
