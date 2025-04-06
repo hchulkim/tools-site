@@ -6,8 +6,40 @@ execute:
 format: 
   html:
     toc: true
-    number-sections: true
+    number-sections: false
     code-overflow: wrap
 ---
 
 This pages contains log for my self-study on set theory.
+
+## Chapter 1: Sets 
+
+### 3. The axioms 
+
+#### 3.1
+
+Let $P(x, A, B)$ be the property: $x \in A, \, x \notin B$. Then this property implies that $x \in A$. Therefore, $\{ x \mid x \in A, x \in B \} = \{ x \in A \mid x \in A, x \in B \} = \{ x \in A \mid x \in B \}$. This set exists by the Axiom schema of comprehension.
+
+#### 3.2
+
+Let $A$ be a set known to exist. Then using property $P(x) = x \neq x$, we can use Axiom schema of comprehension to say that there exists set $B = \{ x \in A \mid x \neq x \}$. Then we can easily see that such set is empty.
+
+#### 3.3 (a)
+
+Suppose that there is a set of all sets $V$. Then using Axiom schema of comprehension, there exists a set $T = \{ x \in V \mid x \notin x \}$. Now we will show contradiction by saying $T \notin V$ since this would mean $T$ is not a set. Suppose $T \in V$. Suppose $T \notin T$. Then $T \in T$, contradiction. Suppose $T \in T$. Then $T \notin T$ must hold, again contradiction. Thus $T \notin V$.
+
+#### 3.3 (b)
+
+This is easily proven because if there is some set $A$ where $x \in A$ for all $x$, this would mean $A$ is set of all sets.
+
+#### 3.4
+
+This can be proven by doing axiom of schema comprehension and then doing axiom of union.
+
+#### 3.5
+
+This can be proven by doing Axiom of pair and union.
+
+### 4. Elementary operations on sets
+
+## Chapter 2

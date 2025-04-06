@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Metric theory – tools</title>
+<title>Set theory – tools</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -29,8 +29,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../teaching/prob.html" rel="next">
-<link href="../teaching/topology.html" rel="prev">
+<link href="../teaching/topology.html" rel="next">
+<link href="../teaching/faq.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -70,12 +70,41 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<meta property="og:title" content="Metric theory – tools">
-<meta property="og:description" content="My log for studying metric theory">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="Set theory – tools">
+<meta property="og:description" content="My log for studying set theory">
 <meta property="og:site_name" content="tools">
-<meta name="twitter:title" content="Metric theory – tools">
-<meta name="twitter:description" content="My log for studying metric theory">
+<meta name="twitter:title" content="Set theory – tools">
+<meta name="twitter:description" content="My log for studying set theory">
 <meta name="twitter:image" content="https://tools.github.io/teaching/images/pic.png">
 <meta name="twitter:creator" content="@hckim_econ">
 <meta name="twitter:card" content="summary_large_image">
@@ -90,7 +119,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Teaching</li><li class="breadcrumb-item"><a href="../teaching/set.html">Mathematics</a></li><li class="breadcrumb-item"><a href="../teaching/metrics.html">Metric theory resources</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Teaching</li><li class="breadcrumb-item"><a href="../teaching/set.html">Mathematics</a></li><li class="breadcrumb-item"><a href="../teaching/set.html">Set theory resources</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -233,7 +262,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../teaching/set.html" class="sidebar-item-text sidebar-link">
+  <a href="../teaching/set.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Set theory resources</span></a>
   </div>
 </li>
@@ -245,7 +274,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../teaching/metrics.html" class="sidebar-item-text sidebar-link active">
+  <a href="../teaching/metrics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Metric theory resources</span></a>
   </div>
 </li>
@@ -281,16 +310,27 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#chapter-1-sets" id="toc-chapter-1-sets" class="nav-link active" data-scroll-target="#chapter-1-sets">Chapter 1: Sets</a>
+  <ul class="collapse">
+  <li><a href="#the-axioms" id="toc-the-axioms" class="nav-link" data-scroll-target="#the-axioms">3. The axioms</a></li>
+  <li><a href="#elementary-operations-on-sets" id="toc-elementary-operations-on-sets" class="nav-link" data-scroll-target="#elementary-operations-on-sets">4. Elementary operations on sets</a></li>
+  </ul></li>
+  <li><a href="#chapter-2" id="toc-chapter-2" class="nav-link" data-scroll-target="#chapter-2">Chapter 2</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/teaching/set.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Teaching</li><li class="breadcrumb-item"><a href="../teaching/set.html">Mathematics</a></li><li class="breadcrumb-item"><a href="../teaching/metrics.html">Metric theory resources</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Teaching</li><li class="breadcrumb-item"><a href="../teaching/set.html">Mathematics</a></li><li class="breadcrumb-item"><a href="../teaching/set.html">Set theory resources</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Metric theory</h1>
-<p class="subtitle lead">My log for studying metric theory</p>
+<h1 class="title">Set theory</h1>
+<p class="subtitle lead">My log for studying set theory</p>
 </div>
 
 
@@ -307,9 +347,45 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This pages contains log for my self-study on metric theory.</p>
+<p>This pages contains log for my self-study on set theory.</p>
+<section id="chapter-1-sets" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-1-sets">Chapter 1: Sets</h2>
+<section id="the-axioms" class="level3">
+<h3 class="anchored" data-anchor-id="the-axioms">3. The axioms</h3>
+<section id="section" class="level4">
+<h4 class="anchored" data-anchor-id="section">3.1</h4>
+<p>Let <span class="math inline">\(P(x, A, B)\)</span> be the property: <span class="math inline">\(x \in A, \, x \notin B\)</span>. Then this property implies that <span class="math inline">\(x \in A\)</span>. Therefore, <span class="math inline">\(\{ x \mid x \in A, x \in B \} = \{ x \in A \mid x \in A, x \in B \} = \{ x \in A \mid x \in B \}\)</span>. This set exists by the Axiom schema of comprehension.</p>
+</section>
+<section id="section-1" class="level4">
+<h4 class="anchored" data-anchor-id="section-1">3.2</h4>
+<p>Let <span class="math inline">\(A\)</span> be a set known to exist. Then using property <span class="math inline">\(P(x) = x \neq x\)</span>, we can use Axiom schema of comprehension to say that there exists set <span class="math inline">\(B = \{ x \in A \mid x \neq x \}\)</span>. Then we can easily see that such set is empty.</p>
+</section>
+<section id="a" class="level4">
+<h4 class="anchored" data-anchor-id="a">3.3 (a)</h4>
+<p>Suppose that there is a set of all sets <span class="math inline">\(V\)</span>. Then using Axiom schema of comprehension, there exists a set <span class="math inline">\(T = \{ x \in V \mid x \notin x \}\)</span>. Now we will show contradiction by saying <span class="math inline">\(T \notin V\)</span> since this would mean <span class="math inline">\(T\)</span> is not a set. Suppose <span class="math inline">\(T \in V\)</span>. Suppose <span class="math inline">\(T \notin T\)</span>. Then <span class="math inline">\(T \in T\)</span>, contradiction. Suppose <span class="math inline">\(T \in T\)</span>. Then <span class="math inline">\(T \notin T\)</span> must hold, again contradiction. Thus <span class="math inline">\(T \notin V\)</span>.</p>
+</section>
+<section id="b" class="level4">
+<h4 class="anchored" data-anchor-id="b">3.3 (b)</h4>
+<p>This is easily proven because if there is some set <span class="math inline">\(A\)</span> where <span class="math inline">\(x \in A\)</span> for all <span class="math inline">\(x\)</span>, this would mean <span class="math inline">\(A\)</span> is set of all sets.</p>
+</section>
+<section id="section-2" class="level4">
+<h4 class="anchored" data-anchor-id="section-2">3.4</h4>
+<p>This can be proven by doing axiom of schema comprehension and then doing axiom of union.</p>
+</section>
+<section id="section-3" class="level4">
+<h4 class="anchored" data-anchor-id="section-3">3.5</h4>
+<p>This can be proven by doing Axiom of pair and union.</p>
+</section>
+</section>
+<section id="elementary-operations-on-sets" class="level3">
+<h3 class="anchored" data-anchor-id="elementary-operations-on-sets">4. Elementary operations on sets</h3>
+</section>
+</section>
+<section id="chapter-2" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-2">Chapter 2</h2>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -875,13 +951,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../teaching/topology.html" class="pagination-link" aria-label="Topology resources">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Topology resources</span>
+      <a href="../teaching/faq.html" class="pagination-link" aria-label="FAQ">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">FAQ</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../teaching/prob.html" class="pagination-link" aria-label="Probability theory resources">
-        <span class="nav-page-text">Probability theory resources</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../teaching/topology.html" class="pagination-link" aria-label="Topology resources">
+        <span class="nav-page-text">Topology resources</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -893,7 +969,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/teaching/metrics.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/teaching/set.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This page is built using <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

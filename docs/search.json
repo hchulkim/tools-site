@@ -78,20 +78,22 @@
     "href": "teaching/topology.html",
     "title": "Topology",
     "section": "",
-    "text": "This pages contains log for my self-study on topology.\n\n\n\n\n\n\n\n\n\nweek\ndate\ntopic\nhw\nhw_sol\nexam\nnotes",
+    "text": "This pages contains log for my self-study on topology.",
     "crumbs": [
       "Teaching",
+      "Mathematics",
       "Topology resources"
     ]
   },
   {
     "objectID": "teaching/metrics.html",
     "href": "teaching/metrics.html",
-    "title": "Metric Theory",
+    "title": "Metric theory",
     "section": "",
-    "text": "This pages contains log for my self-study on metric theory.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndate\ntopic\nhw\nhw_sol\nexam\nnotes\n\n\n\n\n1\nAug 29\nNo lab\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAug 30\nWelcome to STA 199\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 1\nMeet the toolkit\n\n\n\n\n\n\n\n\n\n\n\n\n\n2\nSep 5\nHello R!\n\n\n\n\n\n\n\n\n\nRelease: Lab 0\n\n\n\nSep 6\nGrammar of graphics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 8\nVisualizing various types of data\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 1\n\n\n\nSep 9\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 0 + AE 1\n\n\n\nSep 11\n\n\n\n\n\n\n\n\n\n\n\nDue: AE 2\n\n\n3\nSep 12\nData visualization\n\n\n\n\n\n\n\n\n\nRelease: Lab 1\n\n\n\nSep 13\nGrammar of data wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 15\nWorking with multiple data frames\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 1 / Release: HW 2\n\n\n\nSep 16\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 1\n\n\n4\nSep 19\nData wrangling\n\n\n\n\n\n\n\n\n\nRelease: Lab 2\n\n\n\nSep 20\nTidying data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 22\nData types and classes\n\n\n\n\n\n\n\n\n\nDue HW 2\n\n\n\nSep 23\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 2\n\n\n5\nSep 26\nData tidying\n\n\n\n\n\n\n\n\n\nRelease: Lab 3\n\n\n\nSep 27\nImporting and recoding data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 29\nExam 1 Review\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 1 at 12pm\n\n\n\nSep 30\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 3\n\n\n6\nOct 3\nNo lab - Work on Exam 1\n\n\n\n\n\n\n\n\n\nDue: Exam 1 at 2pm\n\n\n\nOct 4\nData science ethics - Misrepresentation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 6\nData science ethics - Algorithmic bias + data privacy\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 3\n\n\n7\nOct 10\nNo lab - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 11\nNo Lec - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 13\nWeb scraping\n\n\n\n\n\n\n\n\n\nDue: HW 3\n\n\n8\nOct 17\nWork on project proposal\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 18\nFunctions + iteration\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 20\nThe language of models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 21\n\n\n\n\n\n\n\n\n\n\n\nDue: Project proposal\n\n\n9\nOct 24\nProbability + Simpson's Paradox\n\n\n\n\n\n\n\n\n\nRelease: Lab 4\n\n\n\nOct 25\nModels with a single predictor\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 27\nModels with multiple predictors\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 4\n\n\n\nOct 28\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 4\n\n\n10\nOct 31\nPredicting a numerical outcome\n\n\n\n\n\n\n\n\n\nRelease: Lab 5\n\n\n\nNov 1\nModels with multiple predictors + Overfitting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 3\nLogistic regression\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 4 / Release: HW 5\n\n\n\nNov 4\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 5 / Release: HW 6\n\n\n\nNov 5\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 1\n\n\n11\nNov 7\nWork on project draft\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 8\nQuantifying uncertainty with bootstrap intervals\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 10\nHypothesis testing via simulation\n\n\n\n\n\n\n\n\n\nDue: HW 5\n\n\n\nNov 11\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 1\n\n\n12\nNov 14\nPrediction + Bootstrapping\n\n\n\n\n\n\n\n\n\nRelease: Lab 6\n\n\n\nNov 15\nInference overview\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 17\nExam 2 Review\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 2 at 12pm\n\n\n\nNov 18\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 6\n\n\n13\nNov 21\nNo lab - Work on Exam 2\n\n\n\n\n\n\n\n\n\nDue: Exam 2 at 2pm\n\n\n\nNov 22\nNo lecture - Work on projects\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 24\nNo lecture - Thanksgiving\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 25\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam retake (optional)\n\n\n\nNov 27\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 2 (optional)\n\n\n14\nNov 28\nWork on project peer review\n\n\n\n\n\n\n\n\n\n\n\nDue: Project peer review\n\n\n\nNov 29\nCommunicating data science results effectively\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 2\n\n\n\nDec 1\nCustomizing Quarto reports and presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nDec 5\nProject presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6\nLooking further: Text analysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDec 8\nLooking further: Interactive web applications with Shiny\n\n\n\n\n\n\n\n\n\nDue: Project everything\n\n\n\nDec 9\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 6 / Statistics experience\n\n\n16\nDec 15\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam retake (optional)",
+    "text": "This pages contains log for my self-study on metric theory.",
     "crumbs": [
       "Teaching",
+      "Mathematics",
       "Metric theory resources"
     ]
   },
@@ -100,9 +102,10 @@
     "href": "teaching/prob.html",
     "title": "Probability theory",
     "section": "",
-    "text": "This pages contains log for my self-study on probability theory.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndate\ntopic\nhw\nhw_sol\nexam\nnotes\n\n\n\n\n1\nAug 29\nNo lab\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAug 30\nWelcome to STA 199\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 1\nMeet the toolkit\n\n\n\n\n\n\n\n\n\n\n\n\n\n2\nSep 5\nHello R!\n\n\n\n\n\n\n\n\n\nRelease: Lab 0\n\n\n\nSep 6\nGrammar of graphics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 8\nVisualizing various types of data\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 1\n\n\n\nSep 9\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 0 + AE 1\n\n\n\nSep 11\n\n\n\n\n\n\n\n\n\n\n\nDue: AE 2\n\n\n3\nSep 12\nData visualization\n\n\n\n\n\n\n\n\n\nRelease: Lab 1\n\n\n\nSep 13\nGrammar of data wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 15\nWorking with multiple data frames\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 1 / Release: HW 2\n\n\n\nSep 16\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 1\n\n\n4\nSep 19\nData wrangling\n\n\n\n\n\n\n\n\n\nRelease: Lab 2\n\n\n\nSep 20\nTidying data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 22\nData types and classes\n\n\n\n\n\n\n\n\n\nDue HW 2\n\n\n\nSep 23\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 2\n\n\n5\nSep 26\nData tidying\n\n\n\n\n\n\n\n\n\nRelease: Lab 3\n\n\n\nSep 27\nImporting and recoding data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSep 29\nExam 1 Review\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 1 at 12pm\n\n\n\nSep 30\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 3\n\n\n6\nOct 3\nNo lab - Work on Exam 1\n\n\n\n\n\n\n\n\n\nDue: Exam 1 at 2pm\n\n\n\nOct 4\nData science ethics - Misrepresentation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 6\nData science ethics - Algorithmic bias + data privacy\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 3\n\n\n7\nOct 10\nNo lab - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 11\nNo Lec - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 13\nWeb scraping\n\n\n\n\n\n\n\n\n\nDue: HW 3\n\n\n8\nOct 17\nWork on project proposal\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 18\nFunctions + iteration\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 20\nThe language of models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 21\n\n\n\n\n\n\n\n\n\n\n\nDue: Project proposal\n\n\n9\nOct 24\nProbability + Simpson's Paradox\n\n\n\n\n\n\n\n\n\nRelease: Lab 4\n\n\n\nOct 25\nModels with a single predictor\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOct 27\nModels with multiple predictors\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 4\n\n\n\nOct 28\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 4\n\n\n10\nOct 31\nPredicting a numerical outcome\n\n\n\n\n\n\n\n\n\nRelease: Lab 5\n\n\n\nNov 1\nModels with multiple predictors + Overfitting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 3\nLogistic regression\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 4 / Release: HW 5\n\n\n\nNov 4\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 5 / Release: HW 6\n\n\n\nNov 5\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 1\n\n\n11\nNov 7\nWork on project draft\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 8\nQuantifying uncertainty with bootstrap intervals\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 10\nHypothesis testing via simulation\n\n\n\n\n\n\n\n\n\nDue: HW 5\n\n\n\nNov 11\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 1\n\n\n12\nNov 14\nPrediction + Bootstrapping\n\n\n\n\n\n\n\n\n\nRelease: Lab 6\n\n\n\nNov 15\nInference overview\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 17\nExam 2 Review\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 2 at 12pm\n\n\n\nNov 18\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 6\n\n\n13\nNov 21\nNo lab - Work on Exam 2\n\n\n\n\n\n\n\n\n\nDue: Exam 2 at 2pm\n\n\n\nNov 22\nNo lecture - Work on projects\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 24\nNo lecture - Thanksgiving\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNov 25\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam retake (optional)\n\n\n\nNov 27\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 2 (optional)\n\n\n14\nNov 28\nWork on project peer review\n\n\n\n\n\n\n\n\n\n\n\nDue: Project peer review\n\n\n\nNov 29\nCommunicating data science results effectively\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 2\n\n\n\nDec 1\nCustomizing Quarto reports and presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nDec 5\nProject presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDec 6\nLooking further: Text analysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDec 8\nLooking further: Interactive web applications with Shiny\n\n\n\n\n\n\n\n\n\nDue: Project everything\n\n\n\nDec 9\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 6 / Statistics experience\n\n\n16\nDec 15\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam retake (optional)",
+    "text": "This pages contains log for my self-study on probability theory.",
     "crumbs": [
       "Teaching",
+      "Mathematics",
       "Probability theory resources"
     ]
   },
@@ -580,6 +583,66 @@
     "crumbs": [
       "Notes",
       "Trade notes"
+    ]
+  },
+  {
+    "objectID": "teaching/set.html",
+    "href": "teaching/set.html",
+    "title": "Set theory",
+    "section": "",
+    "text": "This pages contains log for my self-study on set theory.",
+    "crumbs": [
+      "Teaching",
+      "Mathematics",
+      "Set theory resources"
+    ]
+  },
+  {
+    "objectID": "teaching/set.html#the-axioms",
+    "href": "teaching/set.html#the-axioms",
+    "title": "Set theory",
+    "section": "3. The axioms",
+    "text": "3. The axioms",
+    "crumbs": [
+      "Teaching",
+      "Mathematics",
+      "Set theory resources"
+    ]
+  },
+  {
+    "objectID": "teaching/set.html#elementary-operations-on-sets",
+    "href": "teaching/set.html#elementary-operations-on-sets",
+    "title": "Set theory",
+    "section": "4. Elementary operations on sets",
+    "text": "4. Elementary operations on sets",
+    "crumbs": [
+      "Teaching",
+      "Mathematics",
+      "Set theory resources"
+    ]
+  },
+  {
+    "objectID": "teaching/set.html#chapter-1-sets",
+    "href": "teaching/set.html#chapter-1-sets",
+    "title": "Set theory",
+    "section": "Chapter 1: Sets",
+    "text": "Chapter 1: Sets\n\n3. The axioms\n\n3.1\nLet \\(P(x, A, B)\\) be the property: \\(x \\in A, \\, x \\notin B\\). Then this property implies that \\(x \\in A\\). Therefore, \\(\\{ x \\mid x \\in A, x \\in B \\} = \\{ x \\in A \\mid x \\in A, x \\in B \\} = \\{ x \\in A \\mid x \\in B \\}\\). This set exists by the Axiom schema of comprehension.\n\n\n3.2\nLet \\(A\\) be a set known to exist. Then using property \\(P(x) = x \\neq x\\), we can use Axiom schema of comprehension to say that there exists set \\(B = \\{ x \\in A \\mid x \\neq x \\}\\). Then we can easily see that such set is empty.\n\n\n3.3 (a)\nSuppose that there is a set of all sets \\(V\\). Then using Axiom schema of comprehension, there exists a set \\(T = \\{ x \\in V \\mid x \\notin x \\}\\). Now we will show contradiction by saying \\(T \\notin V\\) since this would mean \\(T\\) is not a set. Suppose \\(T \\in V\\). Suppose \\(T \\notin T\\). Then \\(T \\in T\\), contradiction. Suppose \\(T \\in T\\). Then \\(T \\notin T\\) must hold, again contradiction. Thus \\(T \\notin V\\).\n\n\n3.3 (b)\nThis is easily proven because if there is some set \\(A\\) where \\(x \\in A\\) for all \\(x\\), this would mean \\(A\\) is set of all sets.\n\n\n3.4\nThis can be proven by doing axiom of schema comprehension and then doing axiom of union.\n\n\n3.5\nThis can be proven by doing Axiom of pair and union.\n\n\n\n4. Elementary operations on sets",
+    "crumbs": [
+      "Teaching",
+      "Mathematics",
+      "Set theory resources"
+    ]
+  },
+  {
+    "objectID": "teaching/set.html#chapter-2",
+    "href": "teaching/set.html#chapter-2",
+    "title": "Set theory",
+    "section": "Chapter 2",
+    "text": "Chapter 2",
+    "crumbs": [
+      "Teaching",
+      "Mathematics",
+      "Set theory resources"
     ]
   }
 ]
