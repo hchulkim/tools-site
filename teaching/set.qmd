@@ -40,6 +40,22 @@ This can be proven by doing axiom of schema comprehension and then doing axiom o
 
 This can be proven by doing Axiom of pair and union.
 
+#### 3.6
+
+We will use the hint. we can clearly see that $Y \in p(x)$ since $Y$ by definition is a subset of $X$. Then we can derive contradiction by checking if $Y \in Y$. This logic is similar to the previous proofs that showed that "set of all sets" does not exist.
+
+#### 3.7
+
+Consult [link](https://jianfeishen.weebly.com/uploads/4/7/2/6/4726705/set-theory.pdf).
+
 ### 4. Elementary operations on sets
+
+#### 4.4
+
+Suppose that $A^c$ exists. Then by axiom of union, the union of $A$ and $A^c$ exists. But this is set of all sets. Contradiction.
+
+#### 4.6
+
+Consult [link](https://jianfeishen.weebly.com/uploads/4/7/2/6/4726705/set-theory.pdf).
 
 ## Chapter 2
