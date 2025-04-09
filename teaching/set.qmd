@@ -59,3 +59,21 @@ Suppose that $A^c$ exists. Then by axiom of union, the union of $A$ and $A^c$ ex
 Consult [link](https://jianfeishen.weebly.com/uploads/4/7/2/6/4726705/set-theory.pdf).
 
 ## Chapter 2
+
+### 1. Ordered pairs
+
+#### 1.1
+
+We will just prove the general one. Let $a \in A$ and $b \in A$ (Note that in set theory, everything is a set). Then by axiom of pair, $\{ a\}$ and $\{a,b\}$ exists and they are elements of $p(A)$. We can again do axiom of pair to finish the proof.
+
+#### 1.2
+
+This is just proven by multiple application of axiom of pairing.
+
+#### 1.3
+
+Suppose $a \neq b$. Then as $\{a \} = \{b\}$, this implies that $a=b$, contradiction.
+
+#### 1.4, 1.5, 1.6
+
+Consult [link](https://jianfeishen.weebly.com/uploads/4/7/2/6/4726705/set-theory.pdf).
