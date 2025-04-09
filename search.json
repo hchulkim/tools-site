@@ -437,7 +437,7 @@
     "href": "teaching/set.html#chapter-2",
     "title": "Set theory",
     "section": "Chapter 2",
-    "text": "Chapter 2",
+    "text": "Chapter 2\n\n1. Ordered pairs\n\n1.1\nWe will just prove the general one. Let \\(a \\in A\\) and \\(b \\in A\\) (Note that in set theory, everything is a set). Then by axiom of pair, \\(\\{ a\\}\\) and \\(\\{a,b\\}\\) exists and they are elements of \\(p(A)\\). We can again do axiom of pair to finish the proof.\n\n\n1.2\nThis is just proven by multiple application of axiom of pairing.\n\n\n1.3\nSuppose \\(a \\neq b\\). Then as \\(\\{a \\} = \\{b\\}\\), this implies that \\(a=b\\), contradiction.\n\n\n1.4, 1.5, 1.6\nConsult link.",
     "crumbs": [
       "Teaching",
       "Mathematics",
