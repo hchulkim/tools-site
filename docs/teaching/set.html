@@ -419,6 +419,58 @@ window.Quarto = {
 <section id="section-11" class="level4">
 <h4 class="anchored" data-anchor-id="section-11">1.4, 1.5, 1.6</h4>
 <p>Consult <a href="https://jianfeishen.weebly.com/uploads/4/7/2/6/4726705/set-theory.pdf">link</a>.</p>
+</section>
+<section id="section-12" class="level4">
+<h4 class="anchored" data-anchor-id="section-12">2.1</h4>
+<p><span class="math inline">\((x,y) \in R\)</span> implies that <span class="math inline">\(\{x \}, \{ x,y\} \in \cup R\)</span>. Thus we have <span class="math inline">\(x,y \in A\)</span>. Then we can use axiom schema comprehension to show that <span class="math inline">\(\text{dom} R\)</span> exists. Same logic goes for <span class="math inline">\(\text{ran} R\)</span>.</p>
+</section>
+<section id="a-1" class="level4">
+<h4 class="anchored" data-anchor-id="a-1">2.2 (a)</h4>
+<p>Just use the hint and use axiom of schema comprehension.</p>
+</section>
+<section id="b-1" class="level4">
+<h4 class="anchored" data-anchor-id="b-1">2.2 (b)</h4>
+<p>Note that <span class="math inline">\(A \times B\)</span> exists. thus <span class="math inline">\(A \times B \times C = (A \times B) \times C\)</span> will also exist. We can explicitly define it as</p>
+<p><span class="math display">\[
+  A \times B \times C = \left\{ (a,b,c) \in p \left[ p \left[ (p(p(A \cup B))) \cup C \right] \right]: a \in A, b \in B, c \in C  \right\}.
+\]</span></p>
+</section>
+<section id="a-2" class="level4">
+<h4 class="anchored" data-anchor-id="a-2">2.3 (a)</h4>
+<p><span class="math inline">\(y \in R [A \cup B]\)</span> iff there is <span class="math inline">\(x \in A \cup B\)</span> s.t. <span class="math inline">\((x,y) \in R\)</span>. This holds if and only if <span class="math inline">\(x \in A\)</span> or <span class="math inline">\(x \in B\)</span> s.t. <span class="math inline">\((x,y) \in R\)</span>. Then this shows that <span class="math inline">\(x \in R[A] \cup R[B]\)</span>.</p>
+</section>
+<section id="b-2" class="level4">
+<h4 class="anchored" data-anchor-id="b-2">2.3 (b)</h4>
+<p>Again suppose <span class="math inline">\(y \in R[A \cap B]\)</span>. Then there is <span class="math inline">\(x \in A \cap B\)</span> s.t. <span class="math inline">\((x,y) \in R\)</span>. This means there is <span class="math inline">\(x\in A\)</span> and <span class="math inline">\(x \in B\)</span> such that <span class="math inline">\((x,y) \in R\)</span>.</p>
+</section>
+<section id="c" class="level4">
+<h4 class="anchored" data-anchor-id="c">2.3 (c)</h4>
+<p>Let <span class="math inline">\(y \in R[A] - R[B]\)</span>. Then there is <span class="math inline">\(x \in A, x \notin B\)</span> s.t. <span class="math inline">\((x,y) \in R\)</span>. This is literally <span class="math inline">\(R[A-B]\)</span>.</p>
+</section>
+<section id="d" class="level4">
+<h4 class="anchored" data-anchor-id="d">2.3 (d)</h4>
+<p>For (b), think of a case where there is a point <span class="math inline">\((x1,y)\)</span> and <span class="math inline">\((x2,y)\)</span> where <span class="math inline">\(x1 \in A - B\)</span> and <span class="math inline">\(x2 \in B-A\)</span>. Then this would be in <span class="math inline">\(R[A] \cap R[B]\)</span> but <span class="math inline">\(R[A \cap B]\)</span>.</p>
+<p>For (c), think of a case where there is some point <span class="math inline">\(x \in A-B\)</span> and <span class="math inline">\(y \in A \cap B\)</span> where it corresponds to same value. Then for <span class="math inline">\(R[A] - R[B]\)</span> will not have this value although it will be in <span class="math inline">\(R[A-B]\)</span>.</p>
+</section>
+<section id="f" class="level4">
+<h4 class="anchored" data-anchor-id="f">2.3 (f)</h4>
+<p>Let <span class="math inline">\(x \in A \cap \text{dom} R\)</span>. Then <span class="math inline">\(x \in A\)</span> and there is <span class="math inline">\(y\)</span> s.t. <span class="math inline">\(xRy\)</span>. This implies that <span class="math inline">\(y \in R[A]\)</span> by definition. Then as we know there is <span class="math inline">\(x\)</span> s.t. <span class="math inline">\(yR^{1}x\)</span>, we get <span class="math inline">\(x \in R^{-1} \left[ R[A] \right]\)</span>. Similar logic holds for range. We can easily see that equality will not hold for cases such as <span class="math inline">\(x\)</span> where <span class="math inline">\(x \notin A\)</span> but there is <span class="math inline">\(y\)</span> s.t. <span class="math inline">\(xRy\)</span>. That is, the range value is inside <span class="math inline">\(R[A]\)</span>.</p>
+</section>
+<section id="a-3" class="level4">
+<h4 class="anchored" data-anchor-id="a-3">2.4 (a)</h4>
+<p>Let <span class="math inline">\(y \in R[X]\)</span>. Then <span class="math inline">\((x,y) \in R\)</span>. Thus <span class="math inline">\(y \in \text{ran} R\)</span>. Note that this if iff relation to results go through. Similar to domain case.</p>
+</section>
+<section id="b-3" class="level4">
+<h4 class="anchored" data-anchor-id="b-3">2.4 (b)</h4>
+<p>Suppose <span class="math inline">\(R^{-1}[\{ b \}]\)</span> is nonempty. Then there is <span class="math inline">\(a\)</span> s.t. <span class="math inline">\(\{b, a \} \in R\)</span>. Then <span class="math inline">\(a \in \text{ran } R\)</span>. Contradiction.</p>
+</section>
+<section id="c-1" class="level4">
+<h4 class="anchored" data-anchor-id="c-1">2.4 (c)</h4>
+<p><span class="math inline">\(x \in \text{dom } R\)</span>. This means <span class="math inline">\((x,y) \in R\)</span>. This implies <span class="math inline">\((y,x) \in R^{-1}\)</span>. So <span class="math inline">\(x\)</span> is also element of <span class="math inline">\(\text{ran } R^{-1}\)</span>.</p>
+</section>
+<section id="d-1" class="level4">
+<h4 class="anchored" data-anchor-id="d-1">2.4 (d)</h4>
+<p>We can easily prove it by noting that <span class="math inline">\((x,y) \in R \iff (y,x) \in R^{-1}\)</span>.</p>
 
 
 </section>
