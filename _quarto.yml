@@ -47,6 +47,8 @@ website:
           text: "BLP code (Julia)"
         - href: computing/data-table.qmd
           text: "Data.table (R)"
+        - href: computing/trade-notes.qmd
+          text: "Trade notes"
       - section: "Teaching"
         contents:
           - section: "Class-name"

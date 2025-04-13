@@ -1,0 +1,13 @@
+---
+title: "(Graduate) International trade notes"
+author: "Hyoungchul Kim"
+execute: 
+  freeze: auto
+format: 
+  html:
+    number-sections: true
+    code-overflow: wrap
+bibliography: references.bib
+---
+
+These are some notes for my self-study on International Trade (graduate level).
