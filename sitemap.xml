@@ -2,70 +2,74 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://tools.github.io/computing/blp.html</loc>
-    <lastmod>2025-04-13T19:08:58.621Z</lastmod>
+    <lastmod>2025-04-13T20:10:54.156Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/computing/duckdb-dplyr.html</loc>
-    <lastmod>2025-04-13T19:08:58.621Z</lastmod>
+    <lastmod>2025-04-13T20:10:54.156Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/computing/computing.html</loc>
-    <lastmod>2025-04-13T19:08:58.621Z</lastmod>
+    <lastmod>2025-04-13T20:10:54.156Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/computing/polars.html</loc>
-    <lastmod>2025-04-13T19:08:58.623Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/teaching/office-hours.html</loc>
-    <lastmod>2025-04-13T19:08:58.693Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/teaching/topology.html</loc>
-    <lastmod>2025-04-13T19:08:58.693Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/teaching/metrics.html</loc>
-    <lastmod>2025-04-13T19:08:58.693Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/teaching/prob.html</loc>
-    <lastmod>2025-04-13T19:08:58.693Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/index.html</loc>
-    <lastmod>2025-04-13T19:08:58.662Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/teaching/faq.html</loc>
-    <lastmod>2025-04-13T19:08:58.693Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/teaching/set.html</loc>
-    <lastmod>2025-04-13T19:08:58.693Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/teaching/teaching.html</loc>
-    <lastmod>2025-04-13T19:08:58.693Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/teaching/assignments.html</loc>
-    <lastmod>2025-04-13T19:08:58.693Z</lastmod>
+    <lastmod>2025-04-13T20:10:54.157Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/misc/links.html</loc>
-    <lastmod>2025-04-13T19:08:58.693Z</lastmod>
+    <lastmod>2025-04-13T20:10:54.227Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/teaching/assignments.html</loc>
+    <lastmod>2025-04-13T20:10:54.227Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/teaching/teaching.html</loc>
+    <lastmod>2025-04-13T20:10:54.227Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/teaching/set.html</loc>
+    <lastmod>2025-04-13T20:10:54.227Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/teaching/faq.html</loc>
+    <lastmod>2025-04-13T20:10:54.227Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/index.html</loc>
+    <lastmod>2025-04-13T20:10:54.197Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/teaching/prob.html</loc>
+    <lastmod>2025-04-13T20:10:54.227Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/teaching/metrics.html</loc>
+    <lastmod>2025-04-13T20:10:54.227Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/teaching/topology.html</loc>
+    <lastmod>2025-04-13T20:10:54.228Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/teaching/office-hours.html</loc>
+    <lastmod>2025-04-13T20:10:54.227Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/computing/trade-notes.html</loc>
+    <lastmod>2025-04-13T20:10:54.157Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/computing/data-table.html</loc>
-    <lastmod>2025-04-13T19:08:58.621Z</lastmod>
+    <lastmod>2025-04-13T20:10:54.156Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/computing/duckdb-sql.html</loc>
-    <lastmod>2025-04-13T19:08:58.623Z</lastmod>
+    <lastmod>2025-04-13T20:10:54.157Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/computing/docker.html</loc>
-    <lastmod>2025-04-13T19:08:58.621Z</lastmod>
+    <lastmod>2025-04-13T20:10:54.156Z</lastmod>
   </url>
 </urlset>
