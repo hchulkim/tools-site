@@ -45,8 +45,8 @@ website:
           text: "Polars (R + Python)"
         - href: computing/blp.qmd
           text: "BLP code (Julia)"
-        - href: computing/data-table.qmd
-          text: "Data.table (R)"
+        - href: computing/gis.qmd
+          text: "Geospatial (R)"
         - href: computing/trade-notes.qmd
           text: "Trade notes"
       - section: "Teaching"

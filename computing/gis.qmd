@@ -1,0 +1,20 @@
+---
+title: "Geospatial with R"
+subtitle: "Practicing GIS in R"
+execute:
+  freeze: auto
+---
+
+This is my practice sections following blog posts by Andrew Heiss.
+
+## Middle earth maps with R
+
+[Middle earth maps with R](https://www.andrewheiss.com/blog/2023/04/26/middle-earth-mapping-sf-r-gis/)
+
+### Quick reminder: latitude vs. longitude
+
+```{r}
+#| echo: true
+
+library(data.table) 
+```
