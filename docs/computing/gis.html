@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Hyoungchul Kim">
 
-<title>(Graduate) International trade notes – tools</title>
+<title>Geospatial with R – tools</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -30,8 +63,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../teaching/teaching.html" rel="next">
-<link href="../computing/gis.html" rel="prev">
+<link href="../computing/trade-notes.html" rel="next">
+<link href="../computing/blp.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -72,11 +105,14 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<meta property="og:title" content="(Graduate) International trade notes – tools">
-<meta property="og:description" content="Homepage for my tools.">
+<meta property="og:title" content="Geospatial with R – tools">
+<meta property="og:description" content="Practicing GIS in R">
+<meta property="og:image" content="https://tools.github.io/computing/gis_files/figure-html/unnamed-chunk-1-1.png">
 <meta property="og:site_name" content="tools">
-<meta name="twitter:title" content="(Graduate) International trade notes – tools">
-<meta name="twitter:description" content="Homepage for my tools.">
+<meta property="og:image:height" content="960">
+<meta property="og:image:width" content="1344">
+<meta name="twitter:title" content="Geospatial with R – tools">
+<meta name="twitter:description" content="Practicing GIS in R">
 <meta name="twitter:image" content="https://tools.github.io/computing/images/pic.png">
 <meta name="twitter:creator" content="@hckim_econ">
 <meta name="twitter:card" content="summary_large_image">
@@ -91,7 +127,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../computing/computing.html">Notes</a></li><li class="breadcrumb-item"><a href="../computing/trade-notes.html">Trade notes</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../computing/computing.html">Notes</a></li><li class="breadcrumb-item"><a href="../computing/gis.html">Geospatial (R)</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -167,13 +203,13 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../computing/gis.html" class="sidebar-item-text sidebar-link">
+  <a href="../computing/gis.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Geospatial (R)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../computing/trade-notes.html" class="sidebar-item-text sidebar-link active">
+  <a href="../computing/trade-notes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Trade notes</span></a>
   </div>
 </li>
@@ -282,27 +318,32 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#middle-earth-maps-with-r" id="toc-middle-earth-maps-with-r" class="nav-link active" data-scroll-target="#middle-earth-maps-with-r">Middle earth maps with R</a>
+  <ul class="collapse">
+  <li><a href="#quick-reminder-latitude-vs.-longitude" id="toc-quick-reminder-latitude-vs.-longitude" class="nav-link" data-scroll-target="#quick-reminder-latitude-vs.-longitude">Quick reminder: latitude vs.&nbsp;longitude</a></li>
+  <li><a href="#start-the-middle-earth-mapping" id="toc-start-the-middle-earth-mapping" class="nav-link" data-scroll-target="#start-the-middle-earth-mapping">Start the middle earth mapping</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/computing/gis.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../computing/computing.html">Notes</a></li><li class="breadcrumb-item"><a href="../computing/trade-notes.html">Trade notes</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../computing/computing.html">Notes</a></li><li class="breadcrumb-item"><a href="../computing/gis.html">Geospatial (R)</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">(Graduate) International trade notes</h1>
+<h1 class="title">Geospatial with R</h1>
+<p class="subtitle lead">Practicing GIS in R</p>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Hyoungchul Kim </p>
-          </div>
-  </div>
     
   
     
@@ -313,9 +354,140 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>These are some notes for my self-study on International Trade (graduate level).</p>
+<p>This is my practice sections following blog posts by Andrew Heiss.</p>
+<section id="middle-earth-maps-with-r" class="level2">
+<h2 class="anchored" data-anchor-id="middle-earth-maps-with-r">Middle earth maps with R</h2>
+<p><a href="https://www.andrewheiss.com/blog/2023/04/26/middle-earth-mapping-sf-r-gis/">Middle earth maps with R</a></p>
+<section id="quick-reminder-latitude-vs.-longitude" class="level3">
+<h3 class="anchored" data-anchor-id="quick-reminder-latitude-vs.-longitude">Quick reminder: latitude vs.&nbsp;longitude</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearth)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>point_example <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="dv">2</span>, <span class="at">y =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">label =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"{x} x, {y} y</span><span class="sc">\n</span><span class="st">{y} lat, {x} lon"</span>))</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>lat_labs <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="sc">-</span><span class="dv">3</span>, <span class="at">y =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="at">label =</span> <span class="st">"Latitude"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>lon_labs <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>), <span class="at">y =</span> <span class="sc">-</span><span class="dv">2</span>, <span class="at">label =</span> <span class="st">"Longitude"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> point_example, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y), <span class="at">size =</span> <span class="dv">5</span>) <span class="sc">+</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(<span class="at">data =</span> point_example, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> label),</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">nudge_y =</span> <span class="fl">0.6</span>, <span class="at">family =</span> <span class="st">"Overpass ExtraBold"</span>) <span class="sc">+</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> lat_labs, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> label),</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.3</span>, <span class="at">family =</span> <span class="st">"Overpass Light"</span>) <span class="sc">+</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span> lon_labs, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> label),</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">hjust =</span> <span class="fl">1.1</span>, <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">angle =</span> <span class="dv">90</span>, <span class="at">family =</span> <span class="st">"Overpass Light"</span>) <span class="sc">+</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_equal</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">3.5</span>, <span class="dv">3</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>)) <span class="sc">+</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_blank</span>()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="gis_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="start-the-middle-earth-mapping" class="level3">
+<h3 class="anchored" data-anchor-id="start-the-middle-earth-mapping">Start the middle earth mapping</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>coastline <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"data/ME-GIS/Coastline2.shp"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span><span class="fu">iconv</span>(., <span class="at">from =</span> <span class="st">"ISO-8859-1"</span>, <span class="at">to =</span> <span class="st">"UTF-8"</span>)))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>contours <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"data/ME-GIS/Contours_18.shp"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span><span class="fu">iconv</span>(., <span class="at">from =</span> <span class="st">"ISO-8859-1"</span>, <span class="at">to =</span> <span class="st">"UTF-8"</span>)))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>rivers <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"data/ME-GIS/Rivers.shp"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span><span class="fu">iconv</span>(., <span class="at">from =</span> <span class="st">"ISO-8859-1"</span>, <span class="at">to =</span> <span class="st">"UTF-8"</span>)))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>roads <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"data/ME-GIS/Roads.shp"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span><span class="fu">iconv</span>(., <span class="at">from =</span> <span class="st">"ISO-8859-1"</span>, <span class="at">to =</span> <span class="st">"UTF-8"</span>)))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>lakes <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"data/ME-GIS/Lakes.shp"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span><span class="fu">iconv</span>(., <span class="at">from =</span> <span class="st">"ISO-8859-1"</span>, <span class="at">to =</span> <span class="st">"UTF-8"</span>)))</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>regions <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"data/ME-GIS/Regions_Anno.shp"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span><span class="fu">iconv</span>(., <span class="at">from =</span> <span class="st">"ISO-8859-1"</span>, <span class="at">to =</span> <span class="st">"UTF-8"</span>)))</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>forests <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"data/ME-GIS/Forests.shp"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span><span class="fu">iconv</span>(., <span class="at">from =</span> <span class="st">"ISO-8859-1"</span>, <span class="at">to =</span> <span class="st">"UTF-8"</span>)))</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>mountains <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"data/ME-GIS/Mountains_Anno.shp"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span><span class="fu">iconv</span>(., <span class="at">from =</span> <span class="st">"ISO-8859-1"</span>, <span class="at">to =</span> <span class="st">"UTF-8"</span>)))</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>placenames <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"data/ME-GIS/Combined_Placenames.shp"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), <span class="sc">~</span><span class="fu">iconv</span>(., <span class="at">from =</span> <span class="st">"ISO-8859-1"</span>, <span class="at">to =</span> <span class="st">"UTF-8"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>miles_to_meters <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">*</span> <span class="fl">1609.344</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>meters_to_miles <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  x <span class="sc">/</span> <span class="fl">1609.344</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>clr_green <span class="ot">&lt;-</span> <span class="st">"#035711"</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>clr_blue <span class="ot">&lt;-</span> <span class="st">"#0776e0"</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>clr_yellow <span class="ot">&lt;-</span> <span class="st">"#fffce3"</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Format numeric coordinates with degree symbols and cardinal directions</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>format_coords <span class="ot">&lt;-</span> <span class="cf">function</span>(coords) {</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  ns <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(coords[[<span class="dv">1</span>]][<span class="dv">2</span>] <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"N"</span>, <span class="st">"S"</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  ew <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(coords[[<span class="dv">1</span>]][<span class="dv">1</span>] <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"E"</span>, <span class="st">"W"</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glue</span>(<span class="st">"{latitude}°{ns} {longitude}°{ew}"</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">latitude =</span> <span class="fu">sprintf</span>(<span class="st">"%.6f"</span>, coords[[<span class="dv">1</span>]][<span class="dv">2</span>]),</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">longitude =</span> <span class="fu">sprintf</span>(<span class="st">"%.6f"</span>, coords[[<span class="dv">1</span>]][<span class="dv">1</span>]))</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="exploring-the-different-layers" class="level4">
+<h4 class="anchored" data-anchor-id="exploring-the-different-layers">Exploring the different layers</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> coastline, <span class="at">linewidth =</span> <span class="fl">0.25</span>, <span class="at">color =</span> <span class="st">"grey50"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="gis_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="add-rivers-and-lakes" class="level4">
+<h4 class="anchored" data-anchor-id="add-rivers-and-lakes">Add rivers and lakes</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> coastline, <span class="at">linewidth =</span> <span class="fl">0.25</span>, <span class="at">color =</span> <span class="st">"grey50"</span>) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> rivers, <span class="at">linewidth =</span> <span class="fl">0.2</span>, <span class="at">color =</span> clr_blue, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> lakes, <span class="at">linewidth =</span> <span class="fl">0.2</span>, <span class="at">color =</span> clr_blue, <span class="at">fill =</span> clr_blue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="gis_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -881,13 +1053,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../computing/gis.html" class="pagination-link" aria-label="Geospatial (R)">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Geospatial (R)</span>
+      <a href="../computing/blp.html" class="pagination-link" aria-label="BLP code (Julia)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">BLP code (Julia)</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../teaching/teaching.html" class="pagination-link" aria-label="Overview">
-        <span class="nav-page-text">Overview</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../computing/trade-notes.html" class="pagination-link" aria-label="Trade notes">
+        <span class="nav-page-text">Trade notes</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -899,7 +1071,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/computing/trade-notes.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/computing/gis.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This page is built using <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

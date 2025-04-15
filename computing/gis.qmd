@@ -14,7 +14,119 @@ This is my practice sections following blog posts by Andrew Heiss.
 ### Quick reminder: latitude vs. longitude
 
 ```{r}
-#| echo: true
+#| warning: false
 
-library(data.table) 
+library(data.table)
+library(tidyverse)
+library(sf)
+library(rnaturalearth)
+library(scales)
+library(patchwork)
+library(leaflet)
+library(glue)
+
+point_example <- tibble(x = 2, y = 1) %>% 
+  mutate(label = glue::glue("{x} x, {y} y\n{y} lat, {x} lon"))
+lat_labs <- tibble(x = -3, y = seq(-2, 3, 1), label = "Latitude")
+lon_labs <- tibble(x = seq(-2, 3, 1), y = -2, label = "Longitude")
+
+ggplot() +
+  geom_point(data = point_example, aes(x = x, y = y), size = 5) +
+  geom_label(data = point_example, aes(x = x, y = y, label = label),
+            nudge_y = 0.6, family = "Overpass ExtraBold") +
+  geom_text(data = lat_labs, aes(x = x, y = y, label = label),
+            hjust = 0.5, vjust = -0.3, family = "Overpass Light") +
+  geom_text(data = lon_labs, aes(x = x, y = y, label = label),
+            hjust = 1.1, vjust = -0.5, angle = 90, family = "Overpass Light") +
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  scale_x_continuous(breaks = seq(-2, 3, 1)) +
+  scale_y_continuous(breaks = seq(-2, 3, 1)) +
+  coord_equal(xlim = c(-3.5, 3), ylim = c(-3, 3)) +
+  labs(x = NULL, y = NULL) +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank(),
+        axis.text = element_blank()) 
 ```
+
+### Start the middle earth mapping
+
+```{r}
+#| warning: false 
+
+coastline <- read_sf("data/ME-GIS/Coastline2.shp") %>% 
+  mutate(across(where(is.character), ~iconv(., from = "ISO-8859-1", to = "UTF-8")))
+
+contours <- read_sf("data/ME-GIS/Contours_18.shp") %>% 
+  mutate(across(where(is.character), ~iconv(., from = "ISO-8859-1", to = "UTF-8")))
+
+rivers <- read_sf("data/ME-GIS/Rivers.shp") %>% 
+  mutate(across(where(is.character), ~iconv(., from = "ISO-8859-1", to = "UTF-8")))
+
+roads <- read_sf("data/ME-GIS/Roads.shp") %>% 
+  mutate(across(where(is.character), ~iconv(., from = "ISO-8859-1", to = "UTF-8")))
+
+lakes <- read_sf("data/ME-GIS/Lakes.shp") %>% 
+  mutate(across(where(is.character), ~iconv(., from = "ISO-8859-1", to = "UTF-8")))
+
+regions <- read_sf("data/ME-GIS/Regions_Anno.shp") %>% 
+  mutate(across(where(is.character), ~iconv(., from = "ISO-8859-1", to = "UTF-8")))
+
+forests <- read_sf("data/ME-GIS/Forests.shp") %>% 
+  mutate(across(where(is.character), ~iconv(., from = "ISO-8859-1", to = "UTF-8")))
+
+mountains <- read_sf("data/ME-GIS/Mountains_Anno.shp") %>% 
+  mutate(across(where(is.character), ~iconv(., from = "ISO-8859-1", to = "UTF-8")))
+
+placenames <- read_sf("data/ME-GIS/Combined_Placenames.shp") %>% 
+  mutate(across(where(is.character), ~iconv(., from = "ISO-8859-1", to = "UTF-8")))
+```
+
+```{r}
+#| warning: false
+
+miles_to_meters <- function(x) {
+  x * 1609.344
+}
+
+meters_to_miles <- function(x) {
+  x / 1609.344
+}
+
+clr_green <- "#035711"
+clr_blue <- "#0776e0"
+clr_yellow <- "#fffce3"
+
+# Format numeric coordinates with degree symbols and cardinal directions
+format_coords <- function(coords) {
+  ns <- ifelse(coords[[1]][2] > 0, "N", "S")
+  ew <- ifelse(coords[[1]][1] > 0, "E", "W")
+  
+  glue("{latitude}°{ns} {longitude}°{ew}",
+       latitude = sprintf("%.6f", coords[[1]][2]),
+       longitude = sprintf("%.6f", coords[[1]][1]))
+}
+```
+
+#### Exploring the different layers
+
+```{r}
+#| warning: false
+
+ggplot() +
+  geom_sf(data = coastline, linewidth = 0.25, color = "grey50")
+
+```
+
+#### Add rivers and lakes
+
+```{r}
+#| warning: false
+
+ggplot() +
+  geom_sf(data = coastline, linewidth = 0.25, color = "grey50") +
+  geom_sf(data = rivers, linewidth = 0.2, color = clr_blue, alpha = 0.5) +
+  geom_sf(data = lakes, linewidth = 0.2, color = clr_blue, fill = clr_blue)
+
+```
+
