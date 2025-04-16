@@ -323,6 +323,9 @@ window.Quarto = {
   <li><a href="#chapter-2" id="toc-chapter-2" class="nav-link" data-scroll-target="#chapter-2">Chapter 2</a>
   <ul class="collapse">
   <li><a href="#ordered-pairs" id="toc-ordered-pairs" class="nav-link" data-scroll-target="#ordered-pairs">1. Ordered pairs</a></li>
+  <li><a href="#relations" id="toc-relations" class="nav-link" data-scroll-target="#relations">2. Relations</a></li>
+  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">3. Functions</a></li>
+  <li><a href="#equivalence-relations" id="toc-equivalence-relations" class="nav-link" data-scroll-target="#equivalence-relations">4. Equivalence relations</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/teaching/set.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -420,6 +423,9 @@ window.Quarto = {
 <h4 class="anchored" data-anchor-id="section-11">1.4, 1.5, 1.6</h4>
 <p>Consult <a href="https://jianfeishen.weebly.com/uploads/4/7/2/6/4726705/set-theory.pdf">link</a>.</p>
 </section>
+</section>
+<section id="relations" class="level3">
+<h3 class="anchored" data-anchor-id="relations">2. Relations</h3>
 <section id="section-12" class="level4">
 <h4 class="anchored" data-anchor-id="section-12">2.1</h4>
 <p><span class="math inline">\((x,y) \in R\)</span> implies that <span class="math inline">\(\{x \}, \{ x,y\} \in \cup R\)</span>. Thus we have <span class="math inline">\(x,y \in A\)</span>. Then we can use axiom schema comprehension to show that <span class="math inline">\(\text{dom} R\)</span> exists. Same logic goes for <span class="math inline">\(\text{ran} R\)</span>.</p>
@@ -471,9 +477,26 @@ window.Quarto = {
 <section id="d-1" class="level4">
 <h4 class="anchored" data-anchor-id="d-1">2.4 (d)</h4>
 <p>We can easily prove it by noting that <span class="math inline">\((x,y) \in R \iff (y,x) \in R^{-1}\)</span>.</p>
-
-
 </section>
+</section>
+<section id="functions" class="level3">
+<h3 class="anchored" data-anchor-id="functions">3. Functions</h3>
+<section id="section-13" class="level4">
+<h4 class="anchored" data-anchor-id="section-13">3.1</h4>
+<p>Let <span class="math inline">\(x \in \text{dom } g \circ f\)</span>. Then there exists <span class="math inline">\(z\)</span> s.t. <span class="math inline">\(x(g \circ f)z\)</span>. Then there exists <span class="math inline">\(y\)</span> s.t. <span class="math inline">\(xfy, ygz\)</span>. So this implies that <span class="math inline">\(x \in \text{dom } f\)</span>.</p>
+<p>Now suppose <span class="math inline">\(x \in \text{dom } f\)</span>. Then there is <span class="math inline">\(y\)</span> s.t. <span class="math inline">\(xfy\)</span>. As <span class="math inline">\(ran f \subset dom g\)</span>, there is <span class="math inline">\(z\)</span> s.t. <span class="math inline">\(ygz\)</span>. So <span class="math inline">\(x(g \circ f)z\)</span>.</p>
+</section>
+<section id="a-4" class="level4">
+<h4 class="anchored" data-anchor-id="a-4">3.4 (a)</h4>
+<p>Let <span class="math inline">\((x,y) \in f^{-1} \circ f\)</span>. Then there is <span class="math inline">\(z\)</span> s.t. <span class="math inline">\(xfz\)</span>, <span class="math inline">\(zf^{-1}y\)</span> which means <span class="math inline">\(yfz\)</span>. This means <span class="math inline">\(x=x\)</span>. So <span class="math inline">\(x \in Id\)</span>.</p>
+<p>OTH, if <span class="math inline">\((x,x) \in Id\)</span>, there is <span class="math inline">\(y\)</span> s.t. <span class="math inline">\(xfy\)</span> and <span class="math inline">\(yf^{-1}x\)</span>. So <span class="math inline">\(x \in f^{-1} \circ f\)</span>.</p>
+<p>I also proved 3.4 (b), 3.10 but lost the paper that I wrote it down and am too lazy to do it again. Contact me if you need them.</p>
+</section>
+</section>
+<section id="equivalence-relations" class="level3">
+<h3 class="anchored" data-anchor-id="equivalence-relations">4. Equivalence relations</h3>
+
+
 </section>
 </section>
 
