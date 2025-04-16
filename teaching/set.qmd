@@ -78,6 +78,8 @@ Suppose $a \neq b$. Then as $\{a \} = \{b\}$, this implies that $a=b$, contradic
 
 Consult [link](https://jianfeishen.weebly.com/uploads/4/7/2/6/4726705/set-theory.pdf).
 
+### 2. Relations
+
 #### 2.1
 
 $(x,y) \in R$ implies that $\{x \}, \{ x,y\} \in \cup R$. Thus we have $x,y \in A$. Then we can use axiom schema comprehension to show that $\text{dom} R$ exists. Same logic goes for $\text{ran} R$.
@@ -131,3 +133,21 @@ $x \in \text{dom } R$. This means $(x,y) \in R$. This implies $(y,x) \in R^{-1}$
 #### 2.4 (d)
 
 We can easily prove it by noting that $(x,y) \in R \iff (y,x) \in R^{-1}$.
+
+### 3. Functions
+
+#### 3.1
+
+Let $x \in \text{dom } g \circ f$. Then there exists $z$ s.t. $x(g \circ f)z$. Then there exists $y$ s.t. $xfy, ygz$. So this implies that $x \in \text{dom } f$. 
+
+Now suppose $x \in \text{dom } f$. Then there is $y$ s.t. $xfy$. As $ran f \subset dom g$, there is $z$ s.t. $ygz$. So $x(g \circ f)z$.
+
+#### 3.4 (a)
+
+Let $(x,y) \in f^{-1} \circ f$. Then there is $z$ s.t. $xfz$, $zf^{-1}y$ which means $yfz$. This means $x=x$. So $x \in Id$. 
+
+OTH, if $(x,x) \in Id$, there is $y$ s.t. $xfy$ and $yf^{-1}x$. So $x \in f^{-1} \circ f$.
+
+I also proved 3.4 (b), 3.10 but lost the paper that I wrote it down and am too lazy to do it again. Contact me if you need them.
+
+### 4. Equivalence relations
