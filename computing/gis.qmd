@@ -130,3 +130,112 @@ ggplot() +
 
 ```
 
+#### Putting some labels
+
+```{r}
+#| warning: false
+
+places <- placenames %>% 
+  filter(NAME %in% c("Hobbiton", "Rivendell", "Edoras", "Minas Tirith"))
+
+ggplot()+
+  geom_sf(data = coastline, linewidth = 0.25, color = "grey50") +
+  geom_sf(data = rivers, linewidth = 0.2, color = clr_blue, alpha = 0.5) +
+  geom_sf(data = lakes, linewidth = 0.2, color = clr_blue, fill = clr_blue) +
+  geom_sf(data = places, size = 1) +
+  geom_sf_label(data = places, aes(label = NAME), nudge_y = miles_to_meters(50))
+```
+
+#### Fancy map with lot of layers
+
+```{r}
+#| warning: false
+
+places <- placenames %>% 
+  filter(NAME %in% c("Hobbiton", "Rivendell", "Edoras", "Minas Tirith"))
+
+ggplot() +
+  geom_sf(data = contours, linewidth = 0.15, color = "grey90") +
+  geom_sf(data = coastline, linewidth = 0.25, color = "grey50") +
+  geom_sf(data = rivers, linewidth = 0.2, color = clr_blue, alpha = 0.5) +
+  geom_sf(data = lakes, linewidth = 0.2, color = clr_blue, fill = clr_blue) +
+  geom_sf(data = forests, linewidth = 0, fill = clr_green, alpha = 0.5) +
+  geom_sf(data = mountains, linewidth = 0.25, linetype = "dashed") +
+  geom_sf(data = places) +
+  geom_sf_label(data = places, aes(label = NAME), nudge_y = miles_to_meters(40),
+                family = "Overpass ExtraBold", fontface = "plain") +
+  theme_void() +
+  theme(plot.background = element_rect(fill = clr_yellow))
+```
+
+#### Focusing on Shire
+
+```{r}
+#| warning: false
+
+hobbiton <- places %>% 
+  filter(NAME == "Hobbiton") %>% 
+  mutate(geometry_x = map_dbl(geometry, ~as.numeric(.)[1]),
+         geometry_y = map_dbl(geometry, ~as.numeric(.)[2]))
+
+hobbiton %>% 
+  select(LAYER, NAME, geometry_x, geometry_y)
+
+shire_towns <- placenames %>% filter(LAYER == "TownNames")
+
+ggplot() +
+  geom_sf(data = rivers, linewidth = 0.45, color = clr_blue, alpha = 0.5) +
+  geom_sf(data = roads) +
+  geom_sf(data = shire_towns, size = 2) +
+  geom_sf_label(data = shire_towns, aes(label = NAME), nudge_y = miles_to_meters(3),
+                family = "Overpass ExtraBold", fontface = "plain") +
+  coord_sf(xlim = c(hobbiton$geometry_x - miles_to_meters(30), 
+                    hobbiton$geometry_x + miles_to_meters(60)),
+           ylim = c(hobbiton$geometry_y - miles_to_meters(35), 
+                    hobbiton$geometry_y + miles_to_meters(20)))
+```
+
+#### Fancy map of Shire
+
+```{r}
+#| warning: false
+
+library(ggspatial) 
+
+shire_towns <- placenames %>% filter(LAYER == "TownNames")
+
+ggplot() +
+  geom_sf(data = roads, aes(linewidth = TYPE), color = "grey80") +
+  geom_sf(data = coastline, linewidth = 0.25, color = "grey50") +
+  geom_sf(data = rivers, linewidth = 0.45, color = clr_blue, alpha = 0.5) +
+  geom_sf_text(data = rivers, aes(label = NAME), color = clr_blue,
+               family = "Overpass SemiBold", fontface = "italic", size = 3.5) +
+  geom_sf_text(data = regions, aes(label = name),
+               family = "Overpass Heavy", size = 5, color = "grey30") +
+  geom_sf(data = forests, linewidth = 0, fill = clr_green, alpha = 0.4) +
+  geom_sf_text(data = forests, aes(label = NAME), nudge_y = miles_to_meters(1),
+               color = clr_green, family = "Overpass ExtraBold", fontface = "italic", size = 4) +
+  geom_sf(data = shire_towns, size = 2) +
+  geom_sf_label(data = shire_towns, aes(label = NAME), nudge_y = miles_to_meters(3),
+                family = "Overpass ExtraBold", fontface = "plain") +
+  scale_linewidth_discrete(range = c(1, 0.3), guide = "none") +
+  annotation_scale(location = "tl", bar_cols = c("grey30", "white"),
+                   text_family = "Overpass",
+                   unit_category = "imperial") +
+  annotation_north_arrow(
+    location = "tl", pad_y = unit(1.5, "lines"),
+    style = north_arrow_fancy_orienteering(fill = c("grey30", "white"), 
+                                           line_col = "grey30",
+                                           text_family = "Overpass")) +
+  coord_sf(xlim = c(hobbiton$geometry_x - miles_to_meters(30), 
+                    hobbiton$geometry_x + miles_to_meters(60)),
+           ylim = c(hobbiton$geometry_y - miles_to_meters(35), 
+                    hobbiton$geometry_y + miles_to_meters(20))) +
+  labs(title = "The Shire") +
+  theme_void() +
+  theme(plot.background = element_rect(fill = clr_yellow),
+        plot.title = element_text(family = "Aniron", size = rel(2), 
+                                  hjust = 0.02))
+```
+
+#### Distances between places
