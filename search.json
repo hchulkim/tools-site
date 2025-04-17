@@ -268,7 +268,7 @@
     "href": "computing/julia-self-study.html",
     "title": "Julia self study",
     "section": "",
-    "text": "using DataFrames\nusing CSV\nusing XLSX\nMake a toy dataframe",
+    "text": "using DataFrames\nusing CSV\nusing XLSX\nMake a toy dataframe\nfunction grades_2020()\n    name = [\"Sally\", \"Bob\", \"Alice\", \"Hank\"]\n    grade_2020 = [1, 5, 8.5, 4]\n    DataFrame(; name, grade_2020)\nend\ngrades_2020()\n\nfunction grades_2021()\n    name = [\"Sally\", \"Bob\", \"Alice\", \"Hank\", \"John\"]\n    grade_2021 = [3, 5, 8.5, 7, 10]\n    DataFrame(; name, grade_2021)\nend\ngrades_2021()\n\n5×2 DataFrame\n\n\n\nRow\nname\ngrade_2021\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n3.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n7.0\n\n\n5\nJohn\n10.0",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -279,7 +279,7 @@
     "href": "computing/julia-self-study.html#csv-files",
     "title": "Julia self study",
     "section": "CSV files",
-    "text": "CSV files\nWrite the dataframe into CSV file\nCSV.write(\"toy.csv\", grades_2020())\nRead in the CSV file\ntoy = CSV.read(\"toy.csv\", DataFrame)\nfirst(toy, 5)",
+    "text": "CSV files\nWrite the dataframe into CSV file\n\nCSV.write(\"toy.csv\", grades_2020())\n\n\"toy.csv\"\n\n\nRead in the CSV file\n\ntoy = CSV.read(\"toy.csv\", DataFrame)\nfirst(toy, 5)\n\n4×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString7\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -290,7 +290,7 @@
     "href": "computing/julia-self-study.html#excel-files",
     "title": "Julia self study",
     "section": "Excel files",
-    "text": "Excel files\n#| eval: false\n\nfunction write_xlsx(name, df::DataFrame)\n    path = \"$name.xlsx\"\n    data = collect(eachcol(df))\n    cols = names(df)\n    write(path, data, cols)\nend\n\nfunction write_grades_xlsx()\n    path = \"grades\"\n    write_xlsx(path, grades_2020())\n    \"$path.xlsx\"\nend\n\npath = write_grades_xlsx()\nxf = readxlsx(path)",
+    "text": "Excel files\n\nfunction write_xlsx(name, df::DataFrame)\n    path = \"$name.xlsx\"\n    data = collect(eachcol(df))\n    cols = names(df)\n    write(path, data, cols)\nend\n\nfunction write_grades_xlsx()\n    path = \"grades\"\n    write_xlsx(path, grades_2020())\n    \"$path.xlsx\"\nend\n\npath = write_grades_xlsx()\nxf = readxlsx(path)",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -301,7 +301,7 @@
     "href": "computing/julia-self-study.html#filter-and-subset",
     "title": "Julia self study",
     "section": "Filter and subset",
-    "text": "Filter and subset\n\nequals_alice(name::String) = name == \"Alice\"\n\nfilter(:name =&gt; equals_alice, grades_2020())\n\nfilter(:name =&gt; n -&gt; n == \"Alice\", grades_2020())\n\nfilter(:name =&gt; ==(\"Alice\"), grades_2020())\nfilter(:name =&gt; !=(\"Alice\"), grades_2020())\n\nfunction complex_filter(name, grade)::Bool\n    interesting_name = startswith(name, 'A') || startswith(name, 'B')\n    interesting_grade = 6 &lt; grade\n    interesting_name && interesting_grade\nend\n\nfilter([:name, :grade_2020] =&gt; complex_filter, grades_2020())",
+    "text": "Filter and subset\n\nequals_alice(name::String) = name == \"Alice\"\n\nfilter(:name =&gt; equals_alice, grades_2020())\n\nfilter(:name =&gt; n -&gt; n == \"Alice\", grades_2020())\n\nfilter(:name =&gt; ==(\"Alice\"), grades_2020())\nfilter(:name =&gt; !=(\"Alice\"), grades_2020())\n\n3×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nHank\n4.0\n\n\n\n\n\n\n\nfunction complex_filter(name, grade)::Bool\n    interesting_name = startswith(name, 'A') || startswith(name, 'B')\n    interesting_grade = 6 &lt; grade\n    interesting_name && interesting_grade\nend\n\nfilter([:name, :grade_2020] =&gt; complex_filter, grades_2020())\n\n1×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -312,7 +312,7 @@
     "href": "computing/julia-self-study.html#select",
     "title": "Julia self study",
     "section": "Select",
-    "text": "Select\n\nfunction responses()\n    id = [1, 2]\n    q1 = [28, 61]\n    q2 = [:us, :fr]\n    q3 = [\"F\", \"B\"]\n    q4 = [\"B\", \"C\"]\n    q5 = [\"A\", \"E\"]\n    DataFrame(; id, q1, q2, q3, q4, q5)\nend\nresponses()\n\nselect(responses(), :id, :q1)\n\n# regex\nselect(responses(), r\"^q\")\n\nselect(responses(), Not(:q5))\nselect(responses(), Not([:q4, :q5]))\nselect(responses(), :q5, Not(:q5))\n\n# renaming\nselect(responses(), 1 =&gt; \"participant\", :q1 =&gt; \"age\", :q2 =&gt; \"nationality\")\nrenames = (1 =&gt; \"participant\", :q1 =&gt; \"age\", :q2 =&gt; \"nationality\")\nselect(responses(), renames...)",
+    "text": "Select\n\nfunction responses()\n    id = [1, 2]\n    q1 = [28, 61]\n    q2 = [:us, :fr]\n    q3 = [\"F\", \"B\"]\n    q4 = [\"B\", \"C\"]\n    q5 = [\"A\", \"E\"]\n    DataFrame(; id, q1, q2, q3, q4, q5)\nend\nresponses()\n\n2×6 DataFrame\n\n\n\nRow\nid\nq1\nq2\nq3\nq4\nq5\n\n\n\nInt64\nInt64\nSymbol\nString\nString\nString\n\n\n\n\n1\n1\n28\nus\nF\nB\nA\n\n\n2\n2\n61\nfr\nB\nC\nE\n\n\n\n\n\n\n\nselect(responses(), :id, :q1)\n\n# regex\nselect(responses(), r\"^q\")\n\nselect(responses(), Not(:q5))\nselect(responses(), Not([:q4, :q5]))\nselect(responses(), :q5, Not(:q5))\n\n# renaming\nselect(responses(), 1 =&gt; \"participant\", :q1 =&gt; \"age\", :q2 =&gt; \"nationality\")\nrenames = (1 =&gt; \"participant\", :q1 =&gt; \"age\", :q2 =&gt; \"nationality\")\nselect(responses(), renames...)\n\n2×3 DataFrame\n\n\n\nRow\nparticipant\nage\nnationality\n\n\n\nInt64\nInt64\nSymbol\n\n\n\n\n1\n1\n28\nus\n\n\n2\n2\n61\nfr",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -323,7 +323,7 @@
     "href": "computing/julia-self-study.html#left-and-right-joins",
     "title": "Julia self study",
     "section": "Left and right joins",
-    "text": "Left and right joins\n\nleftjoin(grades_2020(), grades_2021(); on=:name)\n\nrightjoin(grades_2020(), grades_2021(); on=:name)",
+    "text": "Left and right joins\n\nleftjoin(grades_2020(), grades_2021(); on=:name)\n\nrightjoin(grades_2020(), grades_2021(); on=:name)\n\n5×3 DataFrame\n\n\n\nRow\nname\ngrade_2020\ngrade_2021\n\n\n\nString\nFloat64?\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0\n\n\n5\nJohn\nmissing\n10.0",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -334,7 +334,7 @@
     "href": "computing/julia-self-study.html#transform-variables",
     "title": "Julia self study",
     "section": "Transform variables",
-    "text": "Transform variables\n\nplus_one(grades) = grades .+ 1\ntransform(grades_2020(), :grade_2020 =&gt; plus_one)\n\ntransform(grades_2020(), :grade_2020 =&gt; plus_one =&gt; :grade_2020)\ntransform(grades_2020(), :grade_2020 =&gt; plus_one; renamecols=false)\n\nleftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n\nfunction only_pass()\n    leftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n    pass(A, B) = [5.5 &lt; a || 5.5 &lt; b for (a, b) in zip(A, B)]\n    leftjoined = transform(leftjoined, [:grade_2020, :grade_2021] =&gt; pass =&gt; :pass)\n    passed = subset(leftjoined, :pass; skipmissing=true)\n    return passed.name\nend\nonly_pass()",
+    "text": "Transform variables\n\nplus_one(grades) = grades .+ 1\ntransform(grades_2020(), :grade_2020 =&gt; plus_one)\n\ntransform(grades_2020(), :grade_2020 =&gt; plus_one =&gt; :grade_2020)\ntransform(grades_2020(), :grade_2020 =&gt; plus_one; renamecols=false)\n\n4×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n2.0\n\n\n2\nBob\n6.0\n\n\n3\nAlice\n9.5\n\n\n4\nHank\n5.0\n\n\n\n\n\n\n\nleftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n\nfunction only_pass()\n    leftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n    pass(A, B) = [5.5 &lt; a || 5.5 &lt; b for (a, b) in zip(A, B)]\n    leftjoined = transform(leftjoined, [:grade_2020, :grade_2021] =&gt; pass =&gt; :pass)\n    passed = subset(leftjoined, :pass; skipmissing=true)\n    return passed.name\nend\nonly_pass()\n\n2-element Vector{String}:\n \"Alice\"\n \"Hank\"",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -345,7 +345,7 @@
     "href": "computing/julia-self-study.html#groupby-and-combine",
     "title": "Julia self study",
     "section": "Groupby and combine",
-    "text": "Groupby and combine\n\nfunction all_grades()\n    df1 = grades_2020()\n    df1 = select(df1, :name, :grade_2020 =&gt; :grade)\n    df2 = grades_2021()\n    df2 = select(df2, :name, :grade_2021 =&gt; :grade)\n    rename_bob2(data_col) = replace.(data_col, \"Bob 2\" =&gt; \"Bob\")\n    df2 = transform(df2, :name =&gt; rename_bob2 =&gt; :name)\n    return vcat(df1, df2)\nend\nall_grades()\n\ngroupby(all_grades(), :name)\n\nusing Statistics\n\ngdf = groupby(all_grades(), :name)\ncombine(gdf, :grade =&gt; mean)\n\ngroup = [:A, :A, :B, :B]\nX = 1:4\nY = 5:8\ndf = DataFrame(; group, X, Y)\n\ngdf = groupby(df, :group)\ncombine(gdf, [:X, :Y] .=&gt; mean; renamecols=false)",
+    "text": "Groupby and combine\n\nfunction all_grades()\n    df1 = grades_2020()\n    df1 = select(df1, :name, :grade_2020 =&gt; :grade)\n    df2 = grades_2021()\n    df2 = select(df2, :name, :grade_2021 =&gt; :grade)\n    rename_bob2(data_col) = replace.(data_col, \"Bob 2\" =&gt; \"Bob\")\n    df2 = transform(df2, :name =&gt; rename_bob2 =&gt; :name)\n    return vcat(df1, df2)\nend\nall_grades()\n\n9×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0\n\n\n5\nSally\n3.0\n\n\n6\nBob\n5.0\n\n\n7\nAlice\n8.5\n\n\n8\nHank\n7.0\n\n\n9\nJohn\n10.0\n\n\n\n\n\n\n\ngroupby(all_grades(), :name)\n\nusing Statistics\n\ngdf = groupby(all_grades(), :name)\ncombine(gdf, :grade =&gt; mean)\n\n5×2 DataFrame\n\n\n\nRow\nname\ngrade_mean\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n2.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n5.5\n\n\n5\nJohn\n10.0\n\n\n\n\n\n\n\ngroup = [:A, :A, :B, :B]\nX = 1:4\nY = 5:8\ndf = DataFrame(; group, X, Y)\n\ngdf = groupby(df, :group)\ncombine(gdf, [:X, :Y] .=&gt; mean; renamecols=false)\n\n2×3 DataFrame\n\n\n\nRow\ngroup\nX\nY\n\n\n\nSymbol\nFloat64\nFloat64\n\n\n\n\n1\nA\n1.5\n5.5\n\n\n2\nB\n3.5\n7.5",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -356,7 +356,7 @@
     "href": "computing/julia-self-study.html#missing-values",
     "title": "Julia self study",
     "section": "Missing values",
-    "text": "Missing values\n\ndf_missing = DataFrame(;\n    name=[missing, \"Sally\", \"Alice\", \"Hank\"],\n    age=[17, missing, 20, 19],\n    grade_2020=[5.0, 1.0, missing, 4.0],\n)\n\ndropmissing(df_missing)\n\ndropmissing(df_missing, :name)\n\ndropmissing(df_missing, [:name, :age])\n\nfilter(:name =&gt; !ismissing, df_missing)\n\ncombine(df_missing, :grade_2020 =&gt; mean ∘ skipmissing )",
+    "text": "Missing values\n\ndf_missing = DataFrame(;\n    name=[missing, \"Sally\", \"Alice\", \"Hank\"],\n    age=[17, missing, 20, 19],\n    grade_2020=[5.0, 1.0, missing, 4.0],\n)\n\ndropmissing(df_missing)\n\ndropmissing(df_missing, :name)\n\ndropmissing(df_missing, [:name, :age])\n\n2×3 DataFrame\n\n\n\nRow\nname\nage\ngrade_2020\n\n\n\nString\nInt64\nFloat64?\n\n\n\n\n1\nAlice\n20\nmissing\n\n\n2\nHank\n19\n4.0\n\n\n\n\n\n\n\nfilter(:name =&gt; !ismissing, df_missing)\n\ncombine(df_missing, :grade_2020 =&gt; mean ∘ skipmissing )\n\n1×1 DataFrame\n\n\n\nRow\ngrade_2020_mean_skipmissing\n\n\n\nFloat64\n\n\n\n\n1\n3.33333",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -367,7 +367,7 @@
     "href": "computing/julia-self-study.html#select-1",
     "title": "Julia self study",
     "section": "Select",
-    "text": "Select\n\ndf = all_grades()\n\n@select df :name\n@select df :name :grade\n@select df $(Not(:grade))\n\n@select df :grade_100 = :grade .* 10\n@rselect df :grade_100 = :grade * 10",
+    "text": "Select\n\ndf = all_grades()\n\n9×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0\n\n\n5\nSally\n3.0\n\n\n6\nBob\n5.0\n\n\n7\nAlice\n8.5\n\n\n8\nHank\n7.0\n\n\n9\nJohn\n10.0\n\n\n\n\n\n\n\n@select df :name\n@select df :name :grade\n@select df $(Not(:grade))\n\n9×1 DataFrame\n\n\n\nRow\nname\n\n\n\nString\n\n\n\n\n1\nSally\n\n\n2\nBob\n\n\n3\nAlice\n\n\n4\nHank\n\n\n5\nSally\n\n\n6\nBob\n\n\n7\nAlice\n\n\n8\nHank\n\n\n9\nJohn\n\n\n\n\n\n\n\n@select df :grade_100 = :grade .* 10\n@rselect df :grade_100 = :grade * 10\n\n9×1 DataFrame\n\n\n\nRow\ngrade_100\n\n\n\nFloat64\n\n\n\n\n1\n10.0\n\n\n2\n50.0\n\n\n3\n85.0\n\n\n4\n40.0\n\n\n5\n30.0\n\n\n6\n50.0\n\n\n7\n85.0\n\n\n8\n70.0\n\n\n9\n100.0",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -378,7 +378,7 @@
     "href": "computing/julia-self-study.html#column-transformation",
     "title": "Julia self study",
     "section": "Column transformation",
-    "text": "Column transformation\n\n@rtransform df :grade_100 = :grade * 10\n\n@rtransform df :grade_100 = :grade * 10 :grade_5 = :grade / 2\n\n@rtransform df begin\n    :grade_100 = :grade * 10\n    :grade_5 = :grade / 2\nend\n\nleftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n@rtransform! leftjoined :grade_2021 = coalesce(:grade_2021, 5)\n\n@rtransform leftjoined :mean_grades = (:grade_2020 + :grade_2021) / 2",
+    "text": "Column transformation\n\n@rtransform df :grade_100 = :grade * 10\n\n9×3 DataFrame\n\n\n\nRow\nname\ngrade\ngrade_100\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n10.0\n\n\n2\nBob\n5.0\n50.0\n\n\n3\nAlice\n8.5\n85.0\n\n\n4\nHank\n4.0\n40.0\n\n\n5\nSally\n3.0\n30.0\n\n\n6\nBob\n5.0\n50.0\n\n\n7\nAlice\n8.5\n85.0\n\n\n8\nHank\n7.0\n70.0\n\n\n9\nJohn\n10.0\n100.0\n\n\n\n\n\n\n\n@rtransform df :grade_100 = :grade * 10 :grade_5 = :grade / 2\n\n@rtransform df begin\n    :grade_100 = :grade * 10\n    :grade_5 = :grade / 2\nend\n\n9×4 DataFrame\n\n\n\nRow\nname\ngrade\ngrade_100\ngrade_5\n\n\n\nString\nFloat64\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n10.0\n0.5\n\n\n2\nBob\n5.0\n50.0\n2.5\n\n\n3\nAlice\n8.5\n85.0\n4.25\n\n\n4\nHank\n4.0\n40.0\n2.0\n\n\n5\nSally\n3.0\n30.0\n1.5\n\n\n6\nBob\n5.0\n50.0\n2.5\n\n\n7\nAlice\n8.5\n85.0\n4.25\n\n\n8\nHank\n7.0\n70.0\n3.5\n\n\n9\nJohn\n10.0\n100.0\n5.0\n\n\n\n\n\n\n\nleftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n@rtransform! leftjoined :grade_2021 = coalesce(:grade_2021, 5)\n\n@rtransform leftjoined :mean_grades = (:grade_2020 + :grade_2021) / 2\n\n4×4 DataFrame\n\n\n\nRow\nname\ngrade_2020\ngrade_2021\nmean_grades\n\n\n\nString\nFloat64\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n2.0\n\n\n2\nBob\n5.0\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0\n5.5",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -389,7 +389,7 @@
     "href": "computing/julia-self-study.html#row-selection",
     "title": "Julia self study",
     "section": "Row selection",
-    "text": "Row selection\n\n@rsubset df :grade &gt; 7\n\n@subset df :grade .&gt; mean(:grade)\n@rsubset df begin\n    :grade &gt; 7\n    startswith(:name, \"A\")\nend",
+    "text": "Row selection\n\n@rsubset df :grade &gt; 7\n\n3×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5\n\n\n2\nAlice\n8.5\n\n\n3\nJohn\n10.0\n\n\n\n\n\n\n\n@subset df :grade .&gt; mean(:grade)\n\n4×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5\n\n\n2\nAlice\n8.5\n\n\n3\nHank\n7.0\n\n\n4\nJohn\n10.0\n\n\n\n\n\n\n\n@rsubset df begin\n    :grade &gt; 7\n    startswith(:name, \"A\")\nend\n\n2×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5\n\n\n2\nAlice\n8.5",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -400,7 +400,7 @@
     "href": "computing/julia-self-study.html#row-sorting",
     "title": "Julia self study",
     "section": "Row sorting",
-    "text": "Row sorting\n\n@orderby leftjoined :grade_2021\n@orderby leftjoined -:grade_2021\n\n@orderby leftjoined begin\n    :grade_2021\n    :name\nend",
+    "text": "Row sorting\n\n@orderby leftjoined :grade_2021\n@orderby leftjoined -:grade_2021\n\n@orderby leftjoined begin\n    :grade_2021\n    :name\nend\n\n4×3 DataFrame\n\n\n\nRow\nname\ngrade_2020\ngrade_2021\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nHank\n4.0\n7.0\n\n\n4\nAlice\n8.5\n8.5",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -411,7 +411,7 @@
     "href": "computing/julia-self-study.html#data-summaries",
     "title": "Julia self study",
     "section": "Data summaries",
-    "text": "Data summaries\n\n@combine leftjoined :mean_grade_2020 = mean(:grade_2020)\n\n@combine leftjoined begin\n    :mean_grade_2020 = mean(:grade_2020)\n    :mean_grade_2021 = mean(:grade_2021)\nend\n\ngdf = groupby(leftjoined, :name)\n@combine gdf begin\n    :mean_grade_2020 = mean(:grade_2020)\n    :mean_grade_2021 = mean(:grade_2021)\nend",
+    "text": "Data summaries\n\n@combine leftjoined :mean_grade_2020 = mean(:grade_2020)\n\n1×1 DataFrame\n\n\n\nRow\nmean_grade_2020\n\n\n\nFloat64\n\n\n\n\n1\n4.625\n\n\n\n\n\n\n\n@combine leftjoined begin\n    :mean_grade_2020 = mean(:grade_2020)\n    :mean_grade_2021 = mean(:grade_2021)\nend\n\n1×2 DataFrame\n\n\n\nRow\nmean_grade_2020\nmean_grade_2021\n\n\n\nFloat64\nFloat64\n\n\n\n\n1\n4.625\n5.875\n\n\n\n\n\n\n\ngdf = groupby(leftjoined, :name)\n@combine gdf begin\n    :mean_grade_2020 = mean(:grade_2020)\n    :mean_grade_2021 = mean(:grade_2021)\nend\n\n4×3 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\nmean_grade_2021\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -422,7 +422,7 @@
     "href": "computing/julia-self-study.html#piping-operations",
     "title": "Julia self study",
     "section": "Piping operations",
-    "text": "Piping operations\n\n@chain leftjoined begin\n    groupby(:name)\n    @combine :mean_grade_2020 = mean(:grade_2020)\nend\n\n@chain leftjoined begin\n    groupby(:name)\n    @combine begin\n        :mean_grade_2020 = mean(:grade_2020)\n        :mean_grade_2021 = mean(:grade_2021)\n    end\nend",
+    "text": "Piping operations\n\n@chain leftjoined begin\n    groupby(:name)\n    @combine :mean_grade_2020 = mean(:grade_2020)\nend\n\n4×2 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0\n\n\n\n\n\n\n\n@chain leftjoined begin\n    groupby(:name)\n    @combine begin\n        :mean_grade_2020 = mean(:grade_2020)\n        :mean_grade_2021 = mean(:grade_2021)\n    end\nend\n\n4×3 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\nmean_grade_2021\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0",
     "crumbs": [
       "Notes",
       "Julia self-study"
@@ -433,7 +433,7 @@
     "href": "computing/julia-self-study.html#finale",
     "title": "Julia self study",
     "section": "Finale!",
-    "text": "Finale!\n\n@chain leftjoined begin\n    @rtransform begin\n        :grade_2020 = :grade_2020 * 10\n        :grade_2021 = :grade_2021 * 10\n    end\n    groupby(:name)\n    @combine begin\n        :mean_grade_2020 = mean(:grade_2020)\n        :mean_grade_2021 = mean(:grade_2021)\n    end\n    @rtransform :mean_grades = (:mean_grade_2020 + :mean_grade_2021) / 2\n    @rsubset :mean_grades &gt; 50\n    @orderby -:mean_grades\nend",
+    "text": "Finale!\n\n@chain leftjoined begin\n    @rtransform begin\n        :grade_2020 = :grade_2020 * 10\n        :grade_2021 = :grade_2021 * 10\n    end\n    groupby(:name)\n    @combine begin\n        :mean_grade_2020 = mean(:grade_2020)\n        :mean_grade_2021 = mean(:grade_2021)\n    end\n    @rtransform :mean_grades = (:mean_grade_2020 + :mean_grade_2021) / 2\n    @rsubset :mean_grades &gt; 50\n    @orderby -:mean_grades\nend\n\n2×4 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\nmean_grade_2021\nmean_grades\n\n\n\nString\nFloat64\nFloat64\nFloat64\n\n\n\n\n1\nAlice\n85.0\n85.0\n85.0\n\n\n2\nHank\n40.0\n70.0\n55.0",
     "crumbs": [
       "Notes",
       "Julia self-study"
