@@ -264,49 +264,180 @@
     ]
   },
   {
-    "objectID": "computing/polars.html",
-    "href": "computing/polars.html",
-    "title": "Polars from Python and R",
+    "objectID": "computing/julia-self-study.html",
+    "href": "computing/julia-self-study.html",
+    "title": "Julia self study",
     "section": "",
-    "text": "This is example templates that use Polars for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(polars)\n\nnyc = pl$scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning = TRUE)\nnyc\n\nq1 = (\n    nyc\n    $group_by(\"passenger_count\")\n    $agg(\n        pl$mean(\"tip_amount\")#$alias(\"mean_tip\") ## alias is optional\n    )\n    $sort(\"passenger_count\")\n)\nq1 \n\ntic = Sys.time()\ndat1 = q1$collect()\ntoc = Sys.time()\n\ndat1\n\nq2 = (\n    nyc\n    $filter(pl$col(\"month\") &lt;= 3)\n    $group_by(\"month\", \"passenger_count\")\n    $agg(pl$mean(\"tip_amount\")$alias(\"mean_tip\"))\n    $sort(\"passenger_count\")\n) \n\n# q2              # naive\ncat(q2$explain()) # optimized\n\ntic = Sys.time()\ndat2 = q2$collect()\ntoc = Sys.time()\n\ndat2\n\nq3 = (\n    nyc\n    $group_by(\"passenger_count\", \"trip_distance\")\n    $agg(\n        pl$mean(\"tip_amount\")$alias(\"mean_tip\"),\n        pl$mean(\"fare_amount\")$alias(\"mean_fare\")\n        )\n    $sort(\"passenger_count\", \"trip_distance\")\n)\n\ntic = Sys.time()\ndat3 = q3$collect()\ntoc = Sys.time()\n \ndat3\n\ndat3$unpivot(index = c(\"passenger_count\", \"trip_distance\"))\n\nmean_tips  = nyc$group_by(\"month\")$agg(pl$col(\"tip_amount\")$mean())\nmean_fares = nyc$group_by(\"month\")$agg(pl$col(\"fare_amount\")$mean())\n\n(\n    mean_tips\n    $join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\"  # default is inner join\n    )\n    $collect()\n)\n\n# You can also try tidypolars\n\nlibrary(polars) ## Already loaded\nlibrary(tidypolars)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)\n\nnyc = scan_parquet_polars(\"nyc-taxi/**/*.parquet\")\n\nnyc |&gt; \n    summarise(mean_tip = mean(tip_amount), .by = passenger_count) |&gt;\n    compute()\n\n# Aside: Use collect() instead of compute() at the end if you would prefer to return a standard R data.frame instead of a Polars DataFrame.\n\n\n\n\nimport polars as pl\nimport time\nimport matplotlib\n\nnyc = pl.scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning=True)\nnyc\n\nq1 = (\n    nyc\n    .group_by([\"passenger_count\"])\n    .agg([\n            pl.mean(\"tip_amount\")#.alias(\"mean_tip\") ## alias is optional\n        ])\n    .sort(\"passenger_count\")\n)\nq1\n\ntic = time.time()\ndat1 = q1.collect()\ntoc = time.time()\n\ndat1\n\nq2 = (\n    nyc\n    .filter(pl.col(\"month\") &lt;= 3)\n    .group_by([\"month\", \"passenger_count\"])\n    .agg([pl.mean(\"tip_amount\").alias(\"mean_tip\")])\n    .sort(\"passenger_count\")\n)\n\n# q2             # naive\nq2.show_graph()  # optimized\n\ntic = time.time()\ndat2 = q2.collect()\ntoc = time.time()\n\ndat2\n\nq3 = (\n    nyc\n    .group_by([\"passenger_count\", \"trip_distance\"])\n    .agg([\n        pl.mean(\"tip_amount\").alias(\"mean_tip\"),\n        pl.mean(\"fare_amount\").alias(\"mean_fare\"),\n        ])\n    .sort([\"passenger_count\", \"trip_distance\"])\n)\n\ntic = time.time()\ndat3 = q3.collect()\ntoc = time.time()\n\ndat3\n\ndat3.unpivot(index = [\"passenger_count\", \"trip_distance\"])\n\nmean_tips  = nyc.group_by(\"month\").agg(pl.col(\"tip_amount\").mean())\nmean_fares = nyc.group_by(\"month\").agg(pl.col(\"fare_amount\").mean())\n\n(\n    mean_tips\n    .join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\" # default is inner join\n    )\n    .collect()\n)",
+    "text": "using DataFrames\nusing CSV\nusing XLSX\nMake a toy dataframe\nfunction grades_2020()\n    name = [\"Sally\", \"Bob\", \"Alice\", \"Hank\"]\n    grade_2020 = [1, 5, 8.5, 4]\n    DataFrame(; name, grade_2020)\nend\ngrades_2020()\n\nfunction grades_2021()\n    name = [\"Sally\", \"Bob\", \"Alice\", \"Hank\", \"John\"]\n    grade_2021 = [3, 5, 8.5, 7, 10]\n    DataFrame(; name, grade_2021)\nend\ngrades_2021()\n\n5×2 DataFrame\n\n\n\nRow\nname\ngrade_2021\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n3.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n7.0\n\n\n5\nJohn\n10.0",
     "crumbs": [
       "Notes",
-      "Polars (R + Python)"
+      "Julia self-study"
     ]
   },
   {
-    "objectID": "misc/links.html",
-    "href": "misc/links.html",
-    "title": "Useful links",
-    "section": "",
-    "text": "Category\nLinks\n\n\n\n\nPersonal website\n🔗 GitHub site\n\n\nCoffee chat (with me)\n🔗 Appointment link\n\n\nComputing and replication resources\n🔗 Web-scraping 1  🔗 Web-scraping 2  🔗 Parallel programming  🔗 Docker  🔗 Google compute engine 1  🔗 Google compute engine 2  🔗 Databases  🔗 Spark  🔗 DuckDB and polars  🔗 NYU Course Notes & Resources  🔗 Quantitative dynamic model\n\n\nJulia\n🔗 Julia for data science  🔗 Computational economics for PhDs  🔗 Computational Methods in Macroeconomics  🔗 BLPDemand.jl  🔗 Guide to Efficient Computational Work in Economics  🔗 Econometrics with Julia  🔗 Advanced Dynamic Programming\n\n\nUseful packages\n🔗 New DiD methods\n\n\nGraduate trade and spatial\n🔗 Treb Allen\n\n\nNotes\n🔗 BLP-notes (Adam Smith)",
+    "objectID": "computing/julia-self-study.html#csv-files",
+    "href": "computing/julia-self-study.html#csv-files",
+    "title": "Julia self study",
+    "section": "CSV files",
+    "text": "CSV files\nWrite the dataframe into CSV file\n\nCSV.write(\"toy.csv\", grades_2020())\n\n\"toy.csv\"\n\n\nRead in the CSV file\n\ntoy = CSV.read(\"toy.csv\", DataFrame)\nfirst(toy, 5)\n\n4×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString7\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0",
     "crumbs": [
-      "Misc.",
-      "Useful links"
+      "Notes",
+      "Julia self-study"
     ]
   },
   {
-    "objectID": "teaching/assignments.html",
-    "href": "teaching/assignments.html",
-    "title": "General logistics on assignments",
+    "objectID": "computing/julia-self-study.html#excel-files",
+    "href": "computing/julia-self-study.html#excel-files",
+    "title": "Julia self study",
+    "section": "Excel files",
+    "text": "Excel files\n\nfunction write_xlsx(name, df::DataFrame)\n    path = \"$name.xlsx\"\n    data = collect(eachcol(df))\n    cols = names(df)\n    write(path, data, cols)\nend\n\nfunction write_grades_xlsx()\n    path = \"grades\"\n    write_xlsx(path, grades_2020())\n    \"$path.xlsx\"\nend\n\npath = write_grades_xlsx()\nxf = readxlsx(path)",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#filter-and-subset",
+    "href": "computing/julia-self-study.html#filter-and-subset",
+    "title": "Julia self study",
+    "section": "Filter and subset",
+    "text": "Filter and subset\n\nequals_alice(name::String) = name == \"Alice\"\n\nfilter(:name =&gt; equals_alice, grades_2020())\n\nfilter(:name =&gt; n -&gt; n == \"Alice\", grades_2020())\n\nfilter(:name =&gt; ==(\"Alice\"), grades_2020())\nfilter(:name =&gt; !=(\"Alice\"), grades_2020())\n\n3×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nHank\n4.0\n\n\n\n\n\n\n\nfunction complex_filter(name, grade)::Bool\n    interesting_name = startswith(name, 'A') || startswith(name, 'B')\n    interesting_grade = 6 &lt; grade\n    interesting_name && interesting_grade\nend\n\nfilter([:name, :grade_2020] =&gt; complex_filter, grades_2020())\n\n1×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#select",
+    "href": "computing/julia-self-study.html#select",
+    "title": "Julia self study",
+    "section": "Select",
+    "text": "Select\n\nfunction responses()\n    id = [1, 2]\n    q1 = [28, 61]\n    q2 = [:us, :fr]\n    q3 = [\"F\", \"B\"]\n    q4 = [\"B\", \"C\"]\n    q5 = [\"A\", \"E\"]\n    DataFrame(; id, q1, q2, q3, q4, q5)\nend\nresponses()\n\n2×6 DataFrame\n\n\n\nRow\nid\nq1\nq2\nq3\nq4\nq5\n\n\n\nInt64\nInt64\nSymbol\nString\nString\nString\n\n\n\n\n1\n1\n28\nus\nF\nB\nA\n\n\n2\n2\n61\nfr\nB\nC\nE\n\n\n\n\n\n\n\nselect(responses(), :id, :q1)\n\n# regex\nselect(responses(), r\"^q\")\n\nselect(responses(), Not(:q5))\nselect(responses(), Not([:q4, :q5]))\nselect(responses(), :q5, Not(:q5))\n\n# renaming\nselect(responses(), 1 =&gt; \"participant\", :q1 =&gt; \"age\", :q2 =&gt; \"nationality\")\nrenames = (1 =&gt; \"participant\", :q1 =&gt; \"age\", :q2 =&gt; \"nationality\")\nselect(responses(), renames...)\n\n2×3 DataFrame\n\n\n\nRow\nparticipant\nage\nnationality\n\n\n\nInt64\nInt64\nSymbol\n\n\n\n\n1\n1\n28\nus\n\n\n2\n2\n61\nfr",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#left-and-right-joins",
+    "href": "computing/julia-self-study.html#left-and-right-joins",
+    "title": "Julia self study",
+    "section": "Left and right joins",
+    "text": "Left and right joins\n\nleftjoin(grades_2020(), grades_2021(); on=:name)\n\nrightjoin(grades_2020(), grades_2021(); on=:name)\n\n5×3 DataFrame\n\n\n\nRow\nname\ngrade_2020\ngrade_2021\n\n\n\nString\nFloat64?\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0\n\n\n5\nJohn\nmissing\n10.0",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#transform-variables",
+    "href": "computing/julia-self-study.html#transform-variables",
+    "title": "Julia self study",
+    "section": "Transform variables",
+    "text": "Transform variables\n\nplus_one(grades) = grades .+ 1\ntransform(grades_2020(), :grade_2020 =&gt; plus_one)\n\ntransform(grades_2020(), :grade_2020 =&gt; plus_one =&gt; :grade_2020)\ntransform(grades_2020(), :grade_2020 =&gt; plus_one; renamecols=false)\n\n4×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n2.0\n\n\n2\nBob\n6.0\n\n\n3\nAlice\n9.5\n\n\n4\nHank\n5.0\n\n\n\n\n\n\n\nleftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n\nfunction only_pass()\n    leftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n    pass(A, B) = [5.5 &lt; a || 5.5 &lt; b for (a, b) in zip(A, B)]\n    leftjoined = transform(leftjoined, [:grade_2020, :grade_2021] =&gt; pass =&gt; :pass)\n    passed = subset(leftjoined, :pass; skipmissing=true)\n    return passed.name\nend\nonly_pass()\n\n2-element Vector{String}:\n \"Alice\"\n \"Hank\"",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#groupby-and-combine",
+    "href": "computing/julia-self-study.html#groupby-and-combine",
+    "title": "Julia self study",
+    "section": "Groupby and combine",
+    "text": "Groupby and combine\n\nfunction all_grades()\n    df1 = grades_2020()\n    df1 = select(df1, :name, :grade_2020 =&gt; :grade)\n    df2 = grades_2021()\n    df2 = select(df2, :name, :grade_2021 =&gt; :grade)\n    rename_bob2(data_col) = replace.(data_col, \"Bob 2\" =&gt; \"Bob\")\n    df2 = transform(df2, :name =&gt; rename_bob2 =&gt; :name)\n    return vcat(df1, df2)\nend\nall_grades()\n\n9×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0\n\n\n5\nSally\n3.0\n\n\n6\nBob\n5.0\n\n\n7\nAlice\n8.5\n\n\n8\nHank\n7.0\n\n\n9\nJohn\n10.0\n\n\n\n\n\n\n\ngroupby(all_grades(), :name)\n\nusing Statistics\n\ngdf = groupby(all_grades(), :name)\ncombine(gdf, :grade =&gt; mean)\n\n5×2 DataFrame\n\n\n\nRow\nname\ngrade_mean\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n2.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n5.5\n\n\n5\nJohn\n10.0\n\n\n\n\n\n\n\ngroup = [:A, :A, :B, :B]\nX = 1:4\nY = 5:8\ndf = DataFrame(; group, X, Y)\n\ngdf = groupby(df, :group)\ncombine(gdf, [:X, :Y] .=&gt; mean; renamecols=false)\n\n2×3 DataFrame\n\n\n\nRow\ngroup\nX\nY\n\n\n\nSymbol\nFloat64\nFloat64\n\n\n\n\n1\nA\n1.5\n5.5\n\n\n2\nB\n3.5\n7.5",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#missing-values",
+    "href": "computing/julia-self-study.html#missing-values",
+    "title": "Julia self study",
+    "section": "Missing values",
+    "text": "Missing values\n\ndf_missing = DataFrame(;\n    name=[missing, \"Sally\", \"Alice\", \"Hank\"],\n    age=[17, missing, 20, 19],\n    grade_2020=[5.0, 1.0, missing, 4.0],\n)\n\ndropmissing(df_missing)\n\ndropmissing(df_missing, :name)\n\ndropmissing(df_missing, [:name, :age])\n\n2×3 DataFrame\n\n\n\nRow\nname\nage\ngrade_2020\n\n\n\nString\nInt64\nFloat64?\n\n\n\n\n1\nAlice\n20\nmissing\n\n\n2\nHank\n19\n4.0\n\n\n\n\n\n\n\nfilter(:name =&gt; !ismissing, df_missing)\n\ncombine(df_missing, :grade_2020 =&gt; mean ∘ skipmissing )\n\n1×1 DataFrame\n\n\n\nRow\ngrade_2020_mean_skipmissing\n\n\n\nFloat64\n\n\n\n\n1\n3.33333",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/trade-notes.html",
+    "href": "computing/trade-notes.html",
+    "title": "(Graduate) International trade notes",
+    "section": "",
+    "text": "These are some notes for my self-study on International Trade (graduate level).",
+    "crumbs": [
+      "Notes",
+      "Trade notes"
+    ]
+  },
+  {
+    "objectID": "teaching/office-hours.html",
+    "href": "teaching/office-hours.html",
+    "title": "Overview on OH",
     "section": "",
     "text": "TBD",
     "crumbs": [
       "Teaching",
       "Class-name",
-      "Assignments"
+      "Office hours"
     ]
   },
   {
-    "objectID": "teaching/teaching.html",
-    "href": "teaching/teaching.html",
-    "title": "Class name",
+    "objectID": "teaching/topology.html",
+    "href": "teaching/topology.html",
+    "title": "Topology",
     "section": "",
-    "text": "This page contains an outline of the topics, content, and assignments for the semester. Note that this schedule will be updated as the semester progresses and the timeline of topics and assignments might be updated throughout the semester. Syllabus\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nprepare\nslides\nhw\nhw_sol\nexam\nnotes\n\n\n\n\n1\nM\nAug 29\nLab\nNo lab\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nAug 30\nLec 1\nWelcome to STA 199\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 1\nLec 2\nMeet the toolkit\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2\nM\nSep 5\nLab 0\nHello R!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 0\n\n\n\nT\nSep 6\nLec 3\nGrammar of graphics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 8\nLec 4\nVisualizing various types of data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 1\n\n\n\nF\nSep 9\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 0 + AE 1\n\n\n\nSu\nSep 11\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: AE 2\n\n\n3\nM\nSep 12\nLab 1\nData visualization\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 1\n\n\n\nT\nSep 13\nLec 5\nGrammar of data wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 15\nLec 6\nWorking with multiple data frames\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 1 / Release: HW 2\n\n\n\nF\nSep 16\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 1\n\n\n4\nM\nSep 19\nLab 2\nData wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 2\n\n\n\nT\nSep 20\nLec 7\nTidying data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 22\nLec 8\nData types and classes\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue HW 2\n\n\n\nF\nSep 23\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 2\n\n\n5\nM\nSep 26\nLab 3\nData tidying\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 3\n\n\n\nT\nSep 27\nLec 9\nImporting and recoding data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 29\nLec 10\nExam 1 Review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 1 at 12pm\n\n\n\nF\nSep 30\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 3\n\n\n6\nM\nOct 3\nLab\nNo lab - Work on Exam 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam 1 at 2pm\n\n\n\nT\nOct 4\nLec 11\nData science ethics - Misrepresentation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 6\nLec 12\nData science ethics - Algorithmic bias + data privacy\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 3\n\n\n7\nM\nOct 10\nLab\nNo lab - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nOct 11\nLecture\nNo Lec - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 13\nLec 13\nWeb scraping\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 3\n\n\n8\nM\nOct 17\nLab\nWork on project proposal\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nOct 18\nLec 14\nFunctions + iteration\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 20\nLec 15\nThe language of models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nF\nOct 21\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project proposal\n\n\n9\nM\nOct 24\nLab 4\nProbability + Simpson's Paradox\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 4\n\n\n\nT\nOct 25\nLec 16\nModels with a single predictor\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 27\nLec 17\nModels with multiple predictors\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 4\n\n\n\nF\nOct 28\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 4\n\n\n10\nM\nOct 31\nLab 5\nPredicting a numerical outcome\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 5\n\n\n\nT\nNov 1\nLec 18\nModels with multiple predictors + Overfitting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 3\nLec 19\nLogistic regression\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 4 / Release: HW 5\n\n\n\nF\nNov 4\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 5 / Release: HW 6\n\n\n\nS\nNov 5\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 1\n\n\n11\nM\nNov 7\nLab\nWork on project draft\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nNov 8\nLec 20\nQuantifying uncertainty with bootstrap intervals\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 10\nLec 21\nHypothesis testing via simulation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 5\n\n\n\nF\nNov 11\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 1\n\n\n12\nM\nNov 14\nLab 6\nPrediction + Bootstrapping\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 6\n\n\n\nT\nNov 15\nLec 22\nInference overview\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 17\nLec 23\nExam 2 Review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 2 at 12pm\n\n\n\nF\nNov 18\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 6\n\n\n13\nM\nNov 21\nLab\nNo lab - Work on Exam 2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam 2 at 2pm\n\n\n\nT\nNov 22\nLec 24\nNo lecture - Work on projects\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 24\nLecture\nNo lecture - Thanksgiving\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nF\nNov 25\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam retake (optional)\n\n\n\nSu\nNov 27\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 2 (optional)\n\n\n14\nM\nNov 28\nLab\nWork on project peer review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project peer review\n\n\n\nT\nNov 29\nLec 25\nCommunicating data science results effectively\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 2\n\n\n\nTh\nDec 1\nLec 26\nCustomizing Quarto reports and presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nM\nDec 5\nLab\nProject presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nDec 6\nLec 25\nLooking further: Text analysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nDec 8\nLec 26\nLooking further: Interactive web applications with Shiny\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project everything\n\n\n\nF\nDec 9\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 6 / Statistics experience\n\n\n16\nTh\nDec 15\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam retake (optional)",
+    "text": "This pages contains log for my self-study on topology.",
+    "crumbs": [
+      "Teaching",
+      "Mathematics",
+      "Topology resources"
+    ]
+  },
+  {
+    "objectID": "teaching/metrics.html",
+    "href": "teaching/metrics.html",
+    "title": "Metric theory",
+    "section": "",
+    "text": "This pages contains log for my self-study on metric theory.",
+    "crumbs": [
+      "Teaching",
+      "Mathematics",
+      "Metric theory resources"
+    ]
+  },
+  {
+    "objectID": "teaching/prob.html",
+    "href": "teaching/prob.html",
+    "title": "Probability theory",
+    "section": "",
+    "text": "This pages contains log for my self-study on probability theory.",
+    "crumbs": [
+      "Teaching",
+      "Mathematics",
+      "Probability theory resources"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "tools",
+    "section": "",
+    "text": "This site is an archive that contains my tools.\n\nWho am I?\nI am a Ph.D student in Applied Economics at The Wharton School: [Website]"
+  },
+  {
+    "objectID": "teaching/faq.html",
+    "href": "teaching/faq.html",
+    "title": "FAQ",
+    "section": "",
+    "text": "TBD",
     "crumbs": [
       "Teaching",
       "Class-name",
-      "Overview"
+      "FAQ"
     ]
   },
   {
@@ -338,7 +469,7 @@
     "href": "teaching/set.html#chapter-2",
     "title": "Set theory",
     "section": "Chapter 2",
-    "text": "Chapter 2\n\n1. Ordered pairs\n\n1.1\nWe will just prove the general one. Let \\(a \\in A\\) and \\(b \\in A\\) (Note that in set theory, everything is a set). Then by axiom of pair, \\(\\{ a\\}\\) and \\(\\{a,b\\}\\) exists and they are elements of \\(p(A)\\). We can again do axiom of pair to finish the proof.\n\n\n1.2\nThis is just proven by multiple application of axiom of pairing.\n\n\n1.3\nSuppose \\(a \\neq b\\). Then as \\(\\{a \\} = \\{b\\}\\), this implies that \\(a=b\\), contradiction.\n\n\n1.4, 1.5, 1.6\nConsult link.\n\n\n\n2. Relations\n\n2.1\n\\((x,y) \\in R\\) implies that \\(\\{x \\}, \\{ x,y\\} \\in \\cup R\\). Thus we have \\(x,y \\in A\\). Then we can use axiom schema comprehension to show that \\(\\text{dom} R\\) exists. Same logic goes for \\(\\text{ran} R\\).\n\n\n2.2 (a)\nJust use the hint and use axiom of schema comprehension.\n\n\n2.2 (b)\nNote that \\(A \\times B\\) exists. thus \\(A \\times B \\times C = (A \\times B) \\times C\\) will also exist. We can explicitly define it as\n\\[\n  A \\times B \\times C = \\left\\{ (a,b,c) \\in p \\left[ p \\left[ (p(p(A \\cup B))) \\cup C \\right] \\right]: a \\in A, b \\in B, c \\in C  \\right\\}.\n\\]\n\n\n2.3 (a)\n\\(y \\in R [A \\cup B]\\) iff there is \\(x \\in A \\cup B\\) s.t. \\((x,y) \\in R\\). This holds if and only if \\(x \\in A\\) or \\(x \\in B\\) s.t. \\((x,y) \\in R\\). Then this shows that \\(x \\in R[A] \\cup R[B]\\).\n\n\n2.3 (b)\nAgain suppose \\(y \\in R[A \\cap B]\\). Then there is \\(x \\in A \\cap B\\) s.t. \\((x,y) \\in R\\). This means there is \\(x\\in A\\) and \\(x \\in B\\) such that \\((x,y) \\in R\\).\n\n\n2.3 (c)\nLet \\(y \\in R[A] - R[B]\\). Then there is \\(x \\in A, x \\notin B\\) s.t. \\((x,y) \\in R\\). This is literally \\(R[A-B]\\).\n\n\n2.3 (d)\nFor (b), think of a case where there is a point \\((x1,y)\\) and \\((x2,y)\\) where \\(x1 \\in A - B\\) and \\(x2 \\in B-A\\). Then this would be in \\(R[A] \\cap R[B]\\) but \\(R[A \\cap B]\\).\nFor (c), think of a case where there is some point \\(x \\in A-B\\) and \\(y \\in A \\cap B\\) where it corresponds to same value. Then for \\(R[A] - R[B]\\) will not have this value although it will be in \\(R[A-B]\\).\n\n\n2.3 (f)\nLet \\(x \\in A \\cap \\text{dom} R\\). Then \\(x \\in A\\) and there is \\(y\\) s.t. \\(xRy\\). This implies that \\(y \\in R[A]\\) by definition. Then as we know there is \\(x\\) s.t. \\(yR^{1}x\\), we get \\(x \\in R^{-1} \\left[ R[A] \\right]\\). Similar logic holds for range. We can easily see that equality will not hold for cases such as \\(x\\) where \\(x \\notin A\\) but there is \\(y\\) s.t. \\(xRy\\). That is, the range value is inside \\(R[A]\\).\n\n\n2.4 (a)\nLet \\(y \\in R[X]\\). Then \\((x,y) \\in R\\). Thus \\(y \\in \\text{ran} R\\). Note that this if iff relation to results go through. Similar to domain case.\n\n\n2.4 (b)\nSuppose \\(R^{-1}[\\{ b \\}]\\) is nonempty. Then there is \\(a\\) s.t. \\(\\{b, a \\} \\in R\\). Then \\(a \\in \\text{ran } R\\). Contradiction.\n\n\n2.4 (c)\n\\(x \\in \\text{dom } R\\). This means \\((x,y) \\in R\\). This implies \\((y,x) \\in R^{-1}\\). So \\(x\\) is also element of \\(\\text{ran } R^{-1}\\).\n\n\n2.4 (d)\nWe can easily prove it by noting that \\((x,y) \\in R \\iff (y,x) \\in R^{-1}\\).\n\n\n\n3. Functions\n\n3.1\nLet \\(x \\in \\text{dom } g \\circ f\\). Then there exists \\(z\\) s.t. \\(x(g \\circ f)z\\). Then there exists \\(y\\) s.t. \\(xfy, ygz\\). So this implies that \\(x \\in \\text{dom } f\\).\nNow suppose \\(x \\in \\text{dom } f\\). Then there is \\(y\\) s.t. \\(xfy\\). As \\(ran f \\subset dom g\\), there is \\(z\\) s.t. \\(ygz\\). So \\(x(g \\circ f)z\\).\n\n\n3.4 (a)\nLet \\((x,y) \\in f^{-1} \\circ f\\). Then there is \\(z\\) s.t. \\(xfz\\), \\(zf^{-1}y\\) which means \\(yfz\\). This means \\(x=x\\). So \\(x \\in Id\\).\nOTH, if \\((x,x) \\in Id\\), there is \\(y\\) s.t. \\(xfy\\) and \\(yf^{-1}x\\). So \\(x \\in f^{-1} \\circ f\\).\nI also proved 3.4 (b), 3.10 but lost the paper that I wrote it down and am too lazy to do it again. Contact me if you need them.\n\n\n\n4. Equivalence relations",
+    "text": "Chapter 2\n\n1. Ordered pairs\n\n1.1\nWe will just prove the general one. Let \\(a \\in A\\) and \\(b \\in A\\) (Note that in set theory, everything is a set). Then by axiom of pair, \\(\\{ a\\}\\) and \\(\\{a,b\\}\\) exists and they are elements of \\(p(A)\\). We can again do axiom of pair to finish the proof.\n\n\n1.2\nThis is just proven by multiple application of axiom of pairing.\n\n\n1.3\nSuppose \\(a \\neq b\\). Then as \\(\\{a \\} = \\{b\\}\\), this implies that \\(a=b\\), contradiction.\n\n\n1.4, 1.5, 1.6\nConsult link.\n\n\n\n2. Relations\n\n2.1\n\\((x,y) \\in R\\) implies that \\(\\{x \\}, \\{ x,y\\} \\in \\cup R\\). Thus we have \\(x,y \\in A\\). Then we can use axiom schema comprehension to show that \\(\\text{dom} R\\) exists. Same logic goes for \\(\\text{ran} R\\).\n\n\n2.2 (a)\nJust use the hint and use axiom of schema comprehension.\n\n\n2.2 (b)\nNote that \\(A \\times B\\) exists. thus \\(A \\times B \\times C = (A \\times B) \\times C\\) will also exist. We can explicitly define it as\n\\[\n  A \\times B \\times C = \\left\\{ (a,b,c) \\in p \\left[ p \\left[ (p(p(A \\cup B))) \\cup C \\right] \\right]: a \\in A, b \\in B, c \\in C  \\right\\}.\n\\]\n\n\n2.3 (a)\n\\(y \\in R [A \\cup B]\\) iff there is \\(x \\in A \\cup B\\) s.t. \\((x,y) \\in R\\). This holds if and only if \\(x \\in A\\) or \\(x \\in B\\) s.t. \\((x,y) \\in R\\). Then this shows that \\(x \\in R[A] \\cup R[B]\\).\n\n\n2.3 (b)\nAgain suppose \\(y \\in R[A \\cap B]\\). Then there is \\(x \\in A \\cap B\\) s.t. \\((x,y) \\in R\\). This means there is \\(x\\in A\\) and \\(x \\in B\\) such that \\((x,y) \\in R\\).\n\n\n2.3 (c)\nLet \\(y \\in R[A] - R[B]\\). Then there is \\(x \\in A, x \\notin B\\) s.t. \\((x,y) \\in R\\). This is literally \\(R[A-B]\\).\n\n\n2.3 (d)\nFor (b), think of a case where there is a point \\((x1,y)\\) and \\((x2,y)\\) where \\(x1 \\in A - B\\) and \\(x2 \\in B-A\\). Then this would be in \\(R[A] \\cap R[B]\\) but \\(R[A \\cap B]\\).\nFor (c), think of a case where there is some point \\(x \\in A-B\\) and \\(y \\in A \\cap B\\) where it corresponds to same value. Then for \\(R[A] - R[B]\\) will not have this value although it will be in \\(R[A-B]\\).\n\n\n2.3 (f)\nLet \\(x \\in A \\cap \\text{dom} R\\). Then \\(x \\in A\\) and there is \\(y\\) s.t. \\(xRy\\). This implies that \\(y \\in R[A]\\) by definition. Then as we know there is \\(x\\) s.t. \\(yR^{1}x\\), we get \\(x \\in R^{-1} \\left[ R[A] \\right]\\). Similar logic holds for range. We can easily see that equality will not hold for cases such as \\(x\\) where \\(x \\notin A\\) but there is \\(y\\) s.t. \\(xRy\\). That is, the range value is inside \\(R[A]\\).\n\n\n2.4 (a)\nLet \\(y \\in R[X]\\). Then \\((x,y) \\in R\\). Thus \\(y \\in \\text{ran} R\\). Note that this if iff relation to results go through. Similar to domain case.\n\n\n2.4 (b)\nSuppose \\(R^{-1}[\\{ b \\}]\\) is nonempty. Then there is \\(a\\) s.t. \\(\\{b, a \\} \\in R\\). Then \\(a \\in \\text{ran } R\\). Contradiction.\n\n\n2.4 (c)\n\\(x \\in \\text{dom } R\\). This means \\((x,y) \\in R\\). This implies \\((y,x) \\in R^{-1}\\). So \\(x\\) is also element of \\(\\text{ran } R^{-1}\\).\n\n\n2.4 (d)\nWe can easily prove it by noting that \\((x,y) \\in R \\iff (y,x) \\in R^{-1}\\).\n\n\n\n3. Functions\n\n3.1\nLet \\(x \\in \\text{dom } g \\circ f\\). Then there exists \\(z\\) s.t. \\(x(g \\circ f)z\\). Then there exists \\(y\\) s.t. \\(xfy, ygz\\). So this implies that \\(x \\in \\text{dom } f\\).\nNow suppose \\(x \\in \\text{dom } f\\). Then there is \\(y\\) s.t. \\(xfy\\). As \\(ran f \\subset dom g\\), there is \\(z\\) s.t. \\(ygz\\). So \\(x(g \\circ f)z\\).\n\n\n3.4 (a)\nLet \\((x,y) \\in f^{-1} \\circ f\\). Then there is \\(z\\) s.t. \\(xfz\\), \\(zf^{-1}y\\) which means \\(yfz\\). This means \\(x=x\\). So \\(x \\in Id\\).\nOTH, if \\((x,x) \\in Id\\), there is \\(y\\) s.t. \\(xfy\\) and \\(yf^{-1}x\\). So \\(x \\in f^{-1} \\circ f\\).\nI also proved 3.4 (b), 3.10 but lost the paper that I wrote it down and am too lazy to do it again. Contact me if you need them.\n\n\n\n4. Equivalence relations\n\n4.1 (c)\nReflexive: It does not hold. Since \\(x=x\\), \\(xRx\\) cannot hold.\nSymmetric: It holds since \\(x \\neq y\\) and \\(y \\neq x\\).\nTransitive: Does not hold. Think of \\(x=3=z\\) and \\(y=4\\).\n\n\n4.1 (e,f)\nThese are equivalence relations because the conditions of the empty sets make the claims vacuously true.\n\n\n4.2 (a)\nReflexive: We can easily see that \\(f(x)=f(x)\\).\nSymmetry: Let \\(xEy\\). Then as \\(f(x)=f(y)\\), this implies \\(f(y)=f(x)\\). Thus \\(yEx\\).\nTransitive: Let \\(xEy\\) and \\(yEz\\). Then we have \\(f(x)=f(y)=f(z)\\). Thus \\(xEz\\).\nHence \\(E\\) is equivalence relation on \\(A\\).\n\n\n4.2 (b)\nLet \\([a]_E = [a']_E\\). Then \\(\\phi([a]_E) = f(a)\\) and \\(\\phi([a']_E) = f(a')\\). Then \\(f(a) = f(a')\\) has to hold by definition of the equivalence.\n\n\n4.2 (c)\nLet \\((x,y) \\in f\\). Since \\(j\\) is a function on \\(A\\), there will be some \\(z \\in A/E\\) s.t. \\(xjz\\). In fact, \\(z = [x]_E\\) by definition. Then as \\(f(x) = \\phi([x]_E)\\), it is done.\nIf \\((x,z) \\in \\phi \\circ j\\), there is some \\(y\\) s.t. \\(j(x) = [x]_E = y\\). Also, \\(\\phi([x]_E) = f(x) = z\\). Thus done.",
     "crumbs": [
       "Teaching",
       "Mathematics",
@@ -346,81 +477,49 @@
     ]
   },
   {
-    "objectID": "teaching/faq.html",
-    "href": "teaching/faq.html",
-    "title": "FAQ",
+    "objectID": "teaching/teaching.html",
+    "href": "teaching/teaching.html",
+    "title": "Class name",
+    "section": "",
+    "text": "This page contains an outline of the topics, content, and assignments for the semester. Note that this schedule will be updated as the semester progresses and the timeline of topics and assignments might be updated throughout the semester. Syllabus\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nprepare\nslides\nhw\nhw_sol\nexam\nnotes\n\n\n\n\n1\nM\nAug 29\nLab\nNo lab\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nAug 30\nLec 1\nWelcome to STA 199\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 1\nLec 2\nMeet the toolkit\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2\nM\nSep 5\nLab 0\nHello R!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 0\n\n\n\nT\nSep 6\nLec 3\nGrammar of graphics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 8\nLec 4\nVisualizing various types of data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 1\n\n\n\nF\nSep 9\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 0 + AE 1\n\n\n\nSu\nSep 11\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: AE 2\n\n\n3\nM\nSep 12\nLab 1\nData visualization\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 1\n\n\n\nT\nSep 13\nLec 5\nGrammar of data wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 15\nLec 6\nWorking with multiple data frames\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 1 / Release: HW 2\n\n\n\nF\nSep 16\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 1\n\n\n4\nM\nSep 19\nLab 2\nData wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 2\n\n\n\nT\nSep 20\nLec 7\nTidying data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 22\nLec 8\nData types and classes\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue HW 2\n\n\n\nF\nSep 23\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 2\n\n\n5\nM\nSep 26\nLab 3\nData tidying\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 3\n\n\n\nT\nSep 27\nLec 9\nImporting and recoding data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 29\nLec 10\nExam 1 Review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 1 at 12pm\n\n\n\nF\nSep 30\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 3\n\n\n6\nM\nOct 3\nLab\nNo lab - Work on Exam 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam 1 at 2pm\n\n\n\nT\nOct 4\nLec 11\nData science ethics - Misrepresentation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 6\nLec 12\nData science ethics - Algorithmic bias + data privacy\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 3\n\n\n7\nM\nOct 10\nLab\nNo lab - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nOct 11\nLecture\nNo Lec - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 13\nLec 13\nWeb scraping\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 3\n\n\n8\nM\nOct 17\nLab\nWork on project proposal\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nOct 18\nLec 14\nFunctions + iteration\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 20\nLec 15\nThe language of models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nF\nOct 21\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project proposal\n\n\n9\nM\nOct 24\nLab 4\nProbability + Simpson's Paradox\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 4\n\n\n\nT\nOct 25\nLec 16\nModels with a single predictor\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 27\nLec 17\nModels with multiple predictors\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 4\n\n\n\nF\nOct 28\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 4\n\n\n10\nM\nOct 31\nLab 5\nPredicting a numerical outcome\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 5\n\n\n\nT\nNov 1\nLec 18\nModels with multiple predictors + Overfitting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 3\nLec 19\nLogistic regression\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 4 / Release: HW 5\n\n\n\nF\nNov 4\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 5 / Release: HW 6\n\n\n\nS\nNov 5\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 1\n\n\n11\nM\nNov 7\nLab\nWork on project draft\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nNov 8\nLec 20\nQuantifying uncertainty with bootstrap intervals\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 10\nLec 21\nHypothesis testing via simulation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 5\n\n\n\nF\nNov 11\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 1\n\n\n12\nM\nNov 14\nLab 6\nPrediction + Bootstrapping\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 6\n\n\n\nT\nNov 15\nLec 22\nInference overview\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 17\nLec 23\nExam 2 Review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 2 at 12pm\n\n\n\nF\nNov 18\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 6\n\n\n13\nM\nNov 21\nLab\nNo lab - Work on Exam 2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam 2 at 2pm\n\n\n\nT\nNov 22\nLec 24\nNo lecture - Work on projects\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 24\nLecture\nNo lecture - Thanksgiving\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nF\nNov 25\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam retake (optional)\n\n\n\nSu\nNov 27\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 2 (optional)\n\n\n14\nM\nNov 28\nLab\nWork on project peer review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project peer review\n\n\n\nT\nNov 29\nLec 25\nCommunicating data science results effectively\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 2\n\n\n\nTh\nDec 1\nLec 26\nCustomizing Quarto reports and presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nM\nDec 5\nLab\nProject presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nDec 6\nLec 25\nLooking further: Text analysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nDec 8\nLec 26\nLooking further: Interactive web applications with Shiny\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project everything\n\n\n\nF\nDec 9\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 6 / Statistics experience\n\n\n16\nTh\nDec 15\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam retake (optional)",
+    "crumbs": [
+      "Teaching",
+      "Class-name",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "teaching/assignments.html",
+    "href": "teaching/assignments.html",
+    "title": "General logistics on assignments",
     "section": "",
     "text": "TBD",
     "crumbs": [
       "Teaching",
       "Class-name",
-      "FAQ"
+      "Assignments"
     ]
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "tools",
+    "objectID": "misc/links.html",
+    "href": "misc/links.html",
+    "title": "Useful links",
     "section": "",
-    "text": "This site is an archive that contains my tools.\n\nWho am I?\nI am a Ph.D student in Applied Economics at The Wharton School: [Website]"
-  },
-  {
-    "objectID": "teaching/prob.html",
-    "href": "teaching/prob.html",
-    "title": "Probability theory",
-    "section": "",
-    "text": "This pages contains log for my self-study on probability theory.",
+    "text": "Category\nLinks\n\n\n\n\nPersonal website\n🔗 GitHub site\n\n\nCoffee chat (with me)\n🔗 Appointment link\n\n\nComputing and replication resources\n🔗 Web-scraping 1  🔗 Web-scraping 2  🔗 Parallel programming  🔗 Docker  🔗 Google compute engine 1  🔗 Google compute engine 2  🔗 Databases  🔗 Spark  🔗 DuckDB and polars  🔗 NYU Course Notes & Resources  🔗 Quantitative dynamic model\n\n\nJulia\n🔗 Julia for data science  🔗 Computational economics for PhDs  🔗 Computational Methods in Macroeconomics  🔗 BLPDemand.jl  🔗 Guide to Efficient Computational Work in Economics  🔗 Econometrics with Julia  🔗 Advanced Dynamic Programming\n\n\nUseful packages\n🔗 New DiD methods\n\n\nGraduate trade and spatial\n🔗 Treb Allen\n\n\nNotes\n🔗 BLP-notes (Adam Smith)",
     "crumbs": [
-      "Teaching",
-      "Mathematics",
-      "Probability theory resources"
+      "Misc.",
+      "Useful links"
     ]
   },
   {
-    "objectID": "teaching/metrics.html",
-    "href": "teaching/metrics.html",
-    "title": "Metric theory",
+    "objectID": "computing/polars.html",
+    "href": "computing/polars.html",
+    "title": "Polars from Python and R",
     "section": "",
-    "text": "This pages contains log for my self-study on metric theory.",
-    "crumbs": [
-      "Teaching",
-      "Mathematics",
-      "Metric theory resources"
-    ]
-  },
-  {
-    "objectID": "teaching/topology.html",
-    "href": "teaching/topology.html",
-    "title": "Topology",
-    "section": "",
-    "text": "This pages contains log for my self-study on topology.",
-    "crumbs": [
-      "Teaching",
-      "Mathematics",
-      "Topology resources"
-    ]
-  },
-  {
-    "objectID": "teaching/office-hours.html",
-    "href": "teaching/office-hours.html",
-    "title": "Overview on OH",
-    "section": "",
-    "text": "TBD",
-    "crumbs": [
-      "Teaching",
-      "Class-name",
-      "Office hours"
-    ]
-  },
-  {
-    "objectID": "computing/trade-notes.html",
-    "href": "computing/trade-notes.html",
-    "title": "(Graduate) International trade notes",
-    "section": "",
-    "text": "These are some notes for my self-study on International Trade (graduate level).",
+    "text": "This is example templates that use Polars for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(polars)\n\nnyc = pl$scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning = TRUE)\nnyc\n\nq1 = (\n    nyc\n    $group_by(\"passenger_count\")\n    $agg(\n        pl$mean(\"tip_amount\")#$alias(\"mean_tip\") ## alias is optional\n    )\n    $sort(\"passenger_count\")\n)\nq1 \n\ntic = Sys.time()\ndat1 = q1$collect()\ntoc = Sys.time()\n\ndat1\n\nq2 = (\n    nyc\n    $filter(pl$col(\"month\") &lt;= 3)\n    $group_by(\"month\", \"passenger_count\")\n    $agg(pl$mean(\"tip_amount\")$alias(\"mean_tip\"))\n    $sort(\"passenger_count\")\n) \n\n# q2              # naive\ncat(q2$explain()) # optimized\n\ntic = Sys.time()\ndat2 = q2$collect()\ntoc = Sys.time()\n\ndat2\n\nq3 = (\n    nyc\n    $group_by(\"passenger_count\", \"trip_distance\")\n    $agg(\n        pl$mean(\"tip_amount\")$alias(\"mean_tip\"),\n        pl$mean(\"fare_amount\")$alias(\"mean_fare\")\n        )\n    $sort(\"passenger_count\", \"trip_distance\")\n)\n\ntic = Sys.time()\ndat3 = q3$collect()\ntoc = Sys.time()\n \ndat3\n\ndat3$unpivot(index = c(\"passenger_count\", \"trip_distance\"))\n\nmean_tips  = nyc$group_by(\"month\")$agg(pl$col(\"tip_amount\")$mean())\nmean_fares = nyc$group_by(\"month\")$agg(pl$col(\"fare_amount\")$mean())\n\n(\n    mean_tips\n    $join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\"  # default is inner join\n    )\n    $collect()\n)\n\n# You can also try tidypolars\n\nlibrary(polars) ## Already loaded\nlibrary(tidypolars)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)\n\nnyc = scan_parquet_polars(\"nyc-taxi/**/*.parquet\")\n\nnyc |&gt; \n    summarise(mean_tip = mean(tip_amount), .by = passenger_count) |&gt;\n    compute()\n\n# Aside: Use collect() instead of compute() at the end if you would prefer to return a standard R data.frame instead of a Polars DataFrame.\n\n\n\n\nimport polars as pl\nimport time\nimport matplotlib\n\nnyc = pl.scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning=True)\nnyc\n\nq1 = (\n    nyc\n    .group_by([\"passenger_count\"])\n    .agg([\n            pl.mean(\"tip_amount\")#.alias(\"mean_tip\") ## alias is optional\n        ])\n    .sort(\"passenger_count\")\n)\nq1\n\ntic = time.time()\ndat1 = q1.collect()\ntoc = time.time()\n\ndat1\n\nq2 = (\n    nyc\n    .filter(pl.col(\"month\") &lt;= 3)\n    .group_by([\"month\", \"passenger_count\"])\n    .agg([pl.mean(\"tip_amount\").alias(\"mean_tip\")])\n    .sort(\"passenger_count\")\n)\n\n# q2             # naive\nq2.show_graph()  # optimized\n\ntic = time.time()\ndat2 = q2.collect()\ntoc = time.time()\n\ndat2\n\nq3 = (\n    nyc\n    .group_by([\"passenger_count\", \"trip_distance\"])\n    .agg([\n        pl.mean(\"tip_amount\").alias(\"mean_tip\"),\n        pl.mean(\"fare_amount\").alias(\"mean_fare\"),\n        ])\n    .sort([\"passenger_count\", \"trip_distance\"])\n)\n\ntic = time.time()\ndat3 = q3.collect()\ntoc = time.time()\n\ndat3\n\ndat3.unpivot(index = [\"passenger_count\", \"trip_distance\"])\n\nmean_tips  = nyc.group_by(\"month\").agg(pl.col(\"tip_amount\").mean())\nmean_fares = nyc.group_by(\"month\").agg(pl.col(\"fare_amount\").mean())\n\n(\n    mean_tips\n    .join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\" # default is inner join\n    )\n    .collect()\n)",
     "crumbs": [
       "Notes",
-      "Trade notes"
+      "Polars (R + Python)"
     ]
   },
   {
