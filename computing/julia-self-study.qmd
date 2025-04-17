@@ -229,7 +229,154 @@ combine(df_missing, :grade_2020 => mean ∘ skipmissing )
 
 # DataFramesMeta.jl
 
+Similar syntax to `dplyr` in `R`.
+
 ```{julia}
 
 using DataFramesMeta
 ```
+
+## Select
+
+```{julia}
+
+df = all_grades()
+```
+
+```{julia}
+
+@select df :name
+@select df :name :grade
+@select df $(Not(:grade))
+```
+
+```{julia}
+
+@select df :grade_100 = :grade .* 10
+@rselect df :grade_100 = :grade * 10
+```
+
+## Column transformation
+
+```{julia}
+
+@rtransform df :grade_100 = :grade * 10
+```
+
+```{julia}
+
+@rtransform df :grade_100 = :grade * 10 :grade_5 = :grade / 2
+
+@rtransform df begin
+    :grade_100 = :grade * 10
+    :grade_5 = :grade / 2
+end
+```
+
+```{julia}
+
+leftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)
+@rtransform! leftjoined :grade_2021 = coalesce(:grade_2021, 5)
+
+@rtransform leftjoined :mean_grades = (:grade_2020 + :grade_2021) / 2
+```
+
+## Row selection
+
+```{julia}
+
+@rsubset df :grade > 7
+```
+
+```{julia}
+
+@subset df :grade .> mean(:grade)
+```
+
+```{julia}
+@rsubset df begin
+    :grade > 7
+    startswith(:name, "A")
+end
+```
+
+## Row sorting
+
+```{julia}
+
+@orderby leftjoined :grade_2021
+@orderby leftjoined -:grade_2021
+
+@orderby leftjoined begin
+    :grade_2021
+    :name
+end
+```
+
+## Data summaries
+
+```{julia}
+
+@combine leftjoined :mean_grade_2020 = mean(:grade_2020)
+```
+
+```{julia}
+
+@combine leftjoined begin
+    :mean_grade_2020 = mean(:grade_2020)
+    :mean_grade_2021 = mean(:grade_2021)
+end
+```
+
+```{julia}
+
+gdf = groupby(leftjoined, :name)
+@combine gdf begin
+    :mean_grade_2020 = mean(:grade_2020)
+    :mean_grade_2021 = mean(:grade_2021)
+end
+```
+
+## Piping operations
+
+```{julia}
+
+@chain leftjoined begin
+    groupby(:name)
+    @combine :mean_grade_2020 = mean(:grade_2020)
+end
+```
+
+```{julia}
+
+@chain leftjoined begin
+    groupby(:name)
+    @combine begin
+        :mean_grade_2020 = mean(:grade_2020)
+        :mean_grade_2021 = mean(:grade_2021)
+    end
+end
+```
+
+## Finale!
+
+```{julia}
+
+@chain leftjoined begin
+    @rtransform begin
+        :grade_2020 = :grade_2020 * 10
+        :grade_2021 = :grade_2021 * 10
+    end
+    groupby(:name)
+    @combine begin
+        :mean_grade_2020 = mean(:grade_2020)
+        :mean_grade_2021 = mean(:grade_2021)
+    end
+    @rtransform :mean_grades = (:mean_grade_2020 + :mean_grade_2021) / 2
+    @rsubset :mean_grades > 50
+    @orderby -:mean_grades
+end
+
+```
+
+# Quant-econ

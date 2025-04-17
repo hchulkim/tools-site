@@ -765,5 +765,82 @@
       "Notes",
       "Julia self-study"
     ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#select-1",
+    "href": "computing/julia-self-study.html#select-1",
+    "title": "Julia self study",
+    "section": "Select",
+    "text": "Select\n\ndf = all_grades()\n\n9×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0\n\n\n5\nSally\n3.0\n\n\n6\nBob\n5.0\n\n\n7\nAlice\n8.5\n\n\n8\nHank\n7.0\n\n\n9\nJohn\n10.0\n\n\n\n\n\n\n\n@select df :name\n@select df :name :grade\n@select df $(Not(:grade))\n\n9×1 DataFrame\n\n\n\nRow\nname\n\n\n\nString\n\n\n\n\n1\nSally\n\n\n2\nBob\n\n\n3\nAlice\n\n\n4\nHank\n\n\n5\nSally\n\n\n6\nBob\n\n\n7\nAlice\n\n\n8\nHank\n\n\n9\nJohn\n\n\n\n\n\n\n\n@select df :grade_100 = :grade .* 10\n@rselect df :grade_100 = :grade * 10\n\n9×1 DataFrame\n\n\n\nRow\ngrade_100\n\n\n\nFloat64\n\n\n\n\n1\n10.0\n\n\n2\n50.0\n\n\n3\n85.0\n\n\n4\n40.0\n\n\n5\n30.0\n\n\n6\n50.0\n\n\n7\n85.0\n\n\n8\n70.0\n\n\n9\n100.0",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#column-transformation",
+    "href": "computing/julia-self-study.html#column-transformation",
+    "title": "Julia self study",
+    "section": "Column transformation",
+    "text": "Column transformation\n\n@rtransform df :grade_100 = :grade * 10\n\n9×3 DataFrame\n\n\n\nRow\nname\ngrade\ngrade_100\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n10.0\n\n\n2\nBob\n5.0\n50.0\n\n\n3\nAlice\n8.5\n85.0\n\n\n4\nHank\n4.0\n40.0\n\n\n5\nSally\n3.0\n30.0\n\n\n6\nBob\n5.0\n50.0\n\n\n7\nAlice\n8.5\n85.0\n\n\n8\nHank\n7.0\n70.0\n\n\n9\nJohn\n10.0\n100.0\n\n\n\n\n\n\n\n@rtransform df :grade_100 = :grade * 10 :grade_5 = :grade / 2\n\n@rtransform df begin\n    :grade_100 = :grade * 10\n    :grade_5 = :grade / 2\nend\n\n9×4 DataFrame\n\n\n\nRow\nname\ngrade\ngrade_100\ngrade_5\n\n\n\nString\nFloat64\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n10.0\n0.5\n\n\n2\nBob\n5.0\n50.0\n2.5\n\n\n3\nAlice\n8.5\n85.0\n4.25\n\n\n4\nHank\n4.0\n40.0\n2.0\n\n\n5\nSally\n3.0\n30.0\n1.5\n\n\n6\nBob\n5.0\n50.0\n2.5\n\n\n7\nAlice\n8.5\n85.0\n4.25\n\n\n8\nHank\n7.0\n70.0\n3.5\n\n\n9\nJohn\n10.0\n100.0\n5.0\n\n\n\n\n\n\n\nleftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n@rtransform! leftjoined :grade_2021 = coalesce(:grade_2021, 5)\n\n@rtransform leftjoined :mean_grades = (:grade_2020 + :grade_2021) / 2\n\n4×4 DataFrame\n\n\n\nRow\nname\ngrade_2020\ngrade_2021\nmean_grades\n\n\n\nString\nFloat64\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n2.0\n\n\n2\nBob\n5.0\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0\n5.5",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#row-selection",
+    "href": "computing/julia-self-study.html#row-selection",
+    "title": "Julia self study",
+    "section": "Row selection",
+    "text": "Row selection\n\n@rsubset df :grade &gt; 7\n\n3×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5\n\n\n2\nAlice\n8.5\n\n\n3\nJohn\n10.0\n\n\n\n\n\n\n\n@subset df :grade .&gt; mean(:grade)\n\n4×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5\n\n\n2\nAlice\n8.5\n\n\n3\nHank\n7.0\n\n\n4\nJohn\n10.0\n\n\n\n\n\n\n\n@rsubset df begin\n    :grade &gt; 7\n    startswith(:name, \"A\")\nend\n\n2×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5\n\n\n2\nAlice\n8.5",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#row-sorting",
+    "href": "computing/julia-self-study.html#row-sorting",
+    "title": "Julia self study",
+    "section": "Row sorting",
+    "text": "Row sorting\n\n@orderby leftjoined :grade_2021\n@orderby leftjoined -:grade_2021\n\n@orderby leftjoined begin\n    :grade_2021\n    :name\nend\n\n4×3 DataFrame\n\n\n\nRow\nname\ngrade_2020\ngrade_2021\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nHank\n4.0\n7.0\n\n\n4\nAlice\n8.5\n8.5",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#data-summaries",
+    "href": "computing/julia-self-study.html#data-summaries",
+    "title": "Julia self study",
+    "section": "Data summaries",
+    "text": "Data summaries\n\n@combine leftjoined :mean_grade_2020 = mean(:grade_2020)\n\n1×1 DataFrame\n\n\n\nRow\nmean_grade_2020\n\n\n\nFloat64\n\n\n\n\n1\n4.625\n\n\n\n\n\n\n\n@combine leftjoined begin\n    :mean_grade_2020 = mean(:grade_2020)\n    :mean_grade_2021 = mean(:grade_2021)\nend\n\n1×2 DataFrame\n\n\n\nRow\nmean_grade_2020\nmean_grade_2021\n\n\n\nFloat64\nFloat64\n\n\n\n\n1\n4.625\n5.875\n\n\n\n\n\n\n\ngdf = groupby(leftjoined, :name)\n@combine gdf begin\n    :mean_grade_2020 = mean(:grade_2020)\n    :mean_grade_2021 = mean(:grade_2021)\nend\n\n4×3 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\nmean_grade_2021\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#piping-operations",
+    "href": "computing/julia-self-study.html#piping-operations",
+    "title": "Julia self study",
+    "section": "Piping operations",
+    "text": "Piping operations\n\n@chain leftjoined begin\n    groupby(:name)\n    @combine :mean_grade_2020 = mean(:grade_2020)\nend\n\n4×2 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0\n\n\n\n\n\n\n\n@chain leftjoined begin\n    groupby(:name)\n    @combine begin\n        :mean_grade_2020 = mean(:grade_2020)\n        :mean_grade_2021 = mean(:grade_2021)\n    end\nend\n\n4×3 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\nmean_grade_2021\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#finale",
+    "href": "computing/julia-self-study.html#finale",
+    "title": "Julia self study",
+    "section": "Finale!",
+    "text": "Finale!\n\n@chain leftjoined begin\n    @rtransform begin\n        :grade_2020 = :grade_2020 * 10\n        :grade_2021 = :grade_2021 * 10\n    end\n    groupby(:name)\n    @combine begin\n        :mean_grade_2020 = mean(:grade_2020)\n        :mean_grade_2021 = mean(:grade_2021)\n    end\n    @rtransform :mean_grades = (:mean_grade_2020 + :mean_grade_2021) / 2\n    @rsubset :mean_grades &gt; 50\n    @orderby -:mean_grades\nend\n\n2×4 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\nmean_grade_2021\nmean_grades\n\n\n\nString\nFloat64\nFloat64\nFloat64\n\n\n\n\n1\nAlice\n85.0\n85.0\n85.0\n\n\n2\nHank\n40.0\n70.0\n55.0",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
   }
 ]
