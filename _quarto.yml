@@ -49,6 +49,8 @@ website:
           text: "Geospatial (R)"
         - href: computing/trade-notes.qmd
           text: "Trade notes"
+        - href: computing/julia-self-study.qmd
+          text: "Julia self-study"
       - section: "Teaching"
         contents:
           - section: "Class-name"

@@ -151,3 +151,37 @@ OTH, if $(x,x) \in Id$, there is $y$ s.t. $xfy$ and $yf^{-1}x$. So $x \in f^{-1}
 I also proved 3.4 (b), 3.10 but lost the paper that I wrote it down and am too lazy to do it again. Contact me if you need them.
 
 ### 4. Equivalence relations
+
+#### 4.1 (c)
+
+Reflexive: It does not hold. Since $x=x$, $xRx$ cannot hold.
+
+Symmetric: It holds since $x \neq y$ and $y \neq x$.
+
+Transitive: Does not hold. Think of $x=3=z$ and $y=4$.
+
+#### 4.1 (e,f)
+
+These are equivalence relations because the conditions of the empty sets make the claims vacuously true.
+
+#### 4.2 (a)
+
+Reflexive: We can easily see that $f(x)=f(x)$.
+
+Symmetry: Let $xEy$. Then as $f(x)=f(y)$, this implies $f(y)=f(x)$. Thus $yEx$.
+
+Transitive: Let $xEy$ and $yEz$. Then we have $f(x)=f(y)=f(z)$. Thus $xEz$.
+
+Hence $E$ is equivalence relation on $A$.
+
+#### 4.2 (b)
+
+Let $[a]_E = [a']_E$. Then $\phi([a]_E) = f(a)$ and $\phi([a']_E) = f(a')$. Then $f(a) = f(a')$ has to hold by definition of the equivalence.
+
+#### 4.2 (c)
+
+Let $(x,y) \in f$. Since $j$ is a function on $A$, there will be some $z \in A/E$ s.t. $xjz$. In fact, $z = [x]_E$ by definition. Then as $f(x) = \phi([x]_E)$, it is done.
+
+If $(x,z) \in \phi \circ j$, there is some $y$ s.t. $j(x) = [x]_E = y$. Also, $\phi([x]_E) = f(x) = z$. Thus done.
+
+

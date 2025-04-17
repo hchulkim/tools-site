@@ -1,0 +1,235 @@
+---
+title: "Julia self study"
+subtitle: "Self studying Julia"
+execute:
+  freeze: auto
+---
+
+```{julia}
+using DataFrames
+using CSV
+using XLSX
+```
+
+Make a toy dataframe
+
+```{julia}
+function grades_2020()
+    name = ["Sally", "Bob", "Alice", "Hank"]
+    grade_2020 = [1, 5, 8.5, 4]
+    DataFrame(; name, grade_2020)
+end
+grades_2020()
+
+function grades_2021()
+    name = ["Sally", "Bob", "Alice", "Hank", "John"]
+    grade_2021 = [3, 5, 8.5, 7, 10]
+    DataFrame(; name, grade_2021)
+end
+grades_2021()
+```
+
+# Loading and writing files
+
+## CSV files
+
+Write the dataframe into CSV file
+
+```{julia}
+CSV.write("toy.csv", grades_2020())
+```
+
+Read in the CSV file
+
+```{julia}
+toy = CSV.read("toy.csv", DataFrame)
+first(toy, 5)
+
+```
+
+## Excel files
+
+```{julia}
+#| eval: false
+
+function write_xlsx(name, df::DataFrame)
+    path = "$name.xlsx"
+    data = collect(eachcol(df))
+    cols = names(df)
+    write(path, data, cols)
+end
+
+function write_grades_xlsx()
+    path = "grades"
+    write_xlsx(path, grades_2020())
+    "$path.xlsx"
+end
+
+path = write_grades_xlsx()
+xf = readxlsx(path)
+
+```
+
+# DataFrames.jl
+
+## Filter and subset
+
+```{julia}
+
+equals_alice(name::String) = name == "Alice"
+
+filter(:name => equals_alice, grades_2020())
+
+filter(:name => n -> n == "Alice", grades_2020())
+
+filter(:name => ==("Alice"), grades_2020())
+filter(:name => !=("Alice"), grades_2020())
+```
+
+```{julia}
+
+function complex_filter(name, grade)::Bool
+    interesting_name = startswith(name, 'A') || startswith(name, 'B')
+    interesting_grade = 6 < grade
+    interesting_name && interesting_grade
+end
+
+filter([:name, :grade_2020] => complex_filter, grades_2020())
+
+```
+
+## Select
+
+```{julia}
+
+function responses()
+    id = [1, 2]
+    q1 = [28, 61]
+    q2 = [:us, :fr]
+    q3 = ["F", "B"]
+    q4 = ["B", "C"]
+    q5 = ["A", "E"]
+    DataFrame(; id, q1, q2, q3, q4, q5)
+end
+responses()
+```
+
+```{julia}
+
+select(responses(), :id, :q1)
+
+# regex
+select(responses(), r"^q")
+
+select(responses(), Not(:q5))
+select(responses(), Not([:q4, :q5]))
+select(responses(), :q5, Not(:q5))
+
+# renaming
+select(responses(), 1 => "participant", :q1 => "age", :q2 => "nationality")
+renames = (1 => "participant", :q1 => "age", :q2 => "nationality")
+select(responses(), renames...)
+```
+
+## Left and right joins
+
+```{julia}
+
+leftjoin(grades_2020(), grades_2021(); on=:name)
+
+rightjoin(grades_2020(), grades_2021(); on=:name)
+
+```
+
+## Transform variables
+
+```{julia}
+
+plus_one(grades) = grades .+ 1
+transform(grades_2020(), :grade_2020 => plus_one)
+
+transform(grades_2020(), :grade_2020 => plus_one => :grade_2020)
+transform(grades_2020(), :grade_2020 => plus_one; renamecols=false)
+```
+
+```{julia}
+
+leftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)
+
+function only_pass()
+    leftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)
+    pass(A, B) = [5.5 < a || 5.5 < b for (a, b) in zip(A, B)]
+    leftjoined = transform(leftjoined, [:grade_2020, :grade_2021] => pass => :pass)
+    passed = subset(leftjoined, :pass; skipmissing=true)
+    return passed.name
+end
+only_pass()
+```
+
+## Groupby and combine
+
+```{julia}
+
+function all_grades()
+    df1 = grades_2020()
+    df1 = select(df1, :name, :grade_2020 => :grade)
+    df2 = grades_2021()
+    df2 = select(df2, :name, :grade_2021 => :grade)
+    rename_bob2(data_col) = replace.(data_col, "Bob 2" => "Bob")
+    df2 = transform(df2, :name => rename_bob2 => :name)
+    return vcat(df1, df2)
+end
+all_grades()
+```
+
+```{julia}
+
+groupby(all_grades(), :name)
+
+using Statistics
+
+gdf = groupby(all_grades(), :name)
+combine(gdf, :grade => mean)
+```
+
+```{julia}
+
+group = [:A, :A, :B, :B]
+X = 1:4
+Y = 5:8
+df = DataFrame(; group, X, Y)
+
+gdf = groupby(df, :group)
+combine(gdf, [:X, :Y] .=> mean; renamecols=false)
+```
+
+## Missing values
+
+```{julia}
+
+df_missing = DataFrame(;
+    name=[missing, "Sally", "Alice", "Hank"],
+    age=[17, missing, 20, 19],
+    grade_2020=[5.0, 1.0, missing, 4.0],
+)
+
+dropmissing(df_missing)
+
+dropmissing(df_missing, :name)
+
+dropmissing(df_missing, [:name, :age])
+```
+
+```{julia}
+
+filter(:name => !ismissing, df_missing)
+
+combine(df_missing, :grade_2020 => mean ∘ skipmissing )
+```
+
+# DataFramesMeta.jl
+
+```{julia}
+
+using DataFramesMeta
+```
