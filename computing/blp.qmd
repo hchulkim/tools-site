@@ -20,6 +20,9 @@ Install necessary julia packages for later computation:
 # You might need these commented codes to install packages
 # using Pkg
 # Pkg.add(["DataFrames", "CSV", "GLM", "Statistics", "LinearAlgebra", "Distributions", "NLopt", "FixedEffectModels", "RegressionTables"])
+# Pkg.add("DataFramesMeta")
+# Pkg.add("Random")
+# Pkg.add("StatsModels")
 ```
 
 # BLP
@@ -384,27 +387,67 @@ Column              | Data Type | Description
 
 Throughout the exercises, we use these data to estimate an increasingly flexible BLP-style model of demand for cereal. We will use predictions from this model to see how our running example, cutting the price of one cereal, affects demand for that cereal and for its substitutes.
 
-## Questions
+# Exercise 1
 
-### 1. Describe the data
+## 1. Describe the data
 
 You can download `products.csv` from [this link](https://github.com/Mixtape-Sessions/Demand-Estimation/raw/main/Exercises/Data/products.csv). To load it, you can use [`pd.read_csv`](https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html). To look at a random sample of its rows, you can use [`.sample`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.sample.html). To compute summary statistics for different columns, you can use [`.describe`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html). Throughout these exercises, you'll be given links to functions and methods that can be used to answer the questions. If you're unsure about how to use them, you should click on the link, where there is typically example code lower down on the page.
 
-### 2. Compute market shares
+```{julia}
+
+using CSV, DataFrames, DataFramesMeta, StatsModels, LinearAlgebra, Random, Statistics, Distributions
+
+df = CSV.read("data/raw/products.csv", DataFrame) 
+
+describe(df)
+
+```
+
+## 2. Compute market shares
 
 To transform observed quantities $q_{jt}$ into market shares $s_{jt} = q_{jt} / M_t$, we first need to define a market size $M_t$. We'll assume that the potential number of servings sold in a market is the city's total population multiplied by 90 days in the quarter. Create [a new column](https://pandas.pydata.org/docs/getting_started/intro_tutorials/05_add_columns.html) called `market_size` equal to `city_population` times `90`. Note that this assumption is somewhat reasonable but also somewhat arbitrary. Perhaps a sizable portion of the population in a city would never even consider purchasing cereal. Or perhaps those who do tend to want more than one serving per day. In the third exercise, we'll think more about how to discipline our market size assumption with data.
 
 Next, compute a new column `market_share` equal to `servings_sold` divided by `market_size`. This gives our market shares $s_{jt}$. We'll also need the outside share $s_{0t} = 1 - \sum_{j \in J_t} s_{jt}$. Create a new column `outside_share` equal to this expression. You can use [`.groupby`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html) to group by market and [`.transform('sum')`](https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.transform.html) to compute the within-market sum of inside shares. Compute summary statistics for your inside and outside shares. If you computed market shares correctly, the smallest outside share should be $s_{0t} \approx 0.305$ and the largest should be $s_{0t} \approx 0.815$.
 
-### 3. Estimate the pure logit model with OLS
+```{julia}
+
+@transform! df :market_size = :city_population .* 90
+
+@transform! df :market_share = :servings_sold ./ :market_size
+
+@chain df begin
+  groupby(:market)
+  @transform! :outside_share = 1 .- sum(:market_share)
+end
+
+describe(df.outside_share)
+```
+
+## 3. Estimate the pure logit model with OLS
 
 Recall the pure logit estimating equation: $\log(s_{jt} / s_{0t}) = \delta_{jt} = \alpha p_{jt} + x_{jt}' \beta + \xi_{jt}$. First, create a new column `logit_delta` equal to the left-hand side of this expression. You can use [`np.log`](https://numpy.org/doc/stable/reference/generated/numpy.log.html) to compute the log.
+
+```{julia}
+
+@transform! df :logit_delta = log.(:market_share) .- log.(:outside_share)
+
+first(df, 5)
+```
 
 Then, use the package of your choice to run an OLS regression of `logit_delta` on a constant, `mushy`, and `price_per_serving`. There are many packages for running OLS regressions in Python. One option is to use the [formula interface for `statsmodels`](https://www.statsmodels.org/stable/example_formulas.html#ols-regression-using-formulas). To use robust standard errors, you can specify `cov_type='HC0'` in [`OLS.fit`](https://www.statsmodels.org/stable/generated/statsmodels.regression.linear_model.OLS.fit.html).
 
 Interpret your estimates. Your coefficient on `price_per_serving` should be around `-7.48`. In particular, can you re-express your estimate on `mushy` in terms of how much consumers are willing to pay for `mushy`, using your estimated price coefficient?
 
-### 4. Run the same regression with PyBLP
+```{julia}
+
+using FixedEffectModels, RegressionTables
+
+ols = reg(df, @formula(logit_delta ~ mushy + price_per_serving), Vcov.robust())
+
+regtable(ols, order = ["price_per_serving"], drop = ["(Intercept)"], regression_statistics = [Nobs, R2])
+```
+
+## 4. Run the same regression with PyBLP
 
 For the rest of the exercises, we'll use PyBLP do to our demand estimation. This isn't necessary for estimating the pure logit model, which can be done with linear regressions, but using PyBLP allows us to easily run our price cut counterfactual and make the model more flexible in subsequent days' exercises.
 
@@ -437,7 +480,7 @@ ols_results = ols_problem.solve(method='1s')
 
 Again, if you `print(ols_results)`, you'll get estimates from the logit model. Make sure that your estimates are the same as those you got from your OLS regression. If you used `'HC0'` standard errors like suggested above, you standard errors should also be the same.
 
-### 5. Add market and product fixed effects
+## 5. Add market and product fixed effects
 
 Since we expect price $p_{jt}$ to be correlated with unobserved product quality $\xi_{jt}$, we should be worried that our estimated $\hat{\alpha}$ on price is biased. Since we have multiple observations per market and product, and prices vary both across and within markets, it is feasible for us to add both market and product fixed effects. If $\xi_{jt} = \xi_j + \xi_t + \Delta\xi_{jt}$ and most of the correlation between $p_{jt}$ and $\xi_{jt}$ is due to correlation between $p_{jt}$ and either $\xi_j$ (product fixed effects) or $\xi_t$ (market fixed effects), then explicitly accounting for these fixed effects during estimation should help reduce the bias of our $\hat{\alpha}$.
 
@@ -447,15 +490,39 @@ The alternative, which we'll do today, is to "absorb" the fixed effects. For a s
 
 Since `mushy` is always either 1 or 0 for the same product across different markets, it's collinear with product fixed effects, and you can drop it from your formula. Similarly, you can drop the constant. After dropping these, re-create your problem with absorbed fixed effects and re-solve it. Compare the new $\hat{\alpha}$ estimate with the last one. You should now be getting a coefficient on price of around `-28.6`. Does its change suggest that price was positively or negatively correlated with unobserved product-level/market-level quality?
 
-### 6. Add an instrument for price
+```{julia}
+
+ols2 = reg(df, @formula(logit_delta ~ price_per_serving + fe(market) + fe(product)), Vcov.robust())
+
+regtable(ols2, order = ["price_per_serving"], drop = ["(Intercept)"], regression_statistics = [Nobs, R2])
+```
+
+## 6. Add an instrument for price
 
 Adding market and product fixed effects can be helpful, but since unobserved quality typically varies by both product *and* market, we really want to instrument for prices. The data comes with a column `price_instrument` that we should interpret as a valid instrument for price that satisfies the needed exclusion restriction. It could be a cost-shifter, a valid Hausman instrument, or similar.
 
 Before using it, we should first run a first-stage regression to make sure that it's a relevant instrument for price. To do so, use the same package you used above to run an OLS regression to run a second OLS regression of prices on `price_instrument` and your market and product fixed effects. If using the [formula interface for `statsmodels`](https://www.statsmodels.org/stable/example_formulas.html#ols-regression-using-formulas), you can use the same fixed effect shorthand as in PyBLP, with your full formula looking like `prices ~ price_instrument + C(market_ids) + C(product_ids)`. Does `price_instrument` seem like a relevant instrument for `prices`?
 
+```{julia}
+
+# first stage
+iv0 = reg(df, @formula(price_per_serving ~ price_instrument + fe(market) + fe(product)), Vcov.robust())
+
+regtable(iv0, order = ["price_instrument"], drop = ["(Intercept)"], regression_statistics = [FStatIV, Nobs, R2])
+```
+
 Now that we've checked relevance, we can set our `demand_instruments0` column equal to `price_instrument`, re-create the problem, and re-solve it. You should get a new coefficient on price of around `-30.6`. Does the change in $\hat{\alpha}$ suggest that price was positively or negatively correlated with $\Delta\xi_{jt}$ in $\xi_{jt} = \xi_j + \xi_t + \Delta\xi_{jt}$?
 
-### 7. Cut a price in half and see what happens
+```{julia}
+
+# first stage
+iv1 = reg(df, @formula(logit_delta ~ (price_per_serving ~ price_instrument) + fe(market) + fe(product)), Vcov.robust())
+
+regtable(iv1, order = ["price_per_serving"], drop = ["(Intercept)"], regression_statistics = [FStatIV, Nobs, R2])
+```
+
+
+## 7. Cut a price in half and see what happens
 
 Now that we have our pure logit model estimated, we can run our counterfactual of interest: what if we halved an important product's price? We'll select a single market, the most recent quarter in the first city: `C01Q2`. Create a new dataframe called `counterfactual_data` by [selecting](https://pandas.pydata.org/docs/getting_started/intro_tutorials/03_subset_data.html) data for just that market and inspect the data. We'll pretend that we're firm one, and deciding whether we want to cut the price of our brand four's product `F1B04`. In particular, we might be worried about *cannibalization*, i.e. how much this price cut will result in consumers of our other 8 brands of cereal in this market just substituting from their old choice to the new, cheaper cereal. Alternatively, we could be a regulator or academic interested in how taxing that product would affect demand in the market.
 
@@ -463,7 +530,17 @@ In your new dataframe with just data from `C01Q2`, create a `new_prices` column 
 
 Compute the percent change in shares for each product in the market. From firm one's perspective, do the estimates of cannibalization make sense. That is, do the signs on the percent changes for product `F1B04` and for other products make sense? Would you normally expect percent changes for other products to be different depending on how other products compare to the one whose price is being changed?
 
-### 8. Compute demand elasticities
+```{julia}
+
+counterfactual_data = @rsubset df :market == "C01Q2" 
+
+@rtransform! df :new_prices = ifelse(:product == "F1B04", :price_per_serving / 2, :price_per_serving)
+
+first(counterfactual_data, 5)
+
+```
+
+## 8. Compute demand elasticities
 
 To better understand what's going on, use [`.compute_elasticities`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.compute_elasticities.html), again specifying `market_id='C01Q2'`, to compute price elasticities for our market of interest. These measure what the model predicts will happen to demand in percentage terms when there's a 1% change in price of a product. The diagonal elements are own-price elasticities and the off-diagonal elements are cross-price elasticities. Does demand seem very elastic? Do the cross-price elasticities seem particularly reasonable?
 
@@ -471,11 +548,11 @@ To better understand what's going on, use [`.compute_elasticities`](https://pybl
 
 These questions will not be directly covered in lecture, but will be useful to think about when doing BLP-style estimation in your own work.
 
-### 1. Try different standard errors
+## 1. Try different standard errors
 
 By default, PyBLP computed standard errors that are robust to heteroskedasticity. But we may be concerned that unobserved quality $\xi_{jt}$ is systematically correlated across markets for a given product $j$, or across products for a given market $t$. Choose which one you think is more likely and try clustering your standard errors by that dimension. You can do this with `se_type='clustered'` in [`.solve`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.solve.html), for which you'll need a `clustering_ids` column in your product data. See how your standard error for $\alpha$ changes.
 
-### 2. Compute confidence intervals for your counterfactual
+## 2. Compute confidence intervals for your counterfactual
 
 Your estimate of $\hat{\alpha}$ comes with a standard error, but your counterfactual demand predictions don't. Ideally we'd like to not only have a point estimate for a counterfactual prediction, but also a measure (up to model misspecification) of how confident we are in these predictions. The easiest way to do this is with a "parametric bootstrap." The intuition is we can draw from the estimated asymptotic distribution of our $\hat{\alpha}$, and for each draw, re-compute demand, and see how demand responds to the same price cut.
 
@@ -483,13 +560,13 @@ You can do a parametric bootstrap with the [`.bootstrap`](https://pyblp.readthed
 
 Once you have some bootstrapped shares, compute the same percent changes, and compute the 2.5th and 97.5th percentiles of these changes for each product. Are these 95% confidence intervals for your predictions particularly wide?
 
-### 3. Impute marginal costs from pricing optimality
+## 3. Impute marginal costs from pricing optimality
 
 The canonical demand side of the BLP model assumes firms set prices in static Bertrand-Nash equilibrium. See [this section](https://pyblp.readthedocs.io/en/stable/background.html#supply) for a quick summary using PyBLP notation. Given an estimated demand model and such assumptions about pricing, we can impute marginal costs `c_{jt}`.
 
 To do so, you first need to tell PyBLP what firms own what products. Create a new `firm_ids` column in your data, re-initialize your problem, and re-solve it. Then, you should be able to run the [`.compute_costs`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.compute_costs.html) method to impute firms' marginal cost of producing each cereal. Do these marginal costs look particularly reasonable? How might limitations of your demand model and supply model bias them? What would they and observed prices imply about firms' markups and economic profits?
 
-### 4. Check your code by simulating data
+## 4. Check your code by simulating data
 
 Even experienced software developers make a lot of mistakes when writing code. Writing "unit tests" or "integration tests" that check whether the code you've written seems to be working properly is incredibly important when writing complicated code to estimate demand. Perhaps the most useful test you can write when doing demand estimation (or most other types of structural estimation) is the following.
 
