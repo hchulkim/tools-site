@@ -239,3 +239,14 @@ ggplot() +
 ```
 
 #### Distances between places
+
+```{r}
+
+rivendell <- places %>% filter(NAME == "Rivendell")
+
+st_distance(hobbiton, rivendell) %>% meters_to_miles()
+```
+
+## How to use a histogram as a legend in {ggplot2}
+
+Cite: [link](https://www.andrewheiss.com/blog/2025/02/19/ggplot-histogram-legend/)
