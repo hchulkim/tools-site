@@ -334,6 +334,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#quick-reminder-latitude-vs.-longitude" id="toc-quick-reminder-latitude-vs.-longitude" class="nav-link" data-scroll-target="#quick-reminder-latitude-vs.-longitude">Quick reminder: latitude vs.&nbsp;longitude</a></li>
   <li><a href="#start-the-middle-earth-mapping" id="toc-start-the-middle-earth-mapping" class="nav-link" data-scroll-target="#start-the-middle-earth-mapping">Start the middle earth mapping</a></li>
   </ul></li>
+  <li><a href="#how-to-use-a-histogram-as-a-legend-in-ggplot2" id="toc-how-to-use-a-histogram-as-a-legend-in-ggplot2" class="nav-link" data-scroll-target="#how-to-use-a-histogram-as-a-legend-in-ggplot2">How to use a histogram as a legend in {ggplot2}</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/computing/gis.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -630,10 +631,24 @@ Projected CRS: UTM_Zone_31_Northern_Hemisphere
 </section>
 <section id="distances-between-places" class="level4">
 <h4 class="anchored" data-anchor-id="distances-between-places">Distances between places</h4>
-
-
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>rivendell <span class="ot">&lt;-</span> places <span class="sc">%&gt;%</span> <span class="fu">filter</span>(NAME <span class="sc">==</span> <span class="st">"Rivendell"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">st_distance</span>(hobbiton, rivendell) <span class="sc">%&gt;%</span> <span class="fu">meters_to_miles</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Units: [m]
+         [,1]
+[1,] 229.0673</code></pre>
+</div>
+</div>
 </section>
 </section>
+</section>
+<section id="how-to-use-a-histogram-as-a-legend-in-ggplot2" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-use-a-histogram-as-a-legend-in-ggplot2">How to use a histogram as a legend in {ggplot2}</h2>
+<p>Cite: <a href="https://www.andrewheiss.com/blog/2025/02/19/ggplot-histogram-legend/">link</a></p>
+
+
 </section>
 
 </main> <!-- /main -->
