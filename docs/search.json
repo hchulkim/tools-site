@@ -974,5 +974,27 @@
       "Notes",
       "BLP code (Julia)"
     ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#geometric-series",
+    "href": "computing/julia-self-study.html#geometric-series",
+    "title": "Julia self study",
+    "section": "Geometric series",
+    "text": "Geometric series\n\n# using Pkg\n# Pkg.update()\nusing LinearAlgebra, Statistics\nusing Distributions, Plots, Random, LaTeXStrings, Symbolics\n\nExample: The Keynesian multiplier\n\\(y_t = \\frac{1-b^{t+1}}{1-b}i \\Rightarrow \\frac{1}{1-b}i\\).\n\n# function that calculates a path of y\nfunction calculate_y(i, b, g, T, y_init)\n    y = zeros(T+1)\n    y[1] = i + b * y_init + g\n    for t in 2:(T+1)\n        y[t] = b * y[t-1] + i + g\n    end\n    return y\nend\n\n# Initial values\ni_0 = 0.3\ng_0 = 0.3\nb = 2 / 3\ny_init = 0\nT = 100\n\nplt = plot(0:T, calculate_y(i_0, b, g_0, T, y_init),\n            title = \"Path of Aggregate Output Over Time\",\n            ylim = (0.5, 1.9), xlabel = L\"t\", ylabel = L\"y_t\")\n\n# Output predicted by geometric series\nhline!([i_0 / (1-b) + g_0 / (1-b)], linestyle = :dash, seriestype = \"hline\", legend = false)",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#linear-algebra",
+    "href": "computing/julia-self-study.html#linear-algebra",
+    "title": "Julia self study",
+    "section": "Linear algebra",
+    "text": "Linear algebra",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
   }
 ]

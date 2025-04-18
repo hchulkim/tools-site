@@ -380,3 +380,47 @@ end
 ```
 
 # Quant-econ
+
+## Geometric series
+
+```{julia}
+# using Pkg
+# Pkg.update()
+using LinearAlgebra, Statistics
+using Distributions, Plots, Random, LaTeXStrings, Symbolics
+
+
+```
+
+**Example: The Keynesian multiplier**
+
+$y_t = \frac{1-b^{t+1}}{1-b}i \Rightarrow \frac{1}{1-b}i$.
+
+```{julia}
+
+# function that calculates a path of y
+function calculate_y(i, b, g, T, y_init)
+    y = zeros(T+1)
+    y[1] = i + b * y_init + g
+    for t in 2:(T+1)
+        y[t] = b * y[t-1] + i + g
+    end
+    return y
+end
+
+# Initial values
+i_0 = 0.3
+g_0 = 0.3
+b = 2 / 3
+y_init = 0
+T = 100
+
+plt = plot(0:T, calculate_y(i_0, b, g_0, T, y_init),
+            title = "Path of Aggregate Output Over Time",
+            ylim = (0.5, 1.9), xlabel = L"t", ylabel = L"y_t")
+
+# Output predicted by geometric series
+hline!([i_0 / (1-b) + g_0 / (1-b)], linestyle = :dash, seriestype = "hline", legend = false)
+```
+
+## Linear algebra
