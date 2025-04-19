@@ -19,10 +19,7 @@ Install necessary julia packages for later computation:
 
 # You might need these commented codes to install packages
 # using Pkg
-# Pkg.add(["DataFrames", "CSV", "GLM", "Statistics", "LinearAlgebra", "Distributions", "NLopt", "FixedEffectModels", "RegressionTables"])
-# Pkg.add("DataFramesMeta")
-# Pkg.add("Random")
-# Pkg.add("StatsModels")
+# Pkg.add(["DataFrames", "CSV", "GLM", "Statistics", "LinearAlgebra", "Distributions", "NLopt", "FixedEffectModels", "RegressionTables", "DataFramesMeta", "Random", "StatsModels", "Optim", "StatsBase"])
 ```
 
 # BLP
@@ -606,277 +603,177 @@ Column             | Data Type | Description
 
 In today and tomorrow's exercises, we will use these demographic data to introduce income-specific preference heterogeneity into our BLP model of demand for cereal and see how our counterfactual changes. By incorporating income, we will also be able to speak to distributional concerns: how will counterfactual changes in the market differentially affect high- and low-income consumers?
 
-## Questions
+## My BLP.jl
 
-### 1. Describe cross-market variation
+In this section, I will try my best to make a very flexible BLP estimation code.
 
-To get a sense for what types of preference heterogeneity we can feasibly estimate with variation in our product and demographic data, recall the linear regression intuition about identification from the lecture. To add parameters in $\Sigma$ we want cross-market choice set variation. To add parameters in $\Pi$ we want cross-market demographic variation.
+First load two data we will use and see how they look like:
 
-You should already have `products.csv` from the last exercise. You can download `demographics.csv` from [this link](https://github.com/Mixtape-Sessions/Demand-Estimation/raw/main/Exercises/Data/demographics.csv). Quarterly income has a long right tail that makes summarizing it difficult, so you should create a new column `log_income` equal to the log of `quarterly_income`.
+```{julia}
+#| warning: false
+using CSV, DataFrames, DataFramesMeta, Random, LinearAlgebra, Statistics, Distributions, StatsBase
+using FixedEffectModels, RegressionTables, Optim
 
-Across both datasets, describe the amount of cross-market variation in the number of products, `mushy`, `prices`, and `log_income`. You can use [`.groupby`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html) and [`.agg`](https://pandas.pydata.org/pandas-docs/version/0.22/generated/pandas.core.groupby.DataFrameGroupBy.agg.html) to compute market-level statistics for these variables (e.g., counts, means, and standard deviations), and you can then use [`.describe`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.describe.html) to compute summary statistics for these market-level statistics.
+# Load the necessary data
+data_prod = df;
 
-Which variables have *any* cross-market variation? In other words, referring back to the linear regression intuition about identification, which preference heterogeneity parameters do we have any hope of credibly estimating? Recall that we have both product and market fixed effects, which will be collinear with some regressors on potential parameters in $\Sigma$ and $\Pi$ in the approximate linear regression.
+# rename each certain columns to match it to the key argument in later functions
 
-### 2. Estimate a parameter on mushy $\times$ log income
+@rename! data_prod begin
+  :market_id = :market
+  :product_id = :product
+  :price_x0 = :price_per_serving
+  :mushy_x1 = :mushy
+  :price_instrument_z0 = :price_instrument
+  :s_obs = :market_share
+  :s_out = :outside_share
+end
 
-To estimate a parameter in $\Pi$ on the interaction between `mushy` and `log_income`, we first need to define a datset of consumer types that PyBLP can use for preference heterogeneity. From each market $t$, take $I_t = 1,000$ draws with replacement from the demographic data, and call the resulting dataframe `agent_data`. Each of its rows will be a consumer type $i \in I_t$. You can do this with [`.groupby`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html) and [`.sample`](https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.sample.html). You can use `as_index=False` when grouping to keep your `market` column. Remember to set your seed with the `random_state` argument when sampling from each market.
-
-Like with product data, to get PyBLP to recognize the `market` column as markets $t$, you'll need to rename it to `market_ids`. You'll also need to specify consumer type shares / sampling weights $w_{it}$. Since we took each draw from the demographic data with equal probability, these should be uniform weights $w_{it} = 1 / 1,000$. Make a new column `weights` equal to `1 / 1000`.
-
-Finally, later we'll be adding some dimensions of unobserved preference heterogeneity in $\nu_{it}$. PyBLP recognizes these with the column names `nodes0`, `nodes1`, `nodes2`, etc. Make three columns, `nodes0`, `nodes1`, and `nodes2`, each with a *different* set of draws from the standard normal distribution. You can do this with [`np.random.default_rng`](https://numpy.org/doc/stable/reference/random/generator.html), remembering to set your `seed`, and [`.normal`](https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.normal.html#numpy.random.Generator.normal), using `size=(len(agent_data), 3)`. Print some rows from your `agent_data` to make sure it looks like you'd expect.
-
-To identify our new parameter, we need a new instrument. We'll use the recommendation from the lecture to use mean income $m_t^y$ interacted with `mushy` in $x_{jt}$. To merge in the mean market-level income from the first question into the product data, you can use [`.merge`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.merge.html). Recall that you already have one column `demand_instruments0` equal to your price instrument. To add a second instrument, create a new column `demand_instruments1` equal to the interaction between your merged-in market-level mean income and `mushy`.
-
-When initializing your new [`pyblp.Problem`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.html), you'll need two new [`pyblp.Formulation`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.Formulation.html) instances to model the interaction between `mushy` and `log_income`. First, replace your old formulation with a tuple
-
-```{python}
-#| eval: false
- 
-product_formulations = (pyblp.Formulation('0 + prices', absorb='C(market_ids) + C(product_ids)'), pyblp.Formulation('0 + mushy'))
+first(data_prod, 5)
 ```
 
-This defines, in PyBLP lingo, the formulations for the `X1` and `X2` matrices. The `X1` matrix is the one with `beta` coefficients. The `X2` matrix is interacted with consumer type-specific variables like your demographics $y_{it}$. There `0` values in the formulations guarantee that they won't have constant terms (by default a constant is added, unless there are absorbed fixed effects). You'll also need a new formulation for consumer demographics.
+```{julia}
+#| warning: false
 
-```{python}
-#| eval: false
- 
-agent_formulation = pyblp.Formulation('0 + log_income')
+# Load the necessary data
+data_demo = CSV.read("data/raw/demographics.csv", DataFrame)
+
+@rename! data_demo begin
+  :market_id = :market
+  :log_income_y0 = :quarterly_income
+end
+
+@rtransform! data_demo :log_income_y0 = log(:log_income_y0)
+
+first(data_demo, 5)
+
 ```
 
-With these in hand, we can define the new problem. See the [`pyblp.Problem`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.html) documentation for the ordering and names of arguments.
+Next we sample the demo data to have 1000 random draw for each market:
 
-```{python}
-#| eval: false
- 
-pyblp.Problem(product_formulations, product_data, agent_formulation, agent_data)
+```{julia}
+function sample_ind(df, n = 1000, seedn = 123)
+    Random.seed!(seedn)
+
+    grouped = groupby(df, :market_id)
+
+    sampled_df = combine(grouped) do subdf
+        sampled_rows = sample(eachrow(subdf), n; replace = true)
+        DataFrame(sampled_rows)
+    end
+
+    sampled_df = transform(groupby(sampled_df, :market_id), eachindex => :ind_id)
+
+    return sampled_df
+end
+
+# 94 markets x 1000 individual
+data_demo = sample_ind(data_demo);
+
+
+data_demo
+# first(data_demo, 10)
+
 ```
 
-Now that we want to set up a nonlinear GMM problem, we need to configure some nonlinear optimization arguments in [`.solve`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.solve.html). First, we should configure our optimizer. We'll use the lecture's recommendation to use SciPy's trust region algorithm [`trust-constr`](https://docs.scipy.org/doc/scipy/reference/optimize.minimize-trustconstr.html). And we'll be explicit about using its default termination tolerances of `1e-8`. You can do this by setting `optimization=pyblp.Optimization('trust-constr', method_options={'gtol': 1e-8, 'xtol': 1e-8})`. In [`pyblp.Optimization`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.Optimization.html), `method_options` is a [dictionary](https://docs.python.org/3/tutorial/datastructures.html#dictionaries) mapping [`trust-constr`](https://docs.scipy.org/doc/scipy/reference/optimize.minimize-trustconstr.html) configuration options to their values.
+Create unobserved individual $v_{it}$:
 
-Second, we need to specify which parameters in $\Sigma$ and $\Pi$ to optimize over, and what their initial values will be. Since we're starting without any parameters in $\Sigma$, we'll set `sigma=0`. Zeros in PyBLP mean that PyBLP should have the parameter *always* be set to zero, i.e. not there. There's only one new parameter in $\Pi$ (there's only one column in your `X2` formulation, `mushy`, and only one demographic in your agent formulation, `log_income`), and we'll just set it to an arbitrary nonzero value for now (indicating that it should be optimized over), say `pi=1`.
+```{julia}
+function create_v!(df::DataFrame, node::Int)
+    for i in 1:node
+        colname = Symbol("node_y", i)
+        df[!, colname] = randn(nrow(df))
+    end
+    return df
+end
 
-Before and after you solve the problem, you can set `pyblp.options.verbose = True` and `pyblp.options.verbose = False`. Make sure that the gradient norm (the optimization problem's first-order conditions) is getting iteratively closer to zero. We call this "marching down the gradient" and not seeing it near the end of optimization indicates a problem. Since we have exactly as many parameters as moments/instruments, we're *just identified* and should also have an approximately zero objective at the optimum, so make sure you see that as well. At the optimum, in addition to a near-zero objective and gradient norm, the Hessian (in this case just a single value) should be positive, indicating that the optimization's second-order conditions are satisfied. The other columns outputted in the optimization progress have information about the inner loop, e.g. how many iterations it takes to solve it and how long this takes.
+create_v!(data_demo, 1)
 
-Once you're satisfied that optimization seems to have worked well, interpret the sign of your estimated parameter in $\Pi$. If you've done all of the above correctly, you should get an estimate of around `0.251`. Can you use $\hat{\alpha}$ to interpret it in dollar terms, i.e. how much more a person with 1% higher income is willing to pay for mushyness?
-
-### 3. Make sure you get the same estimate with random starting values
-
-We can be fairly confident with our objective/gradient/Hessian checks that we're at the global optimum with just one parameter in a just identified model. But with more complicated optimization problems in more realistic problems, we really want to try different starting values to make sure we always get the same estimates. Let's try doing that here.
-
-First, configure some bounds for our new $\Pi$ parameter, say `pi_bounds = (-10, +10)`. Then in a [for loop](https://wiki.python.org/moin/ForLoop) over different random number generator seeds, randomly draw an initial starting value from within these bounds (you can use [`.uniform`](https://numpy.org/doc/stable/reference/random/generated/numpy.random.Generator.uniform.html)) and re-optimize. You may want to actually impose your bounds during optimization using the `pi_bounds` argument to [`.solve`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.solve.html).
-
-Do you get the same estimate for each random starting value? If not, there may be an issue with optimization or your problem configuration. If you have a more complicated model with many parameters and many instruments, you may often get a global minimum, and sometimes get a local minimum. Optimizers aren't perfect, and sometimes terminate prematurely, even with tight termination conditions. You should select the global one for your final estimates.
-
-### 4. Evaluate changes to the price cut counterfactual
-
-Using the new estimates, re-run the same price cut counterfactual from last exercise. Re-compute percent changes and compare with those from the pure logit model. Are there any (small) differences, particularly for substitution from other products? Explain how the introduction of the new parameter induced these changes. Do cannibalization estimates seem more reasonable than before?
-
-### 5. Estimate parameters on price $\times$ log income and unobserved preferences
-
-Like for mushy, our cross-market income variation allows us to estimate a second parameter in $\Pi$ on `prices` $\times$ `log_income`. Unlike mushy, which doesn't vary across markets, we actually have cross-market variation in prices, which will allow us to potentially estimate a parameter in $\Sigma$ on `prices`.
-
-To add these two new parameters, we'll need two new instruments. Since we can't have endogenous prices in our instruments, we'll first set a new column `predicted_prices`  equal to the fitted values from the price IV first stage regression that we ran yesterday. If you used `statsmodels`, you can just get these from [`.fittedvalues`](https://www.statsmodels.org/dev/generated/statsmodels.regression.linear_model.RegressionResults.fittedvalues.html) of your regression results object. Verify that `prices` and `predicted_prices` are strongly correlated, for example with [`.corr`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.corr.html).
-
-To target the new parameter in $\Pi$, we'll follow the lecture's recommendation and add a new `demand_instruments2` equal to the interaction between the log income mean and `predicted_prices`. To target the new parameter in $\Sigma$, we'll also follow the lecture's recommendation and add a new `demand_instruments3` equal to the sum of squared distances between `predicted_prices` and all other `predicted_prices` in the same market. You could construct this market-by-market by using [`.groupby`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html) and [`.transform`](https://pandas.pydata.org/docs/reference/api/pandas.core.groupby.DataFrameGroupBy.transform.html) with a custom [function](https://docs.python.org/3/tutorial/controlflow.html#defining-functions) that accepts a market's `predict_prices` as an argument, computes a matrix of all pairwise differences between these values (e.g., with `x[:, None] - x[None, :]`), squares them, and [sums](https://numpy.org/doc/stable/reference/generated/numpy.sum.html) them across columns.
-
-When initializing the problem, we'll need to add a new `prices` term in the `X2` formulation: `0 + mushy + prices`. Otherwise, with the updated product data, initializing the problem is the same. When solving the problem, however, the extra column in the `X2` formulation means that we need an extra row in our configuration for `sigma` and `pi`. First, `sigma` should be a $2 \times 2$ matrix corresponding to the two columns in `X2`. All elements will be zero (indicating that the corresponding elements in $\Sigma$ will be fixed to zero), except for the bottom-right value, which we'll set to some arbitrary non-zero starting values, say `1`. Similarly, `pi` should be a $2 \times 1$ matrix corresponding to the two columns in `X2` and the one column in the agent formulation. We'll set the top element equal to some starting value that's close to our last estimate, say `0.2`, and the bottom element equal to something arbitrary for the new parameter, say `1` again. Your `sigma` and `pi` arguments should look like
-
-```{python}
-#| eval: false
- 
-sigma=[
-    [0, 0],
-    [0, 1],
-], 
-pi=[
-    [0.2],
-    [1],
-]
 ```
 
-When you solve the problem, there are two more parameters, so it will take a bit longer. As the optimizer nears convergence, we should again see "marching down the gradient" and, since we're still just identified, an objective approaching zero. At the optimum, verify that the gradient norm is again near zero and that the Hessian's eigenvalues are all positive. Usually, we would again draw multiple starting values to be sure everything's working fine, but from here on out, to save time we'll just use one set of starting values. Your `sigma` estimate should be around `6.02`.
+Join all dataframes into one:
 
-Note that your new random coefficient on price is $\alpha_{it} = \alpha + \sigma_p \nu_{1it} + \pi_p y_{it}$ where $\nu_{1it}$ is `nodes0` in your `agent_data` and $y_{it}$ is `log_income`. Compute the average log income $\bar{y}$ in your demographic data to verify that your estimate of the *average* price coefficient $\alpha + \sigma_p \times 0 + \pi \times \bar{y}$ is close to your old $\hat{\alpha}$. Using this average price sensitivity, interpret the two new parameters. Does price sensitivity vary a lot or a little with income? Compare to heterogeneity induced by income, is there a lot or a little unobserved heterogeneity in price sensitivity?
+```{julia}
 
-### 6. Evaluate changes to the price counterfactual
+df1 = unique(@select data_prod :market_id :product_id)
+df2 = unique(@select data_demo :ind_id)
 
-Re-run the price counterfactual and discuss new differences. Do substitution and cannibalization seem more reasonable than before? Does the price change seem to differentially affect high- vs. low-income consumers? Is there anything that we were unable to estimate with cross-market product-level variation that you think could have helped further improve substitution patterns?
+# Cross join to mimic expand_grid
+main_data = crossjoin(df1, df2)
 
-## Supplemental Questions
+leftjoin!(main_data, data_prod; on=[:market_id, :product_id])
+leftjoin!(main_data, data_demo; on=[:market_id, :ind_id])
 
-These questions will not be directly covered in lecture, but will be useful to think about when doing BLP-style estimation in your own work.
+main_data
 
-### 1. Try using different numbers of Monte Carlo draws
-
-Above, you took $I_t = 1,000$ draws per market when constructing your agent data. Particularly for simple models like this, this is usually a sufficient number of draws. In practice, however, when there are many more markets and dimensions of heterogeneity, you may want to start with a smaller number like $I_t = 100$ to get started, and then increase this number until your estimates stop changing and optimization stops having any issues. Try re-estimating the model with 10, 100, 500, and 2,000 draws, and see how your estimates change, if at all.
-
-### 2. Try using scrambled Halton sequences
-
-Using a random number generator like [`np.random.default_rng`](https://numpy.org/doc/stable/reference/random/generator.html) is perhaps the simplest approach to approximate an integral over a distribution like standard normals. However, using quasi-Monte Carlo sequences can do better with fewer draws. Instead of using $N(0, 1)$ draws from a random number generator, try using scrambled Halton draws.
-
-You can do so with [`scipy.stats.qmc.Halton`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.qmc.Halton.html) or [`pyblp.build_integration`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.build_integration.html#pyblp.build_integration) with `specification='halton'` in [`pyblp.Integration`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.Integration.html). Again, estimate the model with 10, 100, 500, 1,000, and 2,000 quasi-Halton numbers per market, and see how the stability of your estimates compares to when you use simple Monte Carlo draws.
-
-### 3. Try using quadrature
-
-A particularly computationally-efficient approach to approximating a Gaussian distribution is with [quadrature](https://en.wikipedia.org/wiki/Gaussian_quadrature). If you're working with a model where consumer preference heterogeneity is not particularly complicated, you may want to try to replace Monte Carlo or quasi-Monte Carlo draws with many fewer nodes/weights that very well approximate the distribution.
-
-You can construct quadrature nodes and weights with  [`pyblp.build_integration`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.build_integration.html#pyblp.build_integration) with `specification='product'` in [`pyblp.Integration`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.Integration.html). The `'product'` specification means that PyBLP will take the cross-product of the quadrature nodes and weights for each univarate $N(0, 1)$. If you have, say, `size=7` nodes/weights per market for each $N(0, 1)$ but 5 dimensions of heterogeneity (i.e., `nodes0`, `nodes1`, `nodes2`, `nodes3`, and `nodes4`), this will give $7^5 = 16,807$ consumer types per market. This is known as the [curse of dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality), which Monte Carlo integration does not suffer from as much. With this many dimensions of heterogeneity, you could either switch to back to Monte Carlo integration or try using [sparse grid](https://en.wikipedia.org/wiki/Sparse_grid) integration, which more carefully chooses quadrature nodes/weights in higher dimensions. You can do this with `specification='grid'`.
-
-In our setting, we are only using one set of $N(0, 1)$ draws for unobserved preference heterogenity for price. We can use `specification='product'`, `size=7`, and `dimensions=2` to construct two $N(0, 1)$ draws, the second of which we'll want to convert into income draws. We can do this by estimating a lognormal distribution for income in each market (you'll need to compute market-specific means and standard deviations of log income), and transforming the second column of $N(0, 1)$ draws into log income draws. Try doing this and see if your estimates (and compute time) differs much from before. If they do, this indicates that a lognormal distribution for income may not be a great parametric assumption, and a Monte Carlo approach may have made more sense than quadrature.
-
-### 4. Approximate the optimal instruments
-
-After estimating your model, let PyBLP approximate the optimal instruments with [`.compute_optimal_instruments`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.compute_optimal_instruments.html). You can then use the method [`.to_problem`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.OptimalInstrumentResults.to_problem.html) to automatically update your problem to include the optimal instruments. Then you can re-solve it like before. Do your estimates change much? If they don't what does this suggest?
-
-### 5. Add another instrument and compute the optimal weighting matrix
-
-So far, we have been working with just-identified models with exactly as many moments as parameters. This means that in theory, the weighting matrix $W$ shouldn't matter because we should always be able to find parameter values that set the objective exactly equal to zero, regardless of how the different components of the objective are weighted.
-
-But in some cases, you may want to have an over-identified model. Multiple instruments can increase the precision of estimates, and can also allow for overidentification tests. Try adding an additional instrument `demand_instruments4` equal to the interaction between the log income *standard deviation* and your differentiation instrument constructed from `predicted_prices`. Recall the linear regression intuition: this leverages cross-market variation in the standard deviation of income to target the parameter in $\Pi$ on prices and log income.
-
-First re-estimate the first step of your model. At the optimum, your objetive will now be nontrivially far from zero, but you should still verify that the other convergence checks pan out. Do your first-stage estimates look any different?
-
-Then re-run estimation but pass [`.updated_W`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.html#pyblp.ProblemResults.updated_W) to the `W` argument of [`.solve`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.solve.html). You should still be using `method='1s'`. Technically, PyBLP will do the two steps for you with `method='2s'`. However, if this was a real problem and not just an exercise, you would want to again try optimization with multiple starting values, which is something that PyBLP doesn't automatically do.
-
-Compare you first and second-stage estimates. Do they look particularly different? What about your standard errors?
-
-### 6. Incorporate supply-side restrictions into estimation
-
-In the supplemental exercises of the first exercise, we used a canonical assumption about how firms set prices to impute marginal costs of producing each cereal from pricing optimality conditions. If we are further willing to model the functional form of marginal costs, for example as $c_{jt} = x_{jt}'\gamma + \omega_{jt}$, we can stack our current moment conditions $\mathbb{E}[\xi_{jt} z_{jt}^D]$ with additional supply-side moment conditions $\mathbb{E}[\omega_{jt} z_{jt}^S]$. These will allow us to efficiently estimate $\gamma$, and in some cases can also help to add precision to our demand-side estimates.
-
-Like the the first exercise, you will need a column of `firm_ids` to tell PyBLP which firms produce what cereals. To impose the assumption that $c_{jt} = x_{jt}'\gamma + \omega_{jt}$ for some characteristics $x_{jt}$, you'll need to specify a third formulation in your `product_formulations` tuple. For simplicity, try assuming that the only observed characterstics that affect marginal costs are a constant and the `mushy` dummy.
-
-```{python}
-#| eval: false
- 
-product_formulations = (
-    pyblp.Formulation('0 + prices', absorb='C(market_ids) + C(product_ids)'), 
-    pyblp.Formulation('0 + mushy + prices'), 
-    pyblp.Formulation('1 + mushy'),
-)
 ```
 
-By default, PyBLP knows that a constant and `mushy` are exogenous variables, so it will add them to the set of supply-side instruments $z_{jt}^S$. If you wanted to model non-constant returns to scale, for example by including `I(market_size * shares)` to have a coefficient on quantities $q_{jt} = M_t \cdot s_{jt}$, PyBLP would recognize that this term included endogenous market shares and not include it in $z_{jt}^S$. Instead, you would have to specify a `supply_instruments0` column in your product data to give a valid demand-shifter for market shares. Ideally, you would want something that affects demand but that is uncorrelated with the unobserved portion of marginal costs $\omega_{jt}$.
+Now let's start construcing BLP estimation algorithm! First we will construct functions that calculate predicted market share and perform contraction mapping to get $\delta$ when given $\Pi$, $\Sigma$:
 
-Try estimating the model with supply-side restrictions. When calling [`.solve`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.solve.html), you'll need to specify an initial value for $\alpha$ with the `beta` argument because after adding a supply side, we can no longer "concentrate out" $\alpha$ as it's needed to impute marginal costs. PyBLP will automatically concentrate out $\gamma$.
-
-Interpret your new supply-side estimates. Your demand-side estimates should be essentially the same because you're using the same moments to estimate them as before. When adding a supply side, demand-side estimates tend to become more precise when there are supply-side instruments that are relevant for demand-side parameters (e.g., optimal instruments).
-
-# Exercise 3
-
-## Introduction
-
-This is the last of three exercises that will give you a solid foundation for doing BLP-style estimation. We'll continue with the same running example: what if we halved an important product's price? Our goal today is to further relax some of the unrealistic substitution patterns that we were forced to bake-in to our model because of limited cross-market variation. To do so, we will use results from consumer surveys to introduce within-market variation.
-
-## Setup
-
-We'll be continuing where we left off after the [second exercise](https://github.com/Mixtape-Sessions/Demand-Estimation/blob/main/Exercises/Exercise-2/README.md). You should just keep adding to your code, using [its solutions](https://github.com/Mixtape-Sessions/Demand-Estimation/blob/main/Exercises/Exercise-2/Solutions.ipynb) if you had trouble with some parts.
-
-## Data
-
-Today, you won't be including any new datasets into estimation, just a few carefully-chosen summary statistics from a couple of imaginary consumer surveys. These could have been from industry reports, from surveys administered by you, the researcher, or from any number of other places.
-
-The first survey randomly sampled consumers who purchased breakfast cereal in markets `C01Q1` and `C01Q2`, i.e. during the first two quarters in the first city covered by the product data. It elicited information about income. The second survey was another random sample of the same consumers, but it asked questions about second choice diversion.
-
-Survey Name | Observations | Statistics
------------ | ------------ | ----------
-"Income"    | 100          | Estimated mean log of quarterly income was `7.9`.
-"Diversion" | 200          | When asked what they would have done had their chosen cereal not been available, `28%` said they would have purchased no cereal in the covered product data. Out of all respondents, `31%` both purchased a mushy cereal and would have purchased another mushy cereal had it not been available.
-
-In today's exercise, we will match these three statistics to introduce some additional dimensions of heterogeneity into our BLP model of demand for cereal and see how our counterfactual changes.
-
-## Questions
-
-### 1. Use the income statistic to match a parameter on log income
-
-In the last exercise, we were unable to estimate a parameter on log income $y_{it}$ alone because market fixed effects eliminate needed cross-market income variation. Instead, we simply assumed that this parameter is zero, i.e. that income does not shift individuals' preference for cereal in general one way or another. Today, we'll incorporate a micro moment $\mathbb{E}[y_{it} | j > 0] = 7.9$ to estimate this parameter and see whether this assumption was reasonable.
-
-To do so, we'll need first re-create our problem with a constant in our formulation for `X2`. This is because the parameter we want to add will be on the interaction between a constant from the product data and log income in the agent data. Your `X2` formulation should now be `1 + mushy + prices`.
-
-After re-initializing our problem with the extra constant, we need to configure our micro moment. To do so, you'll have to configure three objects in the following order.
-
-1. Define a [`pyblp.MicroDataset`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroDataset.html) $d$.
-2. Define a [`pyblp.MicroPart`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroPart.html) $p$.
-3. Define a [`pyblp.MicroMoment`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroPart.html) $m$.
-
-First, define a [`pyblp.MicroDataset`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroDataset.html) $d$ to represent the "income" survey. Choose a useful `name`, set the number of `observations=100` from the survey, and set the `market_ids` to the list of market IDs that the survey covers. You also need to specify a function `compute_weights`, which defines how to compute sampling weights $w_{dijt}$. You should look at the [`pyblp.MicroDataset`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroDataset.html) documentation to understand how this function works. Within the two surveyed markets, the survey did not differentially select consumers except to only select those who purchased a cereal, $j \neq 0$. So our sampling weights should be $w_{dijt} = 1\\{j \neq 0\\}$. To implement this, you should define a function that for market $t$ returns a $I_t \times J_t$ matrix of ones. Equivalently, your function could return a $I_t \times (1 + J_t)$ matrix with the first column being zeros, corresponding to $j = 0$, and the final $J_t$ columns being ones, corresponding to $j \neq 0$. Not having a first column is just convenient PyBLP shorthand for setting it to zeros. Your function should look like
-
-```{python}
-#| eval: false
+```{julia}
+# pi: 2x1
+# sigma: 2x1
+# delta should be jt variable
  
-compute_weights=lambda t, p, a: np.ones((a.size, p.size))
+function calc_mkt_share(df, delta, pi, sigma)
+  df = leftjoin(df, delta; on=[:market_id, :product_id])
+
+  data = @rtransform df :util = exp(:d + :price_x0 * sigma[1] * :node_y1 + :mushy_x1 * sigma[2] * :node_y1 + :price_x0 * pi[1] * :log_income_y0 + :mushy_x1 * pi[2] * :log_income_y0)
+
+  gdp = groupby(data, [:market_id, :ind_id])
+  data = @transform gdp :util_it = exp.(:util) ./ (sum(exp.(:util)) + 1)
+
+  gdp = groupby(data, [:market_id, :product_id])
+  data = @combine gdp :pred_sh_jt = sum(:util_it .* (1/1000))
+end
+
+  delta_fp = unique(df, [:market_id, :product_id])
+  @select! delta_fp :market_id :product_id
+  @rtransform! delta_fp :d = 0
+calc_mkt_share(main_data, delta_fp, [1,1], [1,1])
+
+# #d0 should be jt variable
+# function contraction_map(df, d0, pi, sigma, tol = 1e-5, maxiter = 1e5)
+#   obs_mkt_share = unique(df, [:market_id, :product_id])
+#   @select! obs_mkt_share :market_id :product_id :s_obs
+#   d_old = copy(d0)
+#   normdiff = Inf
+#   iter = 0
+#   while normdiff > tol && iter <= maxiter
+#     model_mkt_share = calc_mkt_share(df, d_old, pi, sigma)
+#     df_sh = @select df :market_id :product_id :s_obs
+#     model_mkt_share = leftjoin(model_mkt_share, df_sh, on=[:market_id, :product_id])
+
+#     d_new = leftjoin(d_old, model_mkt_share; on= [:market_id, :product_id]) 
+#     d_new = @rtransform d_new :d_iter = :d + log(:s_obs) - log(:pred_sh_jt)
+
+#     normdiff = maximum(abs.(d_new.d_iter .- d_new.d))
+
+#     # normdiff = maximum(norm.(d_new.d_iter .- d_new.d))
+#     d_old = @select d_new begin
+#       :market_id
+#       :product_id
+#       :d = :d_iter 
+#     end 
+#     iter += 1
+#   end
+#   return d_old
+# end
+
+# function calc_delta(df, pi, sigma)
+#   delta_fp = unique(df, [:market_id, :product_id])
+#   @select! delta_fp :market_id :product_id
+#   @rtransform! delta_fp :d = 0
+
+#   delta_jt = contraction_map(df, delta_fp, pi, sigma)
+
+#   return delta_jt
+# end
+
+# @time delta_res = calc_delta(main_data, [1, 1], [1, 1])
+# mean(delta_res)
+
 ```
-
-The arguments required for your function are `t`, the market ID, `p`, the [`Products`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.Products.html#pyblp.Products) subsetted to this market, and `a`, the [`Agents`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.Agents.html#pyblp.Agents) subsetted to this market. We'll just return a matrix of the size required by the `compute_weights` argument.
-
-Next, define a [`pyblp.MicroPart`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroPart.html) $p$ to represent the expectation $\mathbb{E}[y_{it} | j > 0]$. Choose a useful `name`, specify the configured `dataset`, and also specify a second function `compute_values`, which defines how to compute micro values $v_{pijt}$. The function has the same arguments and output size as `compute_weights` above, except here we want to have a matrix where the same $y_{it}$ value is repeated $J_t$ times for each column. One convenient way to do this is with the [`np.einsum`](https://numpy.org/doc/stable/reference/generated/numpy.einsum.html) function, although there are many other ways, such as using [`np.repeat`](https://numpy.org/doc/stable/reference/generated/numpy.repeat.html) or [`np.tile`](https://numpy.org/doc/stable/reference/generated/numpy.tile.html).
-
-```{python}
-#| eval: false
- 
-compute_values=lambda t, p, a: np.einsum('i,j', a.demographics[:, 0], np.ones(p.size))
-```
-
-Here, we're just selecting the first (and only) column of demographics, log income, and repeating it for as many products as there are in the market.
-
-Finally, define a [`pyblp.MicroMoment`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroMoment.html) $m$. Choose a useful `name`, specify the observed `value=7.9` that we want to match, and for the `parts` argument, you can just pass the above configured micro part. This will specify the identity function $f_m(v) = v$. You would use the other arguments `compute_value` and `compute_gradient` if you wanted to specify a more complicated function $f_m(\cdot)$ and its gradient. In this case, you could specify a list of micro `parts` and these additional functions would select from these.
-
-Given our micro moment, say `income_moment`, we can just pass a list with it as the only element to `micro_moments=[income_moment]` in [`.solve`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.Problem.solve.html). Since our `X2` configuration has an additional column for the constant, our `sigma` matrix needs another column/row, and our `pi` matrix needs another row. Set the new elements in both equal to zeros, except for the one in $\Pi$ corresponding to the interaction between the new constant in `X2` and log income, which you can set to some nonzero initial value, say `1`. In practice, you'll want to try out multiple random starting values.
-
-Again, we're just identified, so we should get an approximately zero objective at the optimum. If we saw "marching down the gradient" and have a near-zero gradient norm and positive Hessian eigenvalues at the optimum, we can look at our estimates. You should get a new parameter estimate of around `-0.331`. Does the new parameter estimate suggest that the original assumption of it being zero was fairly okay, or not?
-
-### 2. Use the diversion statistics to estimate unobserved preference heterogeneity for a constant and mushy
-
-In the last exercise, we were also unable to estimate parameters in $\Sigma$ on a constant and `mushy` because there was no cross-market variation in the number of products or `mushy`. Instead, we again simply assumed these parameters were zero, and all the preference heterogeneity was from income. We'll incorporate the second choice moments $\mathbb{P}(k = 0 | j > 0) = 0.28$ and $\mathbb{P}(\text{mushy}_j \text{ and } \text{mushy}_k | j > 0) = 0.31$ to estimate these parameters.
-
-Since these numbers come from a different survey, you should define a new [`pyblp.MicroDataset`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroDataset.html). If the latter two statistics were instead based on the same responses, we should be defining all our micro moments on the same dataset. When defining `compute_weights`, the one difference from the income micro moment is that to include information about second choices, your function now needs to return an array with three dimensions, not a two-dimensional matrix, in order to define weights $w_{dijkt}$, which now have an additional index $k$. The last dimension is what defines $k$. To allow for selecting individuals who select $k = 0$, the final dimension should be of size $1 + J_t$, for an array of dimensions $I_t \times J_t \times (1 + J_t)$. Again, it should just be an array of all ones, since beyond the two markets, there was no differential selection of consumers, except that they chose cereal.
-
-Then, you should define two new [`pyblp.MicroPart`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroPart.html)s, one for each of the statistics, and two new [`pyblp.MicroMoment`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroMoment.html)s in the same way as before. Both are also just averages on the micro dataset, not complicated functions, so these should look similar to the last micro moment. The main difference is that `compute_values` will now return a $I_t \times J_t \times (1 + J_t)$ array, with ones and zeros to choose micro values $v_{pijkt}$ that implement the desired statistics.
-
-When solving the problem, we just append the two new micro moments to our `micro_moments` list, set the new parameters in `sigma` to nonzero initial values, and re-optimize. Second choice computations can take some time, up to a few minutes.
-
-After confirming that optimization seemed to have been successful, interpret the new parameters. How large is the unobserved preference heterogeneity for the inside (or equivalently, the outside) option. How large is it for the mushy characteristic?
-
-### 3. Evaluate changes to the price cut counterfactual
-
-Using the new estimates, re-run the same price cut counterfactual from the last two exercises. Re-compute percent changes and compare with those from day 2. Do substitution patterns and cannibalization estimates now look more reasonable?
-
-## Supplemental Questions
-
-These additional questions will go beyond just defining micro moments, and will be useful to think about when doing BLP-style estimation in your own work.
-
-### 1. See how your market size assumption affects results
-
-In the first exercise, we made a somewhat arbitrary assumption about the size of the market. Vary this assumption, for example by assuming that the potential market size is *two* servings per day per individual in the city, instead of just one. Re-compute your market shares and re-estimate the model. See how the results of your price counterfactual change when you have a parameter in $\Sigma$ on the constant, and when you assume that parameter is zero. In particular, compute percent changes to the counterfactual outside share $s_{0t}$ and see how that changes.
-
-In general, outside diversion will scale with the assumed potential market size, unless we include sufficient preference heterogeneity, particularly for the outside option. Directly matching a moment to pin down diversion to the outside option is a fairly clear way to estimate what diversion to the outside option should look like in a counterfactual.
-
-### 2. Simulate some micro data and use it to match optimal micro moments
-
-This exercise doesn't come with a full dataset of consumer demographics and their choices, only with a few summary statistics, but we can simulate some to get a sense for how one might use all the information in a full micro dataset via optimal micro moments. To simulate some micro data, take one of your estimated models and use the [`.simulate_micro_data`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.simulate_micro_data.html) method, using your configured "Income" `dataset` and setting a `seed`. You may want to use [`pyblp.data_to_dict`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.data_to_dict.html) to get the simulated data into a format that you can pass to create a more easily-usable [`pd.DataFrame`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html).
-
-The simulated data should look like the assumed micro data in the "Income" survey, with one exception. The `agent_indices` column corresponds to the within-market row index of individual types $i_n$ in your `agent_data`. This includes information about unobserved preference heterogenity, which the real micro dataset wouldn't have. Compute the same `agent_indices` in your agent data using [`.groupby`](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html) and [`.cumcount`](https://pandas.pydata.org/pandas-docs/version/1.3/reference/api/pandas.core.groupby.GroupBy.cumcount.html), and merge `log_income` into your simulated micro dataset. You can then drop the `agent_indices` column. The `choice_indices` column just represents the within-market row index of the respondent's choice $j_nt$, which is presumably observed in the "Income" dataset.
-
-The resulting data should be in the same format as needed by [`.compute_micro_scores`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.compute_micro_scores.html). You'll just need to tell PyBLP how to over the unobserved preference heterogeneity you just dropped. One option is to use the `integrate` argument, but you can also replicate each row in your micro data for as many draws as you want, add a `weights` column equal to one over the number of draws, and add `nodes0`, `nodes1`, and `nodes2` columns with standard normal draws. These two options will do the same thing, if you use the `monte_carlo` specification when configuring your integration configuration.
-
-Given an estimated model and some micro data, this function computes the score (the derivative of the log likelihood of each micro observation with respect to the model's nonlinear parameters) of each micro data observation. Specifically, the scores are returned as a list, one element for each parameter in [`.theta`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.html#pyblp.ProblemResults.theta). For each element of `theta`, create a new micro moment that matches the mean score in the micro data.
-
-In order to do so, you'll have to specify `compute_values` in the corresponding [`pyblp.MicroPart`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.MicroPart.html). Each $v_{pijt}$ should equal the score of a consumer of type $i$ who chooses $j$ in market $t$. PyBLP has another convenient function for computing these: [`.compute_agent_scores`](https://pyblp.readthedocs.io/en/stable/_api/pyblp.ProblemResults.compute_agent_scores.html). After passing your micro dataset to this function (and also configuring `integration`), it also return a list, one for each element of `theta`. Each element in the list is a dictionary mapping market IDs to the matrix that you need to pass to `compute_values`. In this function, you can use the `t` argument to directly select the right matrix.
-
-One approach would be to replace the single $\mathbb{E}[y_{it} | j > 0]$ micro moment from this dataset with all the optimal micro moments from this dataset. But to keep results comparable with before (and to maintain a just-identified model), try replacing this sub-optimal micro moment with the optimal micro moment based on scores for the parameter in $\Pi$ that this original micro moment was supposed to target. Do results change much? What does this indicate?
-
-### 3. Use a within-firm diversion ratio to estimate a nesting parameter
-
-One dimension of preference heterogeneity that we have not modelled is within firm. In our price cut counterfactual, beyond mushyness and prices, we do not see more substitution within firm than across firms. However, there are good reasons to think that we might see more substitution within firm in reality. Consumers tend to be loyal to firms, and may prefer some firms to others for reasons that aren't captured by our other observed characteristics.
-
-Typically, a good way to estimate preference heterogeneity for a categorical variable is to have a separate random coefficient on a dummy variable for each category. We have done this for the categorical mushy category. However, for some categorical variables with *many* different categories, adding this many random coefficients would be computationally prohibitive, and there may not be enough variation in the data to do so. In our data, a dummy on each firm would be a lot of additional random coefficients.
-
-Instead, a common choice is to estimate a parameter that governs *within category* correlation of the idiosyncratic preferences $\varepsilon_{ijt}$. These categories are called nests, $h$ in PyBLP notation, and the correlation parameter is called a nesting parameter, $\rho$ in PyBLP notation. Without any random coefficients, we have the nested logit model. With random coefficients, we have the random coefficients nested logit (RCNL) model. See the [RCNL](https://pyblp.readthedocs.io/en/stable/background.html#random-coefficients-nested-logit) part of the PyBLP documentation for more details.
-
-Using aggregate variation, it is common to target a nesting parameter with an instrument that, for each product $j$, counts the number of other products in the same nest in the same market $t$. However, since we have no cross-market variation in this instrument, this is not a particularly credible way to identify $\rho$, much in the same way that without cross-market variation, we have little hope of credibly identifying the parameters in $\Sigma$. Indeed, a nesting structure is just a very particular type of random coefficient!
-
-Instead, we will match a within-firm diversion ratio. Assume that in our diversion survey, we have a third statistic: $\mathbb{P}(f(j) = f(k)) = 0.35$. That is, in the survey, 35% of respondents said they would select a product made by the same firm had their first choice cereal been unavailable. When setting up your problem, create a new column `nesting_ids` equal to firm IDs in your `product_ids`. Then when solving the problem, add an additional micro moment that matches this share, and set some nonzero initial value for the `rho` parameter (it needs to be between 0 and 1). Optimization may take a while because many of the numerical tricks PyBLP uses to make estimation fast don't work when there's a nesting parameter (particularly with second choices). Re-run the counterfactual and see whether it seems more reasonable, paying close attention to changes to within-firm cannibalization vs. cross-firm substitution.
 
 ## References {.unnumbered}
 
