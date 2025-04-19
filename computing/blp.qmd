@@ -603,7 +603,7 @@ Column             | Data Type | Description
 
 In today and tomorrow's exercises, we will use these demographic data to introduce income-specific preference heterogeneity into our BLP model of demand for cereal and see how our counterfactual changes. By incorporating income, we will also be able to speak to distributional concerns: how will counterfactual changes in the market differentially affect high- and low-income consumers?
 
-## My BLP.jl
+## My BLP.jl (This section failed miserably...)
 
 In this section, I will try my best to make a very flexible BLP estimation code.
 
@@ -774,6 +774,12 @@ calc_mkt_share(main_data, delta_fp, [1,1], [1,1])
 # mean(delta_res)
 
 ```
+
+## My BLP.jl (standing on the shoulders of giants)
+
+Okay, my previous work failed miserably. This is probably because it is hard to do the matrix complication in terms of the dataframe-dplyr style in R. But then again, maybe it is just because I did not do a good job. Thus I will try to write up a code following others while trying to use `DataFramesMeta` syntax whenever it is doable for transparency.
+
+But this will take a lot of work. I will periodically come back to update my BLP. In the meantime, enjoy your life!
 
 ## References {.unnumbered}
 
