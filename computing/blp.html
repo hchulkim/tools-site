@@ -637,7 +637,7 @@ s_{jt} = \int \frac{\exp(\delta_{jt} + x_{jt} \sigma_t v_{it})}{1 + \sum_j \exp(
 <span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(delta_fp)</span>
 <span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="fu">std</span>(delta_fp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  0.061839 seconds (67.99 k allocations: 174.685 MiB, 49.53% compilation time)</code></pre>
+<pre><code>  1.348311 seconds (3.75 M allocations: 365.638 MiB, 3.21% gc time, 96.17% compilation time)</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>0.8537059827877238</code></pre>
@@ -675,7 +675,7 @@ s_{jt} = \int \frac{\exp(\delta_{jt} + x_{jt} \sigma_t v_{it})}{1 + \sum_j \exp(
 <span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>delta <span class="op">=</span> <span class="fu">calc_delta</span>(sigma[<span class="fl">1</span>]);</span>
 <span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>theta1 <span class="op">=</span> <span class="fu">inv</span>(X<span class="op">'*</span>z<span class="op">*</span>inv_Phi<span class="op">*</span>z<span class="op">'*</span>X)<span class="op">*</span>X<span class="op">'*</span>z<span class="op">*</span>inv_Phi<span class="op">*</span>z<span class="op">'*</span>delta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> 21.049599 seconds (19.91 M allocations: 109.874 GiB, 14.98% gc time, 0.20% compilation time)
+<pre><code> 18.817741 seconds (20.18 M allocations: 109.887 GiB, 14.52% gc time, 0.73% compilation time)
 sigma = minx[1] = 28.720209709193362</code></pre>
 </div>
 <div class="cell-output cell-output-display" data-execution_count="1">
@@ -1395,8 +1395,8 @@ R2                              0.559
 </table>
 <p>In today and tomorrow’s exercises, we will use these demographic data to introduce income-specific preference heterogeneity into our BLP model of demand for cereal and see how our counterfactual changes. By incorporating income, we will also be able to speak to distributional concerns: how will counterfactual changes in the market differentially affect high- and low-income consumers?</p>
 </section>
-<section id="my-blp.jl" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="my-blp.jl"><span class="header-section-number">4.4</span> My BLP.jl</h2>
+<section id="my-blp.jl-this-section-failed-miserably" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="my-blp.jl-this-section-failed-miserably"><span class="header-section-number">4.4</span> My BLP.jl (This section failed miserably…)</h2>
 <p>In this section, I will try my best to make a very flexible BLP estimation code.</p>
 <p>First load two data we will use and see how they look like:</p>
 <div id="26" class="cell" data-execution_count="1">
@@ -2786,6 +2786,11 @@ R2                              0.559
 </div>
 </div>
 </div>
+</section>
+<section id="my-blp.jl-standing-on-the-shoulders-of-giants" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="my-blp.jl-standing-on-the-shoulders-of-giants"><span class="header-section-number">4.5</span> My BLP.jl (standing on the shoulders of giants)</h2>
+<p>Okay, my previous works failed miserably. This is probably because it is hard to do the matrix complication in terms of the dataframe-dplyr style in R. But then again, maybe it is just because I did not do a good job. Thus I will try to write up a code following others while trying to use <code>DataFramesMeta</code> syntax whenever it is doable for transparency.</p>
+<p>But this will take a lot of work. I will periodically come back to update my BLP. In the meantime, enjoy your life!</p>
 </section>
 <section id="references" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
