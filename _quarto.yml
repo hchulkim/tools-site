@@ -51,6 +51,12 @@ website:
           text: "Trade notes"
         - href: computing/julia-self-study.qmd
           text: "Julia self-study"
+      - section: "Study"
+        contents:
+        - href: study/overview.qmd
+          text: "Overview"
+        - href: study/julia.qmd
+          text: "Julia"
       - section: "Teaching"
         contents:
           - section: "Class-name"

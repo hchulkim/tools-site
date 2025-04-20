@@ -1,0 +1,8 @@
+---
+title: "Overview"
+subtitle: "Section for materials on self-study"
+execute:
+  freeze: auto
+---
+
+This section is a set of materials I used for studying. 
