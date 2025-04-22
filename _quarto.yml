@@ -57,6 +57,8 @@ website:
           text: "Overview"
         - href: study/julia.qmd
           text: "Julia"
+        - href: study/spatial.qmd
+          text: "Spatial"
       - section: "Teaching"
         contents:
           - section: "Class-name"
