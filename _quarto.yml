@@ -57,6 +57,8 @@ website:
           text: "Overview"
         - href: study/julia.qmd
           text: "Julia"
+        - href: study/io-theory.qmd
+          text: "IO theory"
         - href: study/spatial.qmd
           text: "Spatial"
       - section: "Teaching"
