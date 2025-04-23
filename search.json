@@ -1,5 +1,82 @@
 [
   {
+    "objectID": "teaching/office-hours.html",
+    "href": "teaching/office-hours.html",
+    "title": "Overview on OH",
+    "section": "",
+    "text": "TBD",
+    "crumbs": [
+      "Teaching",
+      "Class-name",
+      "Office hours"
+    ]
+  },
+  {
+    "objectID": "teaching/prob.html",
+    "href": "teaching/prob.html",
+    "title": "Probability theory",
+    "section": "",
+    "text": "This pages contains log for my self-study on probability theory.",
+    "crumbs": [
+      "Teaching",
+      "Mathematics",
+      "Probability theory resources"
+    ]
+  },
+  {
+    "objectID": "teaching/assignments.html",
+    "href": "teaching/assignments.html",
+    "title": "General logistics on assignments",
+    "section": "",
+    "text": "TBD",
+    "crumbs": [
+      "Teaching",
+      "Class-name",
+      "Assignments"
+    ]
+  },
+  {
+    "objectID": "teaching/faq.html",
+    "href": "teaching/faq.html",
+    "title": "FAQ",
+    "section": "",
+    "text": "TBD",
+    "crumbs": [
+      "Teaching",
+      "Class-name",
+      "FAQ"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "tools",
+    "section": "",
+    "text": "This site is an archive that contains my tools.\n\nWho am I?\nI am a Ph.D student in Applied Economics at The Wharton School: [Website]"
+  },
+  {
+    "objectID": "study/julia.html",
+    "href": "study/julia.html",
+    "title": "Julia study",
+    "section": "",
+    "text": "This page contains an outline of the topics, contents, and works I did for Julia study group.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nlink\nhw\nhw_sol\nnotes\n\n\n\n\n1\nFri\nMay 9\nmeeting\nlorem\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nlorem\n\n\n2\nFri\nMay 16\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n3\nSat\nMay 10\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n4\nSat\nMay 17\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n5\nSun\nMay 11\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n6\nSun\nMay 18\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n7\nMon\nMay 12\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n8\nMon\nMay 19\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n9\nTue\nMay 13\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n10\nTue\nMay 20\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n11\nWed\nMay 14\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n12\nWed\nMay 21\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n13\nThu\nMay 15\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n14\nThu\nMay 22\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nFri\nMay 16\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n16\nFri\nMay 23\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n17\nSat\nMay 17\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n18\nSat\nMay 24\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n19\nSun\nMay 18\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n20\nSun\nMay 25\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n21\nMon\nMay 19\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n22\nMon\nMay 26\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n23\nTue\nMay 20\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n24\nTue\nMay 27\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n25\nWed\nMay 21\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n26\nWed\nMay 28\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n27\nThu\nMay 22\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n28\nThu\nMay 29\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n29\nFri\nMay 23\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n30\nFri\nMay 30\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n31\nSat\nMay 24\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n32\nSat\nMay 31\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n33\nSun\nMay 25\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n34\nSun\nJun 1\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n35\nMon\nMay 26\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n36\nMon\nJun 2\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n37\nTue\nMay 27\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n38\nTue\nJun 3\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n39\nWed\nMay 28\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n40\nWed\nJun 4\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n41\nThu\nMay 29\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n42\nThu\nJun 5\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n43\nFri\nMay 30\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n44\nFri\nJun 6\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n45\nSat\nMay 31\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n46\nSat\nJun 7\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n47\nSun\nJun 1\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n48\nSun\nJun 8\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n49\nMon\nJun 2\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n50\nMon\nJun 9\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n51\nTue\nJun 3\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n52\nTue\nJun 10\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n53\nWed\nJun 4\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n54\nWed\nJun 11\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n55\nThu\nJun 5\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n56\nThu\nJun 12\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n57\nFri\nJun 6\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n58\nFri\nJun 13\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n59\nSat\nJun 7\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n60\nSat\nJun 14\nmeeting",
+    "crumbs": [
+      "Study",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "study/spatial.html",
+    "href": "study/spatial.html",
+    "title": "Spatial study",
+    "section": "",
+    "text": "This page contains an outline of the topics, contents, and works I did for Spatial economics self-study.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nlink\nmaterial\nnotes\n\n\n\n\n1\nFri\nMay 9\ndue-date\nintro\n\n\n\n\n\n\n\n\n\n\nintro_phd (holger)\n\n\n\nFri\n\n\n\n\nMTO (holger)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nagglomeration externalities\n\n\n\n\n\n\n\n\nslides_ghm_10 (holger)\n\n\n2\nFri\nMay 16\ndue-date\ndiscrete choice and continuous-discrete choice\n\n\n\n\n\n\n\n\n\n\nblp1995; epple and sieg1999; blp2004; sieg, smigh, banzhaf and walsh2004;\n\n\n3\nFri\nMay 23\ndue-date\nstructural io extra\n\n\n\n\n\n\nackerberg, benkard, berry, pakes2007\n\n\n4\nFri\nMay 30\ndue-date\nspatial rdd\n\n\n\n\n\n\n\n\n\n\nslides_srdd (holger)\n\n\n5\nFri\nJun 6\ndue-date\nsorting across cities\n\n\n\n\n\n\n\n\ndiamond2016\n\n\n\nFri\n\n\n\n\nsorting across cities2\n\n\n\n\n\n\n\n\n\n\n\n\n6\nFri\nJun 13\ndue-date\ntrade (ricardian model) - frechet\n\n\n\n\n\n\n\n\n\n\nEK\n\n\n\nFri\n\n\n\n\ntrade (ricardian model) - frechet2\n\n\n\n\n\n\n\n\nEK\n\n\n\nFri\n\n\n\n\ntrade (ricardian model) - frechet3\n\n\n\n\n\n\n\n\nEK\n\n\n7\nFri\nJun 20\ndue-date\nsorting within cities and agglomeration externalities\n\n\n\n\n\n\n\n\nahlfeldt, redding, sturm and wolf2015\n\n\n\nFri\n\n\n\n\nsorting within cities and agglomeration externalities\n\n\n\n\n\n\n\n\n\n\n\n\n8\nFri\nJun 27\ndue-date\neducation\n\n\n\n\n\n\n\n\nepple, romano and sieg2006; fu2014\n\n\n9\nFri\nJul 4\ndue-date\ndynamic discrete choice review\n\n\n\n\n\n\n\n\ncaliendo-china-shock, balboni-vietnam\n\n\n\nFri\n\n\n\n\ndynamic discrete choice review\n\n\n\n\n\n\n\n\n\n\n\n\n10\nFri\nJul 11\ndue-date\nestimation of stationary spatial models\n\n\n\n\n\n\n\n\nalmagro and dominguez2022, amsterdam\n\n\n\nFri\n\n\n\n\nestimation of stationary spatial models\n\n\n\n\n\n\n\n\n\n\n\n\n11\nFri\nJul 18\ndue-date\nstationary housing models: rental markets, public and affordable housing\n\n\n\n\n\n\n\n\n\n\n\n\n12\nFri\nJul 25\ndue-date\nstationary housing models: owner occupied housing markets\n\n\n\n\n\n\n\n\nhurst, keys, seru and vavra2016\n\n\n\nFri\n\n\n\n\nstationary housing models: owner occupied housing markets\n\n\n\n\n\n\n\n\n\n\n\n\n13\nFri\nAug 1\ndue-date\nstatic hedonic models\n\n\n\n\n\n\n\n\nrosen, sherwin1974; epple1987; seig, smith, banzhaf and walsh2002; epple, quintero, and sieg2020\n\n\n14\nFri\nAug 8\ndue-date\nnonstationary dynamic hedonic\n\n\n\n\n\n\n\n\nlandvoigt, piazzesi, and schneider2015\n\n\n15\nFri\nAug 15\ndue-date\nnonstationary spatial models\n\n\n\n\n\n\n\n\nkleinman, liu, redding2023\n\n\n\nFri\n\n\n\n\nnonstationary spatial models\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nnonstationary spatial models\n\n\n\n\n\n\n\n\ncaliendo, dvorkin, and parro2019; balboni2021; bilal and rossi-hansberg2023\n\n\n\nFri\n\n\n\n\nnonstationary spatial models\n\n\n\n\n\n\n\n\n\n\n\n\n16\nFri\nAug 22\ndue-date\nnonstationary spatial models: firm location and density\n\n\n\n\n\n\n\n\nholmes2011",
+    "crumbs": [
+      "Study",
+      "Spatial"
+    ]
+  },
+  {
     "objectID": "computing/blp.html",
     "href": "computing/blp.html",
     "title": "BLP Demystified: From Basics to Brain-Busting Models!",
@@ -330,6 +407,127 @@
     ]
   },
   {
+    "objectID": "computing/duckdb-dplyr.html",
+    "href": "computing/duckdb-dplyr.html",
+    "title": "DuckDB + dplyr (R)",
+    "section": "",
+    "text": "This is just a direct copy of the resources from Grant McDermott. Thus, I do not have any credit for it. It is solely for the archive purpose.",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#load-libraries",
+    "href": "computing/duckdb-dplyr.html#load-libraries",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Load libraries",
+    "text": "Load libraries\n\nlibrary(duckdb)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#create-a-database-connection",
+    "href": "computing/duckdb-dplyr.html#create-a-database-connection",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Create a database connection",
+    "text": "Create a database connection\nFor the d(b)plyr workflow, the connection step is very similar to the pure SQL approach. The only difference is that, after instantiating the database connection, we need to register our parquet dataset as a table in our connection via the dplyr::tbl() function. Note that we also assign it to an object (here: nyc) that can be referenced from R.\n\n## Instantiate the in-memory DuckDB connection \ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n## Register our parquet dataset as table in our connection (and that assign it\n## to an object that R understands)\n# nyc = tbl(con, \"nyc-taxi/**/*.parquet\") # works, but safer to use the read_parquet func)\nnyc = tbl(con, \"read_parquet('nyc-taxi/**/*.parquet', hive_partitioning = true)\")",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#first-example",
+    "href": "computing/duckdb-dplyr.html#first-example",
+    "title": "DuckDB + dplyr (R)",
+    "section": "First example",
+    "text": "First example\nThis next command runs instantly because all computation is deferred (i.e., lazy eval). In other words, it is just a query object.\n\nq1 = nyc |&gt;\n  summarize(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  )\n\n\n\n\n\n\n\n.by versus group_by\n\n\n\nIn case you weren’t aware: summarize(..., .by = x) is a shorthand (and non-persistent) version of group_by(x) |&gt; summarize(...). More details here.\n\n\nWe can see what DuckDB’s query tree looks like by asking it to explain the plan\n\nexplain(q1)\n\nSimilarly, to show the SQL translation that will be implemented on the backend, using show_query.\n\nshow_query(q1)\n\nNote that printing the query object actually does enforce some computation. OTOH it’s still just a preview of the data (we haven’t pulled everything into R’s memory).\n\nq1\n\nTo actually pull all of the result data into R, we must call collect() on the query object\n\ntic = Sys.time()\ndat1 = collect(q1)\ntoc = Sys.time()\n\ndat1\ntoc - tic",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#aggregation",
+    "href": "computing/duckdb-dplyr.html#aggregation",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Aggregation",
+    "text": "Aggregation\nHere’s our earlier filtering example with multiple grouping + aggregation variables…\n\nq2 = nyc |&gt;\n  filter(month &lt;= 3) |&gt;\n  summarize(\n    across(c(tip_amount, fare_amount), mean),\n    .by = c(month, passenger_count)\n  )\nq2\n\nAside: note the optimised query includes hash groupings and projection (basically: fancy column subsetting, which is a suprisingly effective strategy in query optimization)\n\nexplain(q2)\n\nAnd our high-dimensional aggregation example. We’ll create a query for this first, since I’ll reuse it shortly again\n\nq3 = nyc |&gt;\n  group_by(passenger_count, trip_distance) |&gt;\n  summarize(\n    across(c(tip_amount, fare_amount), mean),\n  ) \ncollect(q3)",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#pivot-reshape",
+    "href": "computing/duckdb-dplyr.html#pivot-reshape",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Pivot (reshape)",
+    "text": "Pivot (reshape)\n\n# library(tidyr) ## already loaded\n\nq3 |&gt;\n  pivot_longer(tip_amount:fare_amount) |&gt;\n  collect()",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#joins-merges",
+    "href": "computing/duckdb-dplyr.html#joins-merges",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Joins (merges)",
+    "text": "Joins (merges)\n\nmean_tips  = nyc |&gt; summarise(mean_tips = mean(tip_amount), .by = month)\nmean_fares = nyc |&gt; summarise(mean_fares = mean(fare_amount), .by = month)\n\nAgain, these commands complete instantly because all computation has been deferred until absolutely necessary (i.e.,. lazy eval).\n\nleft_join(\n  mean_fares,\n  mean_tips\n  ) |&gt;\n  collect()",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#windowing",
+    "href": "computing/duckdb-dplyr.html#windowing",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Windowing",
+    "text": "Windowing\nIf you recall from the native SQL API, we sampled 1 percent of the data before creating decile bins to reduce the computation burden of sorting the entire table. Unfortunately, this approach doesn’t work as well for the dplyr frontend because the underlying SQL translation uses a generic sampling approach (rather than DuckDB’s optimised USING SAMPLE statement.)",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#close-connection",
+    "href": "computing/duckdb-dplyr.html#close-connection",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Close connection",
+    "text": "Close connection\n\ndbDisconnect(con)",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#appendix-related-interfaces",
+    "href": "computing/duckdb-dplyr.html#appendix-related-interfaces",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Appendix: Related interfaces",
+    "text": "Appendix: Related interfaces\n\narrow+duckdb\n\nlibrary(arrow)\nlibrary(duckdb) ## Already loaded\nlibrary(dplyr)  ## Already loaded\nlibrary(tidyr)  ## Already loaded\n\nWhen going through the arrow intermediary, we don’t need to establish a database with DBI::dbConnect like we did above. Instead, we can create a link (pointers) to the dataset on disk directly via the arrow::open_dataset() convience function. Here I’ll assign it to a new R object called nyc2.\n\nnyc2 = open_dataset(\"nyc-taxi\")\n\n\n\n\n\n\n\nopen_dataset() versus read_parquet()\n\n\n\n(For individual parquet files, we could just read then via arrow::read_parquet(), perhaps efficiently subsetting columns at the same time. But I find the open_dataset is generally what I’m looking for.)\n\n\nNote that printing our nyc2 dataset to the R console will just display the data schema. This is a cheap and convenient way to quickly interrogate the basic structure of your data, including column types, etc.\n\nnyc2\n\nThe key step for this “arrow + duckdb” dplyr workflow is to pass our arrow dataset to DuckDB via the to_duckdb() function.\n\nto_duckdb(nyc2)\n\nNote that this transfer from Arrow to DuckDB is very quick (and memory cheap) because it is a zero copy. We are just passing around pointers instead of actually moving any data. See this blog post for more details, but the high-level take away is that we are benefitting from the tightly integrated architectures of these two libraries.1\nAt this, point all of the regular dplyr workflow logic from above should carry over. Just remember to first pass the arrow dataset via the to_duckdb() funciton. For example, here’s our initial aggregation query again:\n\nnyc2 |&gt;\n  to_duckdb() |&gt; ## &lt;= key step\n  summarise(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  ) |&gt;\n  collect()\n\n\n\n\n\n\n\nArrow’s native acero engine\n\n\n\nSome of you may be used to performing computation with the arrow package without going through DuckDB. What’s happening here is that arrow provides its own computation engine called “acero”. This Arrow-native engine is actually pretty performant… albeit not a fast as DuckDB, nor as feature rich. So I personally recommend always passing to DuckDB if you can. Still, if you’re curious then you can test yourself by re-trying the code chunk, but commenting out the to_duckdb() line. For more details, see here.\n\n\n\n\nduckplyr\nThe new kid on the block is duckplyr (announcement / homepage). Without going into too much depth, the promise of duckplyr is that it can provide a “fully native” dplyr experience that is directly coupled to DuckDB’s query engine. So, for example, it won’t have to rely on DBI’s generic’ SQL translations. Instead, the relevant dplyr “verbs” are being directly translated to DuckDB’s relational API to construct logical query plans. If that’s too much jargon, just know that it should involve less overhead, fewer translation errors, and better optimization. Moreover, a goal of duckplyr is for it to be a drop-in replace for dplyr in general. In other words, you could just swap out library(dplyr) for library(duckplyr) and all of your data wrangling operations will come backed by the power of DuckDB. This includes for working on “regular” R data frames in memory.\nAll of this is exciting and I would urge you stay tuned. Right now, duckplyr is still marked as experimental and has a few rough edges. But the basics are there. For example:\n\nlibrary(duckplyr, warn.conflicts = FALSE)\n\nduckplyr_df_from_parquet(\"nyc-taxi/**/*.parquet\") |&gt;\n  summarise(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  )",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#footnotes",
+    "href": "computing/duckdb-dplyr.html#footnotes",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\n“Similar” might be a better description than “integrated”, since DuckdB does not use the Arrow memory model. But they are both columnar-orientated (among other things) and so the end result is pretty seamless integration.↩︎",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
     "objectID": "computing/duckdb-sql.html",
     "href": "computing/duckdb-sql.html",
     "title": "DuckDB SQL",
@@ -338,6 +536,28 @@
     "crumbs": [
       "Notes",
       "DuckDB SQL"
+    ]
+  },
+  {
+    "objectID": "misc/links.html",
+    "href": "misc/links.html",
+    "title": "Useful links",
+    "section": "",
+    "text": "Category\nLinks\n\n\n\n\nPersonal website\n🔗 GitHub site\n\n\nCoffee chat (with me)\n🔗 Appointment link\n\n\nComputing and replication resources\n🔗 Web-scraping 1  🔗 Web-scraping 2  🔗 Parallel programming  🔗 Docker  🔗 Google compute engine 1  🔗 Google compute engine 2  🔗 Databases  🔗 Spark  🔗 DuckDB and polars  🔗 NYU Course Notes & Resources  🔗 Quantitative dynamic model\n\n\nJulia\n🔗 Julia for data science  🔗 Computational economics for PhDs  🔗 Computational Methods in Macroeconomics  🔗 BLPDemand.jl  🔗 Guide to Efficient Computational Work in Economics  🔗 Econometrics with Julia  🔗 Advanced Dynamic Programming\n\n\nUseful packages\n🔗 New DiD methods\n\n\nGraduate trade and spatial\n🔗 Treb Allen\n\n\nNotes\n🔗 BLP-notes (Adam Smith)",
+    "crumbs": [
+      "Misc.",
+      "Useful links"
+    ]
+  },
+  {
+    "objectID": "computing/computing.html",
+    "href": "computing/computing.html",
+    "title": "Overview",
+    "section": "",
+    "text": "This section is a set of templates related to computing. It also contains some notes on various subjects in Economics.",
+    "crumbs": [
+      "Notes",
+      "Overview"
     ]
   },
   {
@@ -550,37 +770,43 @@
     ]
   },
   {
-    "objectID": "study/julia.html",
-    "href": "study/julia.html",
-    "title": "Julia study",
+    "objectID": "computing/docker.html",
+    "href": "computing/docker.html",
+    "title": "Dockerfile",
     "section": "",
-    "text": "This page contains an outline of the topics, contents, and works I did for Julia study group.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nlink\nhw\nhw_sol\nnotes\n\n\n\n\n1\nFri\nMay 9\nmeeting\nlorem\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nlorem\n\n\n2\nFri\nMay 16\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n3\nSat\nMay 10\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n4\nSat\nMay 17\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n5\nSun\nMay 11\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n6\nSun\nMay 18\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n7\nMon\nMay 12\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n8\nMon\nMay 19\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n9\nTue\nMay 13\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n10\nTue\nMay 20\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n11\nWed\nMay 14\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n12\nWed\nMay 21\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n13\nThu\nMay 15\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n14\nThu\nMay 22\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nFri\nMay 16\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n16\nFri\nMay 23\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n17\nSat\nMay 17\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n18\nSat\nMay 24\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n19\nSun\nMay 18\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n20\nSun\nMay 25\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n21\nMon\nMay 19\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n22\nMon\nMay 26\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n23\nTue\nMay 20\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n24\nTue\nMay 27\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n25\nWed\nMay 21\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n26\nWed\nMay 28\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n27\nThu\nMay 22\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n28\nThu\nMay 29\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n29\nFri\nMay 23\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n30\nFri\nMay 30\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n31\nSat\nMay 24\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n32\nSat\nMay 31\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n33\nSun\nMay 25\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n34\nSun\nJun 1\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n35\nMon\nMay 26\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n36\nMon\nJun 2\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n37\nTue\nMay 27\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n38\nTue\nJun 3\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n39\nWed\nMay 28\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n40\nWed\nJun 4\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n41\nThu\nMay 29\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n42\nThu\nJun 5\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n43\nFri\nMay 30\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n44\nFri\nJun 6\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n45\nSat\nMay 31\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n46\nSat\nJun 7\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n47\nSun\nJun 1\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n48\nSun\nJun 8\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n49\nMon\nJun 2\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n50\nMon\nJun 9\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n51\nTue\nJun 3\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n52\nTue\nJun 10\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n53\nWed\nJun 4\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n54\nWed\nJun 11\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n55\nThu\nJun 5\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n56\nThu\nJun 12\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n57\nFri\nJun 6\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n58\nFri\nJun 13\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n59\nSat\nJun 7\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n60\nSat\nJun 14\nmeeting",
+    "text": "This is a Dockerfile template for my computing environment. If you want to know more about what this does, check out my blog post.\n\n# Use Rocker image as the base for R\nFROM rocker/r-ver:4.4.0\n\nLABEL maintainer=\"Hyoungchul Kim &lt;hchul.kim96@gmail.com&gt;\"\n\n## Update and install system dependencies\nRUN apt-get update && apt-get install -y \\\n    libcurl4-openssl-dev \\\n    libssl-dev \\\n    libfontconfig1-dev \\\n    libharfbuzz-dev \\\n    libfribidi-dev \\\n    libfreetype6-dev \\\n    libpng-dev \\\n    libtiff5-dev \\\n    libjpeg-dev \\\n    libglpk-dev \\\n    libxml2-dev \\\n    libcairo2-dev \\\n    libgit2-dev \\\n    libpq-dev \\\n    libsasl2-dev \\\n    libsqlite3-dev \\\n    libssh2-1-dev \\\n    libxt-dev \\\n    libgdal-dev \\\n    wget \\\n    curl \\\n    vim \\\n    git \n\n## Install Pandoc and Quarto (Required for RMarkdown, Quarto, etc.)\n# RUN /rocker_scripts/install_pandoc.sh\n# RUN /rocker_scripts/install_quarto.sh\n\n## Install Python & Poetry\nRUN /rocker_scripts/install_python.sh && \\\n    pip3 install --upgrade pip && \\\n    pip3 install poetry\n\n# Ensure Poetry installs dependencies in the system environment\nRUN poetry config virtualenvs.create false\n\n# Copy Poetry files and install dependencies\nCOPY pyproject.toml poetry.lock .\nRUN poetry install --no-interaction --no-root\n\n## Install Julia 1.11.3 (to match Manifest.toml)\nENV JULIA_VERSION=1.11.3\nRUN /rocker_scripts/install_julia.sh\n\n## Set working directory\nWORKDIR /project\n\n## Copy renv.lock file into the folder\nCOPY renv.lock .\n\n# Set environment variables for renv\nENV RENV_VERSION=1.0.7\nENV RENV_PATHS_CACHE=/renv/cache\nENV RENV_CONFIG_REPOS_OVERRIDE=https://cloud.r-project.org\nENV RENV_CONFIG_AUTOLOADER_ENABLED=FALSE\nENV RENV_WATCHDOG_ENABLED=FALSE\nRUN echo \"options(renv.consent = TRUE)\" &gt;&gt; .Rprofile\nRUN echo \"options(RETICULATE_MINICONDA_ENABLED = FALSE)\" &gt;&gt; .Rprofile\n\n# Install renv from CRAN (avoiding bootstrapping by specifying version)\nRUN R -e \"install.packages('renv', repos = c(CRAN = 'https://cloud.r-project.org'))\"\nRUN R -e \"renv::consent(provided = TRUE)\"\n\n# Run renv restore to restore the environment\nRUN R -e \"renv::restore(confirm = FALSE)\"\n\n# Install Julia packages and manage dependencies\nCOPY Manifest.toml Project.toml .\nENV JULIA_PROJECT=/project\nRUN julia -e \"import Pkg; Pkg.activate(\\\".\\\"); Pkg.instantiate()\"\n\n# Copy over the rest of the project files\nCOPY . .\n\n# Default command\nCMD [\"bash\"]",
+    "crumbs": [
+      "Notes",
+      "Dockerfile"
+    ]
+  },
+  {
+    "objectID": "computing/polars.html",
+    "href": "computing/polars.html",
+    "title": "Polars from Python and R",
+    "section": "",
+    "text": "This is example templates that use Polars for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(polars)\n\nnyc = pl$scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning = TRUE)\nnyc\n\nq1 = (\n    nyc\n    $group_by(\"passenger_count\")\n    $agg(\n        pl$mean(\"tip_amount\")#$alias(\"mean_tip\") ## alias is optional\n    )\n    $sort(\"passenger_count\")\n)\nq1 \n\ntic = Sys.time()\ndat1 = q1$collect()\ntoc = Sys.time()\n\ndat1\n\nq2 = (\n    nyc\n    $filter(pl$col(\"month\") &lt;= 3)\n    $group_by(\"month\", \"passenger_count\")\n    $agg(pl$mean(\"tip_amount\")$alias(\"mean_tip\"))\n    $sort(\"passenger_count\")\n) \n\n# q2              # naive\ncat(q2$explain()) # optimized\n\ntic = Sys.time()\ndat2 = q2$collect()\ntoc = Sys.time()\n\ndat2\n\nq3 = (\n    nyc\n    $group_by(\"passenger_count\", \"trip_distance\")\n    $agg(\n        pl$mean(\"tip_amount\")$alias(\"mean_tip\"),\n        pl$mean(\"fare_amount\")$alias(\"mean_fare\")\n        )\n    $sort(\"passenger_count\", \"trip_distance\")\n)\n\ntic = Sys.time()\ndat3 = q3$collect()\ntoc = Sys.time()\n \ndat3\n\ndat3$unpivot(index = c(\"passenger_count\", \"trip_distance\"))\n\nmean_tips  = nyc$group_by(\"month\")$agg(pl$col(\"tip_amount\")$mean())\nmean_fares = nyc$group_by(\"month\")$agg(pl$col(\"fare_amount\")$mean())\n\n(\n    mean_tips\n    $join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\"  # default is inner join\n    )\n    $collect()\n)\n\n# You can also try tidypolars\n\nlibrary(polars) ## Already loaded\nlibrary(tidypolars)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)\n\nnyc = scan_parquet_polars(\"nyc-taxi/**/*.parquet\")\n\nnyc |&gt; \n    summarise(mean_tip = mean(tip_amount), .by = passenger_count) |&gt;\n    compute()\n\n# Aside: Use collect() instead of compute() at the end if you would prefer to return a standard R data.frame instead of a Polars DataFrame.\n\n\n\n\nimport polars as pl\nimport time\nimport matplotlib\n\nnyc = pl.scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning=True)\nnyc\n\nq1 = (\n    nyc\n    .group_by([\"passenger_count\"])\n    .agg([\n            pl.mean(\"tip_amount\")#.alias(\"mean_tip\") ## alias is optional\n        ])\n    .sort(\"passenger_count\")\n)\nq1\n\ntic = time.time()\ndat1 = q1.collect()\ntoc = time.time()\n\ndat1\n\nq2 = (\n    nyc\n    .filter(pl.col(\"month\") &lt;= 3)\n    .group_by([\"month\", \"passenger_count\"])\n    .agg([pl.mean(\"tip_amount\").alias(\"mean_tip\")])\n    .sort(\"passenger_count\")\n)\n\n# q2             # naive\nq2.show_graph()  # optimized\n\ntic = time.time()\ndat2 = q2.collect()\ntoc = time.time()\n\ndat2\n\nq3 = (\n    nyc\n    .group_by([\"passenger_count\", \"trip_distance\"])\n    .agg([\n        pl.mean(\"tip_amount\").alias(\"mean_tip\"),\n        pl.mean(\"fare_amount\").alias(\"mean_fare\"),\n        ])\n    .sort([\"passenger_count\", \"trip_distance\"])\n)\n\ntic = time.time()\ndat3 = q3.collect()\ntoc = time.time()\n\ndat3\n\ndat3.unpivot(index = [\"passenger_count\", \"trip_distance\"])\n\nmean_tips  = nyc.group_by(\"month\").agg(pl.col(\"tip_amount\").mean())\nmean_fares = nyc.group_by(\"month\").agg(pl.col(\"fare_amount\").mean())\n\n(\n    mean_tips\n    .join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\" # default is inner join\n    )\n    .collect()\n)",
+    "crumbs": [
+      "Notes",
+      "Polars (R + Python)"
+    ]
+  },
+  {
+    "objectID": "study/io-theory.html",
+    "href": "study/io-theory.html",
+    "title": "IO theory study",
+    "section": "",
+    "text": "This page contains an outline of the topics, contents, and works I did for IO theory self-study.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nlink\nmaterial\nnotes\n\n\n\n\n1\nFri\nMay 9\ndue-date\nfirm\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2\nFri\nMay 16\ndue-date\nmonopoly\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n3\nFri\nMay 23\ndue-date\nproduct selection\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n4\nFri\nMay 30\ndue-date\nprice discrimination\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n5\nFri\nJun 6\ndue-date\nvertical control\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n6\nFri\nJun 13\ndue-date\nprice competition\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n7\nFri\nJun 20\ndue-date\nproduct differentiation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n8\nFri\nJun 27\ndue-date\nentry, exit\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n9\nFri\nJul 4\ndue-date\ninformation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n10\nFri\nJul 11\ndue-date\n-\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n11\nFri\nJul 18\ndue-date\n-\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n12\nFri\nJul 25\ndue-date\n-\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n13\nFri\nAug 1\ndue-date\n-\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n14\nFri\nAug 8\ndue-date\n-\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nFri\nAug 15\ndue-date\n-\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n16\nFri\nAug 22\ndue-date\n-\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n17\nFri\n\n\ndue-date\nreplication"
+  },
+  {
+    "objectID": "study/overview.html",
+    "href": "study/overview.html",
+    "title": "Overview",
+    "section": "",
+    "text": "This section is a set of materials I used for studying.",
     "crumbs": [
       "Study",
-      "Julia"
-    ]
-  },
-  {
-    "objectID": "misc/links.html",
-    "href": "misc/links.html",
-    "title": "Useful links",
-    "section": "",
-    "text": "Category\nLinks\n\n\n\n\nPersonal website\n🔗 GitHub site\n\n\nCoffee chat (with me)\n🔗 Appointment link\n\n\nComputing and replication resources\n🔗 Web-scraping 1  🔗 Web-scraping 2  🔗 Parallel programming  🔗 Docker  🔗 Google compute engine 1  🔗 Google compute engine 2  🔗 Databases  🔗 Spark  🔗 DuckDB and polars  🔗 NYU Course Notes & Resources  🔗 Quantitative dynamic model\n\n\nJulia\n🔗 Julia for data science  🔗 Computational economics for PhDs  🔗 Computational Methods in Macroeconomics  🔗 BLPDemand.jl  🔗 Guide to Efficient Computational Work in Economics  🔗 Econometrics with Julia  🔗 Advanced Dynamic Programming\n\n\nUseful packages\n🔗 New DiD methods\n\n\nGraduate trade and spatial\n🔗 Treb Allen\n\n\nNotes\n🔗 BLP-notes (Adam Smith)",
-    "crumbs": [
-      "Misc.",
-      "Useful links"
-    ]
-  },
-  {
-    "objectID": "teaching/assignments.html",
-    "href": "teaching/assignments.html",
-    "title": "General logistics on assignments",
-    "section": "",
-    "text": "TBD",
-    "crumbs": [
-      "Teaching",
-      "Class-name",
-      "Assignments"
+      "Overview"
     ]
   },
   {
@@ -593,6 +819,18 @@
       "Teaching",
       "Class-name",
       "Overview"
+    ]
+  },
+  {
+    "objectID": "teaching/metrics.html",
+    "href": "teaching/metrics.html",
+    "title": "Metric theory",
+    "section": "",
+    "text": "This pages contains log for my self-study on metric theory.",
+    "crumbs": [
+      "Teaching",
+      "Mathematics",
+      "Metric theory resources"
     ]
   },
   {
@@ -632,49 +870,6 @@
     ]
   },
   {
-    "objectID": "teaching/faq.html",
-    "href": "teaching/faq.html",
-    "title": "FAQ",
-    "section": "",
-    "text": "TBD",
-    "crumbs": [
-      "Teaching",
-      "Class-name",
-      "FAQ"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "tools",
-    "section": "",
-    "text": "This site is an archive that contains my tools.\n\nWho am I?\nI am a Ph.D student in Applied Economics at The Wharton School: [Website]"
-  },
-  {
-    "objectID": "teaching/prob.html",
-    "href": "teaching/prob.html",
-    "title": "Probability theory",
-    "section": "",
-    "text": "This pages contains log for my self-study on probability theory.",
-    "crumbs": [
-      "Teaching",
-      "Mathematics",
-      "Probability theory resources"
-    ]
-  },
-  {
-    "objectID": "teaching/metrics.html",
-    "href": "teaching/metrics.html",
-    "title": "Metric theory",
-    "section": "",
-    "text": "This pages contains log for my self-study on metric theory.",
-    "crumbs": [
-      "Teaching",
-      "Mathematics",
-      "Metric theory resources"
-    ]
-  },
-  {
     "objectID": "teaching/topology.html",
     "href": "teaching/topology.html",
     "title": "Topology",
@@ -684,194 +879,6 @@
       "Teaching",
       "Mathematics",
       "Topology resources"
-    ]
-  },
-  {
-    "objectID": "teaching/office-hours.html",
-    "href": "teaching/office-hours.html",
-    "title": "Overview on OH",
-    "section": "",
-    "text": "TBD",
-    "crumbs": [
-      "Teaching",
-      "Class-name",
-      "Office hours"
-    ]
-  },
-  {
-    "objectID": "study/spatial.html",
-    "href": "study/spatial.html",
-    "title": "Spatial study",
-    "section": "",
-    "text": "This page contains an outline of the topics, contents, and works I did for Spatial economics self-study.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nlink\nmaterial\nnotes\n\n\n\n\n1\nFri\nMay 9\ndue-date\nintro\n\n\n\n\n\n\n\n\n\n\nintro_phd (holger)\n\n\n\nFri\n\n\n\n\nMTO (holger)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nagglomeration externalities\n\n\n\n\n\n\n\n\nslides_ghm_10 (holger)\n\n\n2\nFri\nMay 16\ndue-date\ndiscrete choice and continuous-discrete choice\n\n\n\n\n\n\n\n\n\n\nblp1995; epple and sieg1999; blp2004; sieg, smigh, banzhaf and walsh2004;\n\n\n3\nFri\nMay 23\ndue-date\nstructural io extra\n\n\n\n\n\n\nackerberg, benkard, berry, pakes2007\n\n\n4\nFri\nMay 30\ndue-date\nspatial rdd\n\n\n\n\n\n\n\n\n\n\nslides_srdd (holger)\n\n\n5\nFri\nJun 6\ndue-date\nsorting across cities\n\n\n\n\n\n\n\n\ndiamond2016\n\n\n\nFri\n\n\n\n\nsorting across cities2\n\n\n\n\n\n\n\n\n\n\n\n\n6\nFri\nJun 13\ndue-date\ntrade (ricardian model) - frechet\n\n\n\n\n\n\n\n\n\n\nEK\n\n\n\nFri\n\n\n\n\ntrade (ricardian model) - frechet2\n\n\n\n\n\n\n\n\nEK\n\n\n\nFri\n\n\n\n\ntrade (ricardian model) - frechet3\n\n\n\n\n\n\n\n\nEK\n\n\n7\nFri\nJun 20\ndue-date\nsorting within cities and agglomeration externalities\n\n\n\n\n\n\n\n\nahlfeldt, redding, sturm and wolf2015\n\n\n\nFri\n\n\n\n\nsorting within cities and agglomeration externalities\n\n\n\n\n\n\n\n\n\n\n\n\n8\nFri\nJun 27\ndue-date\neducation\n\n\n\n\n\n\n\n\nepple, romano and sieg2006; fu2014\n\n\n9\nFri\nJul 4\ndue-date\ndynamic discrete choice review\n\n\n\n\n\n\n\n\ncaliendo-china-shock, balboni-vietnam\n\n\n\nFri\n\n\n\n\ndynamic discrete choice review\n\n\n\n\n\n\n\n\n\n\n\n\n10\nFri\nJul 11\ndue-date\nestimation of stationary spatial models\n\n\n\n\n\n\n\n\nalmagro and dominguez2022, amsterdam\n\n\n\nFri\n\n\n\n\nestimation of stationary spatial models\n\n\n\n\n\n\n\n\n\n\n\n\n11\nFri\nJul 18\ndue-date\nstationary housing models: rental markets, public and affordable housing\n\n\n\n\n\n\n\n\n\n\n\n\n12\nFri\nJul 25\ndue-date\nstationary housing models: owner occupied housing markets\n\n\n\n\n\n\n\n\nhurst, keys, seru and vavra2016\n\n\n\nFri\n\n\n\n\nstationary housing models: owner occupied housing markets\n\n\n\n\n\n\n\n\n\n\n\n\n13\nFri\nAug 1\ndue-date\nstatic hedonic models\n\n\n\n\n\n\n\n\nrosen, sherwin1974; epple1987; seig, smith, banzhaf and walsh2002; epple, quintero, and sieg2020\n\n\n14\nFri\nAug 8\ndue-date\nnonstationary dynamic hedonic\n\n\n\n\n\n\n\n\nlandvoigt, piazzesi, and schneider2015\n\n\n15\nFri\nAug 15\ndue-date\nnonstationary spatial models\n\n\n\n\n\n\n\n\nkleinman, liu, redding2023\n\n\n\nFri\n\n\n\n\nnonstationary spatial models\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nnonstationary spatial models\n\n\n\n\n\n\n\n\ncaliendo, dvorkin, and parro2019; balboni2021; bilal and rossi-hansberg2023\n\n\n\nFri\n\n\n\n\nnonstationary spatial models\n\n\n\n\n\n\n\n\n\n\n\n\n16\nFri\nAug 22\ndue-date\nnonstationary spatial models: firm location and density\n\n\n\n\n\n\n\n\nholmes2011",
-    "crumbs": [
-      "Study",
-      "Spatial"
-    ]
-  },
-  {
-    "objectID": "study/overview.html",
-    "href": "study/overview.html",
-    "title": "Overview",
-    "section": "",
-    "text": "This section is a set of materials I used for studying.",
-    "crumbs": [
-      "Study",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "computing/polars.html",
-    "href": "computing/polars.html",
-    "title": "Polars from Python and R",
-    "section": "",
-    "text": "This is example templates that use Polars for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(polars)\n\nnyc = pl$scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning = TRUE)\nnyc\n\nq1 = (\n    nyc\n    $group_by(\"passenger_count\")\n    $agg(\n        pl$mean(\"tip_amount\")#$alias(\"mean_tip\") ## alias is optional\n    )\n    $sort(\"passenger_count\")\n)\nq1 \n\ntic = Sys.time()\ndat1 = q1$collect()\ntoc = Sys.time()\n\ndat1\n\nq2 = (\n    nyc\n    $filter(pl$col(\"month\") &lt;= 3)\n    $group_by(\"month\", \"passenger_count\")\n    $agg(pl$mean(\"tip_amount\")$alias(\"mean_tip\"))\n    $sort(\"passenger_count\")\n) \n\n# q2              # naive\ncat(q2$explain()) # optimized\n\ntic = Sys.time()\ndat2 = q2$collect()\ntoc = Sys.time()\n\ndat2\n\nq3 = (\n    nyc\n    $group_by(\"passenger_count\", \"trip_distance\")\n    $agg(\n        pl$mean(\"tip_amount\")$alias(\"mean_tip\"),\n        pl$mean(\"fare_amount\")$alias(\"mean_fare\")\n        )\n    $sort(\"passenger_count\", \"trip_distance\")\n)\n\ntic = Sys.time()\ndat3 = q3$collect()\ntoc = Sys.time()\n \ndat3\n\ndat3$unpivot(index = c(\"passenger_count\", \"trip_distance\"))\n\nmean_tips  = nyc$group_by(\"month\")$agg(pl$col(\"tip_amount\")$mean())\nmean_fares = nyc$group_by(\"month\")$agg(pl$col(\"fare_amount\")$mean())\n\n(\n    mean_tips\n    $join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\"  # default is inner join\n    )\n    $collect()\n)\n\n# You can also try tidypolars\n\nlibrary(polars) ## Already loaded\nlibrary(tidypolars)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)\n\nnyc = scan_parquet_polars(\"nyc-taxi/**/*.parquet\")\n\nnyc |&gt; \n    summarise(mean_tip = mean(tip_amount), .by = passenger_count) |&gt;\n    compute()\n\n# Aside: Use collect() instead of compute() at the end if you would prefer to return a standard R data.frame instead of a Polars DataFrame.\n\n\n\n\nimport polars as pl\nimport time\nimport matplotlib\n\nnyc = pl.scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning=True)\nnyc\n\nq1 = (\n    nyc\n    .group_by([\"passenger_count\"])\n    .agg([\n            pl.mean(\"tip_amount\")#.alias(\"mean_tip\") ## alias is optional\n        ])\n    .sort(\"passenger_count\")\n)\nq1\n\ntic = time.time()\ndat1 = q1.collect()\ntoc = time.time()\n\ndat1\n\nq2 = (\n    nyc\n    .filter(pl.col(\"month\") &lt;= 3)\n    .group_by([\"month\", \"passenger_count\"])\n    .agg([pl.mean(\"tip_amount\").alias(\"mean_tip\")])\n    .sort(\"passenger_count\")\n)\n\n# q2             # naive\nq2.show_graph()  # optimized\n\ntic = time.time()\ndat2 = q2.collect()\ntoc = time.time()\n\ndat2\n\nq3 = (\n    nyc\n    .group_by([\"passenger_count\", \"trip_distance\"])\n    .agg([\n        pl.mean(\"tip_amount\").alias(\"mean_tip\"),\n        pl.mean(\"fare_amount\").alias(\"mean_fare\"),\n        ])\n    .sort([\"passenger_count\", \"trip_distance\"])\n)\n\ntic = time.time()\ndat3 = q3.collect()\ntoc = time.time()\n\ndat3\n\ndat3.unpivot(index = [\"passenger_count\", \"trip_distance\"])\n\nmean_tips  = nyc.group_by(\"month\").agg(pl.col(\"tip_amount\").mean())\nmean_fares = nyc.group_by(\"month\").agg(pl.col(\"fare_amount\").mean())\n\n(\n    mean_tips\n    .join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\" # default is inner join\n    )\n    .collect()\n)",
-    "crumbs": [
-      "Notes",
-      "Polars (R + Python)"
-    ]
-  },
-  {
-    "objectID": "computing/computing.html",
-    "href": "computing/computing.html",
-    "title": "Overview",
-    "section": "",
-    "text": "This section is a set of templates related to computing. It also contains some notes on various subjects in Economics.",
-    "crumbs": [
-      "Notes",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html",
-    "href": "computing/duckdb-dplyr.html",
-    "title": "DuckDB + dplyr (R)",
-    "section": "",
-    "text": "This is just a direct copy of the resources from Grant McDermott. Thus, I do not have any credit for it. It is solely for the archive purpose.",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#load-libraries",
-    "href": "computing/duckdb-dplyr.html#load-libraries",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Load libraries",
-    "text": "Load libraries\n\nlibrary(duckdb)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#create-a-database-connection",
-    "href": "computing/duckdb-dplyr.html#create-a-database-connection",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Create a database connection",
-    "text": "Create a database connection\nFor the d(b)plyr workflow, the connection step is very similar to the pure SQL approach. The only difference is that, after instantiating the database connection, we need to register our parquet dataset as a table in our connection via the dplyr::tbl() function. Note that we also assign it to an object (here: nyc) that can be referenced from R.\n\n## Instantiate the in-memory DuckDB connection \ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n## Register our parquet dataset as table in our connection (and that assign it\n## to an object that R understands)\n# nyc = tbl(con, \"nyc-taxi/**/*.parquet\") # works, but safer to use the read_parquet func)\nnyc = tbl(con, \"read_parquet('nyc-taxi/**/*.parquet', hive_partitioning = true)\")",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#first-example",
-    "href": "computing/duckdb-dplyr.html#first-example",
-    "title": "DuckDB + dplyr (R)",
-    "section": "First example",
-    "text": "First example\nThis next command runs instantly because all computation is deferred (i.e., lazy eval). In other words, it is just a query object.\n\nq1 = nyc |&gt;\n  summarize(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  )\n\n\n\n\n\n\n\n.by versus group_by\n\n\n\nIn case you weren’t aware: summarize(..., .by = x) is a shorthand (and non-persistent) version of group_by(x) |&gt; summarize(...). More details here.\n\n\nWe can see what DuckDB’s query tree looks like by asking it to explain the plan\n\nexplain(q1)\n\nSimilarly, to show the SQL translation that will be implemented on the backend, using show_query.\n\nshow_query(q1)\n\nNote that printing the query object actually does enforce some computation. OTOH it’s still just a preview of the data (we haven’t pulled everything into R’s memory).\n\nq1\n\nTo actually pull all of the result data into R, we must call collect() on the query object\n\ntic = Sys.time()\ndat1 = collect(q1)\ntoc = Sys.time()\n\ndat1\ntoc - tic",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#aggregation",
-    "href": "computing/duckdb-dplyr.html#aggregation",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Aggregation",
-    "text": "Aggregation\nHere’s our earlier filtering example with multiple grouping + aggregation variables…\n\nq2 = nyc |&gt;\n  filter(month &lt;= 3) |&gt;\n  summarize(\n    across(c(tip_amount, fare_amount), mean),\n    .by = c(month, passenger_count)\n  )\nq2\n\nAside: note the optimised query includes hash groupings and projection (basically: fancy column subsetting, which is a suprisingly effective strategy in query optimization)\n\nexplain(q2)\n\nAnd our high-dimensional aggregation example. We’ll create a query for this first, since I’ll reuse it shortly again\n\nq3 = nyc |&gt;\n  group_by(passenger_count, trip_distance) |&gt;\n  summarize(\n    across(c(tip_amount, fare_amount), mean),\n  ) \ncollect(q3)",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#pivot-reshape",
-    "href": "computing/duckdb-dplyr.html#pivot-reshape",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Pivot (reshape)",
-    "text": "Pivot (reshape)\n\n# library(tidyr) ## already loaded\n\nq3 |&gt;\n  pivot_longer(tip_amount:fare_amount) |&gt;\n  collect()",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#joins-merges",
-    "href": "computing/duckdb-dplyr.html#joins-merges",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Joins (merges)",
-    "text": "Joins (merges)\n\nmean_tips  = nyc |&gt; summarise(mean_tips = mean(tip_amount), .by = month)\nmean_fares = nyc |&gt; summarise(mean_fares = mean(fare_amount), .by = month)\n\nAgain, these commands complete instantly because all computation has been deferred until absolutely necessary (i.e.,. lazy eval).\n\nleft_join(\n  mean_fares,\n  mean_tips\n  ) |&gt;\n  collect()",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#windowing",
-    "href": "computing/duckdb-dplyr.html#windowing",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Windowing",
-    "text": "Windowing\nIf you recall from the native SQL API, we sampled 1 percent of the data before creating decile bins to reduce the computation burden of sorting the entire table. Unfortunately, this approach doesn’t work as well for the dplyr frontend because the underlying SQL translation uses a generic sampling approach (rather than DuckDB’s optimised USING SAMPLE statement.)",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#close-connection",
-    "href": "computing/duckdb-dplyr.html#close-connection",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Close connection",
-    "text": "Close connection\n\ndbDisconnect(con)",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#appendix-related-interfaces",
-    "href": "computing/duckdb-dplyr.html#appendix-related-interfaces",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Appendix: Related interfaces",
-    "text": "Appendix: Related interfaces\n\narrow+duckdb\n\nlibrary(arrow)\nlibrary(duckdb) ## Already loaded\nlibrary(dplyr)  ## Already loaded\nlibrary(tidyr)  ## Already loaded\n\nWhen going through the arrow intermediary, we don’t need to establish a database with DBI::dbConnect like we did above. Instead, we can create a link (pointers) to the dataset on disk directly via the arrow::open_dataset() convience function. Here I’ll assign it to a new R object called nyc2.\n\nnyc2 = open_dataset(\"nyc-taxi\")\n\n\n\n\n\n\n\nopen_dataset() versus read_parquet()\n\n\n\n(For individual parquet files, we could just read then via arrow::read_parquet(), perhaps efficiently subsetting columns at the same time. But I find the open_dataset is generally what I’m looking for.)\n\n\nNote that printing our nyc2 dataset to the R console will just display the data schema. This is a cheap and convenient way to quickly interrogate the basic structure of your data, including column types, etc.\n\nnyc2\n\nThe key step for this “arrow + duckdb” dplyr workflow is to pass our arrow dataset to DuckDB via the to_duckdb() function.\n\nto_duckdb(nyc2)\n\nNote that this transfer from Arrow to DuckDB is very quick (and memory cheap) because it is a zero copy. We are just passing around pointers instead of actually moving any data. See this blog post for more details, but the high-level take away is that we are benefitting from the tightly integrated architectures of these two libraries.1\nAt this, point all of the regular dplyr workflow logic from above should carry over. Just remember to first pass the arrow dataset via the to_duckdb() funciton. For example, here’s our initial aggregation query again:\n\nnyc2 |&gt;\n  to_duckdb() |&gt; ## &lt;= key step\n  summarise(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  ) |&gt;\n  collect()\n\n\n\n\n\n\n\nArrow’s native acero engine\n\n\n\nSome of you may be used to performing computation with the arrow package without going through DuckDB. What’s happening here is that arrow provides its own computation engine called “acero”. This Arrow-native engine is actually pretty performant… albeit not a fast as DuckDB, nor as feature rich. So I personally recommend always passing to DuckDB if you can. Still, if you’re curious then you can test yourself by re-trying the code chunk, but commenting out the to_duckdb() line. For more details, see here.\n\n\n\n\nduckplyr\nThe new kid on the block is duckplyr (announcement / homepage). Without going into too much depth, the promise of duckplyr is that it can provide a “fully native” dplyr experience that is directly coupled to DuckDB’s query engine. So, for example, it won’t have to rely on DBI’s generic’ SQL translations. Instead, the relevant dplyr “verbs” are being directly translated to DuckDB’s relational API to construct logical query plans. If that’s too much jargon, just know that it should involve less overhead, fewer translation errors, and better optimization. Moreover, a goal of duckplyr is for it to be a drop-in replace for dplyr in general. In other words, you could just swap out library(dplyr) for library(duckplyr) and all of your data wrangling operations will come backed by the power of DuckDB. This includes for working on “regular” R data frames in memory.\nAll of this is exciting and I would urge you stay tuned. Right now, duckplyr is still marked as experimental and has a few rough edges. But the basics are there. For example:\n\nlibrary(duckplyr, warn.conflicts = FALSE)\n\nduckplyr_df_from_parquet(\"nyc-taxi/**/*.parquet\") |&gt;\n  summarise(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  )",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#footnotes",
-    "href": "computing/duckdb-dplyr.html#footnotes",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\n“Similar” might be a better description than “integrated”, since DuckdB does not use the Arrow memory model. But they are both columnar-orientated (among other things) and so the end result is pretty seamless integration.↩︎",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/docker.html",
-    "href": "computing/docker.html",
-    "title": "Dockerfile",
-    "section": "",
-    "text": "This is a Dockerfile template for my computing environment. If you want to know more about what this does, check out my blog post.\n\n# Use Rocker image as the base for R\nFROM rocker/r-ver:4.4.0\n\nLABEL maintainer=\"Hyoungchul Kim &lt;hchul.kim96@gmail.com&gt;\"\n\n## Update and install system dependencies\nRUN apt-get update && apt-get install -y \\\n    libcurl4-openssl-dev \\\n    libssl-dev \\\n    libfontconfig1-dev \\\n    libharfbuzz-dev \\\n    libfribidi-dev \\\n    libfreetype6-dev \\\n    libpng-dev \\\n    libtiff5-dev \\\n    libjpeg-dev \\\n    libglpk-dev \\\n    libxml2-dev \\\n    libcairo2-dev \\\n    libgit2-dev \\\n    libpq-dev \\\n    libsasl2-dev \\\n    libsqlite3-dev \\\n    libssh2-1-dev \\\n    libxt-dev \\\n    libgdal-dev \\\n    wget \\\n    curl \\\n    vim \\\n    git \n\n## Install Pandoc and Quarto (Required for RMarkdown, Quarto, etc.)\n# RUN /rocker_scripts/install_pandoc.sh\n# RUN /rocker_scripts/install_quarto.sh\n\n## Install Python & Poetry\nRUN /rocker_scripts/install_python.sh && \\\n    pip3 install --upgrade pip && \\\n    pip3 install poetry\n\n# Ensure Poetry installs dependencies in the system environment\nRUN poetry config virtualenvs.create false\n\n# Copy Poetry files and install dependencies\nCOPY pyproject.toml poetry.lock .\nRUN poetry install --no-interaction --no-root\n\n## Install Julia 1.11.3 (to match Manifest.toml)\nENV JULIA_VERSION=1.11.3\nRUN /rocker_scripts/install_julia.sh\n\n## Set working directory\nWORKDIR /project\n\n## Copy renv.lock file into the folder\nCOPY renv.lock .\n\n# Set environment variables for renv\nENV RENV_VERSION=1.0.7\nENV RENV_PATHS_CACHE=/renv/cache\nENV RENV_CONFIG_REPOS_OVERRIDE=https://cloud.r-project.org\nENV RENV_CONFIG_AUTOLOADER_ENABLED=FALSE\nENV RENV_WATCHDOG_ENABLED=FALSE\nRUN echo \"options(renv.consent = TRUE)\" &gt;&gt; .Rprofile\nRUN echo \"options(RETICULATE_MINICONDA_ENABLED = FALSE)\" &gt;&gt; .Rprofile\n\n# Install renv from CRAN (avoiding bootstrapping by specifying version)\nRUN R -e \"install.packages('renv', repos = c(CRAN = 'https://cloud.r-project.org'))\"\nRUN R -e \"renv::consent(provided = TRUE)\"\n\n# Run renv restore to restore the environment\nRUN R -e \"renv::restore(confirm = FALSE)\"\n\n# Install Julia packages and manage dependencies\nCOPY Manifest.toml Project.toml .\nENV JULIA_PROJECT=/project\nRUN julia -e \"import Pkg; Pkg.activate(\\\".\\\"); Pkg.instantiate()\"\n\n# Copy over the rest of the project files\nCOPY . .\n\n# Default command\nCMD [\"bash\"]",
-    "crumbs": [
-      "Notes",
-      "Dockerfile"
     ]
   }
 ]
