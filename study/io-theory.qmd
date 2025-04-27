@@ -1,5 +1,5 @@
 ---
-title: "IO theory study"
+title: "Empirical IO study"
 author: "Hyoungchul Kim"
 execute: 
   freeze: auto
@@ -10,7 +10,7 @@ format:
     code-overflow: wrap
 ---
 
-This page contains an outline of the topics, contents, and works I did for IO theory self-study. 
+This page contains an outline of the topics, contents, and works I did for Empirical IO self-study. 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 library(googlesheets4)
