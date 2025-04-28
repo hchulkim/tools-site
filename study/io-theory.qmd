@@ -12,6 +12,10 @@ format:
 
 This page contains an outline of the topics, contents, and works I did for Empirical IO self-study. 
 
+**Notes**
+
+Materials I am using: [IO syllabus by Phil Haile](https://www.dropbox.com/scl/fi/qtqqcn7kbx44a46y776ha/syll_fall24.pdf?rlkey=igszdkadeezs4qqdeicoa70v3&e=1&dl=0); [MIT IO opencourse](https://ocw.mit.edu/courses/14-271-industrial-organization-i-fall-2022/pages/syllabus/); [Train's textbook](https://eml.berkeley.edu/books/train1201.pdf); [Mixetape course on demand estimation](https://github.com/Mixtape-Sessions/Demand-Estimation); Some bits of Tirole's textbook.
+
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 library(googlesheets4)
 library(gt)
