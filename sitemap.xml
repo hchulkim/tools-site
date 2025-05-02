@@ -2,98 +2,102 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://tools.github.io/teaching/office-hours.html</loc>
-    <lastmod>2025-05-02T15:17:07.739Z</lastmod>
+    <lastmod>2025-05-02T20:32:14.808Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/teaching/prob.html</loc>
-    <lastmod>2025-05-02T15:17:07.739Z</lastmod>
+    <lastmod>2025-05-02T20:32:14.808Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/teaching/assignments.html</loc>
-    <lastmod>2025-05-02T15:17:07.739Z</lastmod>
+    <lastmod>2025-05-02T20:32:14.808Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/teaching/faq.html</loc>
-    <lastmod>2025-05-02T15:17:07.739Z</lastmod>
+    <lastmod>2025-05-02T20:32:14.808Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/index.html</loc>
-    <lastmod>2025-05-02T15:17:07.490Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/study/julia.html</loc>
-    <lastmod>2025-05-02T15:17:07.739Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/study/spatial.html</loc>
-    <lastmod>2025-05-02T15:17:07.739Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/computing/blp.html</loc>
-    <lastmod>2025-05-02T15:17:07.269Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/computing/gis.html</loc>
-    <lastmod>2025-05-02T15:17:07.270Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/computing/sf-vector-data.html</loc>
-    <lastmod>2025-05-02T15:17:07.271Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/computing/julia-self-study.html</loc>
-    <lastmod>2025-05-02T15:17:07.270Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/computing/computing.html</loc>
-    <lastmod>2025-05-02T15:17:07.269Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/misc/links.html</loc>
-    <lastmod>2025-05-02T15:17:07.520Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/computing/duckdb-sql.html</loc>
-    <lastmod>2025-05-02T15:17:07.270Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/computing/duckdb-dplyr.html</loc>
-    <lastmod>2025-05-02T15:17:07.269Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/computing/trade-notes.html</loc>
-    <lastmod>2025-05-02T15:17:07.271Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/computing/docker.html</loc>
-    <lastmod>2025-05-02T15:17:07.269Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/computing/polars.html</loc>
-    <lastmod>2025-05-02T15:17:07.270Z</lastmod>
-  </url>
-  <url>
-    <loc>https://tools.github.io/study/io-theory.html</loc>
-    <lastmod>2025-05-02T15:17:07.739Z</lastmod>
+    <lastmod>2025-05-02T20:32:14.559Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/study/overview.html</loc>
-    <lastmod>2025-05-02T15:17:07.739Z</lastmod>
+    <lastmod>2025-05-02T20:32:14.808Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/study/io-theory.html</loc>
+    <lastmod>2025-05-02T20:32:14.808Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/computing/polars.html</loc>
+    <lastmod>2025-05-02T20:32:14.348Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/computing/docker.html</loc>
+    <lastmod>2025-05-02T20:32:14.347Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/computing/trade-notes.html</loc>
+    <lastmod>2025-05-02T20:32:14.349Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/computing/duckdb-dplyr.html</loc>
+    <lastmod>2025-05-02T20:32:14.347Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/computing/duckdb-sql.html</loc>
+    <lastmod>2025-05-02T20:32:14.348Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/misc/links.html</loc>
+    <lastmod>2025-05-02T20:32:14.589Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/computing/computing.html</loc>
+    <lastmod>2025-05-02T20:32:14.347Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/computing/julia-self-study.html</loc>
+    <lastmod>2025-05-02T20:32:14.348Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/computing/sf-vector-data.html</loc>
+    <lastmod>2025-05-02T20:32:14.348Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/computing/gis.html</loc>
+    <lastmod>2025-05-02T20:32:14.348Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/computing/blp.html</loc>
+    <lastmod>2025-05-02T20:32:14.347Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/study/spatial.html</loc>
+    <lastmod>2025-05-02T20:32:14.808Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/study/julia.html</loc>
+    <lastmod>2025-05-02T20:32:14.808Z</lastmod>
+  </url>
+  <url>
+    <loc>https://tools.github.io/prepare/notes-io.html</loc>
+    <lastmod>2025-05-02T20:32:14.719Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/teaching/teaching.html</loc>
-    <lastmod>2025-05-02T15:17:07.740Z</lastmod>
+    <lastmod>2025-05-02T20:32:14.808Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/teaching/metrics.html</loc>
-    <lastmod>2025-05-02T15:17:07.739Z</lastmod>
+    <lastmod>2025-05-02T20:32:14.808Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/teaching/set.html</loc>
-    <lastmod>2025-05-02T15:17:07.740Z</lastmod>
+    <lastmod>2025-05-02T20:32:14.808Z</lastmod>
   </url>
   <url>
     <loc>https://tools.github.io/teaching/topology.html</loc>
-    <lastmod>2025-05-02T15:17:07.740Z</lastmod>
+    <lastmod>2025-05-02T20:32:14.808Z</lastmod>
   </url>
 </urlset>
