@@ -1,0 +1,64 @@
+---
+title: "Notes"
+subtitle: "Emp IO"
+execute:
+  freeze: auto
+---
+
+## Ackerberg et al. (2006)
+
+### Demand systems
+
+Before the **modern empirical IO**, demand system was usually based on "representative agent models" in a "product space." This lead to various problems:
+
+**Problms of representative agent models**
+
+Since lot of the demand systemts were estimated from aggregate market level data, it was hard to generalize the analysis of particular market into different settings. This is because of heterogenous agents in different markets. In order to alleviate this, researchers tried methods such as imposing some a priori distribution of consumer characteristics and aggregate it to the market level. The problem of this approach was that this *distribution* was very ad-hoc and unrealistic.
+
+**Solutions of representative agent problem**
+
+One solution to this problem was the use of **simulation methods**. Instead of assuming certain distribution, researchers would draw a vector of consumer characteristics from some observed population data (e.g. CPS) in that market. Then they would determine the choices made by individuals for some given parameters and aggregate the choices to get the predicted demand. After that, they would apply some algorithm to find the parameter values that get these predicted demand match the observed demand.
+
+---
+
+**Problems of product space**
+
+1. "Too many parameters problems": If we model the demand system in terms of the product space, we would need to estimate large number of parameters. This could easily become impossible with the data we have.
+
+2. "New goods problem": Since we are in product space, we can only think about goods that were already there. We cannot analyze the demand for new goods.
+
+**Solutions of product space problem**
+
+One solution was to transition from **product space** to **characteristic space**. Now a product is a bundle of characteristics and individuals' preferences are defined on those characteristics.
+
+---
+
+**Background on characteristics space**
+
+In fact, papers such as Mcfadden (1974, 1981) and others already provided a well-defined econometrics models that is consistent with this setup. But it was not widely used in IO due to two reasons:
+
+1. Logit model's tendency to give arise to **IIA** problem.
+
+2. Early models did not account for unobserved product characteristics.
+
+---
+
+**IIA problem**
+
+**Solutions to IIA**
+
+---
+
+**Unobserved product characteristics problem**
+
+This is similar to the traditional simultaneous equation problem in demand/supply function. Basically, price is correlated with the error term. Simple solution would be to apply IV using supply shifters. But this is not an easy problem for the demand system as equations are embedded in a complex non-linear functional forms. 
+
+**Solutions to unobserved product characteristics problem**
+
+This was solved by Berry (1994) and BLP (1995). By applying non-linear change of variables or contraction mapping, we can retrieve the equation that is linear in unobservables. Then we can apply the traditional IV estimation to overcome the endogeneity problem.
+
+---
+
+
+
+
