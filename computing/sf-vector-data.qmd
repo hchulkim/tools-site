@@ -1,0 +1,251 @@
+---
+title: "Geospatial with R"
+subtitle: "Handling vector data with `sf`"
+execute:
+  freeze: auto
+---
+
+This is my practice sections following [R as GIS for Economists](https://tmieno2.github.io/R-as-GIS-for-Economists-Quarto/).
+
+### Basics
+
+Load the packages:
+```{r}
+#| warning: false
+ 
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(
+  sf, # vector data operations
+  tidyverse, # data wrangling
+  data.table, # data wrangling
+  tmap, # make maps
+  mapview, # create an interactive map
+  patchwork, # arranging maps
+  rmapshaper
+)
+
+```
+
+```{r}
+#| warning: false
+ 
+#--- a dataset that comes with the sf package ---#
+nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"))
+
+ggplot() +
+  geom_sf(data = nc) +
+  theme_void()
+```
+
+```{r}
+
+head(nc)
+
+```
+
+`sfg`: `LINESTRING`
+
+```{r}
+#--- collection of points in a matrix form ---#
+s1 <- rbind(c(2, 3), c(3, 4), c(3, 5), c(1, 5))
+
+#--- see what s1 looks like ---#
+s1
+
+#--- create a "LINESTRING" ---#
+a_linestring <- sf::st_linestring(s1)
+
+#--- check the class ---#
+class(a_linestring)
+
+```
+
+`sfg`: `POLYGON`
+
+```{r}
+#--- a hole within p1 ---#
+p1 <- rbind(c(0, 0), c(3, 0), c(3, 2), c(2, 5), c(1, 3), c(0, 0))
+p2 <- rbind(c(1, 1), c(1, 2), c(2, 2), c(1, 1))
+
+#--- create a polygon with hole ---#
+a_plygon_with_a_hole <- sf::st_polygon(list(p1, p2))
+
+plot(a_plygon_with_a_hole)
+
+```
+
+Creating `sfc` object or `sf` object:
+
+```{r}
+
+#--- create an sfc ---#
+sfc_ex <- sf::st_sfc(list(a_linestring, a_plygon_with_a_hole))
+
+#--- create a data.frame ---#
+df_ex <- data.frame(name = c("A", "B"))
+
+#--- add the sfc as a column ---#
+df_ex$geometry <- sfc_ex
+
+#--- take a look ---#
+df_ex
+```
+
+```{r}
+
+#--- let R recognize the data frame as sf ---#
+sf_ex <- sf::st_as_sf(df_ex)
+
+#--- see what it looks like ---#
+sf_ex
+```
+
+Read shapefile:
+
+```{r}
+#--- read a NE county boundary shapefile ---#
+nc_loaded <- sf::st_read("Data/nc.shp")
+
+```
+
+Projection with different CRS:
+
+```{r}
+sf::st_crs(nc)
+
+```
+
+Change the CRS projection:
+
+```{r}
+#--- transform ---#
+nc_wgs84 <- sf::st_transform(nc, 4326)
+
+#--- check if the transformation was successful ---#
+sf::st_crs(nc_wgs84)
+
+#--- transform ---#
+nc_utm17N <- sf::st_transform(nc_wgs84, 26917)
+
+#--- check if the transformation was successful ---#
+sf::st_crs(nc_utm17N)
+
+```
+
+```{r}
+#--- transform ---#
+nc_utm17N_2 <- sf::st_transform(nc_wgs84, sf::st_crs(nc_utm17N))
+
+#--- check if the transformation was successful ---#
+sf::st_crs(nc_utm17N_2)
+
+```
+
+Turning dataframe into sf object
+
+```{r}
+#--- read irrigation well registration data ---#
+(
+  wells <- readRDS("Data/well_registration.rds")
+)
+
+```
+
+```{r}
+#--- recognize it as an sf ---#
+wells_sf <- sf::st_as_sf(wells, coords = c("longdd", "latdd")) %>% 
+  st_set_crs(4269)
+
+#--- take a look at the data ---#
+head(wells_sf[, 1:5])
+
+```
+
+Conversion to and from `sp` objects
+
+```{r}
+#--- conversion ---#
+wells_sp <- as(wells_sf, "Spatial")
+
+#--- check the class ---#
+class(wells_sp)
+
+#--- revert back to sf ---#
+wells_sf <- sf::st_as_sf(wells_sp)
+
+#--- check the class ---#
+class(wells_sf)
+```
+
+Reverting `sf` object back into dataframe
+
+```{r}
+#--- remove geometry ---#
+wells_no_longer_sf <- sf::st_drop_geometry(wells_sf)
+
+#--- take a look ---#
+head(wells_no_longer_sf)
+
+```
+
+```{r}
+#--- read wells location data ---#
+urnrd_wells_sf <-
+  readRDS("Data/urnrd_wells.rds") %>%
+  #--- project to UTM 14N WGS 84 ---#
+  sf::st_transform(32614)
+
+#--- create a one-mile buffer around the wells ---#
+wells_buffer <- sf::st_buffer(urnrd_wells_sf, dist = 1600)
+
+head(wells_buffer)
+
+ggplot() +
+  geom_sf(data = urnrd_wells_sf, size = 0.6, color = "red") +
+  geom_sf(data = wells_buffer, fill = NA) +
+  theme_void()
+
+```
+
+```{r}
+NE_counties <-
+  readRDS("Data/NE_county_borders.rds") %>%
+  dplyr::filter(NAME %in% c("Perkins", "Dundy", "Chase")) %>%
+  sf::st_transform(32614)
+
+#--- generate area by polygon ---#
+(
+  NE_counties <- dplyr::mutate(NE_counties, area = st_area(NE_counties))
+)
+
+```
+
+```{r}
+#--- create centroids ---#
+(
+  NE_centroids <- sf::st_centroid(NE_counties)
+)
+
+ggplot() +
+  geom_sf(data = NE_counties) +
+  geom_sf_text(data = NE_centroids, aes(label = NAME)) +
+  theme_void()
+
+```
+
+```{r}
+IL_counties <- sf::st_read("Data/IL_county_detailed.geojson")
+
+IL_counties_mssimplified <- rmapshaper::ms_simplify(IL_counties, keep = 0.01)
+
+Cook <- filter(IL_counties, NAME == "Cook County")
+
+Cook_simplify <- sf::st_simplify(Cook, dTolerance = 1000)
+
+ggplot() +
+  geom_sf(data = Cook_simplify) +
+  theme_void()
+
+```
+
+### Spatial Interactions of Vector Data: Subsetting and Joining

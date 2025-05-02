@@ -51,6 +51,8 @@ website:
           text: "Trade notes"
         - href: computing/julia-self-study.qmd
           text: "Julia self-study"
+        - href: computing/sf-vector-data.qmd
+          text: "sf package"
       - section: "Study"
         contents:
         - href: study/overview.qmd
