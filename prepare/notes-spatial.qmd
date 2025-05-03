@@ -1,0 +1,12 @@
+---
+title: "Notes"
+subtitle: "Spatial and urban"
+execute:
+  freeze: auto
+---
+
+## MTO project
+
+It is interesting that MTO shows that MTO is only beneficial to children who are young. At first, MTO project was understood as a failed experiment because it had no significant effect on the marginalized households that moved to better neighborhoods. However, Chetty, Hendren, and Katz (2016) showed that young children (under 13) that moved due to the MTO project had higher college attendance and earnings and lower single parenthood rates. The paper hints that it might have something to do with the disturbance effect. There are tradeoffs from moving: while moving to better neighborhoods give children better environment, it also leads to disruption effect where the children has to move away from their familiar environment. Considerng this tradeoff, it is likely that younger children are less affected by the disruption effect as their duration of living in poor neighborhoods is shorter.
+
+## Agglomeration externality
