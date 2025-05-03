@@ -68,6 +68,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <meta property="og:title" content="Notes – tools">
 <meta property="og:description" content="Emp IO">
@@ -184,6 +213,12 @@ ul.task-list li input[type="checkbox"] {
   <div class="sidebar-item-container"> 
   <a href="../computing/sf-vector-data.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">sf package</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../computing/terra-raster-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">terra package</span></a>
   </div>
 </li>
       </ul>
@@ -334,6 +369,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#ackerberg-et-al.-2006" id="toc-ackerberg-et-al.-2006" class="nav-link active" data-scroll-target="#ackerberg-et-al.-2006">Ackerberg et al.&nbsp;(2006)</a>
   <ul class="collapse">
   <li><a href="#demand-systems" id="toc-demand-systems" class="nav-link" data-scroll-target="#demand-systems">Demand systems</a></li>
+  <li><a href="#dynamic" id="toc-dynamic" class="nav-link" data-scroll-target="#dynamic">Dynamic</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/prepare/notes-io.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -394,6 +430,55 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Solutions to unobserved product characteristics problem</strong></p>
 <p>This was solved by Berry (1994) and BLP (1995). By applying non-linear change of variables or contraction mapping, we can retrieve the equation that is linear in unobservables. Then we can apply the traditional IV estimation to overcome the endogeneity problem.</p>
 <hr>
+<p><strong>Simple model</strong></p>
+<p><span class="math display">\[
+u_{ijt} = U(\tilde{x}_{jt}, \xi_{jt}, z_{it}, v_{it}, y_{it} - p_{jt}, \theta).
+\]</span></p>
+<p>Usually we will just drop the index <span class="math inline">\(t\)</span> which stands for market. We asume there are <span class="math inline">\(k\)</span> dimension of product characteristics. In practice, we do not explicitly model the expenditure in other markets. Instead, income is subsumed into either <span class="math inline">\(v_i\)</span> or <span class="math inline">\(z_i\)</span> and utility is modelled as depending explicitly on price.</p>
+<p><span class="math display">\[
+u_{ij} = U(\tilde{x}_j, \xi_j, z_i, v_i, p_j, \theta).
+\]</span></p>
+<p>We then parameterize the model in linear fashion and let</p>
+<p><span class="math display">\[
+U_{ij} = \sum_k x_{jk}\theta_{ik} + \xi_j + \varepsilon_{ij},
+\]</span></p>
+<p>where <span class="math inline">\(\theta_{ik} = \overline{\theta_k} + \theta_k^{o}` z_i + \theta_k^{u}` v_i\)</span>. We normalize outside utility as <span class="math inline">\(U_{i,0} = 0\)</span>.</p>
+<p>We can then fully write the model as</p>
+<p><span class="math display">\[
+U_{ij} = \overbrace{\delta_j}^{\sum_k x_{jk} \overline{\theta_k} + \xi_j} + \sum_{kr} x_{jk} z_{ir} \theta_{rk}^o + \sum_{kl} x_{jk} v_{il} \theta_{kl}^u + \varepsilon_{ij}.
+\]</span></p>
+<p><strong>Steps in estimation</strong></p>
+<p><em>Step I</em></p>
+<p>Approximation to the aggregate shares conditional on a partiuclar value of <span class="math inline">\((\delta, \theta)\)</span>. McFadden (1974) showed that in logit assumption, we can find the choice probabilities implied by the model analytically condition on the <span class="math inline">\(v_i\)</span>.</p>
+<p><span class="math display">\[
+\sigma_j(\theta, \delta) = \int \overbrace{\frac{\exp [ \delta_j + \sum_{kl} x_{jk} v_{il} \theta_{kl}^u ]}{1 + \sum_q \exp[ \delta_q + \sum_{kl} x_{qk} v_{il} \theta_{kl}^u ]}}^{\text{by McFadden}} f(v) d(v).
+\]</span></p>
+<p>This integral is intractable. We then use simulation to obtain an approximation of it following Pakes (1986).</p>
+<p><span class="math display">\[
+\sigma_j(\theta, \delta, P^{ns}) = \sum_{r=1}^{ns} \ldots
+\]</span></p>
+<p><em>Step II</em></p>
+<p>Then <em>contraction mapping</em> by BLP (1995):</p>
+<p><span class="math display">\[
+\delta_j^k(\theta) = \delta_j^{k-1} (\theta) + \log[s_j^n] - \log[\sigma_j(\theta, \delta^{k-1}, P^{ns})].
+\]</span></p>
+<p>Then we can get the unobservables in linear form:</p>
+<p><span class="math display">\[
+\xi_j(\theta, s^n, P^{ns}) = \delta(\cdot) - \sum_k x_{jk} \overline{\theta_k}.
+\]</span></p>
+<p><em>Step III</em></p>
+<p>Good ol’ GMM.</p>
+<p><span class="math display">\[
+G_{J, n, ns} (\theta) = \sum_j \xi_j(\theta, s^n, P^{ns}) f_j(w).
+\]</span></p>
+<p><strong>Additional sources of info on demand parameters</strong></p>
+<ol type="1">
+<li><p>Adding equilibrium assumption (e.g.&nbsp;supply equation, pricing equation) could make the estimation more precise.</p></li>
+<li><p>Adding Micro data:</p></li>
+</ol>
+</section>
+<section id="dynamic" class="level3">
+<h3 class="anchored" data-anchor-id="dynamic">Dynamic</h3>
 
 
 </section>

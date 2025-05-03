@@ -59,6 +59,76 @@ This was solved by Berry (1994) and BLP (1995). By applying non-linear change of
 
 ---
 
+**Simple model**
 
+$$
+u_{ijt} = U(\tilde{x}_{jt}, \xi_{jt}, z_{it}, v_{it}, y_{it} - p_{jt}, \theta).
+$$
+
+Usually we will just drop the index $t$ which stands for market. We asume there are $k$ dimension of product characteristics. In practice, we do not explicitly model the expenditure in other markets. Instead, income is subsumed into either $v_i$ or $z_i$ and utility is modelled as depending explicitly on price.
+
+$$
+u_{ij} = U(\tilde{x}_j, \xi_j, z_i, v_i, p_j, \theta).
+$$
+
+We then parameterize the model in linear fashion and let
+
+$$
+U_{ij} = \sum_k x_{jk}\theta_{ik} + \xi_j + \varepsilon_{ij},
+$$
+
+where $\theta_{ik} = \overline{\theta_k} + \theta_k^{o}` z_i + \theta_k^{u}` v_i$. We normalize outside utility as $U_{i,0} = 0$.
+
+We can then fully write the model as
+
+$$
+U_{ij} = \overbrace{\delta_j}^{\sum_k x_{jk} \overline{\theta_k} + \xi_j} + \sum_{kr} x_{jk} z_{ir} \theta_{rk}^o + \sum_{kl} x_{jk} v_{il} \theta_{kl}^u + \varepsilon_{ij}.
+$$
+
+**Steps in estimation**
+
+*Step I*
+
+Approximation to the aggregate shares conditional on a partiuclar value of $(\delta, \theta)$. McFadden (1974) showed that in logit assumption, we can find the choice probabilities implied by the model analytically condition on the $v_i$. 
+
+$$
+\sigma_j(\theta, \delta) = \int \overbrace{\frac{\exp [ \delta_j + \sum_{kl} x_{jk} v_{il} \theta_{kl}^u ]}{1 + \sum_q \exp[ \delta_q + \sum_{kl} x_{qk} v_{il} \theta_{kl}^u ]}}^{\text{by McFadden}} f(v) d(v).
+$$
+
+This integral is intractable. We then use simulation to obtain an approximation of it following Pakes (1986). 
+
+$$
+\sigma_j(\theta, \delta, P^{ns}) = \sum_{r=1}^{ns} \ldots
+$$
+
+*Step II*
+
+Then *contraction mapping* by BLP (1995):
+
+$$
+\delta_j^k(\theta) = \delta_j^{k-1} (\theta) + \log[s_j^n] - \log[\sigma_j(\theta, \delta^{k-1}, P^{ns})].
+$$
+
+Then we can get the unobservables in linear form:
+
+$$
+\xi_j(\theta, s^n, P^{ns}) = \delta(\cdot) - \sum_k x_{jk} \overline{\theta_k}.
+$$
+
+*Step III*
+
+Good ol' GMM.
+
+$$
+G_{J, n, ns} (\theta) = \sum_j \xi_j(\theta, s^n, P^{ns}) f_j(w).
+$$
+
+**Additional sources of info on demand parameters**
+
+1. Adding equilibrium assumption (e.g. supply equation, pricing equation) could make the estimation more precise.
+
+2. Adding Micro data:
+
+### Dynamic
 
 
