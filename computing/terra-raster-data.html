@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Notes – tools</title>
+<title>Geospatial with R – tools</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -29,6 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../study/overview.html" rel="next">
+<link href="../computing/sf-vector-data.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -72,12 +109,15 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 
 
-<meta property="og:title" content="Notes – tools">
-<meta property="og:description" content="Emp IO">
+<meta property="og:title" content="Geospatial with R – tools">
+<meta property="og:description" content="Handling raster data with terra">
+<meta property="og:image" content="https://tools.github.io/computing/terra-raster-data_files/figure-html/unnamed-chunk-15-1.png">
 <meta property="og:site_name" content="tools">
-<meta name="twitter:title" content="Notes – tools">
-<meta name="twitter:description" content="Emp IO">
-<meta name="twitter:image" content="https://tools.github.io/prepare/images/pic.png">
+<meta property="og:image:height" content="960">
+<meta property="og:image:width" content="1344">
+<meta name="twitter:title" content="Geospatial with R – tools">
+<meta name="twitter:description" content="Handling raster data with terra">
+<meta name="twitter:image" content="https://tools.github.io/computing/images/pic.png">
 <meta name="twitter:creator" content="@hckim_econ">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -252,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Notes</li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../computing/computing.html">Notes</a></li><li class="breadcrumb-item"><a href="../computing/terra-raster-data.html">terra package</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -283,13 +323,13 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Notes</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../computing/computing.html" class="sidebar-item-text sidebar-link">
@@ -352,7 +392,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../computing/terra-raster-data.html" class="sidebar-item-text sidebar-link">
+  <a href="../computing/terra-raster-data.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">terra package</span></a>
   </div>
 </li>
@@ -501,21 +541,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#ackerberg-et-al.-2006" id="toc-ackerberg-et-al.-2006" class="nav-link active" data-scroll-target="#ackerberg-et-al.-2006">Ackerberg et al.&nbsp;(2006)</a>
-  <ul class="collapse">
-  <li><a href="#demand-systems" id="toc-demand-systems" class="nav-link" data-scroll-target="#demand-systems">Demand systems</a></li>
-  </ul></li>
+  <li><a href="#basics" id="toc-basics" class="nav-link active" data-scroll-target="#basics">Basics</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/prepare/notes-io.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/computing/terra-raster-data.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../computing/computing.html">Notes</a></li><li class="breadcrumb-item"><a href="../computing/terra-raster-data.html">terra package</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Notes</h1>
-<p class="subtitle lead">Emp IO</p>
+<h1 class="title">Geospatial with R</h1>
+<p class="subtitle lead">Handling raster data with <code>terra</code></p>
 </div>
 
 
@@ -532,42 +569,262 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="ackerberg-et-al.-2006" class="level2">
-<h2 class="anchored" data-anchor-id="ackerberg-et-al.-2006">Ackerberg et al.&nbsp;(2006)</h2>
-<section id="demand-systems" class="level3">
-<h3 class="anchored" data-anchor-id="demand-systems">Demand systems</h3>
-<p>Before the <strong>modern empirical IO</strong>, demand system was usually based on “representative agent models” in a “product space.” This lead to various problems:</p>
-<p><strong>Problms of representative agent models</strong></p>
-<p>Since lot of the demand systemts were estimated from aggregate market level data, it was hard to generalize the analysis of particular market into different settings. This is because of heterogenous agents in different markets. In order to alleviate this, researchers tried methods such as imposing some a priori distribution of consumer characteristics and aggregate it to the market level. The problem of this approach was that this <em>distribution</em> was very ad-hoc and unrealistic.</p>
-<p><strong>Solutions of representative agent problem</strong></p>
-<p>One solution to this problem was the use of <strong>simulation methods</strong>. Instead of assuming certain distribution, researchers would draw a vector of consumer characteristics from some observed population data (e.g.&nbsp;CPS) in that market. Then they would determine the choices made by individuals for some given parameters and aggregate the choices to get the predicted demand. After that, they would apply some algorithm to find the parameter values that get these predicted demand match the observed demand.</p>
-<hr>
-<p><strong>Problems of product space</strong></p>
-<ol type="1">
-<li><p>“Too many parameters problems”: If we model the demand system in terms of the product space, we would need to estimate large number of parameters. This could easily become impossible with the data we have.</p></li>
-<li><p>“New goods problem”: Since we are in product space, we can only think about goods that were already there. We cannot analyze the demand for new goods.</p></li>
-</ol>
-<p><strong>Solutions of product space problem</strong></p>
-<p>One solution was to transition from <strong>product space</strong> to <strong>characteristic space</strong>. Now a product is a bundle of characteristics and individuals’ preferences are defined on those characteristics.</p>
-<hr>
-<p><strong>Background on characteristics space</strong></p>
-<p>In fact, papers such as Mcfadden (1974, 1981) and others already provided a well-defined econometrics models that is consistent with this setup. But it was not widely used in IO due to two reasons:</p>
-<ol type="1">
-<li><p>Logit model’s tendency to give arise to <strong>IIA</strong> problem.</p></li>
-<li><p>Early models did not account for unobserved product characteristics.</p></li>
-</ol>
-<hr>
-<p><strong>IIA problem</strong></p>
-<p><strong>Solutions to IIA</strong></p>
-<hr>
-<p><strong>Unobserved product characteristics problem</strong></p>
-<p>This is similar to the traditional simultaneous equation problem in demand/supply function. Basically, price is correlated with the error term. Simple solution would be to apply IV using supply shifters. But this is not an easy problem for the demand system as equations are embedded in a complex non-linear functional forms.</p>
-<p><strong>Solutions to unobserved product characteristics problem</strong></p>
-<p>This was solved by Berry (1994) and BLP (1995). By applying non-linear change of variables or contraction mapping, we can retrieve the equation that is linear in unobservables. Then we can apply the traditional IV estimation to overcome the endogeneity problem.</p>
-<hr>
+<p>This is my practice sections following <a href="https://tmieno2.github.io/R-as-GIS-for-Economists-Quarto/">R as GIS for Economists</a>.</p>
+<section id="basics" class="level3">
+<h3 class="anchored" data-anchor-id="basics">Basics</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"pacman"</span>)) <span class="fu">install.packages</span>(<span class="st">"pacman"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: pacman</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(terra, raster, mapview, dplyr, sf, lubridate, downloader)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  IA_cdl_2015 <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">raster</span>(<span class="st">"Data/IA_cdl_2015.tif"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class      : RasterLayer 
+dimensions : 11671, 17795, 207685445  (nrow, ncol, ncell)
+resolution : 30, 30  (x, y)
+extent     : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)
+crs        : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+source     : IA_cdl_2015.tif 
+names      : Layer_1 
+values     : 0, 229  (min, max)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>IA_cdl_2016 <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">raster</span>(<span class="st">"Data/IA_CDL_2016.tif"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#--- stack the two ---#</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  IA_cdl_stack <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">stack</span>(IA_cdl_2015, IA_cdl_2016)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class      : RasterStack 
+dimensions : 11671, 17795, 207685445, 2  (nrow, ncol, ncell, nlayers)
+resolution : 30, 30  (x, y)
+extent     : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)
+crs        : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+names      : Layer_1, IA_CDL_2016 
+min values :       0,           0 
+max values :     229,         241 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># I am not evaluating this cell because it takes quite some time to execute.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#--- stack the two ---#</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>IA_cdl_brick <span class="ot">&lt;-</span> <span class="fu">brick</span>(IA_cdl_stack)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">#--- or this works as well ---#</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># IA_cdl_brick &lt;- brick(IA_cdl_2015, IA_cdl_2016)</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">#--- take a look ---#</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>IA_cdl_brick</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- convert to a SpatRaster ---#</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>IA_cdl_2015_sr <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(IA_cdl_2015)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#--- convert to a SpatRaster ---#</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>IA_cdl_stack_sr <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(IA_cdl_stack)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: [rast] CRS do not match</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- take a look ---#</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>IA_cdl_2015_sr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatRaster 
+dimensions  : 11671, 17795, 1  (nrow, ncol, nlyr)
+resolution  : 30, 30  (x, y)
+extent      : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)
+coord. ref. : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+source      : IA_cdl_2015.tif 
+name        : Layer_1 
+min value   :       0 
+max value   :     229 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a single-layer from multiple single-layer</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>IA_cdl_2016_sr <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(IA_cdl_2016)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># concatenate</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    IA_cdl_ml_sr <span class="ot">&lt;-</span> <span class="fu">c</span>(IA_cdl_2015_sr, IA_cdl_2016_sr)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: [rast] CRS do not match</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatRaster 
+dimensions  : 11671, 17795, 2  (nrow, ncol, nlyr)
+resolution  : 30, 30  (x, y)
+extent      : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)
+coord. ref. : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+sources     : IA_cdl_2015.tif  
+              IA_CDL_2016.tif  
+color table : 2 
+names       : Layer_1, IA_CDL_2016 
+min values  :       0,           0 
+max values  :     229,         241 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>IA_cdl_stack_sr <span class="sc">%&gt;%</span> raster<span class="sc">::</span><span class="fu">raster</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class      : RasterLayer 
+dimensions : 11671, 17795, 207685445  (nrow, ncol, ncell)
+resolution : 30, 30  (x, y)
+extent     : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)
+crs        : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+source     : IA_cdl_2015.tif 
+names      : Layer_1 
+values     : 0, 229  (min, max)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#  %&gt;% raster::stack()</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  %&gt;% raster::brick() </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- Illinois county boundary ---#</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  IL_county <span class="ot">&lt;-</span> </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    tigris<span class="sc">::</span><span class="fu">counties</span>(</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">state =</span> <span class="st">"Illinois"</span>, </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">progress_bar =</span> <span class="cn">FALSE</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(STATEFP, COUNTYFP)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Retrieving data for the year 2022</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 102 features and 2 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -91.51308 ymin: 36.9703 xmax: -87.01994 ymax: 42.50848
+Geodetic CRS:  NAD83
+First 10 features:
+    STATEFP COUNTYFP                       geometry
+86       17      067 MULTIPOLYGON (((-90.90609 4...
+92       17      025 MULTIPOLYGON (((-88.69516 3...
+131      17      185 MULTIPOLYGON (((-87.89243 3...
+148      17      113 MULTIPOLYGON (((-88.91954 4...
+158      17      005 MULTIPOLYGON (((-89.37207 3...
+159      17      009 MULTIPOLYGON (((-90.53674 3...
+213      17      083 MULTIPOLYGON (((-90.1459 39...
+254      17      147 MULTIPOLYGON (((-88.46335 4...
+266      17      151 MULTIPOLYGON (((-88.48289 3...
+303      17      011 MULTIPOLYGON (((-89.16654 4...</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    IL_county_sv <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">vect</span>(IL_county)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> class       : SpatVector 
+ geometry    : polygons 
+ dimensions  : 102, 2  (geometries, attributes)
+ extent      : -91.51308, -87.01994, 36.9703, 42.50848  (xmin, xmax, ymin, ymax)
+ coord. ref. : lon/lat NAD83 (EPSG:4269) 
+ names       : STATEFP COUNTYFP
+ type        :   &lt;chr&gt;    &lt;chr&gt;
+ values      :      17      067
+                    17      025
+                    17      185</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    IA_cdl_2015_sr <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(<span class="st">"Data/IA_cdl_2015.tif"</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatRaster 
+dimensions  : 11671, 17795, 1  (nrow, ncol, nlyr)
+resolution  : 30, 30  (x, y)
+extent      : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)
+coord. ref. : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+source      : IA_cdl_2015.tif 
+name        : Layer_1 
+min value   :       0 
+max value   :     229 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- the list of path to the files ---#</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>files_list <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Data/IA_cdl_2015.tif"</span>, <span class="st">"Data/IA_CDL_2016.tif"</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co">#--- read the two at the same time ---#</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  multi_layer_sr <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(files_list)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: [rast] CRS do not match</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatRaster 
+dimensions  : 11671, 17795, 2  (nrow, ncol, nlyr)
+resolution  : 30, 30  (x, y)
+extent      : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)
+coord. ref. : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+sources     : IA_cdl_2015.tif  
+              IA_CDL_2016.tif  
+color table : 2 
+names       : Layer_1, IA_CDL_2016 
+min values  :       0,           0 
+max values  :     229,         241 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">crs</span>(IA_cdl_2015_sr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "BOUNDCRS[\n    SOURCECRS[\n        PROJCRS[\"unnamed\",\n            BASEGEOGCRS[\"GRS 1980(IUGG, 1980)\",\n                DATUM[\"unknown\",\n                    ELLIPSOID[\"GRS80\",6378137,298.257222101,\n                        LENGTHUNIT[\"metre\",1,\n                            ID[\"EPSG\",9001]]]],\n                PRIMEM[\"Greenwich\",0,\n                    ANGLEUNIT[\"degree\",0.0174532925199433,\n                        ID[\"EPSG\",9122]]]],\n            CONVERSION[\"Albers Equal Area\",\n                METHOD[\"Albers Equal Area\",\n                    ID[\"EPSG\",9822]],\n                PARAMETER[\"Latitude of false origin\",23,\n                    ANGLEUNIT[\"degree\",0.0174532925199433],\n                    ID[\"EPSG\",8821]],\n                PARAMETER[\"Longitude of false origin\",-96,\n                    ANGLEUNIT[\"degree\",0.0174532925199433],\n                    ID[\"EPSG\",8822]],\n                PARAMETER[\"Latitude of 1st standard parallel\",29.5,\n                    ANGLEUNIT[\"degree\",0.0174532925199433],\n                    ID[\"EPSG\",8823]],\n                PARAMETER[\"Latitude of 2nd standard parallel\",45.5,\n                    ANGLEUNIT[\"degree\",0.0174532925199433],\n                    ID[\"EPSG\",8824]],\n                PARAMETER[\"Easting at false origin\",0,\n                    LENGTHUNIT[\"metre\",1],\n                    ID[\"EPSG\",8826]],\n                PARAMETER[\"Northing at false origin\",0,\n                    LENGTHUNIT[\"metre\",1],\n                    ID[\"EPSG\",8827]]],\n            CS[Cartesian,2],\n                AXIS[\"easting\",east,\n                    ORDER[1],\n                    LENGTHUNIT[\"metre\",1,\n                        ID[\"EPSG\",9001]]],\n                AXIS[\"northing\",north,\n                    ORDER[2],\n                    LENGTHUNIT[\"metre\",1,\n                        ID[\"EPSG\",9001]]]]],\n    TARGETCRS[\n        GEOGCRS[\"WGS 84\",\n            DATUM[\"World Geodetic System 1984\",\n                ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n                    LENGTHUNIT[\"metre\",1]]],\n            PRIMEM[\"Greenwich\",0,\n                ANGLEUNIT[\"degree\",0.0174532925199433]],\n            CS[ellipsoidal,2],\n                AXIS[\"geodetic latitude (Lat)\",north,\n                    ORDER[1],\n                    ANGLEUNIT[\"degree\",0.0174532925199433]],\n                AXIS[\"geodetic longitude (Lon)\",east,\n                    ORDER[2],\n                    ANGLEUNIT[\"degree\",0.0174532925199433]],\n            USAGE[\n                SCOPE[\"Horizontal component of 3D system.\"],\n                AREA[\"World.\"],\n                BBOX[-90,-180,90,180]],\n            ID[\"EPSG\",4326]]],\n    ABRIDGEDTRANSFORMATION[\"Transformation to WGS84\",\n        METHOD[\"Position Vector transformation (geog2D domain)\",\n            ID[\"EPSG\",9606]],\n        PARAMETER[\"X-axis translation\",0,\n            ID[\"EPSG\",8605]],\n        PARAMETER[\"Y-axis translation\",0,\n            ID[\"EPSG\",8606]],\n        PARAMETER[\"Z-axis translation\",0,\n            ID[\"EPSG\",8607]],\n        PARAMETER[\"X-axis rotation\",0,\n            ID[\"EPSG\",8608]],\n        PARAMETER[\"Y-axis rotation\",0,\n            ID[\"EPSG\",8609]],\n        PARAMETER[\"Z-axis rotation\",0,\n            ID[\"EPSG\",8610]],\n        PARAMETER[\"Scale difference\",1,\n            ID[\"EPSG\",8611]]]]"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># index</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>IA_cdl_stack_sr[[<span class="dv">2</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatRaster 
+dimensions  : 11671, 17795, 1  (nrow, ncol, nlyr)
+resolution  : 30, 30  (x, y)
+extent      : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)
+coord. ref. : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs 
+source      : IA_CDL_2016.tif 
+color table : 1 
+name        : IA_CDL_2016 
+min value   :           0 
+max value   :         241 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>values_from_rs <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">values</span>(IA_cdl_stack_sr)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(values_from_rs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Layer_1 IA_CDL_2016
+[1,]       0           0
+[2,]       0           0
+[3,]       0           0
+[4,]       0           0
+[5,]       0           0
+[6,]       0           0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(IA_cdl_2015_sr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="terra-raster-data_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -983,6 +1240,18 @@ ul.task-list li input[type="checkbox"] {
     }
   });
   </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../computing/sf-vector-data.html" class="pagination-link" aria-label="sf package">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">sf package</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../study/overview.html" class="pagination-link" aria-label="Overview">
+        <span class="nav-page-text">Overview</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
@@ -991,7 +1260,7 @@ ul.task-list li input[type="checkbox"] {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/prepare/notes-io.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/computing/terra-raster-data.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
 <p>This page is built using <a href="https://quarto.org/">Quarto</a>.</p>
 </div>

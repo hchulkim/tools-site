@@ -91,6 +91,435 @@
     ]
   },
   {
+    "objectID": "computing/terra-raster-data.html",
+    "href": "computing/terra-raster-data.html",
+    "title": "Geospatial with R",
+    "section": "",
+    "text": "This is my practice sections following R as GIS for Economists.\n\nBasics\n\nif (!require(\"pacman\")) install.packages(\"pacman\")\n\nLoading required package: pacman\n\npacman::p_load(terra, raster, mapview, dplyr, sf, lubridate, downloader)\n\n\n(\n  IA_cdl_2015 &lt;- raster::raster(\"Data/IA_cdl_2015.tif\")\n)\n\nclass      : RasterLayer \ndimensions : 11671, 17795, 207685445  (nrow, ncol, ncell)\nresolution : 30, 30  (x, y)\nextent     : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)\ncrs        : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs \nsource     : IA_cdl_2015.tif \nnames      : Layer_1 \nvalues     : 0, 229  (min, max)\n\n\n\nIA_cdl_2016 &lt;- raster::raster(\"Data/IA_CDL_2016.tif\")\n\n#--- stack the two ---#\n(\n  IA_cdl_stack &lt;- raster::stack(IA_cdl_2015, IA_cdl_2016)\n)\n\nclass      : RasterStack \ndimensions : 11671, 17795, 207685445, 2  (nrow, ncol, ncell, nlayers)\nresolution : 30, 30  (x, y)\nextent     : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)\ncrs        : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs \nnames      : Layer_1, IA_CDL_2016 \nmin values :       0,           0 \nmax values :     229,         241 \n\n\n\n# I am not evaluating this cell because it takes quite some time to execute.\n#--- stack the two ---#\nIA_cdl_brick &lt;- brick(IA_cdl_stack)\n\n#--- or this works as well ---#\n# IA_cdl_brick &lt;- brick(IA_cdl_2015, IA_cdl_2016)\n\n#--- take a look ---#\nIA_cdl_brick\n\n\n#--- convert to a SpatRaster ---#\nIA_cdl_2015_sr &lt;- terra::rast(IA_cdl_2015)\n\n#--- convert to a SpatRaster ---#\nIA_cdl_stack_sr &lt;- terra::rast(IA_cdl_stack)\n\nWarning: [rast] CRS do not match\n\n#--- take a look ---#\nIA_cdl_2015_sr\n\nclass       : SpatRaster \ndimensions  : 11671, 17795, 1  (nrow, ncol, nlyr)\nresolution  : 30, 30  (x, y)\nextent      : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)\ncoord. ref. : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs \nsource      : IA_cdl_2015.tif \nname        : Layer_1 \nmin value   :       0 \nmax value   :     229 \n\n\n\n# create a single-layer from multiple single-layer\nIA_cdl_2016_sr &lt;- terra::rast(IA_cdl_2016)\n\n# concatenate\n(\n    IA_cdl_ml_sr &lt;- c(IA_cdl_2015_sr, IA_cdl_2016_sr)\n)\n\nWarning: [rast] CRS do not match\n\n\nclass       : SpatRaster \ndimensions  : 11671, 17795, 2  (nrow, ncol, nlyr)\nresolution  : 30, 30  (x, y)\nextent      : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)\ncoord. ref. : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs \nsources     : IA_cdl_2015.tif  \n              IA_CDL_2016.tif  \ncolor table : 2 \nnames       : Layer_1, IA_CDL_2016 \nmin values  :       0,           0 \nmax values  :     229,         241 \n\n\n\nIA_cdl_stack_sr %&gt;% raster::raster()\n\nclass      : RasterLayer \ndimensions : 11671, 17795, 207685445  (nrow, ncol, ncell)\nresolution : 30, 30  (x, y)\nextent     : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)\ncrs        : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs \nsource     : IA_cdl_2015.tif \nnames      : Layer_1 \nvalues     : 0, 229  (min, max)\n\n#  %&gt;% raster::stack()\n#  %&gt;% raster::brick() \n\n\n#--- Illinois county boundary ---#\n(\n  IL_county &lt;- \n    tigris::counties(\n      state = \"Illinois\", \n      progress_bar = FALSE\n    ) %&gt;%\n    dplyr::select(STATEFP, COUNTYFP)\n)\n\nRetrieving data for the year 2022\n\n\nSimple feature collection with 102 features and 2 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -91.51308 ymin: 36.9703 xmax: -87.01994 ymax: 42.50848\nGeodetic CRS:  NAD83\nFirst 10 features:\n    STATEFP COUNTYFP                       geometry\n86       17      067 MULTIPOLYGON (((-90.90609 4...\n92       17      025 MULTIPOLYGON (((-88.69516 3...\n131      17      185 MULTIPOLYGON (((-87.89243 3...\n148      17      113 MULTIPOLYGON (((-88.91954 4...\n158      17      005 MULTIPOLYGON (((-89.37207 3...\n159      17      009 MULTIPOLYGON (((-90.53674 3...\n213      17      083 MULTIPOLYGON (((-90.1459 39...\n254      17      147 MULTIPOLYGON (((-88.46335 4...\n266      17      151 MULTIPOLYGON (((-88.48289 3...\n303      17      011 MULTIPOLYGON (((-89.16654 4...\n\n\n\n(\n    IL_county_sv &lt;- terra::vect(IL_county)\n)\n\n class       : SpatVector \n geometry    : polygons \n dimensions  : 102, 2  (geometries, attributes)\n extent      : -91.51308, -87.01994, 36.9703, 42.50848  (xmin, xmax, ymin, ymax)\n coord. ref. : lon/lat NAD83 (EPSG:4269) \n names       : STATEFP COUNTYFP\n type        :   &lt;chr&gt;    &lt;chr&gt;\n values      :      17      067\n                    17      025\n                    17      185\n\n\n\n(\n    IA_cdl_2015_sr &lt;- terra::rast(\"Data/IA_cdl_2015.tif\")\n)\n\nclass       : SpatRaster \ndimensions  : 11671, 17795, 1  (nrow, ncol, nlyr)\nresolution  : 30, 30  (x, y)\nextent      : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)\ncoord. ref. : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs \nsource      : IA_cdl_2015.tif \nname        : Layer_1 \nmin value   :       0 \nmax value   :     229 \n\n\n\n#--- the list of path to the files ---#\nfiles_list &lt;- c(\"Data/IA_cdl_2015.tif\", \"Data/IA_CDL_2016.tif\")\n\n#--- read the two at the same time ---#\n(\n  multi_layer_sr &lt;- terra::rast(files_list)\n)\n\nWarning: [rast] CRS do not match\n\n\nclass       : SpatRaster \ndimensions  : 11671, 17795, 2  (nrow, ncol, nlyr)\nresolution  : 30, 30  (x, y)\nextent      : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)\ncoord. ref. : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs \nsources     : IA_cdl_2015.tif  \n              IA_CDL_2016.tif  \ncolor table : 2 \nnames       : Layer_1, IA_CDL_2016 \nmin values  :       0,           0 \nmax values  :     229,         241 \n\n\n\nterra::crs(IA_cdl_2015_sr)\n\n[1] \"BOUNDCRS[\\n    SOURCECRS[\\n        PROJCRS[\\\"unnamed\\\",\\n            BASEGEOGCRS[\\\"GRS 1980(IUGG, 1980)\\\",\\n                DATUM[\\\"unknown\\\",\\n                    ELLIPSOID[\\\"GRS80\\\",6378137,298.257222101,\\n                        LENGTHUNIT[\\\"metre\\\",1,\\n                            ID[\\\"EPSG\\\",9001]]]],\\n                PRIMEM[\\\"Greenwich\\\",0,\\n                    ANGLEUNIT[\\\"degree\\\",0.0174532925199433,\\n                        ID[\\\"EPSG\\\",9122]]]],\\n            CONVERSION[\\\"Albers Equal Area\\\",\\n                METHOD[\\\"Albers Equal Area\\\",\\n                    ID[\\\"EPSG\\\",9822]],\\n                PARAMETER[\\\"Latitude of false origin\\\",23,\\n                    ANGLEUNIT[\\\"degree\\\",0.0174532925199433],\\n                    ID[\\\"EPSG\\\",8821]],\\n                PARAMETER[\\\"Longitude of false origin\\\",-96,\\n                    ANGLEUNIT[\\\"degree\\\",0.0174532925199433],\\n                    ID[\\\"EPSG\\\",8822]],\\n                PARAMETER[\\\"Latitude of 1st standard parallel\\\",29.5,\\n                    ANGLEUNIT[\\\"degree\\\",0.0174532925199433],\\n                    ID[\\\"EPSG\\\",8823]],\\n                PARAMETER[\\\"Latitude of 2nd standard parallel\\\",45.5,\\n                    ANGLEUNIT[\\\"degree\\\",0.0174532925199433],\\n                    ID[\\\"EPSG\\\",8824]],\\n                PARAMETER[\\\"Easting at false origin\\\",0,\\n                    LENGTHUNIT[\\\"metre\\\",1],\\n                    ID[\\\"EPSG\\\",8826]],\\n                PARAMETER[\\\"Northing at false origin\\\",0,\\n                    LENGTHUNIT[\\\"metre\\\",1],\\n                    ID[\\\"EPSG\\\",8827]]],\\n            CS[Cartesian,2],\\n                AXIS[\\\"easting\\\",east,\\n                    ORDER[1],\\n                    LENGTHUNIT[\\\"metre\\\",1,\\n                        ID[\\\"EPSG\\\",9001]]],\\n                AXIS[\\\"northing\\\",north,\\n                    ORDER[2],\\n                    LENGTHUNIT[\\\"metre\\\",1,\\n                        ID[\\\"EPSG\\\",9001]]]]],\\n    TARGETCRS[\\n        GEOGCRS[\\\"WGS 84\\\",\\n            DATUM[\\\"World Geodetic System 1984\\\",\\n                ELLIPSOID[\\\"WGS 84\\\",6378137,298.257223563,\\n                    LENGTHUNIT[\\\"metre\\\",1]]],\\n            PRIMEM[\\\"Greenwich\\\",0,\\n                ANGLEUNIT[\\\"degree\\\",0.0174532925199433]],\\n            CS[ellipsoidal,2],\\n                AXIS[\\\"geodetic latitude (Lat)\\\",north,\\n                    ORDER[1],\\n                    ANGLEUNIT[\\\"degree\\\",0.0174532925199433]],\\n                AXIS[\\\"geodetic longitude (Lon)\\\",east,\\n                    ORDER[2],\\n                    ANGLEUNIT[\\\"degree\\\",0.0174532925199433]],\\n            USAGE[\\n                SCOPE[\\\"Horizontal component of 3D system.\\\"],\\n                AREA[\\\"World.\\\"],\\n                BBOX[-90,-180,90,180]],\\n            ID[\\\"EPSG\\\",4326]]],\\n    ABRIDGEDTRANSFORMATION[\\\"Transformation to WGS84\\\",\\n        METHOD[\\\"Position Vector transformation (geog2D domain)\\\",\\n            ID[\\\"EPSG\\\",9606]],\\n        PARAMETER[\\\"X-axis translation\\\",0,\\n            ID[\\\"EPSG\\\",8605]],\\n        PARAMETER[\\\"Y-axis translation\\\",0,\\n            ID[\\\"EPSG\\\",8606]],\\n        PARAMETER[\\\"Z-axis translation\\\",0,\\n            ID[\\\"EPSG\\\",8607]],\\n        PARAMETER[\\\"X-axis rotation\\\",0,\\n            ID[\\\"EPSG\\\",8608]],\\n        PARAMETER[\\\"Y-axis rotation\\\",0,\\n            ID[\\\"EPSG\\\",8609]],\\n        PARAMETER[\\\"Z-axis rotation\\\",0,\\n            ID[\\\"EPSG\\\",8610]],\\n        PARAMETER[\\\"Scale difference\\\",1,\\n            ID[\\\"EPSG\\\",8611]]]]\"\n\n\n\n# index\nIA_cdl_stack_sr[[2]]\n\nclass       : SpatRaster \ndimensions  : 11671, 17795, 1  (nrow, ncol, nlyr)\nresolution  : 30, 30  (x, y)\nextent      : -52095, 481755, 1938165, 2288295  (xmin, xmax, ymin, ymax)\ncoord. ref. : +proj=aea +lat_0=23 +lon_0=-96 +lat_1=29.5 +lat_2=45.5 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs \nsource      : IA_CDL_2016.tif \ncolor table : 1 \nname        : IA_CDL_2016 \nmin value   :           0 \nmax value   :         241 \n\n\n\nvalues_from_rs &lt;- terra::values(IA_cdl_stack_sr)\n\nhead(values_from_rs)\n\n     Layer_1 IA_CDL_2016\n[1,]       0           0\n[2,]       0           0\n[3,]       0           0\n[4,]       0           0\n[5,]       0           0\n[6,]       0           0\n\n\n\nplot(IA_cdl_2015_sr)",
+    "crumbs": [
+      "Notes",
+      "terra package"
+    ]
+  },
+  {
+    "objectID": "computing/docker.html",
+    "href": "computing/docker.html",
+    "title": "Dockerfile",
+    "section": "",
+    "text": "This is a Dockerfile template for my computing environment. If you want to know more about what this does, check out my blog post.\n\n# Use Rocker image as the base for R\nFROM rocker/r-ver:4.4.0\n\nLABEL maintainer=\"Hyoungchul Kim &lt;hchul.kim96@gmail.com&gt;\"\n\n## Update and install system dependencies\nRUN apt-get update && apt-get install -y \\\n    libcurl4-openssl-dev \\\n    libssl-dev \\\n    libfontconfig1-dev \\\n    libharfbuzz-dev \\\n    libfribidi-dev \\\n    libfreetype6-dev \\\n    libpng-dev \\\n    libtiff5-dev \\\n    libjpeg-dev \\\n    libglpk-dev \\\n    libxml2-dev \\\n    libcairo2-dev \\\n    libgit2-dev \\\n    libpq-dev \\\n    libsasl2-dev \\\n    libsqlite3-dev \\\n    libssh2-1-dev \\\n    libxt-dev \\\n    libgdal-dev \\\n    wget \\\n    curl \\\n    vim \\\n    git \n\n## Install Pandoc and Quarto (Required for RMarkdown, Quarto, etc.)\n# RUN /rocker_scripts/install_pandoc.sh\n# RUN /rocker_scripts/install_quarto.sh\n\n## Install Python & Poetry\nRUN /rocker_scripts/install_python.sh && \\\n    pip3 install --upgrade pip && \\\n    pip3 install poetry\n\n# Ensure Poetry installs dependencies in the system environment\nRUN poetry config virtualenvs.create false\n\n# Copy Poetry files and install dependencies\nCOPY pyproject.toml poetry.lock .\nRUN poetry install --no-interaction --no-root\n\n## Install Julia 1.11.3 (to match Manifest.toml)\nENV JULIA_VERSION=1.11.3\nRUN /rocker_scripts/install_julia.sh\n\n## Set working directory\nWORKDIR /project\n\n## Copy renv.lock file into the folder\nCOPY renv.lock .\n\n# Set environment variables for renv\nENV RENV_VERSION=1.0.7\nENV RENV_PATHS_CACHE=/renv/cache\nENV RENV_CONFIG_REPOS_OVERRIDE=https://cloud.r-project.org\nENV RENV_CONFIG_AUTOLOADER_ENABLED=FALSE\nENV RENV_WATCHDOG_ENABLED=FALSE\nRUN echo \"options(renv.consent = TRUE)\" &gt;&gt; .Rprofile\nRUN echo \"options(RETICULATE_MINICONDA_ENABLED = FALSE)\" &gt;&gt; .Rprofile\n\n# Install renv from CRAN (avoiding bootstrapping by specifying version)\nRUN R -e \"install.packages('renv', repos = c(CRAN = 'https://cloud.r-project.org'))\"\nRUN R -e \"renv::consent(provided = TRUE)\"\n\n# Run renv restore to restore the environment\nRUN R -e \"renv::restore(confirm = FALSE)\"\n\n# Install Julia packages and manage dependencies\nCOPY Manifest.toml Project.toml .\nENV JULIA_PROJECT=/project\nRUN julia -e \"import Pkg; Pkg.activate(\\\".\\\"); Pkg.instantiate()\"\n\n# Copy over the rest of the project files\nCOPY . .\n\n# Default command\nCMD [\"bash\"]",
+    "crumbs": [
+      "Notes",
+      "Dockerfile"
+    ]
+  },
+  {
+    "objectID": "computing/trade-notes.html",
+    "href": "computing/trade-notes.html",
+    "title": "(Graduate) International trade notes",
+    "section": "",
+    "text": "These are some notes for my self-study on International Trade (graduate level).",
+    "crumbs": [
+      "Notes",
+      "Trade notes"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html",
+    "href": "computing/duckdb-dplyr.html",
+    "title": "DuckDB + dplyr (R)",
+    "section": "",
+    "text": "This is just a direct copy of the resources from Grant McDermott. Thus, I do not have any credit for it. It is solely for the archive purpose.",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#load-libraries",
+    "href": "computing/duckdb-dplyr.html#load-libraries",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Load libraries",
+    "text": "Load libraries\n\nlibrary(duckdb)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#create-a-database-connection",
+    "href": "computing/duckdb-dplyr.html#create-a-database-connection",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Create a database connection",
+    "text": "Create a database connection\nFor the d(b)plyr workflow, the connection step is very similar to the pure SQL approach. The only difference is that, after instantiating the database connection, we need to register our parquet dataset as a table in our connection via the dplyr::tbl() function. Note that we also assign it to an object (here: nyc) that can be referenced from R.\n\n## Instantiate the in-memory DuckDB connection \ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n## Register our parquet dataset as table in our connection (and that assign it\n## to an object that R understands)\n# nyc = tbl(con, \"nyc-taxi/**/*.parquet\") # works, but safer to use the read_parquet func)\nnyc = tbl(con, \"read_parquet('nyc-taxi/**/*.parquet', hive_partitioning = true)\")",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#first-example",
+    "href": "computing/duckdb-dplyr.html#first-example",
+    "title": "DuckDB + dplyr (R)",
+    "section": "First example",
+    "text": "First example\nThis next command runs instantly because all computation is deferred (i.e., lazy eval). In other words, it is just a query object.\n\nq1 = nyc |&gt;\n  summarize(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  )\n\n\n\n\n\n\n\n.by versus group_by\n\n\n\nIn case you weren’t aware: summarize(..., .by = x) is a shorthand (and non-persistent) version of group_by(x) |&gt; summarize(...). More details here.\n\n\nWe can see what DuckDB’s query tree looks like by asking it to explain the plan\n\nexplain(q1)\n\nSimilarly, to show the SQL translation that will be implemented on the backend, using show_query.\n\nshow_query(q1)\n\nNote that printing the query object actually does enforce some computation. OTOH it’s still just a preview of the data (we haven’t pulled everything into R’s memory).\n\nq1\n\nTo actually pull all of the result data into R, we must call collect() on the query object\n\ntic = Sys.time()\ndat1 = collect(q1)\ntoc = Sys.time()\n\ndat1\ntoc - tic",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#aggregation",
+    "href": "computing/duckdb-dplyr.html#aggregation",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Aggregation",
+    "text": "Aggregation\nHere’s our earlier filtering example with multiple grouping + aggregation variables…\n\nq2 = nyc |&gt;\n  filter(month &lt;= 3) |&gt;\n  summarize(\n    across(c(tip_amount, fare_amount), mean),\n    .by = c(month, passenger_count)\n  )\nq2\n\nAside: note the optimised query includes hash groupings and projection (basically: fancy column subsetting, which is a suprisingly effective strategy in query optimization)\n\nexplain(q2)\n\nAnd our high-dimensional aggregation example. We’ll create a query for this first, since I’ll reuse it shortly again\n\nq3 = nyc |&gt;\n  group_by(passenger_count, trip_distance) |&gt;\n  summarize(\n    across(c(tip_amount, fare_amount), mean),\n  ) \ncollect(q3)",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#pivot-reshape",
+    "href": "computing/duckdb-dplyr.html#pivot-reshape",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Pivot (reshape)",
+    "text": "Pivot (reshape)\n\n# library(tidyr) ## already loaded\n\nq3 |&gt;\n  pivot_longer(tip_amount:fare_amount) |&gt;\n  collect()",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#joins-merges",
+    "href": "computing/duckdb-dplyr.html#joins-merges",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Joins (merges)",
+    "text": "Joins (merges)\n\nmean_tips  = nyc |&gt; summarise(mean_tips = mean(tip_amount), .by = month)\nmean_fares = nyc |&gt; summarise(mean_fares = mean(fare_amount), .by = month)\n\nAgain, these commands complete instantly because all computation has been deferred until absolutely necessary (i.e.,. lazy eval).\n\nleft_join(\n  mean_fares,\n  mean_tips\n  ) |&gt;\n  collect()",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#windowing",
+    "href": "computing/duckdb-dplyr.html#windowing",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Windowing",
+    "text": "Windowing\nIf you recall from the native SQL API, we sampled 1 percent of the data before creating decile bins to reduce the computation burden of sorting the entire table. Unfortunately, this approach doesn’t work as well for the dplyr frontend because the underlying SQL translation uses a generic sampling approach (rather than DuckDB’s optimised USING SAMPLE statement.)",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#close-connection",
+    "href": "computing/duckdb-dplyr.html#close-connection",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Close connection",
+    "text": "Close connection\n\ndbDisconnect(con)",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#appendix-related-interfaces",
+    "href": "computing/duckdb-dplyr.html#appendix-related-interfaces",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Appendix: Related interfaces",
+    "text": "Appendix: Related interfaces\n\narrow+duckdb\n\nlibrary(arrow)\nlibrary(duckdb) ## Already loaded\nlibrary(dplyr)  ## Already loaded\nlibrary(tidyr)  ## Already loaded\n\nWhen going through the arrow intermediary, we don’t need to establish a database with DBI::dbConnect like we did above. Instead, we can create a link (pointers) to the dataset on disk directly via the arrow::open_dataset() convience function. Here I’ll assign it to a new R object called nyc2.\n\nnyc2 = open_dataset(\"nyc-taxi\")\n\n\n\n\n\n\n\nopen_dataset() versus read_parquet()\n\n\n\n(For individual parquet files, we could just read then via arrow::read_parquet(), perhaps efficiently subsetting columns at the same time. But I find the open_dataset is generally what I’m looking for.)\n\n\nNote that printing our nyc2 dataset to the R console will just display the data schema. This is a cheap and convenient way to quickly interrogate the basic structure of your data, including column types, etc.\n\nnyc2\n\nThe key step for this “arrow + duckdb” dplyr workflow is to pass our arrow dataset to DuckDB via the to_duckdb() function.\n\nto_duckdb(nyc2)\n\nNote that this transfer from Arrow to DuckDB is very quick (and memory cheap) because it is a zero copy. We are just passing around pointers instead of actually moving any data. See this blog post for more details, but the high-level take away is that we are benefitting from the tightly integrated architectures of these two libraries.1\nAt this, point all of the regular dplyr workflow logic from above should carry over. Just remember to first pass the arrow dataset via the to_duckdb() funciton. For example, here’s our initial aggregation query again:\n\nnyc2 |&gt;\n  to_duckdb() |&gt; ## &lt;= key step\n  summarise(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  ) |&gt;\n  collect()\n\n\n\n\n\n\n\nArrow’s native acero engine\n\n\n\nSome of you may be used to performing computation with the arrow package without going through DuckDB. What’s happening here is that arrow provides its own computation engine called “acero”. This Arrow-native engine is actually pretty performant… albeit not a fast as DuckDB, nor as feature rich. So I personally recommend always passing to DuckDB if you can. Still, if you’re curious then you can test yourself by re-trying the code chunk, but commenting out the to_duckdb() line. For more details, see here.\n\n\n\n\nduckplyr\nThe new kid on the block is duckplyr (announcement / homepage). Without going into too much depth, the promise of duckplyr is that it can provide a “fully native” dplyr experience that is directly coupled to DuckDB’s query engine. So, for example, it won’t have to rely on DBI’s generic’ SQL translations. Instead, the relevant dplyr “verbs” are being directly translated to DuckDB’s relational API to construct logical query plans. If that’s too much jargon, just know that it should involve less overhead, fewer translation errors, and better optimization. Moreover, a goal of duckplyr is for it to be a drop-in replace for dplyr in general. In other words, you could just swap out library(dplyr) for library(duckplyr) and all of your data wrangling operations will come backed by the power of DuckDB. This includes for working on “regular” R data frames in memory.\nAll of this is exciting and I would urge you stay tuned. Right now, duckplyr is still marked as experimental and has a few rough edges. But the basics are there. For example:\n\nlibrary(duckplyr, warn.conflicts = FALSE)\n\nduckplyr_df_from_parquet(\"nyc-taxi/**/*.parquet\") |&gt;\n  summarise(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  )",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-dplyr.html#footnotes",
+    "href": "computing/duckdb-dplyr.html#footnotes",
+    "title": "DuckDB + dplyr (R)",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\n“Similar” might be a better description than “integrated”, since DuckdB does not use the Arrow memory model. But they are both columnar-orientated (among other things) and so the end result is pretty seamless integration.↩︎",
+    "crumbs": [
+      "Notes",
+      "DuckDB + dplyr (R)"
+    ]
+  },
+  {
+    "objectID": "computing/duckdb-sql.html",
+    "href": "computing/duckdb-sql.html",
+    "title": "DuckDB SQL",
+    "section": "",
+    "text": "This is example templates that use DuckDB with SQL for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(duckdb)\n\ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\n# con = dbConnect(duckdb(), dbdir = \"nyc.duck\")\n\n# SELECT\n#   passenger_count,\n#   AVG(tip_amount) AS mean_tip\n# FROM 'nyc-taxi/**/*.parquet'\n# GROUP BY passenger_count\n# ORDER BY passenger_count\n\ntic = Sys.time()\ndat1 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  GROUP BY ALL\n  ORDER BY ALL\n  \"\n)\ntoc = Sys.time()\n\ndat1\ntoc - tic\n\ntic = Sys.time()\ndat2 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    month,\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  WHERE month &lt;= 3\n  GROUP BY ALL\n  \"\n    )\ntoc = Sys.time()\n\nhead(dat2)\n\ndbDisconnect(con)\n\n\n\n\nimport duckdb\nimport time\n\ncon = duckdb.connect(database=':memory:', read_only=False)\n\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\ncon = duckdb.connect(database='nyc.duck', read_only=False)\n\ntic = time.time()\ndat1 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    GROUP BY ALL\n    ORDER BY ALL\n    '''\n    )\n)\ntoc = time.time()\n\ndat1\n\ntic = time.time()\ndat2 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      month,\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    WHERE month &lt;= 3\n    GROUP BY ALL\n    '''\n  )\n)\ntoc = time.time()\n\ndat2\n\ncon.close()",
+    "crumbs": [
+      "Notes",
+      "DuckDB SQL"
+    ]
+  },
+  {
+    "objectID": "misc/links.html",
+    "href": "misc/links.html",
+    "title": "Useful links",
+    "section": "",
+    "text": "Category\nLinks\n\n\n\n\nPersonal website\n🔗 GitHub site\n\n\nCoffee chat (with me)\n🔗 Appointment link\n\n\nComputing and replication resources\n🔗 Web-scraping 1  🔗 Web-scraping 2  🔗 Parallel programming  🔗 Docker  🔗 Google compute engine 1  🔗 Google compute engine 2  🔗 Databases  🔗 Spark  🔗 DuckDB and polars  🔗 NYU Course Notes & Resources  🔗 Quantitative dynamic model\n\n\nJulia\n🔗 Julia for data science  🔗 Computational economics for PhDs  🔗 Computational Methods in Macroeconomics  🔗 BLPDemand.jl  🔗 Guide to Efficient Computational Work in Economics  🔗 Econometrics with Julia  🔗 Advanced Dynamic Programming\n\n\nUseful packages\n🔗 New DiD methods\n\n\nGraduate trade and spatial\n🔗 Treb Allen\n\n\nNotes\n🔗 BLP-notes (Adam Smith)",
+    "crumbs": [
+      "Misc.",
+      "Useful links"
+    ]
+  },
+  {
+    "objectID": "computing/computing.html",
+    "href": "computing/computing.html",
+    "title": "Overview",
+    "section": "",
+    "text": "This section is a set of templates related to computing. It also contains some notes on various subjects in Economics.",
+    "crumbs": [
+      "Notes",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html",
+    "href": "computing/julia-self-study.html",
+    "title": "Julia self study",
+    "section": "",
+    "text": "using DataFrames\nusing CSV\nusing XLSX\nMake a toy dataframe\nfunction grades_2020()\n    name = [\"Sally\", \"Bob\", \"Alice\", \"Hank\"]\n    grade_2020 = [1, 5, 8.5, 4]\n    DataFrame(; name, grade_2020)\nend\ngrades_2020()\n\nfunction grades_2021()\n    name = [\"Sally\", \"Bob\", \"Alice\", \"Hank\", \"John\"]\n    grade_2021 = [3, 5, 8.5, 7, 10]\n    DataFrame(; name, grade_2021)\nend\ngrades_2021()\n\n5×2 DataFrame\n\n\n\nRow\nname\ngrade_2021\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n3.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n7.0\n\n\n5\nJohn\n10.0",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#csv-files",
+    "href": "computing/julia-self-study.html#csv-files",
+    "title": "Julia self study",
+    "section": "CSV files",
+    "text": "CSV files\nWrite the dataframe into CSV file\n\nCSV.write(\"toy.csv\", grades_2020())\n\n\"toy.csv\"\n\n\nRead in the CSV file\n\ntoy = CSV.read(\"toy.csv\", DataFrame)\nfirst(toy, 5)\n\n4×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString7\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#excel-files",
+    "href": "computing/julia-self-study.html#excel-files",
+    "title": "Julia self study",
+    "section": "Excel files",
+    "text": "Excel files\n\nfunction write_xlsx(name, df::DataFrame)\n    path = \"$name.xlsx\"\n    data = collect(eachcol(df))\n    cols = names(df)\n    write(path, data, cols)\nend\n\nfunction write_grades_xlsx()\n    path = \"grades\"\n    write_xlsx(path, grades_2020())\n    \"$path.xlsx\"\nend\n\npath = write_grades_xlsx()\nxf = readxlsx(path)",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#filter-and-subset",
+    "href": "computing/julia-self-study.html#filter-and-subset",
+    "title": "Julia self study",
+    "section": "Filter and subset",
+    "text": "Filter and subset\n\nequals_alice(name::String) = name == \"Alice\"\n\nfilter(:name =&gt; equals_alice, grades_2020())\n\nfilter(:name =&gt; n -&gt; n == \"Alice\", grades_2020())\n\nfilter(:name =&gt; ==(\"Alice\"), grades_2020())\nfilter(:name =&gt; !=(\"Alice\"), grades_2020())\n\n3×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nHank\n4.0\n\n\n\n\n\n\n\nfunction complex_filter(name, grade)::Bool\n    interesting_name = startswith(name, 'A') || startswith(name, 'B')\n    interesting_grade = 6 &lt; grade\n    interesting_name && interesting_grade\nend\n\nfilter([:name, :grade_2020] =&gt; complex_filter, grades_2020())\n\n1×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#select",
+    "href": "computing/julia-self-study.html#select",
+    "title": "Julia self study",
+    "section": "Select",
+    "text": "Select\n\nfunction responses()\n    id = [1, 2]\n    q1 = [28, 61]\n    q2 = [:us, :fr]\n    q3 = [\"F\", \"B\"]\n    q4 = [\"B\", \"C\"]\n    q5 = [\"A\", \"E\"]\n    DataFrame(; id, q1, q2, q3, q4, q5)\nend\nresponses()\n\n2×6 DataFrame\n\n\n\nRow\nid\nq1\nq2\nq3\nq4\nq5\n\n\n\nInt64\nInt64\nSymbol\nString\nString\nString\n\n\n\n\n1\n1\n28\nus\nF\nB\nA\n\n\n2\n2\n61\nfr\nB\nC\nE\n\n\n\n\n\n\n\nselect(responses(), :id, :q1)\n\n# regex\nselect(responses(), r\"^q\")\n\nselect(responses(), Not(:q5))\nselect(responses(), Not([:q4, :q5]))\nselect(responses(), :q5, Not(:q5))\n\n# renaming\nselect(responses(), 1 =&gt; \"participant\", :q1 =&gt; \"age\", :q2 =&gt; \"nationality\")\nrenames = (1 =&gt; \"participant\", :q1 =&gt; \"age\", :q2 =&gt; \"nationality\")\nselect(responses(), renames...)\n\n2×3 DataFrame\n\n\n\nRow\nparticipant\nage\nnationality\n\n\n\nInt64\nInt64\nSymbol\n\n\n\n\n1\n1\n28\nus\n\n\n2\n2\n61\nfr",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#left-and-right-joins",
+    "href": "computing/julia-self-study.html#left-and-right-joins",
+    "title": "Julia self study",
+    "section": "Left and right joins",
+    "text": "Left and right joins\n\nleftjoin(grades_2020(), grades_2021(); on=:name)\n\nrightjoin(grades_2020(), grades_2021(); on=:name)\n\n5×3 DataFrame\n\n\n\nRow\nname\ngrade_2020\ngrade_2021\n\n\n\nString\nFloat64?\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0\n\n\n5\nJohn\nmissing\n10.0",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#transform-variables",
+    "href": "computing/julia-self-study.html#transform-variables",
+    "title": "Julia self study",
+    "section": "Transform variables",
+    "text": "Transform variables\n\nplus_one(grades) = grades .+ 1\ntransform(grades_2020(), :grade_2020 =&gt; plus_one)\n\ntransform(grades_2020(), :grade_2020 =&gt; plus_one =&gt; :grade_2020)\ntransform(grades_2020(), :grade_2020 =&gt; plus_one; renamecols=false)\n\n4×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n2.0\n\n\n2\nBob\n6.0\n\n\n3\nAlice\n9.5\n\n\n4\nHank\n5.0\n\n\n\n\n\n\n\nleftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n\nfunction only_pass()\n    leftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n    pass(A, B) = [5.5 &lt; a || 5.5 &lt; b for (a, b) in zip(A, B)]\n    leftjoined = transform(leftjoined, [:grade_2020, :grade_2021] =&gt; pass =&gt; :pass)\n    passed = subset(leftjoined, :pass; skipmissing=true)\n    return passed.name\nend\nonly_pass()\n\n2-element Vector{String}:\n \"Alice\"\n \"Hank\"",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#groupby-and-combine",
+    "href": "computing/julia-self-study.html#groupby-and-combine",
+    "title": "Julia self study",
+    "section": "Groupby and combine",
+    "text": "Groupby and combine\n\nfunction all_grades()\n    df1 = grades_2020()\n    df1 = select(df1, :name, :grade_2020 =&gt; :grade)\n    df2 = grades_2021()\n    df2 = select(df2, :name, :grade_2021 =&gt; :grade)\n    rename_bob2(data_col) = replace.(data_col, \"Bob 2\" =&gt; \"Bob\")\n    df2 = transform(df2, :name =&gt; rename_bob2 =&gt; :name)\n    return vcat(df1, df2)\nend\nall_grades()\n\n9×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0\n\n\n5\nSally\n3.0\n\n\n6\nBob\n5.0\n\n\n7\nAlice\n8.5\n\n\n8\nHank\n7.0\n\n\n9\nJohn\n10.0\n\n\n\n\n\n\n\ngroupby(all_grades(), :name)\n\nusing Statistics\n\ngdf = groupby(all_grades(), :name)\ncombine(gdf, :grade =&gt; mean)\n\n5×2 DataFrame\n\n\n\nRow\nname\ngrade_mean\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n2.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n5.5\n\n\n5\nJohn\n10.0\n\n\n\n\n\n\n\ngroup = [:A, :A, :B, :B]\nX = 1:4\nY = 5:8\ndf = DataFrame(; group, X, Y)\n\ngdf = groupby(df, :group)\ncombine(gdf, [:X, :Y] .=&gt; mean; renamecols=false)\n\n2×3 DataFrame\n\n\n\nRow\ngroup\nX\nY\n\n\n\nSymbol\nFloat64\nFloat64\n\n\n\n\n1\nA\n1.5\n5.5\n\n\n2\nB\n3.5\n7.5",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#missing-values",
+    "href": "computing/julia-self-study.html#missing-values",
+    "title": "Julia self study",
+    "section": "Missing values",
+    "text": "Missing values\n\ndf_missing = DataFrame(;\n    name=[missing, \"Sally\", \"Alice\", \"Hank\"],\n    age=[17, missing, 20, 19],\n    grade_2020=[5.0, 1.0, missing, 4.0],\n)\n\ndropmissing(df_missing)\n\ndropmissing(df_missing, :name)\n\ndropmissing(df_missing, [:name, :age])\n\n2×3 DataFrame\n\n\n\nRow\nname\nage\ngrade_2020\n\n\n\nString\nInt64\nFloat64?\n\n\n\n\n1\nAlice\n20\nmissing\n\n\n2\nHank\n19\n4.0\n\n\n\n\n\n\n\nfilter(:name =&gt; !ismissing, df_missing)\n\ncombine(df_missing, :grade_2020 =&gt; mean ∘ skipmissing )\n\n1×1 DataFrame\n\n\n\nRow\ngrade_2020_mean_skipmissing\n\n\n\nFloat64\n\n\n\n\n1\n3.33333",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#select-1",
+    "href": "computing/julia-self-study.html#select-1",
+    "title": "Julia self study",
+    "section": "Select",
+    "text": "Select\n\ndf = all_grades()\n\n9×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0\n\n\n5\nSally\n3.0\n\n\n6\nBob\n5.0\n\n\n7\nAlice\n8.5\n\n\n8\nHank\n7.0\n\n\n9\nJohn\n10.0\n\n\n\n\n\n\n\n@select df :name\n@select df :name :grade\n@select df $(Not(:grade))\n\n9×1 DataFrame\n\n\n\nRow\nname\n\n\n\nString\n\n\n\n\n1\nSally\n\n\n2\nBob\n\n\n3\nAlice\n\n\n4\nHank\n\n\n5\nSally\n\n\n6\nBob\n\n\n7\nAlice\n\n\n8\nHank\n\n\n9\nJohn\n\n\n\n\n\n\n\n@select df :grade_100 = :grade .* 10\n@rselect df :grade_100 = :grade * 10\n\n9×1 DataFrame\n\n\n\nRow\ngrade_100\n\n\n\nFloat64\n\n\n\n\n1\n10.0\n\n\n2\n50.0\n\n\n3\n85.0\n\n\n4\n40.0\n\n\n5\n30.0\n\n\n6\n50.0\n\n\n7\n85.0\n\n\n8\n70.0\n\n\n9\n100.0",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#column-transformation",
+    "href": "computing/julia-self-study.html#column-transformation",
+    "title": "Julia self study",
+    "section": "Column transformation",
+    "text": "Column transformation\n\n@rtransform df :grade_100 = :grade * 10\n\n9×3 DataFrame\n\n\n\nRow\nname\ngrade\ngrade_100\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n10.0\n\n\n2\nBob\n5.0\n50.0\n\n\n3\nAlice\n8.5\n85.0\n\n\n4\nHank\n4.0\n40.0\n\n\n5\nSally\n3.0\n30.0\n\n\n6\nBob\n5.0\n50.0\n\n\n7\nAlice\n8.5\n85.0\n\n\n8\nHank\n7.0\n70.0\n\n\n9\nJohn\n10.0\n100.0\n\n\n\n\n\n\n\n@rtransform df :grade_100 = :grade * 10 :grade_5 = :grade / 2\n\n@rtransform df begin\n    :grade_100 = :grade * 10\n    :grade_5 = :grade / 2\nend\n\n9×4 DataFrame\n\n\n\nRow\nname\ngrade\ngrade_100\ngrade_5\n\n\n\nString\nFloat64\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n10.0\n0.5\n\n\n2\nBob\n5.0\n50.0\n2.5\n\n\n3\nAlice\n8.5\n85.0\n4.25\n\n\n4\nHank\n4.0\n40.0\n2.0\n\n\n5\nSally\n3.0\n30.0\n1.5\n\n\n6\nBob\n5.0\n50.0\n2.5\n\n\n7\nAlice\n8.5\n85.0\n4.25\n\n\n8\nHank\n7.0\n70.0\n3.5\n\n\n9\nJohn\n10.0\n100.0\n5.0\n\n\n\n\n\n\n\nleftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n@rtransform! leftjoined :grade_2021 = coalesce(:grade_2021, 5)\n\n@rtransform leftjoined :mean_grades = (:grade_2020 + :grade_2021) / 2\n\n4×4 DataFrame\n\n\n\nRow\nname\ngrade_2020\ngrade_2021\nmean_grades\n\n\n\nString\nFloat64\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n2.0\n\n\n2\nBob\n5.0\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0\n5.5",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#row-selection",
+    "href": "computing/julia-self-study.html#row-selection",
+    "title": "Julia self study",
+    "section": "Row selection",
+    "text": "Row selection\n\n@rsubset df :grade &gt; 7\n\n3×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5\n\n\n2\nAlice\n8.5\n\n\n3\nJohn\n10.0\n\n\n\n\n\n\n\n@subset df :grade .&gt; mean(:grade)\n\n4×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5\n\n\n2\nAlice\n8.5\n\n\n3\nHank\n7.0\n\n\n4\nJohn\n10.0\n\n\n\n\n\n\n\n@rsubset df begin\n    :grade &gt; 7\n    startswith(:name, \"A\")\nend\n\n2×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5\n\n\n2\nAlice\n8.5",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#row-sorting",
+    "href": "computing/julia-self-study.html#row-sorting",
+    "title": "Julia self study",
+    "section": "Row sorting",
+    "text": "Row sorting\n\n@orderby leftjoined :grade_2021\n@orderby leftjoined -:grade_2021\n\n@orderby leftjoined begin\n    :grade_2021\n    :name\nend\n\n4×3 DataFrame\n\n\n\nRow\nname\ngrade_2020\ngrade_2021\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nHank\n4.0\n7.0\n\n\n4\nAlice\n8.5\n8.5",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#data-summaries",
+    "href": "computing/julia-self-study.html#data-summaries",
+    "title": "Julia self study",
+    "section": "Data summaries",
+    "text": "Data summaries\n\n@combine leftjoined :mean_grade_2020 = mean(:grade_2020)\n\n1×1 DataFrame\n\n\n\nRow\nmean_grade_2020\n\n\n\nFloat64\n\n\n\n\n1\n4.625\n\n\n\n\n\n\n\n@combine leftjoined begin\n    :mean_grade_2020 = mean(:grade_2020)\n    :mean_grade_2021 = mean(:grade_2021)\nend\n\n1×2 DataFrame\n\n\n\nRow\nmean_grade_2020\nmean_grade_2021\n\n\n\nFloat64\nFloat64\n\n\n\n\n1\n4.625\n5.875\n\n\n\n\n\n\n\ngdf = groupby(leftjoined, :name)\n@combine gdf begin\n    :mean_grade_2020 = mean(:grade_2020)\n    :mean_grade_2021 = mean(:grade_2021)\nend\n\n4×3 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\nmean_grade_2021\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#piping-operations",
+    "href": "computing/julia-self-study.html#piping-operations",
+    "title": "Julia self study",
+    "section": "Piping operations",
+    "text": "Piping operations\n\n@chain leftjoined begin\n    groupby(:name)\n    @combine :mean_grade_2020 = mean(:grade_2020)\nend\n\n4×2 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0\n\n\n\n\n\n\n\n@chain leftjoined begin\n    groupby(:name)\n    @combine begin\n        :mean_grade_2020 = mean(:grade_2020)\n        :mean_grade_2021 = mean(:grade_2021)\n    end\nend\n\n4×3 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\nmean_grade_2021\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#finale",
+    "href": "computing/julia-self-study.html#finale",
+    "title": "Julia self study",
+    "section": "Finale!",
+    "text": "Finale!\n\n@chain leftjoined begin\n    @rtransform begin\n        :grade_2020 = :grade_2020 * 10\n        :grade_2021 = :grade_2021 * 10\n    end\n    groupby(:name)\n    @combine begin\n        :mean_grade_2020 = mean(:grade_2020)\n        :mean_grade_2021 = mean(:grade_2021)\n    end\n    @rtransform :mean_grades = (:mean_grade_2020 + :mean_grade_2021) / 2\n    @rsubset :mean_grades &gt; 50\n    @orderby -:mean_grades\nend\n\n2×4 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\nmean_grade_2021\nmean_grades\n\n\n\nString\nFloat64\nFloat64\nFloat64\n\n\n\n\n1\nAlice\n85.0\n85.0\n85.0\n\n\n2\nHank\n40.0\n70.0\n55.0",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#geometric-series",
+    "href": "computing/julia-self-study.html#geometric-series",
+    "title": "Julia self study",
+    "section": "Geometric series",
+    "text": "Geometric series\n\n# using Pkg\n# Pkg.update()\nusing LinearAlgebra, Statistics\nusing Distributions, Plots, Random, LaTeXStrings, Symbolics\n\nExample: The Keynesian multiplier\n\\(y_t = \\frac{1-b^{t+1}}{1-b}i \\Rightarrow \\frac{1}{1-b}i\\).\n\n# function that calculates a path of y\nfunction calculate_y(i, b, g, T, y_init)\n    y = zeros(T+1)\n    y[1] = i + b * y_init + g\n    for t in 2:(T+1)\n        y[t] = b * y[t-1] + i + g\n    end\n    return y\nend\n\n# Initial values\ni_0 = 0.3\ng_0 = 0.3\nb = 2 / 3\ny_init = 0\nT = 100\n\nplt = plot(0:T, calculate_y(i_0, b, g_0, T, y_init),\n            title = \"Path of Aggregate Output Over Time\",\n            ylim = (0.5, 1.9), xlabel = L\"t\", ylabel = L\"y_t\")\n\n# Output predicted by geometric series\nhline!([i_0 / (1-b) + g_0 / (1-b)], linestyle = :dash, seriestype = \"hline\", legend = false)",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/julia-self-study.html#linear-algebra",
+    "href": "computing/julia-self-study.html#linear-algebra",
+    "title": "Julia self study",
+    "section": "Linear algebra",
+    "text": "Linear algebra",
+    "crumbs": [
+      "Notes",
+      "Julia self-study"
+    ]
+  },
+  {
+    "objectID": "computing/sf-vector-data.html",
+    "href": "computing/sf-vector-data.html",
+    "title": "Geospatial with R",
+    "section": "",
+    "text": "This is my practice sections following R as GIS for Economists.\n\nBasics\nLoad the packages:\n\nif (!require(\"pacman\")) install.packages(\"pacman\")\npacman::p_load(\n  sf, # vector data operations\n  tidyverse, # data wrangling\n  data.table, # data wrangling\n  tmap, # make maps\n  mapview, # create an interactive map\n  patchwork, # arranging maps\n  rmapshaper\n)\n\n\n#--- a dataset that comes with the sf package ---#\nnc &lt;- sf::st_read(system.file(\"shape/nc.shp\", package = \"sf\"))\n\nReading layer `nc' from data source \n  `/home/himakun/R/x86_64-pc-linux-gnu-library/4.4/sf/shape/nc.shp' \n  using driver `ESRI Shapefile'\nSimple feature collection with 100 features and 14 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965\nGeodetic CRS:  NAD27\n\nggplot() +\n  geom_sf(data = nc) +\n  theme_void()\n\n\n\n\n\n\n\n\n\nhead(nc)\n\nSimple feature collection with 6 features and 14 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -81.74107 ymin: 36.07282 xmax: -75.77316 ymax: 36.58965\nGeodetic CRS:  NAD27\n   AREA PERIMETER CNTY_ CNTY_ID        NAME  FIPS FIPSNO CRESS_ID BIR74 SID74\n1 0.114     1.442  1825    1825        Ashe 37009  37009        5  1091     1\n2 0.061     1.231  1827    1827   Alleghany 37005  37005        3   487     0\n3 0.143     1.630  1828    1828       Surry 37171  37171       86  3188     5\n4 0.070     2.968  1831    1831   Currituck 37053  37053       27   508     1\n5 0.153     2.206  1832    1832 Northampton 37131  37131       66  1421     9\n6 0.097     1.670  1833    1833    Hertford 37091  37091       46  1452     7\n  NWBIR74 BIR79 SID79 NWBIR79                       geometry\n1      10  1364     0      19 MULTIPOLYGON (((-81.47276 3...\n2      10   542     3      12 MULTIPOLYGON (((-81.23989 3...\n3     208  3616     6     260 MULTIPOLYGON (((-80.45634 3...\n4     123   830     2     145 MULTIPOLYGON (((-76.00897 3...\n5    1066  1606     3    1197 MULTIPOLYGON (((-77.21767 3...\n6     954  1838     5    1237 MULTIPOLYGON (((-76.74506 3...\n\n\nsfg: LINESTRING\n\n#--- collection of points in a matrix form ---#\ns1 &lt;- rbind(c(2, 3), c(3, 4), c(3, 5), c(1, 5))\n\n#--- see what s1 looks like ---#\ns1\n\n     [,1] [,2]\n[1,]    2    3\n[2,]    3    4\n[3,]    3    5\n[4,]    1    5\n\n#--- create a \"LINESTRING\" ---#\na_linestring &lt;- sf::st_linestring(s1)\n\n#--- check the class ---#\nclass(a_linestring)\n\n[1] \"XY\"         \"LINESTRING\" \"sfg\"       \n\n\nsfg: POLYGON\n\n#--- a hole within p1 ---#\np1 &lt;- rbind(c(0, 0), c(3, 0), c(3, 2), c(2, 5), c(1, 3), c(0, 0))\np2 &lt;- rbind(c(1, 1), c(1, 2), c(2, 2), c(1, 1))\n\n#--- create a polygon with hole ---#\na_plygon_with_a_hole &lt;- sf::st_polygon(list(p1, p2))\n\nplot(a_plygon_with_a_hole)\n\n\n\n\n\n\n\n\nCreating sfc object or sf object:\n\n#--- create an sfc ---#\nsfc_ex &lt;- sf::st_sfc(list(a_linestring, a_plygon_with_a_hole))\n\n#--- create a data.frame ---#\ndf_ex &lt;- data.frame(name = c(\"A\", \"B\"))\n\n#--- add the sfc as a column ---#\ndf_ex$geometry &lt;- sfc_ex\n\n#--- take a look ---#\ndf_ex\n\n  name                       geometry\n1    A LINESTRING (2 3, 3 4, 3 5, ...\n2    B POLYGON ((0 0, 3 0, 3 2, 2 ...\n\n\n\n#--- let R recognize the data frame as sf ---#\nsf_ex &lt;- sf::st_as_sf(df_ex)\n\n#--- see what it looks like ---#\nsf_ex\n\nSimple feature collection with 2 features and 1 field\nGeometry type: GEOMETRY\nDimension:     XY\nBounding box:  xmin: 0 ymin: 0 xmax: 3 ymax: 5\nCRS:           NA\n  name                       geometry\n1    A LINESTRING (2 3, 3 4, 3 5, ...\n2    B POLYGON ((0 0, 3 0, 3 2, 2 ...\n\n\nRead shapefile:\n\n#--- read a NE county boundary shapefile ---#\nnc_loaded &lt;- sf::st_read(\"Data/nc.shp\")\n\nReading layer `nc' from data source \n  `/home/himakun/Documents/tools/computing/Data/nc.shp' using driver `ESRI Shapefile'\nSimple feature collection with 100 features and 1 field\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965\nGeodetic CRS:  NAD27\n\n\nProjection with different CRS:\n\nsf::st_crs(nc)\n\nCoordinate Reference System:\n  User input: NAD27 \n  wkt:\nGEOGCRS[\"NAD27\",\n    DATUM[\"North American Datum 1927\",\n        ELLIPSOID[\"Clarke 1866\",6378206.4,294.978698213898,\n            LENGTHUNIT[\"metre\",1]]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"latitude\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"longitude\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    ID[\"EPSG\",4267]]\n\n\nChange the CRS projection:\n\n#--- transform ---#\nnc_wgs84 &lt;- sf::st_transform(nc, 4326)\n\n#--- check if the transformation was successful ---#\nsf::st_crs(nc_wgs84)\n\nCoordinate Reference System:\n  User input: EPSG:4326 \n  wkt:\nGEOGCRS[\"WGS 84\",\n    ENSEMBLE[\"World Geodetic System 1984 ensemble\",\n        MEMBER[\"World Geodetic System 1984 (Transit)\"],\n        MEMBER[\"World Geodetic System 1984 (G730)\"],\n        MEMBER[\"World Geodetic System 1984 (G873)\"],\n        MEMBER[\"World Geodetic System 1984 (G1150)\"],\n        MEMBER[\"World Geodetic System 1984 (G1674)\"],\n        MEMBER[\"World Geodetic System 1984 (G1762)\"],\n        MEMBER[\"World Geodetic System 1984 (G2139)\"],\n        ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n            LENGTHUNIT[\"metre\",1]],\n        ENSEMBLEACCURACY[2.0]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"geodetic latitude (Lat)\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"geodetic longitude (Lon)\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    USAGE[\n        SCOPE[\"Horizontal component of 3D system.\"],\n        AREA[\"World.\"],\n        BBOX[-90,-180,90,180]],\n    ID[\"EPSG\",4326]]\n\n#--- transform ---#\nnc_utm17N &lt;- sf::st_transform(nc_wgs84, 26917)\n\n#--- check if the transformation was successful ---#\nsf::st_crs(nc_utm17N)\n\nCoordinate Reference System:\n  User input: EPSG:26917 \n  wkt:\nPROJCRS[\"NAD83 / UTM zone 17N\",\n    BASEGEOGCRS[\"NAD83\",\n        DATUM[\"North American Datum 1983\",\n            ELLIPSOID[\"GRS 1980\",6378137,298.257222101,\n                LENGTHUNIT[\"metre\",1]]],\n        PRIMEM[\"Greenwich\",0,\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        ID[\"EPSG\",4269]],\n    CONVERSION[\"UTM zone 17N\",\n        METHOD[\"Transverse Mercator\",\n            ID[\"EPSG\",9807]],\n        PARAMETER[\"Latitude of natural origin\",0,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8801]],\n        PARAMETER[\"Longitude of natural origin\",-81,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8802]],\n        PARAMETER[\"Scale factor at natural origin\",0.9996,\n            SCALEUNIT[\"unity\",1],\n            ID[\"EPSG\",8805]],\n        PARAMETER[\"False easting\",500000,\n            LENGTHUNIT[\"metre\",1],\n            ID[\"EPSG\",8806]],\n        PARAMETER[\"False northing\",0,\n            LENGTHUNIT[\"metre\",1],\n            ID[\"EPSG\",8807]]],\n    CS[Cartesian,2],\n        AXIS[\"(E)\",east,\n            ORDER[1],\n            LENGTHUNIT[\"metre\",1]],\n        AXIS[\"(N)\",north,\n            ORDER[2],\n            LENGTHUNIT[\"metre\",1]],\n    USAGE[\n        SCOPE[\"Engineering survey, topographic mapping.\"],\n        AREA[\"North America - between 84°W and 78°W - onshore and offshore. Canada - Nunavut; Ontario; Quebec. United States (USA) - Florida; Georgia; Kentucky; Maryland; Michigan; New York; North Carolina; Ohio; Pennsylvania; South Carolina; Tennessee; Virginia; West Virginia.\"],\n        BBOX[23.81,-84,84,-78]],\n    ID[\"EPSG\",26917]]\n\n\n\n#--- transform ---#\nnc_utm17N_2 &lt;- sf::st_transform(nc_wgs84, sf::st_crs(nc_utm17N))\n\n#--- check if the transformation was successful ---#\nsf::st_crs(nc_utm17N_2)\n\nCoordinate Reference System:\n  User input: EPSG:26917 \n  wkt:\nPROJCRS[\"NAD83 / UTM zone 17N\",\n    BASEGEOGCRS[\"NAD83\",\n        DATUM[\"North American Datum 1983\",\n            ELLIPSOID[\"GRS 1980\",6378137,298.257222101,\n                LENGTHUNIT[\"metre\",1]]],\n        PRIMEM[\"Greenwich\",0,\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        ID[\"EPSG\",4269]],\n    CONVERSION[\"UTM zone 17N\",\n        METHOD[\"Transverse Mercator\",\n            ID[\"EPSG\",9807]],\n        PARAMETER[\"Latitude of natural origin\",0,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8801]],\n        PARAMETER[\"Longitude of natural origin\",-81,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8802]],\n        PARAMETER[\"Scale factor at natural origin\",0.9996,\n            SCALEUNIT[\"unity\",1],\n            ID[\"EPSG\",8805]],\n        PARAMETER[\"False easting\",500000,\n            LENGTHUNIT[\"metre\",1],\n            ID[\"EPSG\",8806]],\n        PARAMETER[\"False northing\",0,\n            LENGTHUNIT[\"metre\",1],\n            ID[\"EPSG\",8807]]],\n    CS[Cartesian,2],\n        AXIS[\"(E)\",east,\n            ORDER[1],\n            LENGTHUNIT[\"metre\",1]],\n        AXIS[\"(N)\",north,\n            ORDER[2],\n            LENGTHUNIT[\"metre\",1]],\n    USAGE[\n        SCOPE[\"Engineering survey, topographic mapping.\"],\n        AREA[\"North America - between 84°W and 78°W - onshore and offshore. Canada - Nunavut; Ontario; Quebec. United States (USA) - Florida; Georgia; Kentucky; Maryland; Michigan; New York; North Carolina; Ohio; Pennsylvania; South Carolina; Tennessee; Virginia; West Virginia.\"],\n        BBOX[23.81,-84,84,-78]],\n    ID[\"EPSG\",26917]]\n\n\nTurning dataframe into sf object\n\n#--- read irrigation well registration data ---#\n(\n  wells &lt;- readRDS(\"Data/well_registration.rds\")\n)\n\nKey: &lt;wellid&gt;\n        wellid ownerid        nrdname acres  regdate section     longdd\n         &lt;int&gt;   &lt;int&gt;         &lt;char&gt; &lt;num&gt;   &lt;char&gt;   &lt;int&gt;      &lt;num&gt;\n     1:      2  106106 Central Platte   160 12/30/55       3  -99.58401\n     2:      3   14133   South Platte    46  4/29/31       8 -102.62495\n     3:      4   14133   South Platte    46  4/29/31       8 -102.62495\n     4:      5   14133   South Platte    46  4/29/31       8 -102.62495\n     5:      6   15837 Central Platte   160  8/29/32      20  -99.62580\n    ---                                                                \n105818: 244568  135045 Upper Big Blue    NA  8/26/16      30  -97.58872\n105819: 244569  105428    Little Blue    NA  8/26/16      24  -97.60752\n105820: 244570  135045 Upper Big Blue    NA  8/26/16      30  -97.58294\n105821: 244571  135045 Upper Big Blue    NA  8/26/16      25  -97.59775\n105822: 244572  105428    Little Blue    NA  8/26/16      15  -97.64086\n           latdd\n           &lt;num&gt;\n     1: 40.69825\n     2: 41.11699\n     3: 41.11699\n     4: 41.11699\n     5: 40.73268\n    ---         \n105818: 40.89017\n105819: 40.13257\n105820: 40.88722\n105821: 40.89639\n105822: 40.13380\n\n\n\n#--- recognize it as an sf ---#\nwells_sf &lt;- sf::st_as_sf(wells, coords = c(\"longdd\", \"latdd\")) %&gt;% \n  st_set_crs(4269)\n\n#--- take a look at the data ---#\nhead(wells_sf[, 1:5])\n\nSimple feature collection with 6 features and 5 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: -102.6249 ymin: 40.69824 xmax: -99.58401 ymax: 41.11699\nGeodetic CRS:  NAD83\n  wellid ownerid        nrdname acres  regdate                   geometry\n1      2  106106 Central Platte   160 12/30/55 POINT (-99.58401 40.69825)\n2      3   14133   South Platte    46  4/29/31 POINT (-102.6249 41.11699)\n3      4   14133   South Platte    46  4/29/31 POINT (-102.6249 41.11699)\n4      5   14133   South Platte    46  4/29/31 POINT (-102.6249 41.11699)\n5      6   15837 Central Platte   160  8/29/32  POINT (-99.6258 40.73268)\n6      7   90248 Central Platte   120  2/15/35 POINT (-99.64524 40.73164)\n\n\nConversion to and from sp objects\n\n#--- conversion ---#\nwells_sp &lt;- as(wells_sf, \"Spatial\")\n\n#--- check the class ---#\nclass(wells_sp)\n\n[1] \"SpatialPointsDataFrame\"\nattr(,\"package\")\n[1] \"sp\"\n\n#--- revert back to sf ---#\nwells_sf &lt;- sf::st_as_sf(wells_sp)\n\n#--- check the class ---#\nclass(wells_sf)\n\n[1] \"sf\"         \"data.frame\"\n\n\nReverting sf object back into dataframe\n\n#--- remove geometry ---#\nwells_no_longer_sf &lt;- sf::st_drop_geometry(wells_sf)\n\n#--- take a look ---#\nhead(wells_no_longer_sf)\n\n  wellid ownerid        nrdname acres  regdate section\n1      2  106106 Central Platte   160 12/30/55       3\n2      3   14133   South Platte    46  4/29/31       8\n3      4   14133   South Platte    46  4/29/31       8\n4      5   14133   South Platte    46  4/29/31       8\n5      6   15837 Central Platte   160  8/29/32      20\n6      7   90248 Central Platte   120  2/15/35      19\n\n\n\n#--- read wells location data ---#\nurnrd_wells_sf &lt;-\n  readRDS(\"Data/urnrd_wells.rds\") %&gt;%\n  #--- project to UTM 14N WGS 84 ---#\n  sf::st_transform(32614)\n\n#--- create a one-mile buffer around the wells ---#\nwells_buffer &lt;- sf::st_buffer(urnrd_wells_sf, dist = 1600)\n\nhead(wells_buffer)\n\nSimple feature collection with 6 features and 6 fields\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: 251786.6 ymin: 4483187 xmax: 301596 ymax: 4499464\nProjected CRS: WGS 84 / UTM zone 14N\n  wellid ownerid          nrdname acres regdate section\n1     79   98705 Upper Republican   400 12/9/40       5\n2    109  115260 Upper Republican    80 3/11/41      20\n3    161  115260 Upper Republican    50  3/8/43      17\n4    162   41350 Upper Republican   140 3/23/43      28\n5    164  105393 Upper Republican    90  7/6/43      12\n6    166   51341 Upper Republican   110 8/31/43      18\n                        geometry\n1 POLYGON ((277371.9 4497864,...\n2 POLYGON ((256979.6 4484787,...\n3 POLYGON ((256993.1 4485173,...\n4 POLYGON ((258354.5 4492808,...\n5 POLYGON ((301596 4485998, 3...\n6 POLYGON ((254986.6 4485670,...\n\nggplot() +\n  geom_sf(data = urnrd_wells_sf, size = 0.6, color = \"red\") +\n  geom_sf(data = wells_buffer, fill = NA) +\n  theme_void()\n\n\n\n\n\n\n\n\n\nNE_counties &lt;-\n  readRDS(\"Data/NE_county_borders.rds\") %&gt;%\n  dplyr::filter(NAME %in% c(\"Perkins\", \"Dundy\", \"Chase\")) %&gt;%\n  sf::st_transform(32614)\n\n#--- generate area by polygon ---#\n(\n  NE_counties &lt;- dplyr::mutate(NE_counties, area = st_area(NE_counties))\n)\n\nSimple feature collection with 3 features and 10 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 239494.1 ymin: 4430632 xmax: 310778.1 ymax: 4543676\nProjected CRS: WGS 84 / UTM zone 14N\n  STATEFP COUNTYFP COUNTYNS       AFFGEOID GEOID    NAME LSAD      ALAND\n1      31      135 00835889 0500000US31135 31135 Perkins   06 2287828025\n2      31      029 00835836 0500000US31029 31029   Chase   06 2316533447\n3      31      057 00835850 0500000US31057 31057   Dundy   06 2381956151\n   AWATER                       geometry             area\n1 2840176 MULTIPOLYGON (((243340.2 45... 2302174854 [m^2]\n2 7978172 MULTIPOLYGON (((241201.4 44... 2316908196 [m^2]\n3 3046331 MULTIPOLYGON (((240811.3 44... 2389890530 [m^2]\n\n\n\n#--- create centroids ---#\n(\n  NE_centroids &lt;- sf::st_centroid(NE_counties)\n)\n\nWarning: st_centroid assumes attributes are constant over geometries\n\n\nSimple feature collection with 3 features and 10 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 271156.7 ymin: 4450826 xmax: 276594.1 ymax: 4525635\nProjected CRS: WGS 84 / UTM zone 14N\n  STATEFP COUNTYFP COUNTYNS       AFFGEOID GEOID    NAME LSAD      ALAND\n1      31      135 00835889 0500000US31135 31135 Perkins   06 2287828025\n2      31      029 00835836 0500000US31029 31029   Chase   06 2316533447\n3      31      057 00835850 0500000US31057 31057   Dundy   06 2381956151\n   AWATER                 geometry             area\n1 2840176 POINT (276594.1 4525635) 2302174854 [m^2]\n2 7978172 POINT (271469.9 4489429) 2316908196 [m^2]\n3 3046331 POINT (271156.7 4450826) 2389890530 [m^2]\n\nggplot() +\n  geom_sf(data = NE_counties) +\n  geom_sf_text(data = NE_centroids, aes(label = NAME)) +\n  theme_void()\n\n\n\n\n\n\n\n\n\nIL_counties &lt;- sf::st_read(\"Data/IL_county_detailed.geojson\")\n\nReading layer `IL_county_detailed' from data source \n  `/home/himakun/Documents/tools/computing/Data/IL_county_detailed.geojson' \n  using driver `GeoJSON'\nSimple feature collection with 102 features and 61 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -91.51309 ymin: 36.9703 xmax: -87.4952 ymax: 42.50849\nGeodetic CRS:  WGS 84\n\nIL_counties_mssimplified &lt;- rmapshaper::ms_simplify(IL_counties, keep = 0.01)\n\nCook &lt;- filter(IL_counties, NAME == \"Cook County\")\n\nCook_simplify &lt;- sf::st_simplify(Cook, dTolerance = 1000)\n\nggplot() +\n  geom_sf(data = Cook_simplify) +\n  theme_void()\n\n\n\n\n\n\n\n\n\n\nSpatial Interactions of Vector Data: Subsetting and Joining\n\n#--- create points ---#\npoint_1 &lt;- sf::st_point(c(2, 2))\npoint_2 &lt;- sf::st_point(c(1, 1))\npoint_3 &lt;- sf::st_point(c(1, 3))\n\n#--- combine the points to make a single  sf of points ---#\n(\npoints &lt;- \n  list(point_1, point_2, point_3) %&gt;% \n  sf::st_sfc() %&gt;% \n  sf::st_as_sf() %&gt;% \n  dplyr::mutate(point_name = c(\"point 1\", \"point 2\", \"point 3\"))\n)\n\nSimple feature collection with 3 features and 1 field\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 1 ymin: 1 xmax: 2 ymax: 3\nCRS:           NA\n            x point_name\n1 POINT (2 2)    point 1\n2 POINT (1 1)    point 2\n3 POINT (1 3)    point 3\n\n\n\n#--- create points ---#\nline_1 &lt;- sf::st_linestring(rbind(c(0, 0), c(2.5, 0.5)))\nline_2 &lt;- sf::st_linestring(rbind(c(1.5, 0.5), c(2.5, 2)))\n\n#--- combine the points to make a single  sf of points ---#\n(\nlines &lt;- \n  list(line_1, line_2) %&gt;% \n  sf::st_sfc() %&gt;% \n  sf::st_as_sf() %&gt;% \n  dplyr::mutate(line_name = c(\"line 1\", \"line 2\"))\n)\n\nSimple feature collection with 2 features and 1 field\nGeometry type: LINESTRING\nDimension:     XY\nBounding box:  xmin: 0 ymin: 0 xmax: 2.5 ymax: 2\nCRS:           NA\n                            x line_name\n1   LINESTRING (0 0, 2.5 0.5)    line 1\n2 LINESTRING (1.5 0.5, 2.5 2)    line 2\n\n\n\n#--- create polygons ---#\npolygon_1 &lt;- sf::st_polygon(list(\n  rbind(c(0, 0), c(2, 0), c(2, 2), c(0, 2), c(0, 0)) \n))\n\npolygon_2 &lt;- sf::st_polygon(list(\n  rbind(c(0.5, 1.5), c(0.5, 3.5), c(2.5, 3.5), c(2.5, 1.5), c(0.5, 1.5)) \n))\n\npolygon_3 &lt;- sf::st_polygon(list(\n  rbind(c(0.5, 2.5), c(0.5, 3.2), c(2.3, 3.2), c(2, 2), c(0.5, 2.5)) \n))\n\n#--- combine the polygons to make an sf of polygons ---#\n(\npolygons &lt;- \n  list(polygon_1, polygon_2, polygon_3) %&gt;% \n  sf::st_sfc() %&gt;% \n  sf::st_as_sf() %&gt;% \n  dplyr::mutate(polygon_name = c(\"polygon 1\", \"polygon 2\", \"polygon 3\"))\n)\n\nSimple feature collection with 3 features and 1 field\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: 0 ymin: 0 xmax: 2.5 ymax: 3.5\nCRS:           NA\n                               x polygon_name\n1 POLYGON ((0 0, 2 0, 2 2, 0 ...    polygon 1\n2 POLYGON ((0.5 1.5, 0.5 3.5,...    polygon 2\n3 POLYGON ((0.5 2.5, 0.5 3.2,...    polygon 3\n\n\n\nggplot() +\n  geom_sf(data = polygons, aes(fill = polygon_name), alpha = 0.3) +\n  scale_fill_discrete(name = \"Polygons\") +\n  geom_sf(data = lines, aes(color = line_name)) +\n  scale_color_discrete(name = \"Lines\") + \n  geom_sf(data = points, aes(shape = point_name), size = 4) +\n  scale_shape_discrete(name = \"Points\")  \n\n\n\n\n\n\n\n\n\nsf::st_intersects(points, polygons)\n\nSparse geometry binary predicate list of length 3, where the predicate\nwas `intersects'\n 1: 1, 2, 3\n 2: 1\n 3: 2, 3\n\n\n\nset.seed(38424738)\n\npoints_set_1 &lt;-\n  lapply(1:5, function(x) sf::st_point(runif(2))) %&gt;% \n  sf::st_sfc() %&gt;% sf::st_as_sf() %&gt;% \n  dplyr::mutate(id = 1:nrow(.))\n\npoints_set_2 &lt;-\n  lapply(1:5, function(x) sf::st_point(runif(2))) %&gt;% \n  sf::st_sfc() %&gt;% sf::st_as_sf() %&gt;% \n  dplyr::mutate(id = 1:nrow(.))\n\n\nsf::st_is_within_distance(points_set_1, points_set_2, dist = 0.2)\n\nSparse geometry binary predicate list of length 5, where the predicate\nwas `is_within_distance'\n 1: 1\n 2: (empty)\n 3: (empty)\n 4: (empty)\n 5: 3\n\n\n\n#--- Kansas county borders ---#\nKS_counties &lt;-\n  readRDS(\"Data/KS_county_borders.rds\") %&gt;%\n  sf::st_transform(32614)\n\nold-style crs object detected; please recreate object with a recent sf::st_crs()\n\n#--- High-Plains Aquifer boundary ---#\nhpa &lt;- \n  sf::st_read(\"Data/hp_bound2010.shp\") %&gt;%\n  .[1, ] %&gt;%\n  sf::st_transform(st_crs(KS_counties))\n\nReading layer `hp_bound2010' from data source \n  `/home/himakun/Documents/tools/computing/Data/hp_bound2010.shp' \n  using driver `ESRI Shapefile'\nSimple feature collection with 199 features and 1 field\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: -805708.3 ymin: 983257.8 xmax: -21500.35 ymax: 2312747\nProjected CRS: NAD_1983_Albers\n\n#--- all the irrigation wells in KS ---#\nKS_wells &lt;- \n  readRDS(\"Data/Kansas_wells.rds\") %&gt;%\n  sf::st_transform(st_crs(KS_counties))\n\n#--- US railroads in the Mid West region ---#\nrail_roads_mw &lt;- sf::st_read(\"Data/mw_railroads.geojson\")\n\nReading layer `mw_railroads' from data source \n  `/home/himakun/Documents/tools/computing/Data/mw_railroads.geojson' \n  using driver `GeoJSON'\nSimple feature collection with 100661 features and 2 fields\nGeometry type: MULTILINESTRING\nDimension:     XY\nBounding box:  xmin: -414024 ymin: 3692172 xmax: 2094886 ymax: 5446589\nProjected CRS: WGS 84 / UTM zone 14N\n\n\n\nhpa_cropped_to_KS &lt;- sf::st_crop(hpa, KS_wells)\n\nWarning: attribute variables are assumed to be spatially constant throughout\nall geometries\n\n\n\ncounties_intersecting_hpa &lt;- KS_counties[hpa_cropped_to_KS, ]\n\nggplot() +\n  geom_sf(data = counties_intersecting_hpa) +\n  geom_sf(data = hpa_cropped_to_KS, fill = \"blue\", alpha = 0.3) +\n  theme_void()\n\n\n\n\n\n\n\n\n\ncounties_intersecting_hpa\n\nSimple feature collection with 56 features and 9 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 229253.5 ymin: 4094801 xmax: 690085.5 ymax: 4432561\nProjected CRS: WGS 84 / UTM zone 14N\nFirst 10 features:\n   STATEFP COUNTYFP COUNTYNS       AFFGEOID GEOID     NAME LSAD      ALAND\n2       20      075 00485327 0500000US20075 20075 Hamilton   06 2580958328\n4       20      189 00485056 0500000US20189 20189  Stevens   06 1883595654\n5       20      155 00485041 0500000US20155 20155     Reno   06 3251786677\n6       20      129 00485135 0500000US20129 20129   Morton   06 1889994372\n8       20      023 00484981 0500000US20023 20023 Cheyenne   06 2641501921\n9       20      089 00485009 0500000US20089 20089   Jewell   06 2356813568\n11      20      077 00485004 0500000US20077 20077   Harper   06 2075290355\n14      20      165 00485358 0500000US20165 20165     Rush   06 1858997546\n15      20      097 00485013 0500000US20097 20097    Kiowa   06 1871627782\n16      20      109 00485019 0500000US20109 20109    Logan   06 2779039721\n     AWATER                       geometry\n2   2893322 MULTIPOLYGON (((233615.1 42...\n4    464936 MULTIPOLYGON (((273665.9 41...\n5  42963060 MULTIPOLYGON (((546178.6 42...\n6    507796 MULTIPOLYGON (((229431.1 41...\n8   2738021 MULTIPOLYGON (((239494.1 44...\n9  11367163 MULTIPOLYGON (((542298.2 44...\n11  3899269 MULTIPOLYGON (((557559.9 41...\n14   544720 MULTIPOLYGON (((449120.4 42...\n15   596764 MULTIPOLYGON (((450693.8 41...\n16   274632 MULTIPOLYGON (((285802.7 43...\n\n# sf_1[sf_2, op = topological_relation_type]\n\n\nKS_corn_price &lt;-\n  KS_counties %&gt;%\n  dplyr::mutate(corn_price = seq(3.2, 3.9, length = nrow(.))) %&gt;%\n  dplyr::select(COUNTYFP, corn_price)\n\nKS_corn_price\n\nSimple feature collection with 105 features and 2 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 229253.5 ymin: 4094801 xmax: 890007.5 ymax: 4434288\nProjected CRS: WGS 84 / UTM zone 14N\nFirst 10 features:\n   COUNTYFP corn_price                       geometry\n1       133   3.200000 MULTIPOLYGON (((806203.1 41...\n2       075   3.206731 MULTIPOLYGON (((233615.1 42...\n3       123   3.213462 MULTIPOLYGON (((544031.7 43...\n4       189   3.220192 MULTIPOLYGON (((273665.9 41...\n5       155   3.226923 MULTIPOLYGON (((546178.6 42...\n6       129   3.233654 MULTIPOLYGON (((229431.1 41...\n7       073   3.240385 MULTIPOLYGON (((717254.1 42...\n8       023   3.247115 MULTIPOLYGON (((239494.1 44...\n9       089   3.253846 MULTIPOLYGON (((542298.2 44...\n10      059   3.260577 MULTIPOLYGON (((804792.9 42...\n\n\n\n(\n  KS_wells_County &lt;- sf::st_join(KS_wells, KS_corn_price)\n)\n\nSimple feature collection with 37647 features and 4 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 230332 ymin: 4095052 xmax: 887329.7 ymax: 4433597\nProjected CRS: WGS 84 / UTM zone 14N\nFirst 10 features:\n   site    af_used COUNTYFP corn_price                 geometry\n1     1 232.099948      069   3.556731   POINT (372548 4153588)\n2     3  13.183940      039   3.449038 POINT (353698.6 4419755)\n3     5  99.187052      165   3.287500 POINT (486771.7 4260027)\n4     7   0.000000      199   3.644231 POINT (248127.1 4296442)\n5     8 145.520499      055   3.832692 POINT (349813.2 4215310)\n6     9   3.614535      143   3.799038 POINT (612277.6 4322077)\n7    11 188.423543      181   3.590385 POINT (267030.7 4381364)\n8    12  77.335960      177   3.550000 POINT (761774.6 4339039)\n9    15   0.000000      159   3.610577 POINT (560570.3 4235763)\n10   17 167.819034      069   3.556731 POINT (387315.1 4175007)\n\n\n\nKS_wells %&gt;% aggregate(KS_counties, FUN = sum)\n\nSimple feature collection with 105 features and 2 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 229253.5 ymin: 4094801 xmax: 890007.5 ymax: 4434288\nProjected CRS: WGS 84 / UTM zone 14N\nFirst 10 features:\n       site      af_used                       geometry\n1    124453 1.701790e+01 MULTIPOLYGON (((806203.1 41...\n2  12514550 6.261704e+04 MULTIPOLYGON (((233615.1 42...\n3   1964254 1.737791e+03 MULTIPOLYGON (((544031.7 43...\n4  42442400 3.023589e+05 MULTIPOLYGON (((273665.9 41...\n5  68068173 6.110576e+04 MULTIPOLYGON (((546178.6 42...\n6  15756801 9.664610e+04 MULTIPOLYGON (((229431.1 41...\n7    149202 0.000000e+00 MULTIPOLYGON (((717254.1 42...\n8  17167377 5.750807e+04 MULTIPOLYGON (((239494.1 44...\n9   1809003 2.201696e+03 MULTIPOLYGON (((542298.2 44...\n10   160064 4.571102e+00 MULTIPOLYGON (((804792.9 42...\n\n\n\n# sf::st_join(sf_1, sf_2, join = \\(x, y) st_is_within_distance(x, y, dist = 5))\n\n# st_intersection() =&gt; does cropped join",
+    "crumbs": [
+      "Notes",
+      "sf package"
+    ]
+  },
+  {
+    "objectID": "computing/gis.html",
+    "href": "computing/gis.html",
+    "title": "Geospatial with R",
+    "section": "",
+    "text": "This is my practice sections following blog posts by Andrew Heiss.",
+    "crumbs": [
+      "Notes",
+      "Geospatial (R)"
+    ]
+  },
+  {
+    "objectID": "computing/gis.html#middle-earth-maps-with-r",
+    "href": "computing/gis.html#middle-earth-maps-with-r",
+    "title": "Geospatial with R",
+    "section": "Middle earth maps with R",
+    "text": "Middle earth maps with R\nMiddle earth maps with R\n\nQuick reminder: latitude vs. longitude\n\nlibrary(data.table)\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(rnaturalearth)\nlibrary(scales)\nlibrary(patchwork)\nlibrary(leaflet)\nlibrary(glue)\n\npoint_example &lt;- tibble(x = 2, y = 1) %&gt;% \n  mutate(label = glue::glue(\"{x} x, {y} y\\n{y} lat, {x} lon\"))\nlat_labs &lt;- tibble(x = -3, y = seq(-2, 3, 1), label = \"Latitude\")\nlon_labs &lt;- tibble(x = seq(-2, 3, 1), y = -2, label = \"Longitude\")\n\nggplot() +\n  geom_point(data = point_example, aes(x = x, y = y), size = 5) +\n  geom_label(data = point_example, aes(x = x, y = y, label = label),\n            nudge_y = 0.6, family = \"Overpass ExtraBold\") +\n  geom_text(data = lat_labs, aes(x = x, y = y, label = label),\n            hjust = 0.5, vjust = -0.3, family = \"Overpass Light\") +\n  geom_text(data = lon_labs, aes(x = x, y = y, label = label),\n            hjust = 1.1, vjust = -0.5, angle = 90, family = \"Overpass Light\") +\n  geom_hline(yintercept = 0) +\n  geom_vline(xintercept = 0) +\n  scale_x_continuous(breaks = seq(-2, 3, 1)) +\n  scale_y_continuous(breaks = seq(-2, 3, 1)) +\n  coord_equal(xlim = c(-3.5, 3), ylim = c(-3, 3)) +\n  labs(x = NULL, y = NULL) +\n  theme_minimal() +\n  theme(panel.grid.minor = element_blank(),\n        axis.text = element_blank()) \n\n\n\n\n\n\n\n\n\n\nStart the middle earth mapping\n\ncoastline &lt;- read_sf(\"data/ME-GIS/Coastline2.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\ncontours &lt;- read_sf(\"data/ME-GIS/Contours_18.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\nrivers &lt;- read_sf(\"data/ME-GIS/Rivers.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\nroads &lt;- read_sf(\"data/ME-GIS/Roads.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\nlakes &lt;- read_sf(\"data/ME-GIS/Lakes.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\nregions &lt;- read_sf(\"data/ME-GIS/Regions_Anno.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\nforests &lt;- read_sf(\"data/ME-GIS/Forests.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\nmountains &lt;- read_sf(\"data/ME-GIS/Mountains_Anno.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\nplacenames &lt;- read_sf(\"data/ME-GIS/Combined_Placenames.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\n\nmiles_to_meters &lt;- function(x) {\n  x * 1609.344\n}\n\nmeters_to_miles &lt;- function(x) {\n  x / 1609.344\n}\n\nclr_green &lt;- \"#035711\"\nclr_blue &lt;- \"#0776e0\"\nclr_yellow &lt;- \"#fffce3\"\n\n# Format numeric coordinates with degree symbols and cardinal directions\nformat_coords &lt;- function(coords) {\n  ns &lt;- ifelse(coords[[1]][2] &gt; 0, \"N\", \"S\")\n  ew &lt;- ifelse(coords[[1]][1] &gt; 0, \"E\", \"W\")\n  \n  glue(\"{latitude}°{ns} {longitude}°{ew}\",\n       latitude = sprintf(\"%.6f\", coords[[1]][2]),\n       longitude = sprintf(\"%.6f\", coords[[1]][1]))\n}\n\n\nExploring the different layers\n\nggplot() +\n  geom_sf(data = coastline, linewidth = 0.25, color = \"grey50\")\n\n\n\n\n\n\n\n\n\n\nAdd rivers and lakes\n\nggplot() +\n  geom_sf(data = coastline, linewidth = 0.25, color = \"grey50\") +\n  geom_sf(data = rivers, linewidth = 0.2, color = clr_blue, alpha = 0.5) +\n  geom_sf(data = lakes, linewidth = 0.2, color = clr_blue, fill = clr_blue)\n\n\n\n\n\n\n\n\n\n\nPutting some labels\n\nplaces &lt;- placenames %&gt;% \n  filter(NAME %in% c(\"Hobbiton\", \"Rivendell\", \"Edoras\", \"Minas Tirith\"))\n\nggplot()+\n  geom_sf(data = coastline, linewidth = 0.25, color = \"grey50\") +\n  geom_sf(data = rivers, linewidth = 0.2, color = clr_blue, alpha = 0.5) +\n  geom_sf(data = lakes, linewidth = 0.2, color = clr_blue, fill = clr_blue) +\n  geom_sf(data = places, size = 1) +\n  geom_sf_label(data = places, aes(label = NAME), nudge_y = miles_to_meters(50))\n\n\n\n\n\n\n\n\n\n\nFancy map with lot of layers\n\nplaces &lt;- placenames %&gt;% \n  filter(NAME %in% c(\"Hobbiton\", \"Rivendell\", \"Edoras\", \"Minas Tirith\"))\n\nggplot() +\n  geom_sf(data = contours, linewidth = 0.15, color = \"grey90\") +\n  geom_sf(data = coastline, linewidth = 0.25, color = \"grey50\") +\n  geom_sf(data = rivers, linewidth = 0.2, color = clr_blue, alpha = 0.5) +\n  geom_sf(data = lakes, linewidth = 0.2, color = clr_blue, fill = clr_blue) +\n  geom_sf(data = forests, linewidth = 0, fill = clr_green, alpha = 0.5) +\n  geom_sf(data = mountains, linewidth = 0.25, linetype = \"dashed\") +\n  geom_sf(data = places) +\n  geom_sf_label(data = places, aes(label = NAME), nudge_y = miles_to_meters(40),\n                family = \"Overpass ExtraBold\", fontface = \"plain\") +\n  theme_void() +\n  theme(plot.background = element_rect(fill = clr_yellow))\n\n\n\n\n\n\n\n\n\n\nFocusing on Shire\n\nhobbiton &lt;- places %&gt;% \n  filter(NAME == \"Hobbiton\") %&gt;% \n  mutate(geometry_x = map_dbl(geometry, ~as.numeric(.)[1]),\n         geometry_y = map_dbl(geometry, ~as.numeric(.)[2]))\n\nhobbiton %&gt;% \n  select(LAYER, NAME, geometry_x, geometry_y)\n\nSimple feature collection with 1 feature and 4 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 515948 ymin: 1043820 xmax: 515948 ymax: 1043820\nProjected CRS: UTM_Zone_31_Northern_Hemisphere\n# A tibble: 1 × 5\n  LAYER     NAME     geometry_x geometry_y         geometry\n  &lt;chr&gt;     &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt;      &lt;POINT [m]&gt;\n1 TownNames Hobbiton    515948.   1043820. (515948 1043820)\n\nshire_towns &lt;- placenames %&gt;% filter(LAYER == \"TownNames\")\n\nggplot() +\n  geom_sf(data = rivers, linewidth = 0.45, color = clr_blue, alpha = 0.5) +\n  geom_sf(data = roads) +\n  geom_sf(data = shire_towns, size = 2) +\n  geom_sf_label(data = shire_towns, aes(label = NAME), nudge_y = miles_to_meters(3),\n                family = \"Overpass ExtraBold\", fontface = \"plain\") +\n  coord_sf(xlim = c(hobbiton$geometry_x - miles_to_meters(30), \n                    hobbiton$geometry_x + miles_to_meters(60)),\n           ylim = c(hobbiton$geometry_y - miles_to_meters(35), \n                    hobbiton$geometry_y + miles_to_meters(20)))\n\n\n\n\n\n\n\n\n\n\nFancy map of Shire\n\nlibrary(ggspatial) \n\nshire_towns &lt;- placenames %&gt;% filter(LAYER == \"TownNames\")\n\nggplot() +\n  geom_sf(data = roads, aes(linewidth = TYPE), color = \"grey80\") +\n  geom_sf(data = coastline, linewidth = 0.25, color = \"grey50\") +\n  geom_sf(data = rivers, linewidth = 0.45, color = clr_blue, alpha = 0.5) +\n  geom_sf_text(data = rivers, aes(label = NAME), color = clr_blue,\n               family = \"Overpass SemiBold\", fontface = \"italic\", size = 3.5) +\n  geom_sf_text(data = regions, aes(label = name),\n               family = \"Overpass Heavy\", size = 5, color = \"grey30\") +\n  geom_sf(data = forests, linewidth = 0, fill = clr_green, alpha = 0.4) +\n  geom_sf_text(data = forests, aes(label = NAME), nudge_y = miles_to_meters(1),\n               color = clr_green, family = \"Overpass ExtraBold\", fontface = \"italic\", size = 4) +\n  geom_sf(data = shire_towns, size = 2) +\n  geom_sf_label(data = shire_towns, aes(label = NAME), nudge_y = miles_to_meters(3),\n                family = \"Overpass ExtraBold\", fontface = \"plain\") +\n  scale_linewidth_discrete(range = c(1, 0.3), guide = \"none\") +\n  annotation_scale(location = \"tl\", bar_cols = c(\"grey30\", \"white\"),\n                   text_family = \"Overpass\",\n                   unit_category = \"imperial\") +\n  annotation_north_arrow(\n    location = \"tl\", pad_y = unit(1.5, \"lines\"),\n    style = north_arrow_fancy_orienteering(fill = c(\"grey30\", \"white\"), \n                                           line_col = \"grey30\",\n                                           text_family = \"Overpass\")) +\n  coord_sf(xlim = c(hobbiton$geometry_x - miles_to_meters(30), \n                    hobbiton$geometry_x + miles_to_meters(60)),\n           ylim = c(hobbiton$geometry_y - miles_to_meters(35), \n                    hobbiton$geometry_y + miles_to_meters(20))) +\n  labs(title = \"The Shire\") +\n  theme_void() +\n  theme(plot.background = element_rect(fill = clr_yellow),\n        plot.title = element_text(family = \"Aniron\", size = rel(2), \n                                  hjust = 0.02))\n\n\n\n\n\n\n\n\n\n\nDistances between places\n\nrivendell &lt;- places %&gt;% filter(NAME == \"Rivendell\")\n\nst_distance(hobbiton, rivendell) %&gt;% meters_to_miles()\n\nUnits: [m]\n         [,1]\n[1,] 229.0673",
+    "crumbs": [
+      "Notes",
+      "Geospatial (R)"
+    ]
+  },
+  {
+    "objectID": "computing/gis.html#how-to-use-a-histogram-as-a-legend-in-ggplot2",
+    "href": "computing/gis.html#how-to-use-a-histogram-as-a-legend-in-ggplot2",
+    "title": "Geospatial with R",
+    "section": "How to use a histogram as a legend in {ggplot2}",
+    "text": "How to use a histogram as a legend in {ggplot2}\nCite: link",
+    "crumbs": [
+      "Notes",
+      "Geospatial (R)"
+    ]
+  },
+  {
     "objectID": "computing/blp.html",
     "href": "computing/blp.html",
     "title": "BLP Demystified: From Basics to Brain-Busting Models!",
@@ -385,424 +814,6 @@
     "crumbs": [
       "Notes",
       "BLP code (Julia)"
-    ]
-  },
-  {
-    "objectID": "computing/gis.html",
-    "href": "computing/gis.html",
-    "title": "Geospatial with R",
-    "section": "",
-    "text": "This is my practice sections following blog posts by Andrew Heiss.",
-    "crumbs": [
-      "Notes",
-      "Geospatial (R)"
-    ]
-  },
-  {
-    "objectID": "computing/gis.html#middle-earth-maps-with-r",
-    "href": "computing/gis.html#middle-earth-maps-with-r",
-    "title": "Geospatial with R",
-    "section": "Middle earth maps with R",
-    "text": "Middle earth maps with R\nMiddle earth maps with R\n\nQuick reminder: latitude vs. longitude\n\nlibrary(data.table)\nlibrary(tidyverse)\nlibrary(sf)\nlibrary(rnaturalearth)\nlibrary(scales)\nlibrary(patchwork)\nlibrary(leaflet)\nlibrary(glue)\n\npoint_example &lt;- tibble(x = 2, y = 1) %&gt;% \n  mutate(label = glue::glue(\"{x} x, {y} y\\n{y} lat, {x} lon\"))\nlat_labs &lt;- tibble(x = -3, y = seq(-2, 3, 1), label = \"Latitude\")\nlon_labs &lt;- tibble(x = seq(-2, 3, 1), y = -2, label = \"Longitude\")\n\nggplot() +\n  geom_point(data = point_example, aes(x = x, y = y), size = 5) +\n  geom_label(data = point_example, aes(x = x, y = y, label = label),\n            nudge_y = 0.6, family = \"Overpass ExtraBold\") +\n  geom_text(data = lat_labs, aes(x = x, y = y, label = label),\n            hjust = 0.5, vjust = -0.3, family = \"Overpass Light\") +\n  geom_text(data = lon_labs, aes(x = x, y = y, label = label),\n            hjust = 1.1, vjust = -0.5, angle = 90, family = \"Overpass Light\") +\n  geom_hline(yintercept = 0) +\n  geom_vline(xintercept = 0) +\n  scale_x_continuous(breaks = seq(-2, 3, 1)) +\n  scale_y_continuous(breaks = seq(-2, 3, 1)) +\n  coord_equal(xlim = c(-3.5, 3), ylim = c(-3, 3)) +\n  labs(x = NULL, y = NULL) +\n  theme_minimal() +\n  theme(panel.grid.minor = element_blank(),\n        axis.text = element_blank()) \n\n\n\n\n\n\n\n\n\n\nStart the middle earth mapping\n\ncoastline &lt;- read_sf(\"data/ME-GIS/Coastline2.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\ncontours &lt;- read_sf(\"data/ME-GIS/Contours_18.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\nrivers &lt;- read_sf(\"data/ME-GIS/Rivers.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\nroads &lt;- read_sf(\"data/ME-GIS/Roads.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\nlakes &lt;- read_sf(\"data/ME-GIS/Lakes.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\nregions &lt;- read_sf(\"data/ME-GIS/Regions_Anno.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\nforests &lt;- read_sf(\"data/ME-GIS/Forests.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\nmountains &lt;- read_sf(\"data/ME-GIS/Mountains_Anno.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\nplacenames &lt;- read_sf(\"data/ME-GIS/Combined_Placenames.shp\") %&gt;% \n  mutate(across(where(is.character), ~iconv(., from = \"ISO-8859-1\", to = \"UTF-8\")))\n\n\nmiles_to_meters &lt;- function(x) {\n  x * 1609.344\n}\n\nmeters_to_miles &lt;- function(x) {\n  x / 1609.344\n}\n\nclr_green &lt;- \"#035711\"\nclr_blue &lt;- \"#0776e0\"\nclr_yellow &lt;- \"#fffce3\"\n\n# Format numeric coordinates with degree symbols and cardinal directions\nformat_coords &lt;- function(coords) {\n  ns &lt;- ifelse(coords[[1]][2] &gt; 0, \"N\", \"S\")\n  ew &lt;- ifelse(coords[[1]][1] &gt; 0, \"E\", \"W\")\n  \n  glue(\"{latitude}°{ns} {longitude}°{ew}\",\n       latitude = sprintf(\"%.6f\", coords[[1]][2]),\n       longitude = sprintf(\"%.6f\", coords[[1]][1]))\n}\n\n\nExploring the different layers\n\nggplot() +\n  geom_sf(data = coastline, linewidth = 0.25, color = \"grey50\")\n\n\n\n\n\n\n\n\n\n\nAdd rivers and lakes\n\nggplot() +\n  geom_sf(data = coastline, linewidth = 0.25, color = \"grey50\") +\n  geom_sf(data = rivers, linewidth = 0.2, color = clr_blue, alpha = 0.5) +\n  geom_sf(data = lakes, linewidth = 0.2, color = clr_blue, fill = clr_blue)\n\n\n\n\n\n\n\n\n\n\nPutting some labels\n\nplaces &lt;- placenames %&gt;% \n  filter(NAME %in% c(\"Hobbiton\", \"Rivendell\", \"Edoras\", \"Minas Tirith\"))\n\nggplot()+\n  geom_sf(data = coastline, linewidth = 0.25, color = \"grey50\") +\n  geom_sf(data = rivers, linewidth = 0.2, color = clr_blue, alpha = 0.5) +\n  geom_sf(data = lakes, linewidth = 0.2, color = clr_blue, fill = clr_blue) +\n  geom_sf(data = places, size = 1) +\n  geom_sf_label(data = places, aes(label = NAME), nudge_y = miles_to_meters(50))\n\n\n\n\n\n\n\n\n\n\nFancy map with lot of layers\n\nplaces &lt;- placenames %&gt;% \n  filter(NAME %in% c(\"Hobbiton\", \"Rivendell\", \"Edoras\", \"Minas Tirith\"))\n\nggplot() +\n  geom_sf(data = contours, linewidth = 0.15, color = \"grey90\") +\n  geom_sf(data = coastline, linewidth = 0.25, color = \"grey50\") +\n  geom_sf(data = rivers, linewidth = 0.2, color = clr_blue, alpha = 0.5) +\n  geom_sf(data = lakes, linewidth = 0.2, color = clr_blue, fill = clr_blue) +\n  geom_sf(data = forests, linewidth = 0, fill = clr_green, alpha = 0.5) +\n  geom_sf(data = mountains, linewidth = 0.25, linetype = \"dashed\") +\n  geom_sf(data = places) +\n  geom_sf_label(data = places, aes(label = NAME), nudge_y = miles_to_meters(40),\n                family = \"Overpass ExtraBold\", fontface = \"plain\") +\n  theme_void() +\n  theme(plot.background = element_rect(fill = clr_yellow))\n\n\n\n\n\n\n\n\n\n\nFocusing on Shire\n\nhobbiton &lt;- places %&gt;% \n  filter(NAME == \"Hobbiton\") %&gt;% \n  mutate(geometry_x = map_dbl(geometry, ~as.numeric(.)[1]),\n         geometry_y = map_dbl(geometry, ~as.numeric(.)[2]))\n\nhobbiton %&gt;% \n  select(LAYER, NAME, geometry_x, geometry_y)\n\nSimple feature collection with 1 feature and 4 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 515948 ymin: 1043820 xmax: 515948 ymax: 1043820\nProjected CRS: UTM_Zone_31_Northern_Hemisphere\n# A tibble: 1 × 5\n  LAYER     NAME     geometry_x geometry_y         geometry\n  &lt;chr&gt;     &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt;      &lt;POINT [m]&gt;\n1 TownNames Hobbiton    515948.   1043820. (515948 1043820)\n\nshire_towns &lt;- placenames %&gt;% filter(LAYER == \"TownNames\")\n\nggplot() +\n  geom_sf(data = rivers, linewidth = 0.45, color = clr_blue, alpha = 0.5) +\n  geom_sf(data = roads) +\n  geom_sf(data = shire_towns, size = 2) +\n  geom_sf_label(data = shire_towns, aes(label = NAME), nudge_y = miles_to_meters(3),\n                family = \"Overpass ExtraBold\", fontface = \"plain\") +\n  coord_sf(xlim = c(hobbiton$geometry_x - miles_to_meters(30), \n                    hobbiton$geometry_x + miles_to_meters(60)),\n           ylim = c(hobbiton$geometry_y - miles_to_meters(35), \n                    hobbiton$geometry_y + miles_to_meters(20)))\n\n\n\n\n\n\n\n\n\n\nFancy map of Shire\n\nlibrary(ggspatial) \n\nshire_towns &lt;- placenames %&gt;% filter(LAYER == \"TownNames\")\n\nggplot() +\n  geom_sf(data = roads, aes(linewidth = TYPE), color = \"grey80\") +\n  geom_sf(data = coastline, linewidth = 0.25, color = \"grey50\") +\n  geom_sf(data = rivers, linewidth = 0.45, color = clr_blue, alpha = 0.5) +\n  geom_sf_text(data = rivers, aes(label = NAME), color = clr_blue,\n               family = \"Overpass SemiBold\", fontface = \"italic\", size = 3.5) +\n  geom_sf_text(data = regions, aes(label = name),\n               family = \"Overpass Heavy\", size = 5, color = \"grey30\") +\n  geom_sf(data = forests, linewidth = 0, fill = clr_green, alpha = 0.4) +\n  geom_sf_text(data = forests, aes(label = NAME), nudge_y = miles_to_meters(1),\n               color = clr_green, family = \"Overpass ExtraBold\", fontface = \"italic\", size = 4) +\n  geom_sf(data = shire_towns, size = 2) +\n  geom_sf_label(data = shire_towns, aes(label = NAME), nudge_y = miles_to_meters(3),\n                family = \"Overpass ExtraBold\", fontface = \"plain\") +\n  scale_linewidth_discrete(range = c(1, 0.3), guide = \"none\") +\n  annotation_scale(location = \"tl\", bar_cols = c(\"grey30\", \"white\"),\n                   text_family = \"Overpass\",\n                   unit_category = \"imperial\") +\n  annotation_north_arrow(\n    location = \"tl\", pad_y = unit(1.5, \"lines\"),\n    style = north_arrow_fancy_orienteering(fill = c(\"grey30\", \"white\"), \n                                           line_col = \"grey30\",\n                                           text_family = \"Overpass\")) +\n  coord_sf(xlim = c(hobbiton$geometry_x - miles_to_meters(30), \n                    hobbiton$geometry_x + miles_to_meters(60)),\n           ylim = c(hobbiton$geometry_y - miles_to_meters(35), \n                    hobbiton$geometry_y + miles_to_meters(20))) +\n  labs(title = \"The Shire\") +\n  theme_void() +\n  theme(plot.background = element_rect(fill = clr_yellow),\n        plot.title = element_text(family = \"Aniron\", size = rel(2), \n                                  hjust = 0.02))\n\n\n\n\n\n\n\n\n\n\nDistances between places\n\nrivendell &lt;- places %&gt;% filter(NAME == \"Rivendell\")\n\nst_distance(hobbiton, rivendell) %&gt;% meters_to_miles()\n\nUnits: [m]\n         [,1]\n[1,] 229.0673",
-    "crumbs": [
-      "Notes",
-      "Geospatial (R)"
-    ]
-  },
-  {
-    "objectID": "computing/gis.html#how-to-use-a-histogram-as-a-legend-in-ggplot2",
-    "href": "computing/gis.html#how-to-use-a-histogram-as-a-legend-in-ggplot2",
-    "title": "Geospatial with R",
-    "section": "How to use a histogram as a legend in {ggplot2}",
-    "text": "How to use a histogram as a legend in {ggplot2}\nCite: link",
-    "crumbs": [
-      "Notes",
-      "Geospatial (R)"
-    ]
-  },
-  {
-    "objectID": "computing/sf-vector-data.html",
-    "href": "computing/sf-vector-data.html",
-    "title": "Geospatial with R",
-    "section": "",
-    "text": "This is my practice sections following R as GIS for Economists.\n\nBasics\nLoad the packages:\n\nif (!require(\"pacman\")) install.packages(\"pacman\")\npacman::p_load(\n  sf, # vector data operations\n  tidyverse, # data wrangling\n  data.table, # data wrangling\n  tmap, # make maps\n  mapview, # create an interactive map\n  patchwork, # arranging maps\n  rmapshaper\n)\n\n\n#--- a dataset that comes with the sf package ---#\nnc &lt;- sf::st_read(system.file(\"shape/nc.shp\", package = \"sf\"))\n\nReading layer `nc' from data source \n  `/home/himakun/R/x86_64-pc-linux-gnu-library/4.4/sf/shape/nc.shp' \n  using driver `ESRI Shapefile'\nSimple feature collection with 100 features and 14 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965\nGeodetic CRS:  NAD27\n\nggplot() +\n  geom_sf(data = nc) +\n  theme_void()\n\n\n\n\n\n\n\n\n\nhead(nc)\n\nSimple feature collection with 6 features and 14 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -81.74107 ymin: 36.07282 xmax: -75.77316 ymax: 36.58965\nGeodetic CRS:  NAD27\n   AREA PERIMETER CNTY_ CNTY_ID        NAME  FIPS FIPSNO CRESS_ID BIR74 SID74\n1 0.114     1.442  1825    1825        Ashe 37009  37009        5  1091     1\n2 0.061     1.231  1827    1827   Alleghany 37005  37005        3   487     0\n3 0.143     1.630  1828    1828       Surry 37171  37171       86  3188     5\n4 0.070     2.968  1831    1831   Currituck 37053  37053       27   508     1\n5 0.153     2.206  1832    1832 Northampton 37131  37131       66  1421     9\n6 0.097     1.670  1833    1833    Hertford 37091  37091       46  1452     7\n  NWBIR74 BIR79 SID79 NWBIR79                       geometry\n1      10  1364     0      19 MULTIPOLYGON (((-81.47276 3...\n2      10   542     3      12 MULTIPOLYGON (((-81.23989 3...\n3     208  3616     6     260 MULTIPOLYGON (((-80.45634 3...\n4     123   830     2     145 MULTIPOLYGON (((-76.00897 3...\n5    1066  1606     3    1197 MULTIPOLYGON (((-77.21767 3...\n6     954  1838     5    1237 MULTIPOLYGON (((-76.74506 3...\n\n\nsfg: LINESTRING\n\n#--- collection of points in a matrix form ---#\ns1 &lt;- rbind(c(2, 3), c(3, 4), c(3, 5), c(1, 5))\n\n#--- see what s1 looks like ---#\ns1\n\n     [,1] [,2]\n[1,]    2    3\n[2,]    3    4\n[3,]    3    5\n[4,]    1    5\n\n#--- create a \"LINESTRING\" ---#\na_linestring &lt;- sf::st_linestring(s1)\n\n#--- check the class ---#\nclass(a_linestring)\n\n[1] \"XY\"         \"LINESTRING\" \"sfg\"       \n\n\nsfg: POLYGON\n\n#--- a hole within p1 ---#\np1 &lt;- rbind(c(0, 0), c(3, 0), c(3, 2), c(2, 5), c(1, 3), c(0, 0))\np2 &lt;- rbind(c(1, 1), c(1, 2), c(2, 2), c(1, 1))\n\n#--- create a polygon with hole ---#\na_plygon_with_a_hole &lt;- sf::st_polygon(list(p1, p2))\n\nplot(a_plygon_with_a_hole)\n\n\n\n\n\n\n\n\nCreating sfc object or sf object:\n\n#--- create an sfc ---#\nsfc_ex &lt;- sf::st_sfc(list(a_linestring, a_plygon_with_a_hole))\n\n#--- create a data.frame ---#\ndf_ex &lt;- data.frame(name = c(\"A\", \"B\"))\n\n#--- add the sfc as a column ---#\ndf_ex$geometry &lt;- sfc_ex\n\n#--- take a look ---#\ndf_ex\n\n  name                       geometry\n1    A LINESTRING (2 3, 3 4, 3 5, ...\n2    B POLYGON ((0 0, 3 0, 3 2, 2 ...\n\n\n\n#--- let R recognize the data frame as sf ---#\nsf_ex &lt;- sf::st_as_sf(df_ex)\n\n#--- see what it looks like ---#\nsf_ex\n\nSimple feature collection with 2 features and 1 field\nGeometry type: GEOMETRY\nDimension:     XY\nBounding box:  xmin: 0 ymin: 0 xmax: 3 ymax: 5\nCRS:           NA\n  name                       geometry\n1    A LINESTRING (2 3, 3 4, 3 5, ...\n2    B POLYGON ((0 0, 3 0, 3 2, 2 ...\n\n\nRead shapefile:\n\n#--- read a NE county boundary shapefile ---#\nnc_loaded &lt;- sf::st_read(\"Data/nc.shp\")\n\nReading layer `nc' from data source \n  `/home/himakun/Documents/tools/computing/Data/nc.shp' using driver `ESRI Shapefile'\nSimple feature collection with 100 features and 1 field\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965\nGeodetic CRS:  NAD27\n\n\nProjection with different CRS:\n\nsf::st_crs(nc)\n\nCoordinate Reference System:\n  User input: NAD27 \n  wkt:\nGEOGCRS[\"NAD27\",\n    DATUM[\"North American Datum 1927\",\n        ELLIPSOID[\"Clarke 1866\",6378206.4,294.978698213898,\n            LENGTHUNIT[\"metre\",1]]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"latitude\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"longitude\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    ID[\"EPSG\",4267]]\n\n\nChange the CRS projection:\n\n#--- transform ---#\nnc_wgs84 &lt;- sf::st_transform(nc, 4326)\n\n#--- check if the transformation was successful ---#\nsf::st_crs(nc_wgs84)\n\nCoordinate Reference System:\n  User input: EPSG:4326 \n  wkt:\nGEOGCRS[\"WGS 84\",\n    ENSEMBLE[\"World Geodetic System 1984 ensemble\",\n        MEMBER[\"World Geodetic System 1984 (Transit)\"],\n        MEMBER[\"World Geodetic System 1984 (G730)\"],\n        MEMBER[\"World Geodetic System 1984 (G873)\"],\n        MEMBER[\"World Geodetic System 1984 (G1150)\"],\n        MEMBER[\"World Geodetic System 1984 (G1674)\"],\n        MEMBER[\"World Geodetic System 1984 (G1762)\"],\n        MEMBER[\"World Geodetic System 1984 (G2139)\"],\n        ELLIPSOID[\"WGS 84\",6378137,298.257223563,\n            LENGTHUNIT[\"metre\",1]],\n        ENSEMBLEACCURACY[2.0]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"geodetic latitude (Lat)\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"geodetic longitude (Lon)\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    USAGE[\n        SCOPE[\"Horizontal component of 3D system.\"],\n        AREA[\"World.\"],\n        BBOX[-90,-180,90,180]],\n    ID[\"EPSG\",4326]]\n\n#--- transform ---#\nnc_utm17N &lt;- sf::st_transform(nc_wgs84, 26917)\n\n#--- check if the transformation was successful ---#\nsf::st_crs(nc_utm17N)\n\nCoordinate Reference System:\n  User input: EPSG:26917 \n  wkt:\nPROJCRS[\"NAD83 / UTM zone 17N\",\n    BASEGEOGCRS[\"NAD83\",\n        DATUM[\"North American Datum 1983\",\n            ELLIPSOID[\"GRS 1980\",6378137,298.257222101,\n                LENGTHUNIT[\"metre\",1]]],\n        PRIMEM[\"Greenwich\",0,\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        ID[\"EPSG\",4269]],\n    CONVERSION[\"UTM zone 17N\",\n        METHOD[\"Transverse Mercator\",\n            ID[\"EPSG\",9807]],\n        PARAMETER[\"Latitude of natural origin\",0,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8801]],\n        PARAMETER[\"Longitude of natural origin\",-81,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8802]],\n        PARAMETER[\"Scale factor at natural origin\",0.9996,\n            SCALEUNIT[\"unity\",1],\n            ID[\"EPSG\",8805]],\n        PARAMETER[\"False easting\",500000,\n            LENGTHUNIT[\"metre\",1],\n            ID[\"EPSG\",8806]],\n        PARAMETER[\"False northing\",0,\n            LENGTHUNIT[\"metre\",1],\n            ID[\"EPSG\",8807]]],\n    CS[Cartesian,2],\n        AXIS[\"(E)\",east,\n            ORDER[1],\n            LENGTHUNIT[\"metre\",1]],\n        AXIS[\"(N)\",north,\n            ORDER[2],\n            LENGTHUNIT[\"metre\",1]],\n    USAGE[\n        SCOPE[\"Engineering survey, topographic mapping.\"],\n        AREA[\"North America - between 84°W and 78°W - onshore and offshore. Canada - Nunavut; Ontario; Quebec. United States (USA) - Florida; Georgia; Kentucky; Maryland; Michigan; New York; North Carolina; Ohio; Pennsylvania; South Carolina; Tennessee; Virginia; West Virginia.\"],\n        BBOX[23.81,-84,84,-78]],\n    ID[\"EPSG\",26917]]\n\n\n\n#--- transform ---#\nnc_utm17N_2 &lt;- sf::st_transform(nc_wgs84, sf::st_crs(nc_utm17N))\n\n#--- check if the transformation was successful ---#\nsf::st_crs(nc_utm17N_2)\n\nCoordinate Reference System:\n  User input: EPSG:26917 \n  wkt:\nPROJCRS[\"NAD83 / UTM zone 17N\",\n    BASEGEOGCRS[\"NAD83\",\n        DATUM[\"North American Datum 1983\",\n            ELLIPSOID[\"GRS 1980\",6378137,298.257222101,\n                LENGTHUNIT[\"metre\",1]]],\n        PRIMEM[\"Greenwich\",0,\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        ID[\"EPSG\",4269]],\n    CONVERSION[\"UTM zone 17N\",\n        METHOD[\"Transverse Mercator\",\n            ID[\"EPSG\",9807]],\n        PARAMETER[\"Latitude of natural origin\",0,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8801]],\n        PARAMETER[\"Longitude of natural origin\",-81,\n            ANGLEUNIT[\"degree\",0.0174532925199433],\n            ID[\"EPSG\",8802]],\n        PARAMETER[\"Scale factor at natural origin\",0.9996,\n            SCALEUNIT[\"unity\",1],\n            ID[\"EPSG\",8805]],\n        PARAMETER[\"False easting\",500000,\n            LENGTHUNIT[\"metre\",1],\n            ID[\"EPSG\",8806]],\n        PARAMETER[\"False northing\",0,\n            LENGTHUNIT[\"metre\",1],\n            ID[\"EPSG\",8807]]],\n    CS[Cartesian,2],\n        AXIS[\"(E)\",east,\n            ORDER[1],\n            LENGTHUNIT[\"metre\",1]],\n        AXIS[\"(N)\",north,\n            ORDER[2],\n            LENGTHUNIT[\"metre\",1]],\n    USAGE[\n        SCOPE[\"Engineering survey, topographic mapping.\"],\n        AREA[\"North America - between 84°W and 78°W - onshore and offshore. Canada - Nunavut; Ontario; Quebec. United States (USA) - Florida; Georgia; Kentucky; Maryland; Michigan; New York; North Carolina; Ohio; Pennsylvania; South Carolina; Tennessee; Virginia; West Virginia.\"],\n        BBOX[23.81,-84,84,-78]],\n    ID[\"EPSG\",26917]]\n\n\nTurning dataframe into sf object\n\n#--- read irrigation well registration data ---#\n(\n  wells &lt;- readRDS(\"Data/well_registration.rds\")\n)\n\nKey: &lt;wellid&gt;\n        wellid ownerid        nrdname acres  regdate section     longdd\n         &lt;int&gt;   &lt;int&gt;         &lt;char&gt; &lt;num&gt;   &lt;char&gt;   &lt;int&gt;      &lt;num&gt;\n     1:      2  106106 Central Platte   160 12/30/55       3  -99.58401\n     2:      3   14133   South Platte    46  4/29/31       8 -102.62495\n     3:      4   14133   South Platte    46  4/29/31       8 -102.62495\n     4:      5   14133   South Platte    46  4/29/31       8 -102.62495\n     5:      6   15837 Central Platte   160  8/29/32      20  -99.62580\n    ---                                                                \n105818: 244568  135045 Upper Big Blue    NA  8/26/16      30  -97.58872\n105819: 244569  105428    Little Blue    NA  8/26/16      24  -97.60752\n105820: 244570  135045 Upper Big Blue    NA  8/26/16      30  -97.58294\n105821: 244571  135045 Upper Big Blue    NA  8/26/16      25  -97.59775\n105822: 244572  105428    Little Blue    NA  8/26/16      15  -97.64086\n           latdd\n           &lt;num&gt;\n     1: 40.69825\n     2: 41.11699\n     3: 41.11699\n     4: 41.11699\n     5: 40.73268\n    ---         \n105818: 40.89017\n105819: 40.13257\n105820: 40.88722\n105821: 40.89639\n105822: 40.13380\n\n\n\n#--- recognize it as an sf ---#\nwells_sf &lt;- sf::st_as_sf(wells, coords = c(\"longdd\", \"latdd\")) %&gt;% \n  st_set_crs(4269)\n\n#--- take a look at the data ---#\nhead(wells_sf[, 1:5])\n\nSimple feature collection with 6 features and 5 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: -102.6249 ymin: 40.69824 xmax: -99.58401 ymax: 41.11699\nGeodetic CRS:  NAD83\n  wellid ownerid        nrdname acres  regdate                   geometry\n1      2  106106 Central Platte   160 12/30/55 POINT (-99.58401 40.69825)\n2      3   14133   South Platte    46  4/29/31 POINT (-102.6249 41.11699)\n3      4   14133   South Platte    46  4/29/31 POINT (-102.6249 41.11699)\n4      5   14133   South Platte    46  4/29/31 POINT (-102.6249 41.11699)\n5      6   15837 Central Platte   160  8/29/32  POINT (-99.6258 40.73268)\n6      7   90248 Central Platte   120  2/15/35 POINT (-99.64524 40.73164)\n\n\nConversion to and from sp objects\n\n#--- conversion ---#\nwells_sp &lt;- as(wells_sf, \"Spatial\")\n\n#--- check the class ---#\nclass(wells_sp)\n\n[1] \"SpatialPointsDataFrame\"\nattr(,\"package\")\n[1] \"sp\"\n\n#--- revert back to sf ---#\nwells_sf &lt;- sf::st_as_sf(wells_sp)\n\n#--- check the class ---#\nclass(wells_sf)\n\n[1] \"sf\"         \"data.frame\"\n\n\nReverting sf object back into dataframe\n\n#--- remove geometry ---#\nwells_no_longer_sf &lt;- sf::st_drop_geometry(wells_sf)\n\n#--- take a look ---#\nhead(wells_no_longer_sf)\n\n  wellid ownerid        nrdname acres  regdate section\n1      2  106106 Central Platte   160 12/30/55       3\n2      3   14133   South Platte    46  4/29/31       8\n3      4   14133   South Platte    46  4/29/31       8\n4      5   14133   South Platte    46  4/29/31       8\n5      6   15837 Central Platte   160  8/29/32      20\n6      7   90248 Central Platte   120  2/15/35      19\n\n\n\n#--- read wells location data ---#\nurnrd_wells_sf &lt;-\n  readRDS(\"Data/urnrd_wells.rds\") %&gt;%\n  #--- project to UTM 14N WGS 84 ---#\n  sf::st_transform(32614)\n\n#--- create a one-mile buffer around the wells ---#\nwells_buffer &lt;- sf::st_buffer(urnrd_wells_sf, dist = 1600)\n\nhead(wells_buffer)\n\nSimple feature collection with 6 features and 6 fields\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: 251786.6 ymin: 4483187 xmax: 301596 ymax: 4499464\nProjected CRS: WGS 84 / UTM zone 14N\n  wellid ownerid          nrdname acres regdate section\n1     79   98705 Upper Republican   400 12/9/40       5\n2    109  115260 Upper Republican    80 3/11/41      20\n3    161  115260 Upper Republican    50  3/8/43      17\n4    162   41350 Upper Republican   140 3/23/43      28\n5    164  105393 Upper Republican    90  7/6/43      12\n6    166   51341 Upper Republican   110 8/31/43      18\n                        geometry\n1 POLYGON ((277371.9 4497864,...\n2 POLYGON ((256979.6 4484787,...\n3 POLYGON ((256993.1 4485173,...\n4 POLYGON ((258354.5 4492808,...\n5 POLYGON ((301596 4485998, 3...\n6 POLYGON ((254986.6 4485670,...\n\nggplot() +\n  geom_sf(data = urnrd_wells_sf, size = 0.6, color = \"red\") +\n  geom_sf(data = wells_buffer, fill = NA) +\n  theme_void()\n\n\n\n\n\n\n\n\n\nNE_counties &lt;-\n  readRDS(\"Data/NE_county_borders.rds\") %&gt;%\n  dplyr::filter(NAME %in% c(\"Perkins\", \"Dundy\", \"Chase\")) %&gt;%\n  sf::st_transform(32614)\n\n#--- generate area by polygon ---#\n(\n  NE_counties &lt;- dplyr::mutate(NE_counties, area = st_area(NE_counties))\n)\n\nSimple feature collection with 3 features and 10 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 239494.1 ymin: 4430632 xmax: 310778.1 ymax: 4543676\nProjected CRS: WGS 84 / UTM zone 14N\n  STATEFP COUNTYFP COUNTYNS       AFFGEOID GEOID    NAME LSAD      ALAND\n1      31      135 00835889 0500000US31135 31135 Perkins   06 2287828025\n2      31      029 00835836 0500000US31029 31029   Chase   06 2316533447\n3      31      057 00835850 0500000US31057 31057   Dundy   06 2381956151\n   AWATER                       geometry             area\n1 2840176 MULTIPOLYGON (((243340.2 45... 2302174854 [m^2]\n2 7978172 MULTIPOLYGON (((241201.4 44... 2316908196 [m^2]\n3 3046331 MULTIPOLYGON (((240811.3 44... 2389890530 [m^2]\n\n\n\n#--- create centroids ---#\n(\n  NE_centroids &lt;- sf::st_centroid(NE_counties)\n)\n\nWarning: st_centroid assumes attributes are constant over geometries\n\n\nSimple feature collection with 3 features and 10 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 271156.7 ymin: 4450826 xmax: 276594.1 ymax: 4525635\nProjected CRS: WGS 84 / UTM zone 14N\n  STATEFP COUNTYFP COUNTYNS       AFFGEOID GEOID    NAME LSAD      ALAND\n1      31      135 00835889 0500000US31135 31135 Perkins   06 2287828025\n2      31      029 00835836 0500000US31029 31029   Chase   06 2316533447\n3      31      057 00835850 0500000US31057 31057   Dundy   06 2381956151\n   AWATER                 geometry             area\n1 2840176 POINT (276594.1 4525635) 2302174854 [m^2]\n2 7978172 POINT (271469.9 4489429) 2316908196 [m^2]\n3 3046331 POINT (271156.7 4450826) 2389890530 [m^2]\n\nggplot() +\n  geom_sf(data = NE_counties) +\n  geom_sf_text(data = NE_centroids, aes(label = NAME)) +\n  theme_void()\n\n\n\n\n\n\n\n\n\nIL_counties &lt;- sf::st_read(\"Data/IL_county_detailed.geojson\")\n\nReading layer `IL_county_detailed' from data source \n  `/home/himakun/Documents/tools/computing/Data/IL_county_detailed.geojson' \n  using driver `GeoJSON'\nSimple feature collection with 102 features and 61 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: -91.51309 ymin: 36.9703 xmax: -87.4952 ymax: 42.50849\nGeodetic CRS:  WGS 84\n\nIL_counties_mssimplified &lt;- rmapshaper::ms_simplify(IL_counties, keep = 0.01)\n\nCook &lt;- filter(IL_counties, NAME == \"Cook County\")\n\nCook_simplify &lt;- sf::st_simplify(Cook, dTolerance = 1000)\n\nggplot() +\n  geom_sf(data = Cook_simplify) +\n  theme_void()\n\n\n\n\n\n\n\n\n\n\nSpatial Interactions of Vector Data: Subsetting and Joining\n\n#--- create points ---#\npoint_1 &lt;- sf::st_point(c(2, 2))\npoint_2 &lt;- sf::st_point(c(1, 1))\npoint_3 &lt;- sf::st_point(c(1, 3))\n\n#--- combine the points to make a single  sf of points ---#\n(\npoints &lt;- \n  list(point_1, point_2, point_3) %&gt;% \n  sf::st_sfc() %&gt;% \n  sf::st_as_sf() %&gt;% \n  dplyr::mutate(point_name = c(\"point 1\", \"point 2\", \"point 3\"))\n)\n\nSimple feature collection with 3 features and 1 field\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 1 ymin: 1 xmax: 2 ymax: 3\nCRS:           NA\n            x point_name\n1 POINT (2 2)    point 1\n2 POINT (1 1)    point 2\n3 POINT (1 3)    point 3\n\n\n\n#--- create points ---#\nline_1 &lt;- sf::st_linestring(rbind(c(0, 0), c(2.5, 0.5)))\nline_2 &lt;- sf::st_linestring(rbind(c(1.5, 0.5), c(2.5, 2)))\n\n#--- combine the points to make a single  sf of points ---#\n(\nlines &lt;- \n  list(line_1, line_2) %&gt;% \n  sf::st_sfc() %&gt;% \n  sf::st_as_sf() %&gt;% \n  dplyr::mutate(line_name = c(\"line 1\", \"line 2\"))\n)\n\nSimple feature collection with 2 features and 1 field\nGeometry type: LINESTRING\nDimension:     XY\nBounding box:  xmin: 0 ymin: 0 xmax: 2.5 ymax: 2\nCRS:           NA\n                            x line_name\n1   LINESTRING (0 0, 2.5 0.5)    line 1\n2 LINESTRING (1.5 0.5, 2.5 2)    line 2\n\n\n\n#--- create polygons ---#\npolygon_1 &lt;- sf::st_polygon(list(\n  rbind(c(0, 0), c(2, 0), c(2, 2), c(0, 2), c(0, 0)) \n))\n\npolygon_2 &lt;- sf::st_polygon(list(\n  rbind(c(0.5, 1.5), c(0.5, 3.5), c(2.5, 3.5), c(2.5, 1.5), c(0.5, 1.5)) \n))\n\npolygon_3 &lt;- sf::st_polygon(list(\n  rbind(c(0.5, 2.5), c(0.5, 3.2), c(2.3, 3.2), c(2, 2), c(0.5, 2.5)) \n))\n\n#--- combine the polygons to make an sf of polygons ---#\n(\npolygons &lt;- \n  list(polygon_1, polygon_2, polygon_3) %&gt;% \n  sf::st_sfc() %&gt;% \n  sf::st_as_sf() %&gt;% \n  dplyr::mutate(polygon_name = c(\"polygon 1\", \"polygon 2\", \"polygon 3\"))\n)\n\nSimple feature collection with 3 features and 1 field\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: 0 ymin: 0 xmax: 2.5 ymax: 3.5\nCRS:           NA\n                               x polygon_name\n1 POLYGON ((0 0, 2 0, 2 2, 0 ...    polygon 1\n2 POLYGON ((0.5 1.5, 0.5 3.5,...    polygon 2\n3 POLYGON ((0.5 2.5, 0.5 3.2,...    polygon 3\n\n\n\nggplot() +\n  geom_sf(data = polygons, aes(fill = polygon_name), alpha = 0.3) +\n  scale_fill_discrete(name = \"Polygons\") +\n  geom_sf(data = lines, aes(color = line_name)) +\n  scale_color_discrete(name = \"Lines\") + \n  geom_sf(data = points, aes(shape = point_name), size = 4) +\n  scale_shape_discrete(name = \"Points\")  \n\n\n\n\n\n\n\n\n\nsf::st_intersects(points, polygons)\n\nSparse geometry binary predicate list of length 3, where the predicate\nwas `intersects'\n 1: 1, 2, 3\n 2: 1\n 3: 2, 3\n\n\n\nset.seed(38424738)\n\npoints_set_1 &lt;-\n  lapply(1:5, function(x) sf::st_point(runif(2))) %&gt;% \n  sf::st_sfc() %&gt;% sf::st_as_sf() %&gt;% \n  dplyr::mutate(id = 1:nrow(.))\n\npoints_set_2 &lt;-\n  lapply(1:5, function(x) sf::st_point(runif(2))) %&gt;% \n  sf::st_sfc() %&gt;% sf::st_as_sf() %&gt;% \n  dplyr::mutate(id = 1:nrow(.))\n\n\nsf::st_is_within_distance(points_set_1, points_set_2, dist = 0.2)\n\nSparse geometry binary predicate list of length 5, where the predicate\nwas `is_within_distance'\n 1: 1\n 2: (empty)\n 3: (empty)\n 4: (empty)\n 5: 3\n\n\n\n#--- Kansas county borders ---#\nKS_counties &lt;-\n  readRDS(\"Data/KS_county_borders.rds\") %&gt;%\n  sf::st_transform(32614)\n\nold-style crs object detected; please recreate object with a recent sf::st_crs()\n\n#--- High-Plains Aquifer boundary ---#\nhpa &lt;- \n  sf::st_read(\"Data/hp_bound2010.shp\") %&gt;%\n  .[1, ] %&gt;%\n  sf::st_transform(st_crs(KS_counties))\n\nReading layer `hp_bound2010' from data source \n  `/home/himakun/Documents/tools/computing/Data/hp_bound2010.shp' \n  using driver `ESRI Shapefile'\nSimple feature collection with 199 features and 1 field\nGeometry type: POLYGON\nDimension:     XY\nBounding box:  xmin: -805708.3 ymin: 983257.8 xmax: -21500.35 ymax: 2312747\nProjected CRS: NAD_1983_Albers\n\n#--- all the irrigation wells in KS ---#\nKS_wells &lt;- \n  readRDS(\"Data/Kansas_wells.rds\") %&gt;%\n  sf::st_transform(st_crs(KS_counties))\n\n#--- US railroads in the Mid West region ---#\nrail_roads_mw &lt;- sf::st_read(\"Data/mw_railroads.geojson\")\n\nReading layer `mw_railroads' from data source \n  `/home/himakun/Documents/tools/computing/Data/mw_railroads.geojson' \n  using driver `GeoJSON'\nSimple feature collection with 100661 features and 2 fields\nGeometry type: MULTILINESTRING\nDimension:     XY\nBounding box:  xmin: -414024 ymin: 3692172 xmax: 2094886 ymax: 5446589\nProjected CRS: WGS 84 / UTM zone 14N\n\n\n\nhpa_cropped_to_KS &lt;- sf::st_crop(hpa, KS_wells)\n\nWarning: attribute variables are assumed to be spatially constant throughout\nall geometries\n\n\n\ncounties_intersecting_hpa &lt;- KS_counties[hpa_cropped_to_KS, ]\n\nggplot() +\n  geom_sf(data = counties_intersecting_hpa) +\n  geom_sf(data = hpa_cropped_to_KS, fill = \"blue\", alpha = 0.3) +\n  theme_void()\n\n\n\n\n\n\n\n\n\ncounties_intersecting_hpa\n\nSimple feature collection with 56 features and 9 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 229253.5 ymin: 4094801 xmax: 690085.5 ymax: 4432561\nProjected CRS: WGS 84 / UTM zone 14N\nFirst 10 features:\n   STATEFP COUNTYFP COUNTYNS       AFFGEOID GEOID     NAME LSAD      ALAND\n2       20      075 00485327 0500000US20075 20075 Hamilton   06 2580958328\n4       20      189 00485056 0500000US20189 20189  Stevens   06 1883595654\n5       20      155 00485041 0500000US20155 20155     Reno   06 3251786677\n6       20      129 00485135 0500000US20129 20129   Morton   06 1889994372\n8       20      023 00484981 0500000US20023 20023 Cheyenne   06 2641501921\n9       20      089 00485009 0500000US20089 20089   Jewell   06 2356813568\n11      20      077 00485004 0500000US20077 20077   Harper   06 2075290355\n14      20      165 00485358 0500000US20165 20165     Rush   06 1858997546\n15      20      097 00485013 0500000US20097 20097    Kiowa   06 1871627782\n16      20      109 00485019 0500000US20109 20109    Logan   06 2779039721\n     AWATER                       geometry\n2   2893322 MULTIPOLYGON (((233615.1 42...\n4    464936 MULTIPOLYGON (((273665.9 41...\n5  42963060 MULTIPOLYGON (((546178.6 42...\n6    507796 MULTIPOLYGON (((229431.1 41...\n8   2738021 MULTIPOLYGON (((239494.1 44...\n9  11367163 MULTIPOLYGON (((542298.2 44...\n11  3899269 MULTIPOLYGON (((557559.9 41...\n14   544720 MULTIPOLYGON (((449120.4 42...\n15   596764 MULTIPOLYGON (((450693.8 41...\n16   274632 MULTIPOLYGON (((285802.7 43...\n\n# sf_1[sf_2, op = topological_relation_type]\n\n\nKS_corn_price &lt;-\n  KS_counties %&gt;%\n  dplyr::mutate(corn_price = seq(3.2, 3.9, length = nrow(.))) %&gt;%\n  dplyr::select(COUNTYFP, corn_price)\n\nKS_corn_price\n\nSimple feature collection with 105 features and 2 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 229253.5 ymin: 4094801 xmax: 890007.5 ymax: 4434288\nProjected CRS: WGS 84 / UTM zone 14N\nFirst 10 features:\n   COUNTYFP corn_price                       geometry\n1       133   3.200000 MULTIPOLYGON (((806203.1 41...\n2       075   3.206731 MULTIPOLYGON (((233615.1 42...\n3       123   3.213462 MULTIPOLYGON (((544031.7 43...\n4       189   3.220192 MULTIPOLYGON (((273665.9 41...\n5       155   3.226923 MULTIPOLYGON (((546178.6 42...\n6       129   3.233654 MULTIPOLYGON (((229431.1 41...\n7       073   3.240385 MULTIPOLYGON (((717254.1 42...\n8       023   3.247115 MULTIPOLYGON (((239494.1 44...\n9       089   3.253846 MULTIPOLYGON (((542298.2 44...\n10      059   3.260577 MULTIPOLYGON (((804792.9 42...\n\n\n\n(\n  KS_wells_County &lt;- sf::st_join(KS_wells, KS_corn_price)\n)\n\nSimple feature collection with 37647 features and 4 fields\nGeometry type: POINT\nDimension:     XY\nBounding box:  xmin: 230332 ymin: 4095052 xmax: 887329.7 ymax: 4433597\nProjected CRS: WGS 84 / UTM zone 14N\nFirst 10 features:\n   site    af_used COUNTYFP corn_price                 geometry\n1     1 232.099948      069   3.556731   POINT (372548 4153588)\n2     3  13.183940      039   3.449038 POINT (353698.6 4419755)\n3     5  99.187052      165   3.287500 POINT (486771.7 4260027)\n4     7   0.000000      199   3.644231 POINT (248127.1 4296442)\n5     8 145.520499      055   3.832692 POINT (349813.2 4215310)\n6     9   3.614535      143   3.799038 POINT (612277.6 4322077)\n7    11 188.423543      181   3.590385 POINT (267030.7 4381364)\n8    12  77.335960      177   3.550000 POINT (761774.6 4339039)\n9    15   0.000000      159   3.610577 POINT (560570.3 4235763)\n10   17 167.819034      069   3.556731 POINT (387315.1 4175007)\n\n\n\nKS_wells %&gt;% aggregate(KS_counties, FUN = sum)\n\nSimple feature collection with 105 features and 2 fields\nGeometry type: MULTIPOLYGON\nDimension:     XY\nBounding box:  xmin: 229253.5 ymin: 4094801 xmax: 890007.5 ymax: 4434288\nProjected CRS: WGS 84 / UTM zone 14N\nFirst 10 features:\n       site      af_used                       geometry\n1    124453 1.701790e+01 MULTIPOLYGON (((806203.1 41...\n2  12514550 6.261704e+04 MULTIPOLYGON (((233615.1 42...\n3   1964254 1.737791e+03 MULTIPOLYGON (((544031.7 43...\n4  42442400 3.023589e+05 MULTIPOLYGON (((273665.9 41...\n5  68068173 6.110576e+04 MULTIPOLYGON (((546178.6 42...\n6  15756801 9.664610e+04 MULTIPOLYGON (((229431.1 41...\n7    149202 0.000000e+00 MULTIPOLYGON (((717254.1 42...\n8  17167377 5.750807e+04 MULTIPOLYGON (((239494.1 44...\n9   1809003 2.201696e+03 MULTIPOLYGON (((542298.2 44...\n10   160064 4.571102e+00 MULTIPOLYGON (((804792.9 42...\n\n\n\n# sf::st_join(sf_1, sf_2, join = \\(x, y) st_is_within_distance(x, y, dist = 5))\n\n# st_intersection() =&gt; does cropped join",
-    "crumbs": [
-      "Notes",
-      "sf package"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html",
-    "href": "computing/julia-self-study.html",
-    "title": "Julia self study",
-    "section": "",
-    "text": "using DataFrames\nusing CSV\nusing XLSX\nMake a toy dataframe\nfunction grades_2020()\n    name = [\"Sally\", \"Bob\", \"Alice\", \"Hank\"]\n    grade_2020 = [1, 5, 8.5, 4]\n    DataFrame(; name, grade_2020)\nend\ngrades_2020()\n\nfunction grades_2021()\n    name = [\"Sally\", \"Bob\", \"Alice\", \"Hank\", \"John\"]\n    grade_2021 = [3, 5, 8.5, 7, 10]\n    DataFrame(; name, grade_2021)\nend\ngrades_2021()\n\n5×2 DataFrame\n\n\n\nRow\nname\ngrade_2021\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n3.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n7.0\n\n\n5\nJohn\n10.0",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#csv-files",
-    "href": "computing/julia-self-study.html#csv-files",
-    "title": "Julia self study",
-    "section": "CSV files",
-    "text": "CSV files\nWrite the dataframe into CSV file\n\nCSV.write(\"toy.csv\", grades_2020())\n\n\"toy.csv\"\n\n\nRead in the CSV file\n\ntoy = CSV.read(\"toy.csv\", DataFrame)\nfirst(toy, 5)\n\n4×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString7\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#excel-files",
-    "href": "computing/julia-self-study.html#excel-files",
-    "title": "Julia self study",
-    "section": "Excel files",
-    "text": "Excel files\n\nfunction write_xlsx(name, df::DataFrame)\n    path = \"$name.xlsx\"\n    data = collect(eachcol(df))\n    cols = names(df)\n    write(path, data, cols)\nend\n\nfunction write_grades_xlsx()\n    path = \"grades\"\n    write_xlsx(path, grades_2020())\n    \"$path.xlsx\"\nend\n\npath = write_grades_xlsx()\nxf = readxlsx(path)",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#filter-and-subset",
-    "href": "computing/julia-self-study.html#filter-and-subset",
-    "title": "Julia self study",
-    "section": "Filter and subset",
-    "text": "Filter and subset\n\nequals_alice(name::String) = name == \"Alice\"\n\nfilter(:name =&gt; equals_alice, grades_2020())\n\nfilter(:name =&gt; n -&gt; n == \"Alice\", grades_2020())\n\nfilter(:name =&gt; ==(\"Alice\"), grades_2020())\nfilter(:name =&gt; !=(\"Alice\"), grades_2020())\n\n3×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nHank\n4.0\n\n\n\n\n\n\n\nfunction complex_filter(name, grade)::Bool\n    interesting_name = startswith(name, 'A') || startswith(name, 'B')\n    interesting_grade = 6 &lt; grade\n    interesting_name && interesting_grade\nend\n\nfilter([:name, :grade_2020] =&gt; complex_filter, grades_2020())\n\n1×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#select",
-    "href": "computing/julia-self-study.html#select",
-    "title": "Julia self study",
-    "section": "Select",
-    "text": "Select\n\nfunction responses()\n    id = [1, 2]\n    q1 = [28, 61]\n    q2 = [:us, :fr]\n    q3 = [\"F\", \"B\"]\n    q4 = [\"B\", \"C\"]\n    q5 = [\"A\", \"E\"]\n    DataFrame(; id, q1, q2, q3, q4, q5)\nend\nresponses()\n\n2×6 DataFrame\n\n\n\nRow\nid\nq1\nq2\nq3\nq4\nq5\n\n\n\nInt64\nInt64\nSymbol\nString\nString\nString\n\n\n\n\n1\n1\n28\nus\nF\nB\nA\n\n\n2\n2\n61\nfr\nB\nC\nE\n\n\n\n\n\n\n\nselect(responses(), :id, :q1)\n\n# regex\nselect(responses(), r\"^q\")\n\nselect(responses(), Not(:q5))\nselect(responses(), Not([:q4, :q5]))\nselect(responses(), :q5, Not(:q5))\n\n# renaming\nselect(responses(), 1 =&gt; \"participant\", :q1 =&gt; \"age\", :q2 =&gt; \"nationality\")\nrenames = (1 =&gt; \"participant\", :q1 =&gt; \"age\", :q2 =&gt; \"nationality\")\nselect(responses(), renames...)\n\n2×3 DataFrame\n\n\n\nRow\nparticipant\nage\nnationality\n\n\n\nInt64\nInt64\nSymbol\n\n\n\n\n1\n1\n28\nus\n\n\n2\n2\n61\nfr",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#left-and-right-joins",
-    "href": "computing/julia-self-study.html#left-and-right-joins",
-    "title": "Julia self study",
-    "section": "Left and right joins",
-    "text": "Left and right joins\n\nleftjoin(grades_2020(), grades_2021(); on=:name)\n\nrightjoin(grades_2020(), grades_2021(); on=:name)\n\n5×3 DataFrame\n\n\n\nRow\nname\ngrade_2020\ngrade_2021\n\n\n\nString\nFloat64?\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0\n\n\n5\nJohn\nmissing\n10.0",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#transform-variables",
-    "href": "computing/julia-self-study.html#transform-variables",
-    "title": "Julia self study",
-    "section": "Transform variables",
-    "text": "Transform variables\n\nplus_one(grades) = grades .+ 1\ntransform(grades_2020(), :grade_2020 =&gt; plus_one)\n\ntransform(grades_2020(), :grade_2020 =&gt; plus_one =&gt; :grade_2020)\ntransform(grades_2020(), :grade_2020 =&gt; plus_one; renamecols=false)\n\n4×2 DataFrame\n\n\n\nRow\nname\ngrade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n2.0\n\n\n2\nBob\n6.0\n\n\n3\nAlice\n9.5\n\n\n4\nHank\n5.0\n\n\n\n\n\n\n\nleftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n\nfunction only_pass()\n    leftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n    pass(A, B) = [5.5 &lt; a || 5.5 &lt; b for (a, b) in zip(A, B)]\n    leftjoined = transform(leftjoined, [:grade_2020, :grade_2021] =&gt; pass =&gt; :pass)\n    passed = subset(leftjoined, :pass; skipmissing=true)\n    return passed.name\nend\nonly_pass()\n\n2-element Vector{String}:\n \"Alice\"\n \"Hank\"",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#groupby-and-combine",
-    "href": "computing/julia-self-study.html#groupby-and-combine",
-    "title": "Julia self study",
-    "section": "Groupby and combine",
-    "text": "Groupby and combine\n\nfunction all_grades()\n    df1 = grades_2020()\n    df1 = select(df1, :name, :grade_2020 =&gt; :grade)\n    df2 = grades_2021()\n    df2 = select(df2, :name, :grade_2021 =&gt; :grade)\n    rename_bob2(data_col) = replace.(data_col, \"Bob 2\" =&gt; \"Bob\")\n    df2 = transform(df2, :name =&gt; rename_bob2 =&gt; :name)\n    return vcat(df1, df2)\nend\nall_grades()\n\n9×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0\n\n\n5\nSally\n3.0\n\n\n6\nBob\n5.0\n\n\n7\nAlice\n8.5\n\n\n8\nHank\n7.0\n\n\n9\nJohn\n10.0\n\n\n\n\n\n\n\ngroupby(all_grades(), :name)\n\nusing Statistics\n\ngdf = groupby(all_grades(), :name)\ncombine(gdf, :grade =&gt; mean)\n\n5×2 DataFrame\n\n\n\nRow\nname\ngrade_mean\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n2.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n5.5\n\n\n5\nJohn\n10.0\n\n\n\n\n\n\n\ngroup = [:A, :A, :B, :B]\nX = 1:4\nY = 5:8\ndf = DataFrame(; group, X, Y)\n\ngdf = groupby(df, :group)\ncombine(gdf, [:X, :Y] .=&gt; mean; renamecols=false)\n\n2×3 DataFrame\n\n\n\nRow\ngroup\nX\nY\n\n\n\nSymbol\nFloat64\nFloat64\n\n\n\n\n1\nA\n1.5\n5.5\n\n\n2\nB\n3.5\n7.5",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#missing-values",
-    "href": "computing/julia-self-study.html#missing-values",
-    "title": "Julia self study",
-    "section": "Missing values",
-    "text": "Missing values\n\ndf_missing = DataFrame(;\n    name=[missing, \"Sally\", \"Alice\", \"Hank\"],\n    age=[17, missing, 20, 19],\n    grade_2020=[5.0, 1.0, missing, 4.0],\n)\n\ndropmissing(df_missing)\n\ndropmissing(df_missing, :name)\n\ndropmissing(df_missing, [:name, :age])\n\n2×3 DataFrame\n\n\n\nRow\nname\nage\ngrade_2020\n\n\n\nString\nInt64\nFloat64?\n\n\n\n\n1\nAlice\n20\nmissing\n\n\n2\nHank\n19\n4.0\n\n\n\n\n\n\n\nfilter(:name =&gt; !ismissing, df_missing)\n\ncombine(df_missing, :grade_2020 =&gt; mean ∘ skipmissing )\n\n1×1 DataFrame\n\n\n\nRow\ngrade_2020_mean_skipmissing\n\n\n\nFloat64\n\n\n\n\n1\n3.33333",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#select-1",
-    "href": "computing/julia-self-study.html#select-1",
-    "title": "Julia self study",
-    "section": "Select",
-    "text": "Select\n\ndf = all_grades()\n\n9×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0\n\n\n5\nSally\n3.0\n\n\n6\nBob\n5.0\n\n\n7\nAlice\n8.5\n\n\n8\nHank\n7.0\n\n\n9\nJohn\n10.0\n\n\n\n\n\n\n\n@select df :name\n@select df :name :grade\n@select df $(Not(:grade))\n\n9×1 DataFrame\n\n\n\nRow\nname\n\n\n\nString\n\n\n\n\n1\nSally\n\n\n2\nBob\n\n\n3\nAlice\n\n\n4\nHank\n\n\n5\nSally\n\n\n6\nBob\n\n\n7\nAlice\n\n\n8\nHank\n\n\n9\nJohn\n\n\n\n\n\n\n\n@select df :grade_100 = :grade .* 10\n@rselect df :grade_100 = :grade * 10\n\n9×1 DataFrame\n\n\n\nRow\ngrade_100\n\n\n\nFloat64\n\n\n\n\n1\n10.0\n\n\n2\n50.0\n\n\n3\n85.0\n\n\n4\n40.0\n\n\n5\n30.0\n\n\n6\n50.0\n\n\n7\n85.0\n\n\n8\n70.0\n\n\n9\n100.0",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#column-transformation",
-    "href": "computing/julia-self-study.html#column-transformation",
-    "title": "Julia self study",
-    "section": "Column transformation",
-    "text": "Column transformation\n\n@rtransform df :grade_100 = :grade * 10\n\n9×3 DataFrame\n\n\n\nRow\nname\ngrade\ngrade_100\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n10.0\n\n\n2\nBob\n5.0\n50.0\n\n\n3\nAlice\n8.5\n85.0\n\n\n4\nHank\n4.0\n40.0\n\n\n5\nSally\n3.0\n30.0\n\n\n6\nBob\n5.0\n50.0\n\n\n7\nAlice\n8.5\n85.0\n\n\n8\nHank\n7.0\n70.0\n\n\n9\nJohn\n10.0\n100.0\n\n\n\n\n\n\n\n@rtransform df :grade_100 = :grade * 10 :grade_5 = :grade / 2\n\n@rtransform df begin\n    :grade_100 = :grade * 10\n    :grade_5 = :grade / 2\nend\n\n9×4 DataFrame\n\n\n\nRow\nname\ngrade\ngrade_100\ngrade_5\n\n\n\nString\nFloat64\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n10.0\n0.5\n\n\n2\nBob\n5.0\n50.0\n2.5\n\n\n3\nAlice\n8.5\n85.0\n4.25\n\n\n4\nHank\n4.0\n40.0\n2.0\n\n\n5\nSally\n3.0\n30.0\n1.5\n\n\n6\nBob\n5.0\n50.0\n2.5\n\n\n7\nAlice\n8.5\n85.0\n4.25\n\n\n8\nHank\n7.0\n70.0\n3.5\n\n\n9\nJohn\n10.0\n100.0\n5.0\n\n\n\n\n\n\n\nleftjoined = leftjoin(grades_2020(), grades_2021(); on=:name)\n@rtransform! leftjoined :grade_2021 = coalesce(:grade_2021, 5)\n\n@rtransform leftjoined :mean_grades = (:grade_2020 + :grade_2021) / 2\n\n4×4 DataFrame\n\n\n\nRow\nname\ngrade_2020\ngrade_2021\nmean_grades\n\n\n\nString\nFloat64\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n2.0\n\n\n2\nBob\n5.0\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0\n5.5",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#row-selection",
-    "href": "computing/julia-self-study.html#row-selection",
-    "title": "Julia self study",
-    "section": "Row selection",
-    "text": "Row selection\n\n@rsubset df :grade &gt; 7\n\n3×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5\n\n\n2\nAlice\n8.5\n\n\n3\nJohn\n10.0\n\n\n\n\n\n\n\n@subset df :grade .&gt; mean(:grade)\n\n4×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5\n\n\n2\nAlice\n8.5\n\n\n3\nHank\n7.0\n\n\n4\nJohn\n10.0\n\n\n\n\n\n\n\n@rsubset df begin\n    :grade &gt; 7\n    startswith(:name, \"A\")\nend\n\n2×2 DataFrame\n\n\n\nRow\nname\ngrade\n\n\n\nString\nFloat64\n\n\n\n\n1\nAlice\n8.5\n\n\n2\nAlice\n8.5",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#row-sorting",
-    "href": "computing/julia-self-study.html#row-sorting",
-    "title": "Julia self study",
-    "section": "Row sorting",
-    "text": "Row sorting\n\n@orderby leftjoined :grade_2021\n@orderby leftjoined -:grade_2021\n\n@orderby leftjoined begin\n    :grade_2021\n    :name\nend\n\n4×3 DataFrame\n\n\n\nRow\nname\ngrade_2020\ngrade_2021\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nHank\n4.0\n7.0\n\n\n4\nAlice\n8.5\n8.5",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#data-summaries",
-    "href": "computing/julia-self-study.html#data-summaries",
-    "title": "Julia self study",
-    "section": "Data summaries",
-    "text": "Data summaries\n\n@combine leftjoined :mean_grade_2020 = mean(:grade_2020)\n\n1×1 DataFrame\n\n\n\nRow\nmean_grade_2020\n\n\n\nFloat64\n\n\n\n\n1\n4.625\n\n\n\n\n\n\n\n@combine leftjoined begin\n    :mean_grade_2020 = mean(:grade_2020)\n    :mean_grade_2021 = mean(:grade_2021)\nend\n\n1×2 DataFrame\n\n\n\nRow\nmean_grade_2020\nmean_grade_2021\n\n\n\nFloat64\nFloat64\n\n\n\n\n1\n4.625\n5.875\n\n\n\n\n\n\n\ngdf = groupby(leftjoined, :name)\n@combine gdf begin\n    :mean_grade_2020 = mean(:grade_2020)\n    :mean_grade_2021 = mean(:grade_2021)\nend\n\n4×3 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\nmean_grade_2021\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#piping-operations",
-    "href": "computing/julia-self-study.html#piping-operations",
-    "title": "Julia self study",
-    "section": "Piping operations",
-    "text": "Piping operations\n\n@chain leftjoined begin\n    groupby(:name)\n    @combine :mean_grade_2020 = mean(:grade_2020)\nend\n\n4×2 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\n\n\n\nString\nFloat64\n\n\n\n\n1\nSally\n1.0\n\n\n2\nBob\n5.0\n\n\n3\nAlice\n8.5\n\n\n4\nHank\n4.0\n\n\n\n\n\n\n\n@chain leftjoined begin\n    groupby(:name)\n    @combine begin\n        :mean_grade_2020 = mean(:grade_2020)\n        :mean_grade_2021 = mean(:grade_2021)\n    end\nend\n\n4×3 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\nmean_grade_2021\n\n\n\nString\nFloat64\nFloat64\n\n\n\n\n1\nSally\n1.0\n3.0\n\n\n2\nBob\n5.0\n5.0\n\n\n3\nAlice\n8.5\n8.5\n\n\n4\nHank\n4.0\n7.0",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#finale",
-    "href": "computing/julia-self-study.html#finale",
-    "title": "Julia self study",
-    "section": "Finale!",
-    "text": "Finale!\n\n@chain leftjoined begin\n    @rtransform begin\n        :grade_2020 = :grade_2020 * 10\n        :grade_2021 = :grade_2021 * 10\n    end\n    groupby(:name)\n    @combine begin\n        :mean_grade_2020 = mean(:grade_2020)\n        :mean_grade_2021 = mean(:grade_2021)\n    end\n    @rtransform :mean_grades = (:mean_grade_2020 + :mean_grade_2021) / 2\n    @rsubset :mean_grades &gt; 50\n    @orderby -:mean_grades\nend\n\n2×4 DataFrame\n\n\n\nRow\nname\nmean_grade_2020\nmean_grade_2021\nmean_grades\n\n\n\nString\nFloat64\nFloat64\nFloat64\n\n\n\n\n1\nAlice\n85.0\n85.0\n85.0\n\n\n2\nHank\n40.0\n70.0\n55.0",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#geometric-series",
-    "href": "computing/julia-self-study.html#geometric-series",
-    "title": "Julia self study",
-    "section": "Geometric series",
-    "text": "Geometric series\n\n# using Pkg\n# Pkg.update()\nusing LinearAlgebra, Statistics\nusing Distributions, Plots, Random, LaTeXStrings, Symbolics\n\nExample: The Keynesian multiplier\n\\(y_t = \\frac{1-b^{t+1}}{1-b}i \\Rightarrow \\frac{1}{1-b}i\\).\n\n# function that calculates a path of y\nfunction calculate_y(i, b, g, T, y_init)\n    y = zeros(T+1)\n    y[1] = i + b * y_init + g\n    for t in 2:(T+1)\n        y[t] = b * y[t-1] + i + g\n    end\n    return y\nend\n\n# Initial values\ni_0 = 0.3\ng_0 = 0.3\nb = 2 / 3\ny_init = 0\nT = 100\n\nplt = plot(0:T, calculate_y(i_0, b, g_0, T, y_init),\n            title = \"Path of Aggregate Output Over Time\",\n            ylim = (0.5, 1.9), xlabel = L\"t\", ylabel = L\"y_t\")\n\n# Output predicted by geometric series\nhline!([i_0 / (1-b) + g_0 / (1-b)], linestyle = :dash, seriestype = \"hline\", legend = false)",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/julia-self-study.html#linear-algebra",
-    "href": "computing/julia-self-study.html#linear-algebra",
-    "title": "Julia self study",
-    "section": "Linear algebra",
-    "text": "Linear algebra",
-    "crumbs": [
-      "Notes",
-      "Julia self-study"
-    ]
-  },
-  {
-    "objectID": "computing/computing.html",
-    "href": "computing/computing.html",
-    "title": "Overview",
-    "section": "",
-    "text": "This section is a set of templates related to computing. It also contains some notes on various subjects in Economics.",
-    "crumbs": [
-      "Notes",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "misc/links.html",
-    "href": "misc/links.html",
-    "title": "Useful links",
-    "section": "",
-    "text": "Category\nLinks\n\n\n\n\nPersonal website\n🔗 GitHub site\n\n\nCoffee chat (with me)\n🔗 Appointment link\n\n\nComputing and replication resources\n🔗 Web-scraping 1  🔗 Web-scraping 2  🔗 Parallel programming  🔗 Docker  🔗 Google compute engine 1  🔗 Google compute engine 2  🔗 Databases  🔗 Spark  🔗 DuckDB and polars  🔗 NYU Course Notes & Resources  🔗 Quantitative dynamic model\n\n\nJulia\n🔗 Julia for data science  🔗 Computational economics for PhDs  🔗 Computational Methods in Macroeconomics  🔗 BLPDemand.jl  🔗 Guide to Efficient Computational Work in Economics  🔗 Econometrics with Julia  🔗 Advanced Dynamic Programming\n\n\nUseful packages\n🔗 New DiD methods\n\n\nGraduate trade and spatial\n🔗 Treb Allen\n\n\nNotes\n🔗 BLP-notes (Adam Smith)",
-    "crumbs": [
-      "Misc.",
-      "Useful links"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-sql.html",
-    "href": "computing/duckdb-sql.html",
-    "title": "DuckDB SQL",
-    "section": "",
-    "text": "This is example templates that use DuckDB with SQL for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(duckdb)\n\ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\n# con = dbConnect(duckdb(), dbdir = \"nyc.duck\")\n\n# SELECT\n#   passenger_count,\n#   AVG(tip_amount) AS mean_tip\n# FROM 'nyc-taxi/**/*.parquet'\n# GROUP BY passenger_count\n# ORDER BY passenger_count\n\ntic = Sys.time()\ndat1 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  GROUP BY ALL\n  ORDER BY ALL\n  \"\n)\ntoc = Sys.time()\n\ndat1\ntoc - tic\n\ntic = Sys.time()\ndat2 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    month,\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  WHERE month &lt;= 3\n  GROUP BY ALL\n  \"\n    )\ntoc = Sys.time()\n\nhead(dat2)\n\ndbDisconnect(con)\n\n\n\n\nimport duckdb\nimport time\n\ncon = duckdb.connect(database=':memory:', read_only=False)\n\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\ncon = duckdb.connect(database='nyc.duck', read_only=False)\n\ntic = time.time()\ndat1 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    GROUP BY ALL\n    ORDER BY ALL\n    '''\n    )\n)\ntoc = time.time()\n\ndat1\n\ntic = time.time()\ndat2 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      month,\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    WHERE month &lt;= 3\n    GROUP BY ALL\n    '''\n  )\n)\ntoc = time.time()\n\ndat2\n\ncon.close()",
-    "crumbs": [
-      "Notes",
-      "DuckDB SQL"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html",
-    "href": "computing/duckdb-dplyr.html",
-    "title": "DuckDB + dplyr (R)",
-    "section": "",
-    "text": "This is just a direct copy of the resources from Grant McDermott. Thus, I do not have any credit for it. It is solely for the archive purpose.",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#load-libraries",
-    "href": "computing/duckdb-dplyr.html#load-libraries",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Load libraries",
-    "text": "Load libraries\n\nlibrary(duckdb)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#create-a-database-connection",
-    "href": "computing/duckdb-dplyr.html#create-a-database-connection",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Create a database connection",
-    "text": "Create a database connection\nFor the d(b)plyr workflow, the connection step is very similar to the pure SQL approach. The only difference is that, after instantiating the database connection, we need to register our parquet dataset as a table in our connection via the dplyr::tbl() function. Note that we also assign it to an object (here: nyc) that can be referenced from R.\n\n## Instantiate the in-memory DuckDB connection \ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n## Register our parquet dataset as table in our connection (and that assign it\n## to an object that R understands)\n# nyc = tbl(con, \"nyc-taxi/**/*.parquet\") # works, but safer to use the read_parquet func)\nnyc = tbl(con, \"read_parquet('nyc-taxi/**/*.parquet', hive_partitioning = true)\")",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#first-example",
-    "href": "computing/duckdb-dplyr.html#first-example",
-    "title": "DuckDB + dplyr (R)",
-    "section": "First example",
-    "text": "First example\nThis next command runs instantly because all computation is deferred (i.e., lazy eval). In other words, it is just a query object.\n\nq1 = nyc |&gt;\n  summarize(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  )\n\n\n\n\n\n\n\n.by versus group_by\n\n\n\nIn case you weren’t aware: summarize(..., .by = x) is a shorthand (and non-persistent) version of group_by(x) |&gt; summarize(...). More details here.\n\n\nWe can see what DuckDB’s query tree looks like by asking it to explain the plan\n\nexplain(q1)\n\nSimilarly, to show the SQL translation that will be implemented on the backend, using show_query.\n\nshow_query(q1)\n\nNote that printing the query object actually does enforce some computation. OTOH it’s still just a preview of the data (we haven’t pulled everything into R’s memory).\n\nq1\n\nTo actually pull all of the result data into R, we must call collect() on the query object\n\ntic = Sys.time()\ndat1 = collect(q1)\ntoc = Sys.time()\n\ndat1\ntoc - tic",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#aggregation",
-    "href": "computing/duckdb-dplyr.html#aggregation",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Aggregation",
-    "text": "Aggregation\nHere’s our earlier filtering example with multiple grouping + aggregation variables…\n\nq2 = nyc |&gt;\n  filter(month &lt;= 3) |&gt;\n  summarize(\n    across(c(tip_amount, fare_amount), mean),\n    .by = c(month, passenger_count)\n  )\nq2\n\nAside: note the optimised query includes hash groupings and projection (basically: fancy column subsetting, which is a suprisingly effective strategy in query optimization)\n\nexplain(q2)\n\nAnd our high-dimensional aggregation example. We’ll create a query for this first, since I’ll reuse it shortly again\n\nq3 = nyc |&gt;\n  group_by(passenger_count, trip_distance) |&gt;\n  summarize(\n    across(c(tip_amount, fare_amount), mean),\n  ) \ncollect(q3)",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#pivot-reshape",
-    "href": "computing/duckdb-dplyr.html#pivot-reshape",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Pivot (reshape)",
-    "text": "Pivot (reshape)\n\n# library(tidyr) ## already loaded\n\nq3 |&gt;\n  pivot_longer(tip_amount:fare_amount) |&gt;\n  collect()",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#joins-merges",
-    "href": "computing/duckdb-dplyr.html#joins-merges",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Joins (merges)",
-    "text": "Joins (merges)\n\nmean_tips  = nyc |&gt; summarise(mean_tips = mean(tip_amount), .by = month)\nmean_fares = nyc |&gt; summarise(mean_fares = mean(fare_amount), .by = month)\n\nAgain, these commands complete instantly because all computation has been deferred until absolutely necessary (i.e.,. lazy eval).\n\nleft_join(\n  mean_fares,\n  mean_tips\n  ) |&gt;\n  collect()",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#windowing",
-    "href": "computing/duckdb-dplyr.html#windowing",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Windowing",
-    "text": "Windowing\nIf you recall from the native SQL API, we sampled 1 percent of the data before creating decile bins to reduce the computation burden of sorting the entire table. Unfortunately, this approach doesn’t work as well for the dplyr frontend because the underlying SQL translation uses a generic sampling approach (rather than DuckDB’s optimised USING SAMPLE statement.)",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#close-connection",
-    "href": "computing/duckdb-dplyr.html#close-connection",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Close connection",
-    "text": "Close connection\n\ndbDisconnect(con)",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#appendix-related-interfaces",
-    "href": "computing/duckdb-dplyr.html#appendix-related-interfaces",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Appendix: Related interfaces",
-    "text": "Appendix: Related interfaces\n\narrow+duckdb\n\nlibrary(arrow)\nlibrary(duckdb) ## Already loaded\nlibrary(dplyr)  ## Already loaded\nlibrary(tidyr)  ## Already loaded\n\nWhen going through the arrow intermediary, we don’t need to establish a database with DBI::dbConnect like we did above. Instead, we can create a link (pointers) to the dataset on disk directly via the arrow::open_dataset() convience function. Here I’ll assign it to a new R object called nyc2.\n\nnyc2 = open_dataset(\"nyc-taxi\")\n\n\n\n\n\n\n\nopen_dataset() versus read_parquet()\n\n\n\n(For individual parquet files, we could just read then via arrow::read_parquet(), perhaps efficiently subsetting columns at the same time. But I find the open_dataset is generally what I’m looking for.)\n\n\nNote that printing our nyc2 dataset to the R console will just display the data schema. This is a cheap and convenient way to quickly interrogate the basic structure of your data, including column types, etc.\n\nnyc2\n\nThe key step for this “arrow + duckdb” dplyr workflow is to pass our arrow dataset to DuckDB via the to_duckdb() function.\n\nto_duckdb(nyc2)\n\nNote that this transfer from Arrow to DuckDB is very quick (and memory cheap) because it is a zero copy. We are just passing around pointers instead of actually moving any data. See this blog post for more details, but the high-level take away is that we are benefitting from the tightly integrated architectures of these two libraries.1\nAt this, point all of the regular dplyr workflow logic from above should carry over. Just remember to first pass the arrow dataset via the to_duckdb() funciton. For example, here’s our initial aggregation query again:\n\nnyc2 |&gt;\n  to_duckdb() |&gt; ## &lt;= key step\n  summarise(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  ) |&gt;\n  collect()\n\n\n\n\n\n\n\nArrow’s native acero engine\n\n\n\nSome of you may be used to performing computation with the arrow package without going through DuckDB. What’s happening here is that arrow provides its own computation engine called “acero”. This Arrow-native engine is actually pretty performant… albeit not a fast as DuckDB, nor as feature rich. So I personally recommend always passing to DuckDB if you can. Still, if you’re curious then you can test yourself by re-trying the code chunk, but commenting out the to_duckdb() line. For more details, see here.\n\n\n\n\nduckplyr\nThe new kid on the block is duckplyr (announcement / homepage). Without going into too much depth, the promise of duckplyr is that it can provide a “fully native” dplyr experience that is directly coupled to DuckDB’s query engine. So, for example, it won’t have to rely on DBI’s generic’ SQL translations. Instead, the relevant dplyr “verbs” are being directly translated to DuckDB’s relational API to construct logical query plans. If that’s too much jargon, just know that it should involve less overhead, fewer translation errors, and better optimization. Moreover, a goal of duckplyr is for it to be a drop-in replace for dplyr in general. In other words, you could just swap out library(dplyr) for library(duckplyr) and all of your data wrangling operations will come backed by the power of DuckDB. This includes for working on “regular” R data frames in memory.\nAll of this is exciting and I would urge you stay tuned. Right now, duckplyr is still marked as experimental and has a few rough edges. But the basics are there. For example:\n\nlibrary(duckplyr, warn.conflicts = FALSE)\n\nduckplyr_df_from_parquet(\"nyc-taxi/**/*.parquet\") |&gt;\n  summarise(\n    mean_tip = mean(tip_amount),\n    .by = passenger_count\n  )",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/duckdb-dplyr.html#footnotes",
-    "href": "computing/duckdb-dplyr.html#footnotes",
-    "title": "DuckDB + dplyr (R)",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\n“Similar” might be a better description than “integrated”, since DuckdB does not use the Arrow memory model. But they are both columnar-orientated (among other things) and so the end result is pretty seamless integration.↩︎",
-    "crumbs": [
-      "Notes",
-      "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/trade-notes.html",
-    "href": "computing/trade-notes.html",
-    "title": "(Graduate) International trade notes",
-    "section": "",
-    "text": "These are some notes for my self-study on International Trade (graduate level).",
-    "crumbs": [
-      "Notes",
-      "Trade notes"
-    ]
-  },
-  {
-    "objectID": "computing/docker.html",
-    "href": "computing/docker.html",
-    "title": "Dockerfile",
-    "section": "",
-    "text": "This is a Dockerfile template for my computing environment. If you want to know more about what this does, check out my blog post.\n\n# Use Rocker image as the base for R\nFROM rocker/r-ver:4.4.0\n\nLABEL maintainer=\"Hyoungchul Kim &lt;hchul.kim96@gmail.com&gt;\"\n\n## Update and install system dependencies\nRUN apt-get update && apt-get install -y \\\n    libcurl4-openssl-dev \\\n    libssl-dev \\\n    libfontconfig1-dev \\\n    libharfbuzz-dev \\\n    libfribidi-dev \\\n    libfreetype6-dev \\\n    libpng-dev \\\n    libtiff5-dev \\\n    libjpeg-dev \\\n    libglpk-dev \\\n    libxml2-dev \\\n    libcairo2-dev \\\n    libgit2-dev \\\n    libpq-dev \\\n    libsasl2-dev \\\n    libsqlite3-dev \\\n    libssh2-1-dev \\\n    libxt-dev \\\n    libgdal-dev \\\n    wget \\\n    curl \\\n    vim \\\n    git \n\n## Install Pandoc and Quarto (Required for RMarkdown, Quarto, etc.)\n# RUN /rocker_scripts/install_pandoc.sh\n# RUN /rocker_scripts/install_quarto.sh\n\n## Install Python & Poetry\nRUN /rocker_scripts/install_python.sh && \\\n    pip3 install --upgrade pip && \\\n    pip3 install poetry\n\n# Ensure Poetry installs dependencies in the system environment\nRUN poetry config virtualenvs.create false\n\n# Copy Poetry files and install dependencies\nCOPY pyproject.toml poetry.lock .\nRUN poetry install --no-interaction --no-root\n\n## Install Julia 1.11.3 (to match Manifest.toml)\nENV JULIA_VERSION=1.11.3\nRUN /rocker_scripts/install_julia.sh\n\n## Set working directory\nWORKDIR /project\n\n## Copy renv.lock file into the folder\nCOPY renv.lock .\n\n# Set environment variables for renv\nENV RENV_VERSION=1.0.7\nENV RENV_PATHS_CACHE=/renv/cache\nENV RENV_CONFIG_REPOS_OVERRIDE=https://cloud.r-project.org\nENV RENV_CONFIG_AUTOLOADER_ENABLED=FALSE\nENV RENV_WATCHDOG_ENABLED=FALSE\nRUN echo \"options(renv.consent = TRUE)\" &gt;&gt; .Rprofile\nRUN echo \"options(RETICULATE_MINICONDA_ENABLED = FALSE)\" &gt;&gt; .Rprofile\n\n# Install renv from CRAN (avoiding bootstrapping by specifying version)\nRUN R -e \"install.packages('renv', repos = c(CRAN = 'https://cloud.r-project.org'))\"\nRUN R -e \"renv::consent(provided = TRUE)\"\n\n# Run renv restore to restore the environment\nRUN R -e \"renv::restore(confirm = FALSE)\"\n\n# Install Julia packages and manage dependencies\nCOPY Manifest.toml Project.toml .\nENV JULIA_PROJECT=/project\nRUN julia -e \"import Pkg; Pkg.activate(\\\".\\\"); Pkg.instantiate()\"\n\n# Copy over the rest of the project files\nCOPY . .\n\n# Default command\nCMD [\"bash\"]",
-    "crumbs": [
-      "Notes",
-      "Dockerfile"
     ]
   },
   {
