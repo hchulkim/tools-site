@@ -343,3 +343,76 @@ points_set_2 <-
 sf::st_is_within_distance(points_set_1, points_set_2, dist = 0.2)
 
 ```
+
+```{r}
+#--- Kansas county borders ---#
+KS_counties <-
+  readRDS("Data/KS_county_borders.rds") %>%
+  sf::st_transform(32614)
+
+#--- High-Plains Aquifer boundary ---#
+hpa <- 
+  sf::st_read("Data/hp_bound2010.shp") %>%
+  .[1, ] %>%
+  sf::st_transform(st_crs(KS_counties))
+
+#--- all the irrigation wells in KS ---#
+KS_wells <- 
+  readRDS("Data/Kansas_wells.rds") %>%
+  sf::st_transform(st_crs(KS_counties))
+
+#--- US railroads in the Mid West region ---#
+rail_roads_mw <- sf::st_read("Data/mw_railroads.geojson")
+
+```
+
+```{r}
+hpa_cropped_to_KS <- sf::st_crop(hpa, KS_wells)
+
+```
+
+```{r}
+counties_intersecting_hpa <- KS_counties[hpa_cropped_to_KS, ]
+
+ggplot() +
+  geom_sf(data = counties_intersecting_hpa) +
+  geom_sf(data = hpa_cropped_to_KS, fill = "blue", alpha = 0.3) +
+  theme_void()
+
+```
+
+```{r}
+counties_intersecting_hpa
+
+# sf_1[sf_2, op = topological_relation_type]
+
+```
+
+```{r}
+KS_corn_price <-
+  KS_counties %>%
+  dplyr::mutate(corn_price = seq(3.2, 3.9, length = nrow(.))) %>%
+  dplyr::select(COUNTYFP, corn_price)
+
+KS_corn_price
+
+```
+
+```{r}
+(
+  KS_wells_County <- sf::st_join(KS_wells, KS_corn_price)
+)
+
+```
+
+```{r}
+KS_wells %>% aggregate(KS_counties, FUN = sum)
+
+```
+
+```{r}
+# sf::st_join(sf_1, sf_2, join = \(x, y) st_is_within_distance(x, y, dist = 5))
+
+# st_intersection() => does cropped join
+
+```

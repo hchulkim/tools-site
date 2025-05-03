@@ -1081,6 +1081,176 @@ was `is_within_distance'
  5: 3</code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- Kansas county borders ---#</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>KS_counties <span class="ot">&lt;-</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">readRDS</span>(<span class="st">"Data/KS_county_borders.rds"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="dv">32614</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>old-style crs object detected; please recreate object with a recent sf::st_crs()</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- High-Plains Aquifer boundary ---#</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>hpa <span class="ot">&lt;-</span> </span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="st">"Data/hp_bound2010.shp"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>  .[<span class="dv">1</span>, ] <span class="sc">%&gt;%</span></span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="fu">st_crs</span>(KS_counties))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `hp_bound2010' from data source 
+  `/home/himakun/Documents/tools/computing/Data/hp_bound2010.shp' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 199 features and 1 field
+Geometry type: POLYGON
+Dimension:     XY
+Bounding box:  xmin: -805708.3 ymin: 983257.8 xmax: -21500.35 ymax: 2312747
+Projected CRS: NAD_1983_Albers</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- all the irrigation wells in KS ---#</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>KS_wells <span class="ot">&lt;-</span> </span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">readRDS</span>(<span class="st">"Data/Kansas_wells.rds"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(<span class="fu">st_crs</span>(KS_counties))</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a><span class="co">#--- US railroads in the Mid West region ---#</span></span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>rail_roads_mw <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_read</span>(<span class="st">"Data/mw_railroads.geojson"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `mw_railroads' from data source 
+  `/home/himakun/Documents/tools/computing/Data/mw_railroads.geojson' 
+  using driver `GeoJSON'
+Simple feature collection with 100661 features and 2 fields
+Geometry type: MULTILINESTRING
+Dimension:     XY
+Bounding box:  xmin: -414024 ymin: 3692172 xmax: 2094886 ymax: 5446589
+Projected CRS: WGS 84 / UTM zone 14N</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>hpa_cropped_to_KS <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_crop</span>(hpa, KS_wells)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: attribute variables are assumed to be spatially constant throughout
+all geometries</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>counties_intersecting_hpa <span class="ot">&lt;-</span> KS_counties[hpa_cropped_to_KS, ]</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> counties_intersecting_hpa) <span class="sc">+</span></span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> hpa_cropped_to_KS, <span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sf-vector-data_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>counties_intersecting_hpa</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 56 features and 9 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 229253.5 ymin: 4094801 xmax: 690085.5 ymax: 4432561
+Projected CRS: WGS 84 / UTM zone 14N
+First 10 features:
+   STATEFP COUNTYFP COUNTYNS       AFFGEOID GEOID     NAME LSAD      ALAND
+2       20      075 00485327 0500000US20075 20075 Hamilton   06 2580958328
+4       20      189 00485056 0500000US20189 20189  Stevens   06 1883595654
+5       20      155 00485041 0500000US20155 20155     Reno   06 3251786677
+6       20      129 00485135 0500000US20129 20129   Morton   06 1889994372
+8       20      023 00484981 0500000US20023 20023 Cheyenne   06 2641501921
+9       20      089 00485009 0500000US20089 20089   Jewell   06 2356813568
+11      20      077 00485004 0500000US20077 20077   Harper   06 2075290355
+14      20      165 00485358 0500000US20165 20165     Rush   06 1858997546
+15      20      097 00485013 0500000US20097 20097    Kiowa   06 1871627782
+16      20      109 00485019 0500000US20109 20109    Logan   06 2779039721
+     AWATER                       geometry
+2   2893322 MULTIPOLYGON (((233615.1 42...
+4    464936 MULTIPOLYGON (((273665.9 41...
+5  42963060 MULTIPOLYGON (((546178.6 42...
+6    507796 MULTIPOLYGON (((229431.1 41...
+8   2738021 MULTIPOLYGON (((239494.1 44...
+9  11367163 MULTIPOLYGON (((542298.2 44...
+11  3899269 MULTIPOLYGON (((557559.9 41...
+14   544720 MULTIPOLYGON (((449120.4 42...
+15   596764 MULTIPOLYGON (((450693.8 41...
+16   274632 MULTIPOLYGON (((285802.7 43...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sf_1[sf_2, op = topological_relation_type]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>KS_corn_price <span class="ot">&lt;-</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  KS_counties <span class="sc">%&gt;%</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">corn_price =</span> <span class="fu">seq</span>(<span class="fl">3.2</span>, <span class="fl">3.9</span>, <span class="at">length =</span> <span class="fu">nrow</span>(.))) <span class="sc">%&gt;%</span></span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(COUNTYFP, corn_price)</span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>KS_corn_price</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 105 features and 2 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 229253.5 ymin: 4094801 xmax: 890007.5 ymax: 4434288
+Projected CRS: WGS 84 / UTM zone 14N
+First 10 features:
+   COUNTYFP corn_price                       geometry
+1       133   3.200000 MULTIPOLYGON (((806203.1 41...
+2       075   3.206731 MULTIPOLYGON (((233615.1 42...
+3       123   3.213462 MULTIPOLYGON (((544031.7 43...
+4       189   3.220192 MULTIPOLYGON (((273665.9 41...
+5       155   3.226923 MULTIPOLYGON (((546178.6 42...
+6       129   3.233654 MULTIPOLYGON (((229431.1 41...
+7       073   3.240385 MULTIPOLYGON (((717254.1 42...
+8       023   3.247115 MULTIPOLYGON (((239494.1 44...
+9       089   3.253846 MULTIPOLYGON (((542298.2 44...
+10      059   3.260577 MULTIPOLYGON (((804792.9 42...</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  KS_wells_County <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_join</span>(KS_wells, KS_corn_price)</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 37647 features and 4 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: 230332 ymin: 4095052 xmax: 887329.7 ymax: 4433597
+Projected CRS: WGS 84 / UTM zone 14N
+First 10 features:
+   site    af_used COUNTYFP corn_price                 geometry
+1     1 232.099948      069   3.556731   POINT (372548 4153588)
+2     3  13.183940      039   3.449038 POINT (353698.6 4419755)
+3     5  99.187052      165   3.287500 POINT (486771.7 4260027)
+4     7   0.000000      199   3.644231 POINT (248127.1 4296442)
+5     8 145.520499      055   3.832692 POINT (349813.2 4215310)
+6     9   3.614535      143   3.799038 POINT (612277.6 4322077)
+7    11 188.423543      181   3.590385 POINT (267030.7 4381364)
+8    12  77.335960      177   3.550000 POINT (761774.6 4339039)
+9    15   0.000000      159   3.610577 POINT (560570.3 4235763)
+10   17 167.819034      069   3.556731 POINT (387315.1 4175007)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>KS_wells <span class="sc">%&gt;%</span> <span class="fu">aggregate</span>(KS_counties, <span class="at">FUN =</span> sum)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 105 features and 2 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 229253.5 ymin: 4094801 xmax: 890007.5 ymax: 4434288
+Projected CRS: WGS 84 / UTM zone 14N
+First 10 features:
+       site      af_used                       geometry
+1    124453 1.701790e+01 MULTIPOLYGON (((806203.1 41...
+2  12514550 6.261704e+04 MULTIPOLYGON (((233615.1 42...
+3   1964254 1.737791e+03 MULTIPOLYGON (((544031.7 43...
+4  42442400 3.023589e+05 MULTIPOLYGON (((273665.9 41...
+5  68068173 6.110576e+04 MULTIPOLYGON (((546178.6 42...
+6  15756801 9.664610e+04 MULTIPOLYGON (((229431.1 41...
+7    149202 0.000000e+00 MULTIPOLYGON (((717254.1 42...
+8  17167377 5.750807e+04 MULTIPOLYGON (((239494.1 44...
+9   1809003 2.201696e+03 MULTIPOLYGON (((542298.2 44...
+10   160064 4.571102e+00 MULTIPOLYGON (((804792.9 42...</code></pre>
+</div>
+</div>
 
 
 </section>
