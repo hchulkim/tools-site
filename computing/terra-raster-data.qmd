@@ -1,0 +1,138 @@
+---
+title: "Geospatial with R"
+subtitle: "Handling raster data with `terra`"
+execute:
+  freeze: auto
+---
+
+This is my practice sections following [R as GIS for Economists](https://tmieno2.github.io/R-as-GIS-for-Economists-Quarto/).
+
+### Basics
+
+```{r}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(terra, raster, mapview, dplyr, sf, lubridate, downloader)
+
+```
+
+```{r}
+(
+  IA_cdl_2015 <- raster::raster("Data/IA_cdl_2015.tif")
+)
+```
+
+```{r}
+IA_cdl_2016 <- raster::raster("Data/IA_CDL_2016.tif")
+
+#--- stack the two ---#
+(
+  IA_cdl_stack <- raster::stack(IA_cdl_2015, IA_cdl_2016)
+)
+```
+
+```{r}
+#| eval: false
+
+# I am not evaluating this cell because it takes quite some time to execute.
+#--- stack the two ---#
+IA_cdl_brick <- brick(IA_cdl_stack)
+
+#--- or this works as well ---#
+# IA_cdl_brick <- brick(IA_cdl_2015, IA_cdl_2016)
+
+#--- take a look ---#
+IA_cdl_brick
+
+```
+
+```{r}
+#--- convert to a SpatRaster ---#
+IA_cdl_2015_sr <- terra::rast(IA_cdl_2015)
+
+#--- convert to a SpatRaster ---#
+IA_cdl_stack_sr <- terra::rast(IA_cdl_stack)
+
+#--- take a look ---#
+IA_cdl_2015_sr
+
+```
+
+```{r}
+# create a single-layer from multiple single-layer
+IA_cdl_2016_sr <- terra::rast(IA_cdl_2016)
+
+# concatenate
+(
+    IA_cdl_ml_sr <- c(IA_cdl_2015_sr, IA_cdl_2016_sr)
+)
+
+```
+
+```{r}
+IA_cdl_stack_sr %>% raster::raster()
+#  %>% raster::stack()
+#  %>% raster::brick() 
+
+```
+
+```{r}
+#--- Illinois county boundary ---#
+(
+  IL_county <- 
+    tigris::counties(
+      state = "Illinois", 
+      progress_bar = FALSE
+    ) %>%
+    dplyr::select(STATEFP, COUNTYFP)
+)
+
+```
+
+```{r}
+(
+    IL_county_sv <- terra::vect(IL_county)
+)
+
+```
+
+
+```{r}
+(
+    IA_cdl_2015_sr <- terra::rast("Data/IA_cdl_2015.tif")
+)
+
+```
+
+```{r}
+#--- the list of path to the files ---#
+files_list <- c("Data/IA_cdl_2015.tif", "Data/IA_CDL_2016.tif")
+
+#--- read the two at the same time ---#
+(
+  multi_layer_sr <- terra::rast(files_list)
+)
+
+```
+
+```{r}
+terra::crs(IA_cdl_2015_sr)
+
+```
+
+```{r}
+# index
+IA_cdl_stack_sr[[2]]
+
+```
+
+```{r}
+values_from_rs <- terra::values(IA_cdl_stack_sr)
+
+head(values_from_rs)
+
+```
+
+```{r}
+plot(IA_cdl_2015_sr)
+
+```

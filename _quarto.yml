@@ -53,6 +53,8 @@ website:
           text: "Julia self-study"
         - href: computing/sf-vector-data.qmd
           text: "sf package"
+        - href: computing/terra-raster-data.qmd
+          text: "terra package"
       - section: "Study"
         contents:
         - href: study/overview.qmd
