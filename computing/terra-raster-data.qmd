@@ -136,3 +136,174 @@ head(values_from_rs)
 plot(IA_cdl_2015_sr)
 
 ```
+
+```{r}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(terra, tidyterra, raster, exactextractr, sf, dplyr, tidyr, data.table, prism, tictoc, tigris)
+
+```
+
+```{r}
+#--- set the path to the folder to which you save the downloaded PRISM data ---#
+# This code sets the current working directory as the designated folder
+options(prism.path = "Data")
+
+#--- download PRISM precipitation data ---#
+prism::get_prism_dailys(
+  type = "tmax",
+  date = "2018-07-01",
+  keepZip = FALSE
+)
+
+#--- the file name of the PRISM data just downloaded ---#
+prism_file <- "Data/PRISM_tmax_stable_4kmD2_20180701_bil/PRISM_tmax_stable_4kmD2_20180701_bil.bil"
+
+#--- read in the prism data ---#
+prism_tmax_0701_sr <- terra::rast(prism_file)
+
+
+#--- Kansas boundary (sf) ---#
+KS_county_sf <-
+  #--- get Kansas county boundary ---
+  tigris::counties(state = "Kansas", cb = TRUE) %>%
+  #--- sp to sf ---#
+  sf::st_as_sf() %>%
+  #--- transform using the CRS of the PRISM tmax data  ---#
+  sf::st_transform(terra::crs(prism_tmax_0701_sr))
+```
+
+```{r}
+# terra::(SpatRaster, sf)
+
+prism_tmax_0701_KS_sr <- 
+  terra::crop(
+    prism_tmax_0701_sr,
+    KS_county_sf
+  )
+
+library(tidyverse)
+
+ggplot() +
+  geom_spatraster(data = prism_tmax_0701_KS_sr) +
+  geom_sf(data = KS_county_sf, fill = NA, color = "blue") +
+  scale_fill_whitebox_c(
+    name = "tmax",
+    palette = "muted",
+    labels = scales::label_number(suffix = "o"),
+    n.breaks = 12,
+    guide = guide_legend(reverse = TRUE)
+  ) +
+  theme_void()
+```
+
+```{r}
+#--- download PRISM precipitation data ---#
+prism::get_prism_dailys(
+  type = "tmax",
+  date = "2018-07-02",
+  keepZip = FALSE
+)
+
+#--- the file name of the PRISM data just downloaded ---#
+prism_file <- "Data/PRISM_tmax_stable_4kmD2_20180702_bil/PRISM_tmax_stable_4kmD2_20180702_bil.bil"
+
+#--- read in the prism data and crop it to Kansas state border ---#
+prism_tmax_0702_KS_sr <-
+  terra::rast(prism_file) %>%
+  terra::crop(KS_county_sf)
+
+#--- read in the KS points data ---#
+(
+  KS_wells <- readRDS("Data/Chap_5_wells_KS.rds")
+)
+
+ggplot()  +
+  geom_sf(data = KS_county_sf, fill = NA) +
+  geom_sf(data = KS_wells, size = 0.05) +
+  theme_void()
+
+```
+
+```{r}
+# terra:extract(raster, points)
+
+tmax_from_prism <- terra::extract(prism_tmax_0701_KS_sr, KS_wells)
+
+head(tmax_from_prism)
+
+KS_wells$tmax_07_01 <- tmax_from_prism[,-1]
+
+```
+
+```{r}
+#--- create a multi-layer SpatRaster ---#
+prism_tmax_stack <- c(prism_tmax_0701_KS_sr, prism_tmax_0702_KS_sr)
+
+#--- extract tmax values ---#
+tmax_from_prism_stack <- terra::extract(prism_tmax_stack, KS_wells)
+
+#--- take a look ---#
+head(tmax_from_prism_stack)
+
+```
+
+```{r}
+tmax_by_county <- terra::extract(prism_tmax_0701_KS_sr, KS_county_sf)
+
+class(tmax_by_county)
+
+head(tmax_by_county)
+
+```
+
+
+```{r}
+#--- get mean tmax ---#
+mean_tmax <-
+  tmax_by_county %>%
+  group_by(ID) %>%
+  summarize(tmax = mean(PRISM_tmax_stable_4kmD2_20180701_bil))
+
+(
+  KS_county_sf <-
+    #--- back to sf ---#
+    KS_county_sf %>%
+    #--- define ID ---#
+    mutate(ID := seq_len(nrow(.))) %>%
+    #--- merge by ID ---#
+    left_join(., mean_tmax, by = "ID")
+)
+
+```
+
+```{r}
+tmax_by_county <- 
+  terra::extract(
+    prism_tmax_0701_KS_sr,
+    KS_county_sf,
+    fun = mean
+  )
+head(tmax_by_county)
+```
+
+```{r}
+# exactextractr::exact_extract(raster, polygons sf, include_cols = list of vars)
+
+tmax_by_county <- 
+  exactextractr::exact_extract(
+    prism_tmax_0701_KS_sr,
+    KS_county_sf,
+    include_cols = "COUNTYFP",
+    progress = FALSE
+  )
+
+  tmax_by_county[1:2] %>% lapply(function(x) head(x))
+
+```
+
+```{r}
+tmax_combined <- tmax_by_county %>% 
+  dplyr::bind_rows() %>% 
+  tibble::as_tibble()
+
+```

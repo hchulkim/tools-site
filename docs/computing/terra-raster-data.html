@@ -657,6 +657,512 @@ max value   :         241 </code></pre>
 </div>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"pacman"</span>)) <span class="fu">install.packages</span>(<span class="st">"pacman"</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(terra, tidyterra, raster, exactextractr, sf, dplyr, tidyr, data.table, prism, tictoc, tigris)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- set the path to the folder to which you save the downloaded PRISM data ---#</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This code sets the current working directory as the designated folder</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">prism.path =</span> <span class="st">"Data"</span>)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="co">#--- download PRISM precipitation data ---#</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>prism<span class="sc">::</span><span class="fu">get_prism_dailys</span>(</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"tmax"</span>,</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">date =</span> <span class="st">"2018-07-01"</span>,</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">keepZip =</span> <span class="cn">FALSE</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  |                                                                            
+  |                                                                      |   0%</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+PRISM_tmax_stable_4kmD2_20180701_bil.zip already exists. Skipping downloading.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  |                                                                            
+  |======================================================================| 100%</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- the file name of the PRISM data just downloaded ---#</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>prism_file <span class="ot">&lt;-</span> <span class="st">"Data/PRISM_tmax_stable_4kmD2_20180701_bil/PRISM_tmax_stable_4kmD2_20180701_bil.bil"</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co">#--- read in the prism data ---#</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>prism_tmax_0701_sr <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(prism_file)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="co">#--- Kansas boundary (sf) ---#</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>KS_county_sf <span class="ot">&lt;-</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#--- get Kansas county boundary ---</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>  tigris<span class="sc">::</span><span class="fu">counties</span>(<span class="at">state =</span> <span class="st">"Kansas"</span>, <span class="at">cb =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#--- sp to sf ---#</span></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_as_sf</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#--- transform using the CRS of the PRISM tmax data  ---#</span></span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>  sf<span class="sc">::</span><span class="fu">st_transform</span>(terra<span class="sc">::</span><span class="fu">crs</span>(prism_tmax_0701_sr))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Retrieving data for the year 2022</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Downloading: 48 kB     
+Downloading: 48 kB     
+Downloading: 65 kB     
+Downloading: 65 kB     
+Downloading: 97 kB     
+Downloading: 97 kB     
+Downloading: 240 kB     
+Downloading: 240 kB     
+Downloading: 410 kB     
+Downloading: 410 kB     
+Downloading: 460 kB     
+Downloading: 460 kB     
+Downloading: 510 kB     
+Downloading: 510 kB     
+Downloading: 880 kB     
+Downloading: 880 kB     
+Downloading: 900 kB     
+Downloading: 900 kB     
+Downloading: 1.1 MB     
+Downloading: 1.1 MB     
+Downloading: 1.3 MB     
+Downloading: 1.3 MB     
+Downloading: 1.5 MB     
+Downloading: 1.5 MB     
+Downloading: 1.7 MB     
+Downloading: 1.7 MB     
+Downloading: 1.8 MB     
+Downloading: 1.8 MB     
+Downloading: 2 MB     
+Downloading: 2 MB     
+Downloading: 2.1 MB     
+Downloading: 2.1 MB     
+Downloading: 2.2 MB     
+Downloading: 2.2 MB     
+Downloading: 2.4 MB     
+Downloading: 2.4 MB     
+Downloading: 2.6 MB     
+Downloading: 2.6 MB     
+Downloading: 2.7 MB     
+Downloading: 2.7 MB     
+Downloading: 2.9 MB     
+Downloading: 2.9 MB     
+Downloading: 2.9 MB     
+Downloading: 2.9 MB     
+Downloading: 3.1 MB     
+Downloading: 3.1 MB     
+Downloading: 3.1 MB     
+Downloading: 3.1 MB     
+Downloading: 3.5 MB     
+Downloading: 3.5 MB     
+Downloading: 3.6 MB     
+Downloading: 3.6 MB     
+Downloading: 3.7 MB     
+Downloading: 3.7 MB     
+Downloading: 3.8 MB     
+Downloading: 3.8 MB     
+Downloading: 4 MB     
+Downloading: 4 MB     
+Downloading: 4.2 MB     
+Downloading: 4.2 MB     
+Downloading: 4.4 MB     
+Downloading: 4.4 MB     
+Downloading: 4.6 MB     
+Downloading: 4.6 MB     
+Downloading: 4.7 MB     
+Downloading: 4.7 MB     
+Downloading: 4.9 MB     
+Downloading: 4.9 MB     
+Downloading: 5 MB     
+Downloading: 5 MB     
+Downloading: 5.1 MB     
+Downloading: 5.1 MB     
+Downloading: 5.2 MB     
+Downloading: 5.2 MB     
+Downloading: 5.4 MB     
+Downloading: 5.4 MB     
+Downloading: 5.6 MB     
+Downloading: 5.6 MB     
+Downloading: 5.7 MB     
+Downloading: 5.7 MB     
+Downloading: 5.8 MB     
+Downloading: 5.8 MB     
+Downloading: 5.9 MB     
+Downloading: 5.9 MB     
+Downloading: 6 MB     
+Downloading: 6 MB     
+Downloading: 6.1 MB     
+Downloading: 6.1 MB     
+Downloading: 6.3 MB     
+Downloading: 6.3 MB     
+Downloading: 6.5 MB     
+Downloading: 6.5 MB     
+Downloading: 6.7 MB     
+Downloading: 6.7 MB     
+Downloading: 6.9 MB     
+Downloading: 6.9 MB     
+Downloading: 6.9 MB     
+Downloading: 6.9 MB     
+Downloading: 7.1 MB     
+Downloading: 7.1 MB     
+Downloading: 7.2 MB     
+Downloading: 7.2 MB     
+Downloading: 7.4 MB     
+Downloading: 7.4 MB     
+Downloading: 7.5 MB     
+Downloading: 7.5 MB     
+Downloading: 7.5 MB     
+Downloading: 7.5 MB     
+Downloading: 7.7 MB     
+Downloading: 7.7 MB     
+Downloading: 7.9 MB     
+Downloading: 7.9 MB     
+Downloading: 8.1 MB     
+Downloading: 8.1 MB     
+Downloading: 8.2 MB     
+Downloading: 8.2 MB     
+Downloading: 8.4 MB     
+Downloading: 8.4 MB     
+Downloading: 8.5 MB     
+Downloading: 8.5 MB     
+Downloading: 8.5 MB     
+Downloading: 8.5 MB     
+Downloading: 8.5 MB     
+Downloading: 8.5 MB     
+Downloading: 8.7 MB     
+Downloading: 8.7 MB     
+Downloading: 8.9 MB     
+Downloading: 8.9 MB     
+Downloading: 9.1 MB     
+Downloading: 9.1 MB     
+Downloading: 9.3 MB     
+Downloading: 9.3 MB     
+Downloading: 9.5 MB     
+Downloading: 9.5 MB     
+Downloading: 9.5 MB     
+Downloading: 9.5 MB     
+Downloading: 9.6 MB     
+Downloading: 9.6 MB     
+Downloading: 9.8 MB     
+Downloading: 9.8 MB     
+Downloading: 10 MB     
+Downloading: 10 MB     
+Downloading: 10 MB     
+Downloading: 10 MB     
+Downloading: 10 MB     
+Downloading: 10 MB     
+Downloading: 10 MB     
+Downloading: 10 MB     
+Downloading: 11 MB     
+Downloading: 11 MB     
+Downloading: 11 MB     
+Downloading: 11 MB     
+Downloading: 11 MB     
+Downloading: 11 MB     
+Downloading: 11 MB     
+Downloading: 11 MB     
+Downloading: 11 MB     
+Downloading: 11 MB     
+Downloading: 11 MB     
+Downloading: 11 MB     
+Downloading: 11 MB     
+Downloading: 11 MB     
+Downloading: 12 MB     
+Downloading: 12 MB     
+Downloading: 12 MB     
+Downloading: 12 MB     
+Downloading: 12 MB     
+Downloading: 12 MB     </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># terra::(SpatRaster, sf)</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>prism_tmax_0701_KS_sr <span class="ot">&lt;-</span> </span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">crop</span>(</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    prism_tmax_0701_sr,</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    KS_county_sf</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ forcats 1.0.0     ✔ readr   2.1.5
+✔ ggplot2 3.5.1     ✔ stringr 1.5.1
+✔ purrr   1.0.4     ✔ tibble  3.2.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ data.table::between() masks dplyr::between()
+✖ tidyr::extract()      masks raster::extract(), terra::extract()
+✖ tidyterra::filter()   masks dplyr::filter(), stats::filter()
+✖ data.table::first()   masks dplyr::first()
+✖ data.table::hour()    masks lubridate::hour()
+✖ data.table::isoweek() masks lubridate::isoweek()
+✖ dplyr::lag()          masks stats::lag()
+✖ data.table::last()    masks dplyr::last()
+✖ data.table::mday()    masks lubridate::mday()
+✖ data.table::minute()  masks lubridate::minute()
+✖ data.table::month()   masks lubridate::month()
+✖ data.table::quarter() masks lubridate::quarter()
+✖ data.table::second()  masks lubridate::second()
+✖ tidyterra::select()   masks dplyr::select(), raster::select()
+✖ purrr::transpose()    masks data.table::transpose()
+✖ data.table::wday()    masks lubridate::wday()
+✖ data.table::week()    masks lubridate::week()
+✖ data.table::yday()    masks lubridate::yday()
+✖ data.table::year()    masks lubridate::year()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data =</span> prism_tmax_0701_KS_sr) <span class="sc">+</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS_county_sf, <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">color =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_whitebox_c</span>(</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"tmax"</span>,</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">palette =</span> <span class="st">"muted"</span>,</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_number</span>(<span class="at">suffix =</span> <span class="st">"o"</span>),</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">n.breaks =</span> <span class="dv">12</span>,</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">guide =</span> <span class="fu">guide_legend</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="terra-raster-data_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- download PRISM precipitation data ---#</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>prism<span class="sc">::</span><span class="fu">get_prism_dailys</span>(</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"tmax"</span>,</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">date =</span> <span class="st">"2018-07-02"</span>,</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">keepZip =</span> <span class="cn">FALSE</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  |                                                                            
+  |                                                                      |   0%</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+PRISM_tmax_stable_4kmD2_20180702_bil.zip already exists. Skipping downloading.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  |                                                                            
+  |======================================================================| 100%</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- the file name of the PRISM data just downloaded ---#</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>prism_file <span class="ot">&lt;-</span> <span class="st">"Data/PRISM_tmax_stable_4kmD2_20180702_bil/PRISM_tmax_stable_4kmD2_20180702_bil.bil"</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="co">#--- read in the prism data and crop it to Kansas state border ---#</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>prism_tmax_0702_KS_sr <span class="ot">&lt;-</span></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">rast</span>(prism_file) <span class="sc">%&gt;%</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">crop</span>(KS_county_sf)</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="co">#--- read in the KS points data ---#</span></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>  KS_wells <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"Data/Chap_5_wells_KS.rds"</span>)</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 37647 features and 1 field
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: -102.0495 ymin: 36.99552 xmax: -94.62089 ymax: 40.00199
+Geodetic CRS:  NAD83
+First 10 features:
+   well_id                   geometry
+1        1 POINT (-100.4423 37.52046)
+2        3 POINT (-100.7118 39.91526)
+3        5 POINT (-99.15168 38.48849)
+4        7 POINT (-101.8995 38.78077)
+5        8  POINT (-100.7122 38.0731)
+6        9 POINT (-97.70265 39.04055)
+7       11 POINT (-101.7114 39.55035)
+8       12 POINT (-95.97031 39.16121)
+9       15 POINT (-98.30759 38.26787)
+10      17 POINT (-100.2785 37.71539)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()  <span class="sc">+</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS_county_sf, <span class="at">fill =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> KS_wells, <span class="at">size =</span> <span class="fl">0.05</span>) <span class="sc">+</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="terra-raster-data_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># terra:extract(raster, points)</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>tmax_from_prism <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(prism_tmax_0701_KS_sr, KS_wells)</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tmax_from_prism)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  ID PRISM_tmax_stable_4kmD2_20180701_bil
+1  1                               34.241
+2  2                               29.288
+3  3                               32.585
+4  4                               30.104
+5  5                               34.232
+6  6                               35.168</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>KS_wells<span class="sc">$</span>tmax_07_01 <span class="ot">&lt;-</span> tmax_from_prism[,<span class="sc">-</span><span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- create a multi-layer SpatRaster ---#</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>prism_tmax_stack <span class="ot">&lt;-</span> <span class="fu">c</span>(prism_tmax_0701_KS_sr, prism_tmax_0702_KS_sr)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="co">#--- extract tmax values ---#</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>tmax_from_prism_stack <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(prism_tmax_stack, KS_wells)</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="co">#--- take a look ---#</span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tmax_from_prism_stack)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  ID PRISM_tmax_stable_4kmD2_20180701_bil PRISM_tmax_stable_4kmD2_20180702_bil
+1  1                               34.241                               30.544
+2  2                               29.288                               29.569
+3  3                               32.585                               29.866
+4  4                               30.104                               29.819
+5  5                               34.232                               30.481
+6  6                               35.168                               30.640</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>tmax_by_county <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(prism_tmax_0701_KS_sr, KS_county_sf)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(tmax_by_county)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tmax_by_county)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  ID PRISM_tmax_stable_4kmD2_20180701_bil
+1  1                               34.181
+2  1                               34.180
+3  1                               34.210
+4  1                               34.190
+5  1                               34.292
+6  1                               34.258</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co">#--- get mean tmax ---#</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>mean_tmax <span class="ot">&lt;-</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  tmax_by_county <span class="sc">%&gt;%</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ID) <span class="sc">%&gt;%</span></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">tmax =</span> <span class="fu">mean</span>(PRISM_tmax_stable_4kmD2_20180701_bil))</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>  KS_county_sf <span class="ot">&lt;-</span></span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#--- back to sf ---#</span></span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a>    KS_county_sf <span class="sc">%&gt;%</span></span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">#--- define ID ---#</span></span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">ID :=</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(.))) <span class="sc">%&gt;%</span></span>
+<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">#--- merge by ID ---#</span></span>
+<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(., mean_tmax, <span class="at">by =</span> <span class="st">"ID"</span>)</span>
+<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 105 features and 14 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -102.0517 ymin: 36.99302 xmax: -94.58841 ymax: 40.00316
+Geodetic CRS:  NAD83
+First 10 features:
+   STATEFP COUNTYFP COUNTYNS       AFFGEOID GEOID         NAME
+1       20      175 00485050 0500000US20175 20175       Seward
+2       20      027 00484983 0500000US20027 20027         Clay
+3       20      171 00485048 0500000US20171 20171        Scott
+4       20      047 00484993 0500000US20047 20047      Edwards
+5       20      147 00485037 0500000US20147 20147     Phillips
+6       20      149 00485038 0500000US20149 20149 Pottawatomie
+7       20      055 00485326 0500000US20055 20055       Finney
+8       20      167 00485046 0500000US20167 20167      Russell
+9       20      135 00485031 0500000US20135 20135         Ness
+10      20      093 00485011 0500000US20093 20093       Kearny
+              NAMELSAD STUSPS STATE_NAME LSAD      ALAND   AWATER ID     tmax
+1        Seward County     KS     Kansas   06 1656693304  1961444  1 34.47948
+2          Clay County     KS     Kansas   06 1671314413 26701337  2 34.51894
+3         Scott County     KS     Kansas   06 1858536838   306079  3 33.56413
+4       Edwards County     KS     Kansas   06 1610699245   206413  4 32.26368
+5      Phillips County     KS     Kansas   06 2294395636 22493383  5 32.57836
+6  Pottawatomie County     KS     Kansas   06 2177493041 54149843  6 35.67524
+7        Finney County     KS     Kansas   06 3372157854  1716371  7 33.96920
+8       Russell County     KS     Kansas   06 2295402858 34126776  8 33.37254
+9          Ness County     KS     Kansas   06 2783562234   667491  9 32.86275
+10       Kearny County     KS     Kansas   06 2254696661  1133601 10 33.40829
+                         geometry
+1  MULTIPOLYGON (((-101.0681 3...
+2  MULTIPOLYGON (((-97.3707 39...
+3  MULTIPOLYGON (((-101.1284 3...
+4  MULTIPOLYGON (((-99.56988 3...
+5  MULTIPOLYGON (((-99.62821 3...
+6  MULTIPOLYGON (((-96.72774 3...
+7  MULTIPOLYGON (((-101.103 37...
+8  MULTIPOLYGON (((-99.04234 3...
+9  MULTIPOLYGON (((-100.2477 3...
+10 MULTIPOLYGON (((-101.5419 3...</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>tmax_by_county <span class="ot">&lt;-</span> </span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  terra<span class="sc">::</span><span class="fu">extract</span>(</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>    prism_tmax_0701_KS_sr,</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>    KS_county_sf,</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">fun =</span> mean</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tmax_by_county)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  ID PRISM_tmax_stable_4kmD2_20180701_bil
+1  1                             34.47948
+2  2                             34.51894
+3  3                             33.56413
+4  4                             32.26368
+5  5                             32.57836
+6  6                             35.67524</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># exactextractr::exact_extract(raster, polygons sf, include_cols = list of vars)</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>tmax_by_county <span class="ot">&lt;-</span> </span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>  exactextractr<span class="sc">::</span><span class="fu">exact_extract</span>(</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>    prism_tmax_0701_KS_sr,</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>    KS_county_sf,</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">include_cols =</span> <span class="st">"COUNTYFP"</span>,</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">progress =</span> <span class="cn">FALSE</span></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>  tmax_by_county[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="sc">%&gt;%</span> <span class="fu">lapply</span>(<span class="cf">function</span>(x) <span class="fu">head</span>(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+  COUNTYFP  value coverage_fraction
+1      175 34.222         0.1074141
+2      175 34.181         0.8066747
+3      175 34.180         0.8066615
+4      175 34.210         0.8066448
+5      175 34.190         0.8061629
+6      175 34.292         0.8054324
+
+[[2]]
+  COUNTYFP  value coverage_fraction
+1      027 33.847        0.03732148
+2      027 33.897        0.10592906
+3      027 34.010        0.10249268
+4      027 34.186        0.10018899
+5      027 34.293        0.10074520
+6      027 34.220        0.09701102</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>tmax_combined <span class="ot">&lt;-</span> tmax_by_county <span class="sc">%&gt;%</span> </span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_rows</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">as_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
 </section>
