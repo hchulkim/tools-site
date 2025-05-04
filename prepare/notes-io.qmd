@@ -127,8 +127,10 @@ $$
 
 1. Adding equilibrium assumption (e.g. supply equation, pricing equation) could make the estimation more precise.
 
-2. Adding Micro data:
+2. Adding Micro data: Sometimes we can get a more precise estimate if we have individual level data on consumer's characteristics. This is become more relevant as now there are many microdata that is available to researchers.
 
 ### Dynamic
+
+Research which uses dynamic games settings are relatively rare and new. This is not because dynamic setting was not considered important to IO folks. It is just that it is very hard to estimate parameters in dynamic setup. But luckily, there has been some recent breakthroughs.  
 
 
