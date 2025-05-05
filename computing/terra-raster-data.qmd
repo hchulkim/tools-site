@@ -2,7 +2,7 @@
 title: "Geospatial with R"
 subtitle: "Handling raster data with `terra`"
 execute:
-  freeze: auto
+  freeze: true
 ---
 
 This is my practice sections following [R as GIS for Economists](https://tmieno2.github.io/R-as-GIS-for-Economists-Quarto/).
@@ -307,3 +307,33 @@ tmax_combined <- tmax_by_county %>%
   tibble::as_tibble()
 
 ```
+
+## `Stars` package
+
+```{r}
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(
+  stars, # spatiotemporal data handling
+  sf, # vector data handling
+  tidyverse, # data wrangling
+  cubelyr, # handle raster data
+  mapview, # make maps
+  exactextractr, # fast raster data extraction
+  lubridate, # handle dates
+  prism # download PRISM data
+)
+
+```
+
+```{r}
+#--- read PRISM prcp and tmax data  ---#
+(
+  prcp_tmax_PRISM_m8_y09 <- readRDS("Data/prcp_tmax_PRISM_m8_y09_small.rds")
+)
+
+```
+
+```{r}
+prcp_tmax_PRISM_m8_y09["ppt", 3, 4, 10]
+prcp_tmax_PRISM_m8_y09["ppt", 3:6, 3:4, 5:10]
+````
