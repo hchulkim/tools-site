@@ -324,16 +324,3 @@ pacman::p_load(
 )
 
 ```
-
-```{r}
-#--- read PRISM prcp and tmax data  ---#
-(
-  prcp_tmax_PRISM_m8_y09 <- readRDS("Data/prcp_tmax_PRISM_m8_y09_small.rds")
-)
-
-```
-
-```{r}
-prcp_tmax_PRISM_m8_y09["ppt", 3, 4, 10]
-prcp_tmax_PRISM_m8_y09["ppt", 3:6, 3:4, 5:10]
-````

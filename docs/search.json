@@ -1169,7 +1169,7 @@
     "href": "computing/terra-raster-data.html#stars-package",
     "title": "Geospatial with R",
     "section": "Stars package",
-    "text": "Stars package\n\nif (!require(\"pacman\")) install.packages(\"pacman\")\npacman::p_load(\n  stars, # spatiotemporal data handling\n  sf, # vector data handling\n  tidyverse, # data wrangling\n  cubelyr, # handle raster data\n  mapview, # make maps\n  exactextractr, # fast raster data extraction\n  lubridate, # handle dates\n  prism # download PRISM data\n)\n\nInstalling package into '/home/himakun/R/x86_64-pc-linux-gnu-library/4.4'\n(as 'lib' is unspecified)\n\n\n\ncubelyr installed",
+    "text": "Stars package\n\nif (!require(\"pacman\")) install.packages(\"pacman\")\npacman::p_load(\n  stars, # spatiotemporal data handling\n  sf, # vector data handling\n  tidyverse, # data wrangling\n  cubelyr, # handle raster data\n  mapview, # make maps\n  exactextractr, # fast raster data extraction\n  lubridate, # handle dates\n  prism # download PRISM data\n)",
     "crumbs": [
       "Notes",
       "terra package"
