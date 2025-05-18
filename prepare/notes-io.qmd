@@ -7,6 +7,16 @@ execute:
 
 ## Nice things to know
 
+### What is IO?
+
+This section is not for formally defining the field of IO. I am just writng down some things IO research seem to focus on. 
+
+IO is about understanding **market structure** and how it affects the equilibrium outcomes such as price, quantity, etc. By market structure, we mean mainly the various features of the supply-side of the market (the firm). Io tries to understand the characteristics of the market structure and how it affects welfare (consumer surplus, profit) in the equilibrium. 
+
+Old IO used to analyze empirical association of market structures across industries. But this was problematic because market structure is endogenous. This lead to the period of game theory. Game theory was useful because it provided useful tools to characterize the strategic interactions of individuals that make up the market. 
+
+New empirical IO seems to focus their research within some specific industry and also employ economic theory and econometric methods to fully characterize the market of their interests. During this process, they developed many useful tools (demand estimation, production function estimation, dynamic model, etc) that are also helpful to non-IO researchers.
+
 ### Why do we start with indirect utility in Discrete choice model?
 
 Actually, this can be derived from the usual utility function. Suppose consumer maximizes:
