@@ -1,47 +1,10 @@
 [
   {
-    "objectID": "misc/links.html",
-    "href": "misc/links.html",
-    "title": "Useful links",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "tools",
     "section": "",
-    "text": "Category\nLinks\n\n\n\n\nPersonal website\n🔗 GitHub site\n\n\nCoffee chat (with me)\n🔗 Appointment link\n\n\nComputing and replication resources\n🔗 Web-scraping 1  🔗 Web-scraping 2  🔗 Parallel programming  🔗 Docker  🔗 Google compute engine 1  🔗 Google compute engine 2  🔗 Databases  🔗 Spark  🔗 DuckDB and polars  🔗 NYU Course Notes & Resources  🔗 Quantitative dynamic model\n\n\nSpatial packages\n🔗 R as GIS for economists  🔗 Spatial data science\n\n\nJulia\n🔗 Julia for data science  🔗 Computational economics for PhDs  🔗 Computational Methods in Macroeconomics  🔗 BLPDemand.jl  🔗 Guide to Efficient Computational Work in Economics  🔗 Econometrics with Julia  🔗 Advanced Dynamic Programming\n\n\nUseful packages\n🔗 New DiD methods\n\n\nGraduate trade and spatial\n🔗 Treb Allen\n\n\nNotes\n🔗 BLP-notes (Adam Smith)",
-    "crumbs": [
-      "Misc.",
-      "Useful links"
-    ]
-  },
-  {
-    "objectID": "prepare/notes-io.html",
-    "href": "prepare/notes-io.html",
-    "title": "Notes",
-    "section": "",
-    "text": "This section is not for formally defining the field of IO. I am just writng down some things IO research seem to focus on.\nIO is about understanding market structure and how it affects the equilibrium outcomes such as price, quantity, etc. By market structure, we mean mainly the various features of the supply-side of the market (the firm). Io tries to understand the characteristics of the market structure and how it affects welfare (consumer surplus, profit) in the equilibrium.\nOld IO used to analyze empirical association of market structures across industries. But this was problematic because market structure is endogenous. This lead to the period of game theory. Game theory was useful because it provided useful tools to characterize the strategic interactions of individuals that make up the market.\nNew empirical IO seems to focus their research within some specific industry and also employ economic theory and econometric methods to fully characterize the market of their interests. During this process, they developed many useful tools (demand estimation, production function estimation, dynamic model, etc) that are also helpful to non-IO researchers.\n\n\n\nActually, this can be derived from the usual utility function. Suppose consumer maximizes:\n\\[\n  \\max_{q_1, q_2, c} U(q_1, q_2, c)\n\\]\nsubject to\n\\[\\begin{align}\n  p_1 q_1 + p_2 q_2 + c = m \\\\\n  q_1 q_2 = 0\n\\end{align}\\]\n\\(c\\) is the numeraire good with its price normalized to 1. To make this more simple, we will assume that quantity has to be either 1 or 0.\nThen we can get conditional indirect utility function which is (we condition on \\(q_1 = 0\\))\n\\[\n  \\max_{q_2, c} U(0, q_2, c)\n\\]\nsubject to\n\\[\n  p_2 q_2 + c = m\n\\]\nThere is a standard solution for this demand functions \\(q_2(p_2, m)\\) and \\(c(p_2, m)\\). So plug this into the demand function and we get the indirect utility function:\n\\[\n  V_2(p_2, m) = U(0, q_2(p_2, m), c(p_2, m)) = U(0, 1, m-p_2)\n\\]\nwhere the last equation holds because we are only considering that consumer can buy at most one good for \\(q_1, q_2\\).\nDoing the same conditioning on \\(q_2 = 0\\), we can see that the solution to the discrete choice part of the decision problem is then given by a choice between the wo conditional utility functions:\n\\[\n  \\max_{j=\\{1,2 \\}} V_j (p_j, m)\n\\]\nThis is the discrete choice model we usually see. We then usually add some random shocks to accomodate the changes in the people’s choice in the real-world data.\n\n\n\nI think \\(\\varepsilon\\) part is some random shock related to the conditional indirect utility of product \\(j\\). But this becomes bit weird as we add more random components into the model like mixed logit in BLP. In this setup, people usually call \\(\\varepsilon\\) as some superimposed noise used to accomodate estimation. This is because having \\(\\varepsilon\\) allows us to derive the conditional choice probability in multinomial logit form. Thus in this case, \\(\\varepsilon\\) does not seem to have a very important economic meaning."
-  },
-  {
-    "objectID": "prepare/notes-io.html#nice-things-to-know",
-    "href": "prepare/notes-io.html#nice-things-to-know",
-    "title": "Notes",
-    "section": "",
-    "text": "This section is not for formally defining the field of IO. I am just writng down some things IO research seem to focus on.\nIO is about understanding market structure and how it affects the equilibrium outcomes such as price, quantity, etc. By market structure, we mean mainly the various features of the supply-side of the market (the firm). Io tries to understand the characteristics of the market structure and how it affects welfare (consumer surplus, profit) in the equilibrium.\nOld IO used to analyze empirical association of market structures across industries. But this was problematic because market structure is endogenous. This lead to the period of game theory. Game theory was useful because it provided useful tools to characterize the strategic interactions of individuals that make up the market.\nNew empirical IO seems to focus their research within some specific industry and also employ economic theory and econometric methods to fully characterize the market of their interests. During this process, they developed many useful tools (demand estimation, production function estimation, dynamic model, etc) that are also helpful to non-IO researchers.\n\n\n\nActually, this can be derived from the usual utility function. Suppose consumer maximizes:\n\\[\n  \\max_{q_1, q_2, c} U(q_1, q_2, c)\n\\]\nsubject to\n\\[\\begin{align}\n  p_1 q_1 + p_2 q_2 + c = m \\\\\n  q_1 q_2 = 0\n\\end{align}\\]\n\\(c\\) is the numeraire good with its price normalized to 1. To make this more simple, we will assume that quantity has to be either 1 or 0.\nThen we can get conditional indirect utility function which is (we condition on \\(q_1 = 0\\))\n\\[\n  \\max_{q_2, c} U(0, q_2, c)\n\\]\nsubject to\n\\[\n  p_2 q_2 + c = m\n\\]\nThere is a standard solution for this demand functions \\(q_2(p_2, m)\\) and \\(c(p_2, m)\\). So plug this into the demand function and we get the indirect utility function:\n\\[\n  V_2(p_2, m) = U(0, q_2(p_2, m), c(p_2, m)) = U(0, 1, m-p_2)\n\\]\nwhere the last equation holds because we are only considering that consumer can buy at most one good for \\(q_1, q_2\\).\nDoing the same conditioning on \\(q_2 = 0\\), we can see that the solution to the discrete choice part of the decision problem is then given by a choice between the wo conditional utility functions:\n\\[\n  \\max_{j=\\{1,2 \\}} V_j (p_j, m)\n\\]\nThis is the discrete choice model we usually see. We then usually add some random shocks to accomodate the changes in the people’s choice in the real-world data.\n\n\n\nI think \\(\\varepsilon\\) part is some random shock related to the conditional indirect utility of product \\(j\\). But this becomes bit weird as we add more random components into the model like mixed logit in BLP. In this setup, people usually call \\(\\varepsilon\\) as some superimposed noise used to accomodate estimation. This is because having \\(\\varepsilon\\) allows us to derive the conditional choice probability in multinomial logit form. Thus in this case, \\(\\varepsilon\\) does not seem to have a very important economic meaning."
-  },
-  {
-    "objectID": "prepare/notes-io.html#ackerberg-et-al.-2006",
-    "href": "prepare/notes-io.html#ackerberg-et-al.-2006",
-    "title": "Notes",
-    "section": "Ackerberg et al. (2006)",
-    "text": "Ackerberg et al. (2006)\n\nDemand systems\nBefore the modern empirical IO, demand system was usually based on “representative agent models” in a “product space.” This lead to various problems:\nProblms of representative agent models\nSince lot of the demand systemts were estimated from aggregate market level data, it was hard to generalize the analysis of particular market into different settings. This is because of heterogenous agents in different markets. In order to alleviate this, researchers tried methods such as imposing some a priori distribution of consumer characteristics and aggregate it to the market level. The problem of this approach was that this distribution was very ad-hoc and unrealistic.\nSolutions of representative agent problem\nOne solution to this problem was the use of simulation methods. Instead of assuming certain distribution, researchers would draw a vector of consumer characteristics from some observed population data (e.g. CPS) in that market. Then they would determine the choices made by individuals for some given parameters and aggregate the choices to get the predicted demand. After that, they would apply some algorithm to find the parameter values that get these predicted demand match the observed demand.\n\nProblems of product space\n\n“Too many parameters problems”: If we model the demand system in terms of the product space, we would need to estimate large number of parameters. This could easily become impossible with the data we have.\n“New goods problem”: Since we are in product space, we can only think about goods that were already there. We cannot analyze the demand for new goods.\n\nSolutions of product space problem\nOne solution was to transition from product space to characteristic space. Now a product is a bundle of characteristics and individuals’ preferences are defined on those characteristics.\n\nBackground on characteristics space\nIn fact, papers such as Mcfadden (1974, 1981) and others already provided a well-defined econometrics models that is consistent with this setup. But it was not widely used in IO due to two reasons:\n\nLogit model’s tendency to give arise to IIA problem.\nEarly models did not account for unobserved product characteristics.\n\n\nIIA problem\nSolutions to IIA\n\nUnobserved product characteristics problem\nThis is similar to the traditional simultaneous equation problem in demand/supply function. Basically, price is correlated with the error term. Simple solution would be to apply IV using supply shifters. But this is not an easy problem for the demand system as equations are embedded in a complex non-linear functional forms.\nSolutions to unobserved product characteristics problem\nThis was solved by Berry (1994) and BLP (1995). By applying non-linear change of variables or contraction mapping, we can retrieve the equation that is linear in unobservables. Then we can apply the traditional IV estimation to overcome the endogeneity problem.\n\nSimple model\n\\[\nu_{ijt} = U(\\tilde{x}_{jt}, \\xi_{jt}, z_{it}, v_{it}, y_{it} - p_{jt}, \\theta).\n\\]\nUsually we will just drop the index \\(t\\) which stands for market. We asume there are \\(k\\) dimension of product characteristics. In practice, we do not explicitly model the expenditure in other markets. Instead, income is subsumed into either \\(v_i\\) or \\(z_i\\) and utility is modelled as depending explicitly on price.\n\\[\nu_{ij} = U(\\tilde{x}_j, \\xi_j, z_i, v_i, p_j, \\theta).\n\\]\nWe then parameterize the model in linear fashion and let\n\\[\nU_{ij} = \\sum_k x_{jk}\\theta_{ik} + \\xi_j + \\varepsilon_{ij},\n\\]\nwhere \\(\\theta_{ik} = \\overline{\\theta_k} + \\theta_k^{o}` z_i + \\theta_k^{u}` v_i\\). We normalize outside utility as \\(U_{i,0} = 0\\).\nWe can then fully write the model as\n\\[\nU_{ij} = \\overbrace{\\delta_j}^{\\sum_k x_{jk} \\overline{\\theta_k} + \\xi_j} + \\sum_{kr} x_{jk} z_{ir} \\theta_{rk}^o + \\sum_{kl} x_{jk} v_{il} \\theta_{kl}^u + \\varepsilon_{ij}.\n\\]\nSteps in estimation\nStep I\nApproximation to the aggregate shares conditional on a partiuclar value of \\((\\delta, \\theta)\\). McFadden (1974) showed that in logit assumption, we can find the choice probabilities implied by the model analytically condition on the \\(v_i\\).\n\\[\n\\sigma_j(\\theta, \\delta) = \\int \\overbrace{\\frac{\\exp [ \\delta_j + \\sum_{kl} x_{jk} v_{il} \\theta_{kl}^u ]}{1 + \\sum_q \\exp[ \\delta_q + \\sum_{kl} x_{qk} v_{il} \\theta_{kl}^u ]}}^{\\text{by McFadden}} f(v) d(v).\n\\]\nThis integral is intractable. We then use simulation to obtain an approximation of it following Pakes (1986).\n\\[\n\\sigma_j(\\theta, \\delta, P^{ns}) = \\sum_{r=1}^{ns} \\ldots\n\\]\nStep II\nThen contraction mapping by BLP (1995):\n\\[\n\\delta_j^k(\\theta) = \\delta_j^{k-1} (\\theta) + \\log[s_j^n] - \\log[\\sigma_j(\\theta, \\delta^{k-1}, P^{ns})].\n\\]\nThen we can get the unobservables in linear form:\n\\[\n\\xi_j(\\theta, s^n, P^{ns}) = \\delta(\\cdot) - \\sum_k x_{jk} \\overline{\\theta_k}.\n\\]\nStep III\nGood ol’ GMM.\n\\[\nG_{J, n, ns} (\\theta) = \\sum_j \\xi_j(\\theta, s^n, P^{ns}) f_j(w).\n\\]\nAdditional sources of info on demand parameters\n\nAdding equilibrium assumption (e.g. supply equation, pricing equation) could make the estimation more precise.\nAdding Micro data: Sometimes we can get a more precise estimate if we have individual level data on consumer’s characteristics. This is become more relevant as now there are many microdata that is available to researchers.\n\n\n\nDynamic\nResearch which uses dynamic games settings are relatively rare and new. This is not because dynamic setting was not considered important to IO folks. It is just that it is very hard to estimate parameters in dynamic setup. But luckily, there has been some recent breakthroughs."
-  },
-  {
-    "objectID": "teaching/teaching.html",
-    "href": "teaching/teaching.html",
-    "title": "Class name",
-    "section": "",
-    "text": "This page contains an outline of the topics, content, and assignments for the semester. Note that this schedule will be updated as the semester progresses and the timeline of topics and assignments might be updated throughout the semester. Syllabus\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nprepare\nslides\nhw\nhw_sol\nexam\nnotes\n\n\n\n\n1\nM\nAug 29\nLab\nNo lab\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nAug 30\nLec 1\nWelcome to STA 199\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 1\nLec 2\nMeet the toolkit\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2\nM\nSep 5\nLab 0\nHello R!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 0\n\n\n\nT\nSep 6\nLec 3\nGrammar of graphics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 8\nLec 4\nVisualizing various types of data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 1\n\n\n\nF\nSep 9\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 0 + AE 1\n\n\n\nSu\nSep 11\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: AE 2\n\n\n3\nM\nSep 12\nLab 1\nData visualization\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 1\n\n\n\nT\nSep 13\nLec 5\nGrammar of data wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 15\nLec 6\nWorking with multiple data frames\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 1 / Release: HW 2\n\n\n\nF\nSep 16\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 1\n\n\n4\nM\nSep 19\nLab 2\nData wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 2\n\n\n\nT\nSep 20\nLec 7\nTidying data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 22\nLec 8\nData types and classes\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue HW 2\n\n\n\nF\nSep 23\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 2\n\n\n5\nM\nSep 26\nLab 3\nData tidying\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 3\n\n\n\nT\nSep 27\nLec 9\nImporting and recoding data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 29\nLec 10\nExam 1 Review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 1 at 12pm\n\n\n\nF\nSep 30\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 3\n\n\n6\nM\nOct 3\nLab\nNo lab - Work on Exam 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam 1 at 2pm\n\n\n\nT\nOct 4\nLec 11\nData science ethics - Misrepresentation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 6\nLec 12\nData science ethics - Algorithmic bias + data privacy\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 3\n\n\n7\nM\nOct 10\nLab\nNo lab - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nOct 11\nLecture\nNo Lec - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 13\nLec 13\nWeb scraping\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 3\n\n\n8\nM\nOct 17\nLab\nWork on project proposal\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nOct 18\nLec 14\nFunctions + iteration\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 20\nLec 15\nThe language of models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nF\nOct 21\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project proposal\n\n\n9\nM\nOct 24\nLab 4\nProbability + Simpson's Paradox\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 4\n\n\n\nT\nOct 25\nLec 16\nModels with a single predictor\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 27\nLec 17\nModels with multiple predictors\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 4\n\n\n\nF\nOct 28\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 4\n\n\n10\nM\nOct 31\nLab 5\nPredicting a numerical outcome\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 5\n\n\n\nT\nNov 1\nLec 18\nModels with multiple predictors + Overfitting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 3\nLec 19\nLogistic regression\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 4 / Release: HW 5\n\n\n\nF\nNov 4\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 5 / Release: HW 6\n\n\n\nS\nNov 5\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 1\n\n\n11\nM\nNov 7\nLab\nWork on project draft\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nNov 8\nLec 20\nQuantifying uncertainty with bootstrap intervals\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 10\nLec 21\nHypothesis testing via simulation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 5\n\n\n\nF\nNov 11\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 1\n\n\n12\nM\nNov 14\nLab 6\nPrediction + Bootstrapping\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 6\n\n\n\nT\nNov 15\nLec 22\nInference overview\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 17\nLec 23\nExam 2 Review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 2 at 12pm\n\n\n\nF\nNov 18\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 6\n\n\n13\nM\nNov 21\nLab\nNo lab - Work on Exam 2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam 2 at 2pm\n\n\n\nT\nNov 22\nLec 24\nNo lecture - Work on projects\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 24\nLecture\nNo lecture - Thanksgiving\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nF\nNov 25\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam retake (optional)\n\n\n\nSu\nNov 27\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 2 (optional)\n\n\n14\nM\nNov 28\nLab\nWork on project peer review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project peer review\n\n\n\nT\nNov 29\nLec 25\nCommunicating data science results effectively\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 2\n\n\n\nTh\nDec 1\nLec 26\nCustomizing Quarto reports and presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nM\nDec 5\nLab\nProject presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nDec 6\nLec 25\nLooking further: Text analysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nDec 8\nLec 26\nLooking further: Interactive web applications with Shiny\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project everything\n\n\n\nF\nDec 9\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 6 / Statistics experience\n\n\n16\nTh\nDec 15\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam retake (optional)",
-    "crumbs": [
-      "Teaching",
-      "Class-name",
-      "Overview"
-    ]
+    "text": "This site is an archive that contains my tools.\n\nWho am I?\nI am a Ph.D student in Applied Economics at The Wharton School: [Website]"
   },
   {
     "objectID": "teaching/assignments.html",
@@ -53,6 +16,18 @@
       "Teaching",
       "Class-name",
       "Assignments"
+    ]
+  },
+  {
+    "objectID": "teaching/faq.html",
+    "href": "teaching/faq.html",
+    "title": "FAQ",
+    "section": "",
+    "text": "TBD",
+    "crumbs": [
+      "Teaching",
+      "Class-name",
+      "FAQ"
     ]
   },
   {
@@ -68,15 +43,69 @@
     ]
   },
   {
-    "objectID": "teaching/office-hours.html",
-    "href": "teaching/office-hours.html",
-    "title": "Overview on OH",
+    "objectID": "teaching/topology.html",
+    "href": "teaching/topology.html",
+    "title": "Topology",
     "section": "",
-    "text": "TBD",
+    "text": "This pages contains log for my self-study on topology.",
     "crumbs": [
       "Teaching",
-      "Class-name",
-      "Office hours"
+      "Mathematics",
+      "Topology resources"
+    ]
+  },
+  {
+    "objectID": "prepare/notes-spatial.html",
+    "href": "prepare/notes-spatial.html",
+    "title": "Notes",
+    "section": "",
+    "text": "It is interesting that MTO shows that MTO is only beneficial to children who are young. At first, MTO project was understood as a failed experiment because it had no significant effect on the marginalized households that moved to better neighborhoods. However, Chetty, Hendren, and Katz (2016) showed that young children (under 13) that moved due to the MTO project had higher college attendance and earnings and lower single parenthood rates. The paper hints that it might have something to do with the disturbance effect. There are tradeoffs from moving: while moving to better neighborhoods give children better environment, it also leads to disruption effect where the children has to move away from their familiar environment. Considerng this tradeoff, it is likely that younger children are less affected by the disruption effect as their duration of living in poor neighborhoods is shorter."
+  },
+  {
+    "objectID": "prepare/notes-spatial.html#mto-project",
+    "href": "prepare/notes-spatial.html#mto-project",
+    "title": "Notes",
+    "section": "",
+    "text": "It is interesting that MTO shows that MTO is only beneficial to children who are young. At first, MTO project was understood as a failed experiment because it had no significant effect on the marginalized households that moved to better neighborhoods. However, Chetty, Hendren, and Katz (2016) showed that young children (under 13) that moved due to the MTO project had higher college attendance and earnings and lower single parenthood rates. The paper hints that it might have something to do with the disturbance effect. There are tradeoffs from moving: while moving to better neighborhoods give children better environment, it also leads to disruption effect where the children has to move away from their familiar environment. Considerng this tradeoff, it is likely that younger children are less affected by the disruption effect as their duration of living in poor neighborhoods is shorter."
+  },
+  {
+    "objectID": "prepare/notes-spatial.html#agglomeration-externality",
+    "href": "prepare/notes-spatial.html#agglomeration-externality",
+    "title": "Notes",
+    "section": "Agglomeration externality",
+    "text": "Agglomeration externality"
+  },
+  {
+    "objectID": "computing/duckdb-sql.html",
+    "href": "computing/duckdb-sql.html",
+    "title": "DuckDB SQL",
+    "section": "",
+    "text": "This is example templates that use DuckDB with SQL for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(duckdb)\n\ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\n# con = dbConnect(duckdb(), dbdir = \"nyc.duck\")\n\n# SELECT\n#   passenger_count,\n#   AVG(tip_amount) AS mean_tip\n# FROM 'nyc-taxi/**/*.parquet'\n# GROUP BY passenger_count\n# ORDER BY passenger_count\n\ntic = Sys.time()\ndat1 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  GROUP BY ALL\n  ORDER BY ALL\n  \"\n)\ntoc = Sys.time()\n\ndat1\ntoc - tic\n\ntic = Sys.time()\ndat2 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    month,\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  WHERE month &lt;= 3\n  GROUP BY ALL\n  \"\n    )\ntoc = Sys.time()\n\nhead(dat2)\n\ndbDisconnect(con)\n\n\n\n\nimport duckdb\nimport time\n\ncon = duckdb.connect(database=':memory:', read_only=False)\n\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\ncon = duckdb.connect(database='nyc.duck', read_only=False)\n\ntic = time.time()\ndat1 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    GROUP BY ALL\n    ORDER BY ALL\n    '''\n    )\n)\ntoc = time.time()\n\ndat1\n\ntic = time.time()\ndat2 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      month,\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    WHERE month &lt;= 3\n    GROUP BY ALL\n    '''\n  )\n)\ntoc = time.time()\n\ndat2\n\ncon.close()",
+    "crumbs": [
+      "Notes",
+      "DuckDB SQL"
+    ]
+  },
+  {
+    "objectID": "computing/computing.html",
+    "href": "computing/computing.html",
+    "title": "Overview",
+    "section": "",
+    "text": "This section is a set of templates related to computing. It also contains some notes on various subjects in Economics.",
+    "crumbs": [
+      "Notes",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "computing/docker.html",
+    "href": "computing/docker.html",
+    "title": "Dockerfile",
+    "section": "",
+    "text": "This is a Dockerfile template for my computing environment. If you want to know more about what this does, check out my blog post.\n\n# Use Rocker image as the base for R\nFROM rocker/r-ver:4.4.0\n\nLABEL maintainer=\"Hyoungchul Kim &lt;hchul.kim96@gmail.com&gt;\"\n\n## Update and install system dependencies\nRUN apt-get update && apt-get install -y \\\n    libcurl4-openssl-dev \\\n    libssl-dev \\\n    libfontconfig1-dev \\\n    libharfbuzz-dev \\\n    libfribidi-dev \\\n    libfreetype6-dev \\\n    libpng-dev \\\n    libtiff5-dev \\\n    libjpeg-dev \\\n    libglpk-dev \\\n    libxml2-dev \\\n    libcairo2-dev \\\n    libgit2-dev \\\n    libpq-dev \\\n    libsasl2-dev \\\n    libsqlite3-dev \\\n    libssh2-1-dev \\\n    libxt-dev \\\n    libgdal-dev \\\n    wget \\\n    curl \\\n    vim \\\n    git \n\n## Install Pandoc and Quarto (Required for RMarkdown, Quarto, etc.)\n# RUN /rocker_scripts/install_pandoc.sh\n# RUN /rocker_scripts/install_quarto.sh\n\n## Install Python & Poetry\nRUN /rocker_scripts/install_python.sh && \\\n    pip3 install --upgrade pip && \\\n    pip3 install poetry\n\n# Ensure Poetry installs dependencies in the system environment\nRUN poetry config virtualenvs.create false\n\n# Copy Poetry files and install dependencies\nCOPY pyproject.toml poetry.lock .\nRUN poetry install --no-interaction --no-root\n\n## Install Julia 1.11.3 (to match Manifest.toml)\nENV JULIA_VERSION=1.11.3\nRUN /rocker_scripts/install_julia.sh\n\n## Set working directory\nWORKDIR /project\n\n## Copy renv.lock file into the folder\nCOPY renv.lock .\n\n# Set environment variables for renv\nENV RENV_VERSION=1.0.7\nENV RENV_PATHS_CACHE=/renv/cache\nENV RENV_CONFIG_REPOS_OVERRIDE=https://cloud.r-project.org\nENV RENV_CONFIG_AUTOLOADER_ENABLED=FALSE\nENV RENV_WATCHDOG_ENABLED=FALSE\nRUN echo \"options(renv.consent = TRUE)\" &gt;&gt; .Rprofile\nRUN echo \"options(RETICULATE_MINICONDA_ENABLED = FALSE)\" &gt;&gt; .Rprofile\n\n# Install renv from CRAN (avoiding bootstrapping by specifying version)\nRUN R -e \"install.packages('renv', repos = c(CRAN = 'https://cloud.r-project.org'))\"\nRUN R -e \"renv::consent(provided = TRUE)\"\n\n# Run renv restore to restore the environment\nRUN R -e \"renv::restore(confirm = FALSE)\"\n\n# Install Julia packages and manage dependencies\nCOPY Manifest.toml Project.toml .\nENV JULIA_PROJECT=/project\nRUN julia -e \"import Pkg; Pkg.activate(\\\".\\\"); Pkg.instantiate()\"\n\n# Copy over the rest of the project files\nCOPY . .\n\n# Default command\nCMD [\"bash\"]",
+    "crumbs": [
+      "Notes",
+      "Dockerfile"
     ]
   },
   {
@@ -209,101 +238,6 @@
     "crumbs": [
       "Notes",
       "DuckDB + dplyr (R)"
-    ]
-  },
-  {
-    "objectID": "computing/terra-raster-data.html",
-    "href": "computing/terra-raster-data.html",
-    "title": "Geospatial with R",
-    "section": "",
-    "text": "This is my practice sections following R as GIS for Economists.",
-    "crumbs": [
-      "Notes",
-      "terra package"
-    ]
-  },
-  {
-    "objectID": "computing/terra-raster-data.html#stars-package",
-    "href": "computing/terra-raster-data.html#stars-package",
-    "title": "Geospatial with R",
-    "section": "Stars package",
-    "text": "Stars package\n\nif (!require(\"pacman\")) install.packages(\"pacman\")\npacman::p_load(\n  stars, # spatiotemporal data handling\n  sf, # vector data handling\n  tidyverse, # data wrangling\n  cubelyr, # handle raster data\n  mapview, # make maps\n  exactextractr, # fast raster data extraction\n  lubridate, # handle dates\n  prism # download PRISM data\n)",
-    "crumbs": [
-      "Notes",
-      "terra package"
-    ]
-  },
-  {
-    "objectID": "computing/computing.html",
-    "href": "computing/computing.html",
-    "title": "Overview",
-    "section": "",
-    "text": "This section is a set of templates related to computing. It also contains some notes on various subjects in Economics.",
-    "crumbs": [
-      "Notes",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "computing/trade-notes.html",
-    "href": "computing/trade-notes.html",
-    "title": "(Graduate) International trade notes",
-    "section": "",
-    "text": "These are some notes for my self-study on International Trade (graduate level).",
-    "crumbs": [
-      "Notes",
-      "Trade notes"
-    ]
-  },
-  {
-    "objectID": "study/spatial.html",
-    "href": "study/spatial.html",
-    "title": "Spatial study",
-    "section": "",
-    "text": "This page contains an outline of the topics, contents, and works I did for Spatial economics self-study.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nlink\nmaterial\nnotes\n\n\n\n\n1\nFri\nMay 9\ndue-date\nintro\n\n\n\n\n\n\n\n\n\n\nintro_phd (holger)\n\n\n\nFri\n\n\n\n\nMTO (holger)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nagglomeration externalities\n\n\n\n\n\n\n\n\nslides_ghm_10 (holger)\n\n\n2\nFri\nMay 16\ndue-date\ndiscrete choice and continuous-discrete choice\n\n\n\n\n\n\n\n\n\n\nblp1995; epple and sieg1999; blp2004; sieg, smigh, banzhaf and walsh2004;\n\n\n3\nFri\nMay 23\ndue-date\nstructural io extra\n\n\n\n\n\n\nackerberg, benkard, berry, pakes2007\n\n\n4\nFri\nMay 30\ndue-date\nspatial rdd\n\n\n\n\n\n\n\n\n\n\nslides_srdd (holger)\n\n\n5\nFri\nJun 6\ndue-date\nsorting across cities\n\n\n\n\n\n\n\n\ndiamond2016\n\n\n\nFri\n\n\n\n\nsorting across cities2\n\n\n\n\n\n\n\n\n\n\n\n\n6\nFri\nJun 13\ndue-date\ntrade (ricardian model) - frechet\n\n\n\n\n\n\n\n\n\n\nEK\n\n\n\nFri\n\n\n\n\ntrade (ricardian model) - frechet2\n\n\n\n\n\n\n\n\nEK\n\n\n\nFri\n\n\n\n\ntrade (ricardian model) - frechet3\n\n\n\n\n\n\n\n\nEK\n\n\n7\nFri\nJun 20\ndue-date\nsorting within cities and agglomeration externalities\n\n\n\n\n\n\n\n\nahlfeldt, redding, sturm and wolf2015\n\n\n\nFri\n\n\n\n\nsorting within cities and agglomeration externalities\n\n\n\n\n\n\n\n\n\n\n\n\n8\nFri\nJun 27\ndue-date\neducation\n\n\n\n\n\n\n\n\nepple, romano and sieg2006; fu2014\n\n\n9\nFri\nJul 4\ndue-date\ndynamic discrete choice review\n\n\n\n\n\n\n\n\ncaliendo-china-shock, balboni-vietnam\n\n\n\nFri\n\n\n\n\ndynamic discrete choice review\n\n\n\n\n\n\n\n\n\n\n\n\n10\nFri\nJul 11\ndue-date\nestimation of stationary spatial models\n\n\n\n\n\n\n\n\nalmagro and dominguez2022, amsterdam\n\n\n\nFri\n\n\n\n\nestimation of stationary spatial models\n\n\n\n\n\n\n\n\n\n\n\n\n11\nFri\nJul 18\ndue-date\nstationary housing models: rental markets, public and affordable housing\n\n\n\n\n\n\n\n\n\n\n\n\n12\nFri\nJul 25\ndue-date\nstationary housing models: owner occupied housing markets\n\n\n\n\n\n\n\n\nhurst, keys, seru and vavra2016\n\n\n\nFri\n\n\n\n\nstationary housing models: owner occupied housing markets\n\n\n\n\n\n\n\n\n\n\n\n\n13\nFri\nAug 1\ndue-date\nstatic hedonic models\n\n\n\n\n\n\n\n\nrosen, sherwin1974; epple1987; seig, smith, banzhaf and walsh2002; epple, quintero, and sieg2020\n\n\n14\nFri\nAug 8\ndue-date\nnonstationary dynamic hedonic\n\n\n\n\n\n\n\n\nlandvoigt, piazzesi, and schneider2015\n\n\n15\nFri\nAug 15\ndue-date\nnonstationary spatial models\n\n\n\n\n\n\n\n\nkleinman, liu, redding2023\n\n\n\nFri\n\n\n\n\nnonstationary spatial models\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nnonstationary spatial models\n\n\n\n\n\n\n\n\ncaliendo, dvorkin, and parro2019; balboni2021; bilal and rossi-hansberg2023\n\n\n\nFri\n\n\n\n\nnonstationary spatial models\n\n\n\n\n\n\n\n\n\n\n\n\n16\nFri\nAug 22\ndue-date\nnonstationary spatial models: firm location and density\n\n\n\n\n\n\n\n\nholmes2011\n\n\n0\nNA\n\n\nNOTES\nsummary",
-    "crumbs": [
-      "Study",
-      "Spatial"
-    ]
-  },
-  {
-    "objectID": "study/julia.html",
-    "href": "study/julia.html",
-    "title": "Julia study",
-    "section": "",
-    "text": "This page contains an outline of the topics, contents, and works I did for Julia study group.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nlink\nhw\nhw_sol\nnotes\n\n\n\n\n1\nFri\nMay 9\nmeeting\nlorem\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nlorem\n\n\n2\nFri\nMay 16\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n3\nSat\nMay 10\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n4\nSat\nMay 17\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n5\nSun\nMay 11\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n6\nSun\nMay 18\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n7\nMon\nMay 12\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n8\nMon\nMay 19\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n9\nTue\nMay 13\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n10\nTue\nMay 20\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n11\nWed\nMay 14\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n12\nWed\nMay 21\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n13\nThu\nMay 15\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n14\nThu\nMay 22\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nFri\nMay 16\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n16\nFri\nMay 23\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n17\nSat\nMay 17\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n18\nSat\nMay 24\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n19\nSun\nMay 18\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n20\nSun\nMay 25\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n21\nMon\nMay 19\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n22\nMon\nMay 26\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n23\nTue\nMay 20\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n24\nTue\nMay 27\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n25\nWed\nMay 21\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n26\nWed\nMay 28\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n27\nThu\nMay 22\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n28\nThu\nMay 29\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n29\nFri\nMay 23\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n30\nFri\nMay 30\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n31\nSat\nMay 24\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n32\nSat\nMay 31\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n33\nSun\nMay 25\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n34\nSun\nJun 1\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n35\nMon\nMay 26\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n36\nMon\nJun 2\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n37\nTue\nMay 27\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n38\nTue\nJun 3\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n39\nWed\nMay 28\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n40\nWed\nJun 4\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n41\nThu\nMay 29\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n42\nThu\nJun 5\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n43\nFri\nMay 30\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n44\nFri\nJun 6\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n45\nSat\nMay 31\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n46\nSat\nJun 7\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n47\nSun\nJun 1\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n48\nSun\nJun 8\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n49\nMon\nJun 2\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n50\nMon\nJun 9\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n51\nTue\nJun 3\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n52\nTue\nJun 10\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n53\nWed\nJun 4\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n54\nWed\nJun 11\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n55\nThu\nJun 5\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n56\nThu\nJun 12\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n57\nFri\nJun 6\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n58\nFri\nJun 13\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n59\nSat\nJun 7\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n60\nSat\nJun 14\nmeeting",
-    "crumbs": [
-      "Study",
-      "Julia"
-    ]
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "tools",
-    "section": "",
-    "text": "This site is an archive that contains my tools.\n\nWho am I?\nI am a Ph.D student in Applied Economics at The Wharton School: [Website]"
-  },
-  {
-    "objectID": "study/overview.html",
-    "href": "study/overview.html",
-    "title": "Overview",
-    "section": "",
-    "text": "This section is a set of materials I used for studying.",
-    "crumbs": [
-      "Study",
-      "Overview"
-    ]
-  },
-  {
-    "objectID": "study/io-theory.html",
-    "href": "study/io-theory.html",
-    "title": "Empirical IO study",
-    "section": "",
-    "text": "This page contains an outline of the topics, contents, and works I did for Empirical IO self-study.\nNotes\nMaterials I am using: IO syllabus by Phil Haile; MIT IO opencourse; Train’s textbook; Mixetape course on demand estimation; Some bits of Tirole’s textbook.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nlink\nmaterial\nnotes\n\n\n\n\n1\nFri\nMay 9\ndue-date\nfirm (tirole; mit)\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2021\n\n\n\nFri\n\n\n\n\nTrain (~logit)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nackerberg, benkard, berry and pakes2007\n\n\n\n\n\n\n\n\n\n\n\n\n2\nFri\nMay 16\ndue-date\nmonopoly\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2022\n\n\n\nFri\n\n\ndue-date\nmonopoly\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2023\n\n\n\nFri\n\n\n\n\nTrain (~mixed logit)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nackerberg, benkard, berry and pakes2007\n\n\n\n\n\n\n\n\n\n\n\n\n3\nFri\nMay 23\ndue-date\nproduct selection\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2024\n\n\n\nFri\n\n\n\n\nTrain (~Numerical Maximization)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nackerberg, benkard, berry and pakes2007\n\n\n\n\n\n\n\n\n\n\n\n\n4\nFri\nMay 30\ndue-date\nprice discrimination\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2025\n\n\n\nFri\n\n\n\n\nprice discrimination\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2026\n\n\n\nFri\n\n\n\n\nprice discrimination\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2027\n\n\n\nFri\n\n\n\n\nTrain (~densities)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nackerberg, benkard, berry and pakes2007\n\n\n\n\n\n\n\n\n\n\n\n\n5\nFri\nJun 6\ndue-date\nvertical control\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2028\n\n\n\nFri\n\n\n\n\nTrain (~simulation)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nackerberg, benkard, berry and pakes2007\n\n\n\n\n\n\n\n\n\n\n\n\n6\nFri\nJun 13\ndue-date\nprice competition\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2029\n\n\n\nFri\n\n\n\n\nprice competition\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2030\n\n\n\nFri\n\n\n\n\nTrain (~individual)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nackerberg, benkard, berry and pakes2007\n\n\n\n\n\n\n\n\n\n\n\n\n7\nFri\nJun 20\ndue-date\nproduct differentiation\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2031\n\n\n\nFri\n\n\n\n\nproduct differentiation\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2032\n\n\n\nFri\n\n\n\n\nmixtape (individual)\n\n\n\n\n\n\n\n\n\n\n\n\n8\nFri\nJun 27\ndue-date\nsearch\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2033\n\n\n\nFri\n\n\n\n\nsearch\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2034\n\n\n\nFri\n\n\n\n\nmixtape (individual)\n\n\n\n\n\n\n\n\n\n\n\n\n9\nFri\nJul 4\ndue-date\ndynamic competition\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2035\n\n\n\nFri\n\n\n\n\ndynamic competition\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2036\n\n\n10\nFri\nJul 11\ndue-date\nentry, exit\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2037\n\n\n\nFri\n\n\n\n\nentry, exit\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2038\n\n\n11\nFri\nJul 18\ndue-date\n-\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2039\n\n\n12\nFri\nJul 25\ndue-date\n-\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2040\n\n\n13\nFri\nAug 1\ndue-date\n-\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2041\n\n\n14\nFri\nAug 8\ndue-date\n-\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2042\n\n\n15\nFri\nAug 15\ndue-date\n-\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2043\n\n\n16\nFri\nAug 22\ndue-date\n-\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2044\n\n\n0\nNA\n\n\ndue-date\nreplication\n\n\n\n\n\n\nnevo2001; caliendo, dvorkin and parro2019\n\n\n0\nNA\n\n\ndue-date\nps\n\n\n\n\n\n\n\n\n\n\n0\nNA\n\n\nNOTES\nsummary",
-    "crumbs": [
-      "Study",
-      "IO theory"
     ]
   },
   {
@@ -505,6 +439,83 @@
     ]
   },
   {
+    "objectID": "study/io-theory.html",
+    "href": "study/io-theory.html",
+    "title": "Empirical IO study",
+    "section": "",
+    "text": "This page contains an outline of the topics, contents, and works I did for Empirical IO self-study.\nNotes\nMaterials I am using: IO syllabus by Phil Haile; MIT IO opencourse; Train’s textbook; Mixetape course on demand estimation; Some bits of Tirole’s textbook.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nlink\nmaterial\nnotes\n\n\n\n\n1\nFri\nMay 9\ndue-date\nfirm (tirole; mit)\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2021\n\n\n\nFri\n\n\n\n\nTrain (~logit)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nackerberg, benkard, berry and pakes2007\n\n\n\n\n\n\n\n\n\n\n\n\n2\nFri\nMay 16\ndue-date\nmonopoly\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2022\n\n\n\nFri\n\n\ndue-date\nmonopoly\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2023\n\n\n\nFri\n\n\n\n\nTrain (~mixed logit)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nackerberg, benkard, berry and pakes2007\n\n\n\n\n\n\n\n\n\n\n\n\n3\nFri\nMay 23\ndue-date\nproduct selection\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2024\n\n\n\nFri\n\n\n\n\nTrain (~Numerical Maximization)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nackerberg, benkard, berry and pakes2007\n\n\n\n\n\n\n\n\n\n\n\n\n4\nFri\nMay 30\ndue-date\nprice discrimination\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2025\n\n\n\nFri\n\n\n\n\nprice discrimination\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2026\n\n\n\nFri\n\n\n\n\nprice discrimination\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2027\n\n\n\nFri\n\n\n\n\nTrain (~densities)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nackerberg, benkard, berry and pakes2007\n\n\n\n\n\n\n\n\n\n\n\n\n5\nFri\nJun 6\ndue-date\nvertical control\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2028\n\n\n\nFri\n\n\n\n\nTrain (~simulation)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nackerberg, benkard, berry and pakes2007\n\n\n\n\n\n\n\n\n\n\n\n\n6\nFri\nJun 13\ndue-date\nprice competition\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2029\n\n\n\nFri\n\n\n\n\nprice competition\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2030\n\n\n\nFri\n\n\n\n\nTrain (~individual)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nackerberg, benkard, berry and pakes2007\n\n\n\n\n\n\n\n\n\n\n\n\n7\nFri\nJun 20\ndue-date\nproduct differentiation\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2031\n\n\n\nFri\n\n\n\n\nproduct differentiation\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2032\n\n\n\nFri\n\n\n\n\nmixtape (individual)\n\n\n\n\n\n\n\n\n\n\n\n\n8\nFri\nJun 27\ndue-date\nsearch\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2033\n\n\n\nFri\n\n\n\n\nsearch\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2034\n\n\n\nFri\n\n\n\n\nmixtape (individual)\n\n\n\n\n\n\n\n\n\n\n\n\n9\nFri\nJul 4\ndue-date\ndynamic competition\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2035\n\n\n\nFri\n\n\n\n\ndynamic competition\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2036\n\n\n10\nFri\nJul 11\ndue-date\nentry, exit\n\n\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2037\n\n\n\nFri\n\n\n\n\nentry, exit\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2038\n\n\n11\nFri\nJul 18\ndue-date\n-\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2039\n\n\n12\nFri\nJul 25\ndue-date\n-\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2040\n\n\n13\nFri\nAug 1\ndue-date\n-\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2041\n\n\n14\nFri\nAug 8\ndue-date\n-\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2042\n\n\n15\nFri\nAug 15\ndue-date\n-\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2043\n\n\n16\nFri\nAug 22\ndue-date\n-\n\n\n\n\n\n\n\n\ntirole; ackerberg, benkard, berry and pakes2007; gandhi and nevo2021; aguirregabiria, collard-wexler and ryan2044\n\n\n0\nNA\n\n\ndue-date\nreplication\n\n\n\n\n\n\nnevo2001; caliendo, dvorkin and parro2019\n\n\n0\nNA\n\n\ndue-date\nps\n\n\n\n\n\n\n\n\n\n\n0\nNA\n\n\nNOTES\nsummary",
+    "crumbs": [
+      "Study",
+      "IO theory"
+    ]
+  },
+  {
+    "objectID": "study/overview.html",
+    "href": "study/overview.html",
+    "title": "Overview",
+    "section": "",
+    "text": "This section is a set of materials I used for studying.",
+    "crumbs": [
+      "Study",
+      "Overview"
+    ]
+  },
+  {
+    "objectID": "study/julia.html",
+    "href": "study/julia.html",
+    "title": "Julia study",
+    "section": "",
+    "text": "This page contains an outline of the topics, contents, and works I did for Julia study group.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nlink\nhw\nhw_sol\nnotes\n\n\n\n\n1\nFri\nMay 9\nmeeting\nlorem\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nlorem\n\n\n2\nFri\nMay 16\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n3\nSat\nMay 10\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n4\nSat\nMay 17\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n5\nSun\nMay 11\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n6\nSun\nMay 18\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n7\nMon\nMay 12\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n8\nMon\nMay 19\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n9\nTue\nMay 13\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n10\nTue\nMay 20\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n11\nWed\nMay 14\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n12\nWed\nMay 21\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n13\nThu\nMay 15\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n14\nThu\nMay 22\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nFri\nMay 16\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n16\nFri\nMay 23\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n17\nSat\nMay 17\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n18\nSat\nMay 24\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n19\nSun\nMay 18\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n20\nSun\nMay 25\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n21\nMon\nMay 19\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n22\nMon\nMay 26\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n23\nTue\nMay 20\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n24\nTue\nMay 27\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n25\nWed\nMay 21\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n26\nWed\nMay 28\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n27\nThu\nMay 22\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n28\nThu\nMay 29\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n29\nFri\nMay 23\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n30\nFri\nMay 30\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n31\nSat\nMay 24\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n32\nSat\nMay 31\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n33\nSun\nMay 25\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n34\nSun\nJun 1\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n35\nMon\nMay 26\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n36\nMon\nJun 2\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n37\nTue\nMay 27\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n38\nTue\nJun 3\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n39\nWed\nMay 28\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n40\nWed\nJun 4\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n41\nThu\nMay 29\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n42\nThu\nJun 5\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n43\nFri\nMay 30\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n44\nFri\nJun 6\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n45\nSat\nMay 31\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n46\nSat\nJun 7\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n47\nSun\nJun 1\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n48\nSun\nJun 8\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n49\nMon\nJun 2\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n50\nMon\nJun 9\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n51\nTue\nJun 3\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n52\nTue\nJun 10\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n53\nWed\nJun 4\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n54\nWed\nJun 11\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n55\nThu\nJun 5\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n56\nThu\nJun 12\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n57\nFri\nJun 6\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n58\nFri\nJun 13\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n59\nSat\nJun 7\nmeeting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n60\nSat\nJun 14\nmeeting",
+    "crumbs": [
+      "Study",
+      "Julia"
+    ]
+  },
+  {
+    "objectID": "study/spatial.html",
+    "href": "study/spatial.html",
+    "title": "Spatial study",
+    "section": "",
+    "text": "This page contains an outline of the topics, contents, and works I did for Spatial economics self-study.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nlink\nmaterial\nnotes\n\n\n\n\n1\nFri\nMay 9\ndue-date\nintro\n\n\n\n\n\n\n\n\n\n\nintro_phd (holger)\n\n\n\nFri\n\n\n\n\nMTO (holger)\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nagglomeration externalities\n\n\n\n\n\n\n\n\nslides_ghm_10 (holger)\n\n\n2\nFri\nMay 16\ndue-date\ndiscrete choice and continuous-discrete choice\n\n\n\n\n\n\n\n\n\n\nblp1995; epple and sieg1999; blp2004; sieg, smigh, banzhaf and walsh2004;\n\n\n3\nFri\nMay 23\ndue-date\nstructural io extra\n\n\n\n\n\n\nackerberg, benkard, berry, pakes2007\n\n\n4\nFri\nMay 30\ndue-date\nspatial rdd\n\n\n\n\n\n\n\n\n\n\nslides_srdd (holger)\n\n\n5\nFri\nJun 6\ndue-date\nsorting across cities\n\n\n\n\n\n\n\n\ndiamond2016\n\n\n\nFri\n\n\n\n\nsorting across cities2\n\n\n\n\n\n\n\n\n\n\n\n\n6\nFri\nJun 13\ndue-date\ntrade (ricardian model) - frechet\n\n\n\n\n\n\n\n\n\n\nEK\n\n\n\nFri\n\n\n\n\ntrade (ricardian model) - frechet2\n\n\n\n\n\n\n\n\nEK\n\n\n\nFri\n\n\n\n\ntrade (ricardian model) - frechet3\n\n\n\n\n\n\n\n\nEK\n\n\n7\nFri\nJun 20\ndue-date\nsorting within cities and agglomeration externalities\n\n\n\n\n\n\n\n\nahlfeldt, redding, sturm and wolf2015\n\n\n\nFri\n\n\n\n\nsorting within cities and agglomeration externalities\n\n\n\n\n\n\n\n\n\n\n\n\n8\nFri\nJun 27\ndue-date\neducation\n\n\n\n\n\n\n\n\nepple, romano and sieg2006; fu2014\n\n\n9\nFri\nJul 4\ndue-date\ndynamic discrete choice review\n\n\n\n\n\n\n\n\ncaliendo-china-shock, balboni-vietnam\n\n\n\nFri\n\n\n\n\ndynamic discrete choice review\n\n\n\n\n\n\n\n\n\n\n\n\n10\nFri\nJul 11\ndue-date\nestimation of stationary spatial models\n\n\n\n\n\n\n\n\nalmagro and dominguez2022, amsterdam\n\n\n\nFri\n\n\n\n\nestimation of stationary spatial models\n\n\n\n\n\n\n\n\n\n\n\n\n11\nFri\nJul 18\ndue-date\nstationary housing models: rental markets, public and affordable housing\n\n\n\n\n\n\n\n\n\n\n\n\n12\nFri\nJul 25\ndue-date\nstationary housing models: owner occupied housing markets\n\n\n\n\n\n\n\n\nhurst, keys, seru and vavra2016\n\n\n\nFri\n\n\n\n\nstationary housing models: owner occupied housing markets\n\n\n\n\n\n\n\n\n\n\n\n\n13\nFri\nAug 1\ndue-date\nstatic hedonic models\n\n\n\n\n\n\n\n\nrosen, sherwin1974; epple1987; seig, smith, banzhaf and walsh2002; epple, quintero, and sieg2020\n\n\n14\nFri\nAug 8\ndue-date\nnonstationary dynamic hedonic\n\n\n\n\n\n\n\n\nlandvoigt, piazzesi, and schneider2015\n\n\n15\nFri\nAug 15\ndue-date\nnonstationary spatial models\n\n\n\n\n\n\n\n\nkleinman, liu, redding2023\n\n\n\nFri\n\n\n\n\nnonstationary spatial models\n\n\n\n\n\n\n\n\n\n\n\n\n\nFri\n\n\n\n\nnonstationary spatial models\n\n\n\n\n\n\n\n\ncaliendo, dvorkin, and parro2019; balboni2021; bilal and rossi-hansberg2023\n\n\n\nFri\n\n\n\n\nnonstationary spatial models\n\n\n\n\n\n\n\n\n\n\n\n\n16\nFri\nAug 22\ndue-date\nnonstationary spatial models: firm location and density\n\n\n\n\n\n\n\n\nholmes2011\n\n\n0\nNA\n\n\nNOTES\nsummary",
+    "crumbs": [
+      "Study",
+      "Spatial"
+    ]
+  },
+  {
+    "objectID": "computing/terra-raster-data.html",
+    "href": "computing/terra-raster-data.html",
+    "title": "Geospatial with R",
+    "section": "",
+    "text": "This is my practice sections following R as GIS for Economists.",
+    "crumbs": [
+      "Notes",
+      "terra package"
+    ]
+  },
+  {
+    "objectID": "computing/terra-raster-data.html#stars-package",
+    "href": "computing/terra-raster-data.html#stars-package",
+    "title": "Geospatial with R",
+    "section": "Stars package",
+    "text": "Stars package\n\nif (!require(\"pacman\")) install.packages(\"pacman\")\npacman::p_load(\n  stars, # spatiotemporal data handling\n  sf, # vector data handling\n  tidyverse, # data wrangling\n  cubelyr, # handle raster data\n  mapview, # make maps\n  exactextractr, # fast raster data extraction\n  lubridate, # handle dates\n  prism # download PRISM data\n)",
+    "crumbs": [
+      "Notes",
+      "terra package"
+    ]
+  },
+  {
+    "objectID": "computing/trade-notes.html",
+    "href": "computing/trade-notes.html",
+    "title": "(Graduate) International trade notes",
+    "section": "",
+    "text": "These are some notes for my self-study on International Trade (graduate level).",
+    "crumbs": [
+      "Notes",
+      "Trade notes"
+    ]
+  },
+  {
     "objectID": "computing/gis.html",
     "href": "computing/gis.html",
     "title": "Geospatial with R",
@@ -535,28 +546,6 @@
     "crumbs": [
       "Notes",
       "Geospatial (R)"
-    ]
-  },
-  {
-    "objectID": "computing/polars.html",
-    "href": "computing/polars.html",
-    "title": "Polars from Python and R",
-    "section": "",
-    "text": "This is example templates that use Polars for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(polars)\n\nnyc = pl$scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning = TRUE)\nnyc\n\nq1 = (\n    nyc\n    $group_by(\"passenger_count\")\n    $agg(\n        pl$mean(\"tip_amount\")#$alias(\"mean_tip\") ## alias is optional\n    )\n    $sort(\"passenger_count\")\n)\nq1 \n\ntic = Sys.time()\ndat1 = q1$collect()\ntoc = Sys.time()\n\ndat1\n\nq2 = (\n    nyc\n    $filter(pl$col(\"month\") &lt;= 3)\n    $group_by(\"month\", \"passenger_count\")\n    $agg(pl$mean(\"tip_amount\")$alias(\"mean_tip\"))\n    $sort(\"passenger_count\")\n) \n\n# q2              # naive\ncat(q2$explain()) # optimized\n\ntic = Sys.time()\ndat2 = q2$collect()\ntoc = Sys.time()\n\ndat2\n\nq3 = (\n    nyc\n    $group_by(\"passenger_count\", \"trip_distance\")\n    $agg(\n        pl$mean(\"tip_amount\")$alias(\"mean_tip\"),\n        pl$mean(\"fare_amount\")$alias(\"mean_fare\")\n        )\n    $sort(\"passenger_count\", \"trip_distance\")\n)\n\ntic = Sys.time()\ndat3 = q3$collect()\ntoc = Sys.time()\n \ndat3\n\ndat3$unpivot(index = c(\"passenger_count\", \"trip_distance\"))\n\nmean_tips  = nyc$group_by(\"month\")$agg(pl$col(\"tip_amount\")$mean())\nmean_fares = nyc$group_by(\"month\")$agg(pl$col(\"fare_amount\")$mean())\n\n(\n    mean_tips\n    $join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\"  # default is inner join\n    )\n    $collect()\n)\n\n# You can also try tidypolars\n\nlibrary(polars) ## Already loaded\nlibrary(tidypolars)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)\n\nnyc = scan_parquet_polars(\"nyc-taxi/**/*.parquet\")\n\nnyc |&gt; \n    summarise(mean_tip = mean(tip_amount), .by = passenger_count) |&gt;\n    compute()\n\n# Aside: Use collect() instead of compute() at the end if you would prefer to return a standard R data.frame instead of a Polars DataFrame.\n\n\n\n\nimport polars as pl\nimport time\nimport matplotlib\n\nnyc = pl.scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning=True)\nnyc\n\nq1 = (\n    nyc\n    .group_by([\"passenger_count\"])\n    .agg([\n            pl.mean(\"tip_amount\")#.alias(\"mean_tip\") ## alias is optional\n        ])\n    .sort(\"passenger_count\")\n)\nq1\n\ntic = time.time()\ndat1 = q1.collect()\ntoc = time.time()\n\ndat1\n\nq2 = (\n    nyc\n    .filter(pl.col(\"month\") &lt;= 3)\n    .group_by([\"month\", \"passenger_count\"])\n    .agg([pl.mean(\"tip_amount\").alias(\"mean_tip\")])\n    .sort(\"passenger_count\")\n)\n\n# q2             # naive\nq2.show_graph()  # optimized\n\ntic = time.time()\ndat2 = q2.collect()\ntoc = time.time()\n\ndat2\n\nq3 = (\n    nyc\n    .group_by([\"passenger_count\", \"trip_distance\"])\n    .agg([\n        pl.mean(\"tip_amount\").alias(\"mean_tip\"),\n        pl.mean(\"fare_amount\").alias(\"mean_fare\"),\n        ])\n    .sort([\"passenger_count\", \"trip_distance\"])\n)\n\ntic = time.time()\ndat3 = q3.collect()\ntoc = time.time()\n\ndat3\n\ndat3.unpivot(index = [\"passenger_count\", \"trip_distance\"])\n\nmean_tips  = nyc.group_by(\"month\").agg(pl.col(\"tip_amount\").mean())\nmean_fares = nyc.group_by(\"month\").agg(pl.col(\"fare_amount\").mean())\n\n(\n    mean_tips\n    .join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\" # default is inner join\n    )\n    .collect()\n)",
-    "crumbs": [
-      "Notes",
-      "Polars (R + Python)"
-    ]
-  },
-  {
-    "objectID": "computing/docker.html",
-    "href": "computing/docker.html",
-    "title": "Dockerfile",
-    "section": "",
-    "text": "This is a Dockerfile template for my computing environment. If you want to know more about what this does, check out my blog post.\n\n# Use Rocker image as the base for R\nFROM rocker/r-ver:4.4.0\n\nLABEL maintainer=\"Hyoungchul Kim &lt;hchul.kim96@gmail.com&gt;\"\n\n## Update and install system dependencies\nRUN apt-get update && apt-get install -y \\\n    libcurl4-openssl-dev \\\n    libssl-dev \\\n    libfontconfig1-dev \\\n    libharfbuzz-dev \\\n    libfribidi-dev \\\n    libfreetype6-dev \\\n    libpng-dev \\\n    libtiff5-dev \\\n    libjpeg-dev \\\n    libglpk-dev \\\n    libxml2-dev \\\n    libcairo2-dev \\\n    libgit2-dev \\\n    libpq-dev \\\n    libsasl2-dev \\\n    libsqlite3-dev \\\n    libssh2-1-dev \\\n    libxt-dev \\\n    libgdal-dev \\\n    wget \\\n    curl \\\n    vim \\\n    git \n\n## Install Pandoc and Quarto (Required for RMarkdown, Quarto, etc.)\n# RUN /rocker_scripts/install_pandoc.sh\n# RUN /rocker_scripts/install_quarto.sh\n\n## Install Python & Poetry\nRUN /rocker_scripts/install_python.sh && \\\n    pip3 install --upgrade pip && \\\n    pip3 install poetry\n\n# Ensure Poetry installs dependencies in the system environment\nRUN poetry config virtualenvs.create false\n\n# Copy Poetry files and install dependencies\nCOPY pyproject.toml poetry.lock .\nRUN poetry install --no-interaction --no-root\n\n## Install Julia 1.11.3 (to match Manifest.toml)\nENV JULIA_VERSION=1.11.3\nRUN /rocker_scripts/install_julia.sh\n\n## Set working directory\nWORKDIR /project\n\n## Copy renv.lock file into the folder\nCOPY renv.lock .\n\n# Set environment variables for renv\nENV RENV_VERSION=1.0.7\nENV RENV_PATHS_CACHE=/renv/cache\nENV RENV_CONFIG_REPOS_OVERRIDE=https://cloud.r-project.org\nENV RENV_CONFIG_AUTOLOADER_ENABLED=FALSE\nENV RENV_WATCHDOG_ENABLED=FALSE\nRUN echo \"options(renv.consent = TRUE)\" &gt;&gt; .Rprofile\nRUN echo \"options(RETICULATE_MINICONDA_ENABLED = FALSE)\" &gt;&gt; .Rprofile\n\n# Install renv from CRAN (avoiding bootstrapping by specifying version)\nRUN R -e \"install.packages('renv', repos = c(CRAN = 'https://cloud.r-project.org'))\"\nRUN R -e \"renv::consent(provided = TRUE)\"\n\n# Run renv restore to restore the environment\nRUN R -e \"renv::restore(confirm = FALSE)\"\n\n# Install Julia packages and manage dependencies\nCOPY Manifest.toml Project.toml .\nENV JULIA_PROJECT=/project\nRUN julia -e \"import Pkg; Pkg.activate(\\\".\\\"); Pkg.instantiate()\"\n\n# Copy over the rest of the project files\nCOPY . .\n\n# Default command\nCMD [\"bash\"]",
-    "crumbs": [
-      "Notes",
-      "Dockerfile"
     ]
   },
   {
@@ -857,14 +846,58 @@
     ]
   },
   {
-    "objectID": "computing/duckdb-sql.html",
-    "href": "computing/duckdb-sql.html",
-    "title": "DuckDB SQL",
+    "objectID": "computing/polars.html",
+    "href": "computing/polars.html",
+    "title": "Polars from Python and R",
     "section": "",
-    "text": "This is example templates that use DuckDB with SQL for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(duckdb)\n\ncon = dbConnect(duckdb(), shutdown = TRUE)\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\n# con = dbConnect(duckdb(), dbdir = \"nyc.duck\")\n\n# SELECT\n#   passenger_count,\n#   AVG(tip_amount) AS mean_tip\n# FROM 'nyc-taxi/**/*.parquet'\n# GROUP BY passenger_count\n# ORDER BY passenger_count\n\ntic = Sys.time()\ndat1 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  GROUP BY ALL\n  ORDER BY ALL\n  \"\n)\ntoc = Sys.time()\n\ndat1\ntoc - tic\n\ntic = Sys.time()\ndat2 = dbGetQuery(\n  con,\n  \"\n  FROM 'nyc-taxi/**/*.parquet'\n  SELECT\n    month,\n    passenger_count,\n    AVG(tip_amount) AS mean_tip\n  WHERE month &lt;= 3\n  GROUP BY ALL\n  \"\n    )\ntoc = Sys.time()\n\nhead(dat2)\n\ndbDisconnect(con)\n\n\n\n\nimport duckdb\nimport time\n\ncon = duckdb.connect(database=':memory:', read_only=False)\n\n\n# uncomment and run the next line if you'd like to create a persistent, disk-based database instead. It is good for computation for bigger than RAM data.\n\ncon = duckdb.connect(database='nyc.duck', read_only=False)\n\ntic = time.time()\ndat1 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    GROUP BY ALL\n    ORDER BY ALL\n    '''\n    )\n)\ntoc = time.time()\n\ndat1\n\ntic = time.time()\ndat2 = (\n  con.\n  query(\n    '''\n    FROM 'nyc-taxi/**/*.parquet'\n    SELECT\n      month,\n      passenger_count,\n      AVG(tip_amount) AS mean_tip\n    WHERE month &lt;= 3\n    GROUP BY ALL\n    '''\n  )\n)\ntoc = time.time()\n\ndat2\n\ncon.close()",
+    "text": "This is example templates that use Polars for R and Python. Note that these are short examples. If you want to know more about what they can do, check out this site.\n\nRPython\n\n\n\nlibrary(polars)\n\nnyc = pl$scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning = TRUE)\nnyc\n\nq1 = (\n    nyc\n    $group_by(\"passenger_count\")\n    $agg(\n        pl$mean(\"tip_amount\")#$alias(\"mean_tip\") ## alias is optional\n    )\n    $sort(\"passenger_count\")\n)\nq1 \n\ntic = Sys.time()\ndat1 = q1$collect()\ntoc = Sys.time()\n\ndat1\n\nq2 = (\n    nyc\n    $filter(pl$col(\"month\") &lt;= 3)\n    $group_by(\"month\", \"passenger_count\")\n    $agg(pl$mean(\"tip_amount\")$alias(\"mean_tip\"))\n    $sort(\"passenger_count\")\n) \n\n# q2              # naive\ncat(q2$explain()) # optimized\n\ntic = Sys.time()\ndat2 = q2$collect()\ntoc = Sys.time()\n\ndat2\n\nq3 = (\n    nyc\n    $group_by(\"passenger_count\", \"trip_distance\")\n    $agg(\n        pl$mean(\"tip_amount\")$alias(\"mean_tip\"),\n        pl$mean(\"fare_amount\")$alias(\"mean_fare\")\n        )\n    $sort(\"passenger_count\", \"trip_distance\")\n)\n\ntic = Sys.time()\ndat3 = q3$collect()\ntoc = Sys.time()\n \ndat3\n\ndat3$unpivot(index = c(\"passenger_count\", \"trip_distance\"))\n\nmean_tips  = nyc$group_by(\"month\")$agg(pl$col(\"tip_amount\")$mean())\nmean_fares = nyc$group_by(\"month\")$agg(pl$col(\"fare_amount\")$mean())\n\n(\n    mean_tips\n    $join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\"  # default is inner join\n    )\n    $collect()\n)\n\n# You can also try tidypolars\n\nlibrary(polars) ## Already loaded\nlibrary(tidypolars)\nlibrary(dplyr, warn.conflicts = FALSE)\nlibrary(tidyr, warn.conflicts = FALSE)\n\nnyc = scan_parquet_polars(\"nyc-taxi/**/*.parquet\")\n\nnyc |&gt; \n    summarise(mean_tip = mean(tip_amount), .by = passenger_count) |&gt;\n    compute()\n\n# Aside: Use collect() instead of compute() at the end if you would prefer to return a standard R data.frame instead of a Polars DataFrame.\n\n\n\n\nimport polars as pl\nimport time\nimport matplotlib\n\nnyc = pl.scan_parquet(\"nyc-taxi/**/*.parquet\", hive_partitioning=True)\nnyc\n\nq1 = (\n    nyc\n    .group_by([\"passenger_count\"])\n    .agg([\n            pl.mean(\"tip_amount\")#.alias(\"mean_tip\") ## alias is optional\n        ])\n    .sort(\"passenger_count\")\n)\nq1\n\ntic = time.time()\ndat1 = q1.collect()\ntoc = time.time()\n\ndat1\n\nq2 = (\n    nyc\n    .filter(pl.col(\"month\") &lt;= 3)\n    .group_by([\"month\", \"passenger_count\"])\n    .agg([pl.mean(\"tip_amount\").alias(\"mean_tip\")])\n    .sort(\"passenger_count\")\n)\n\n# q2             # naive\nq2.show_graph()  # optimized\n\ntic = time.time()\ndat2 = q2.collect()\ntoc = time.time()\n\ndat2\n\nq3 = (\n    nyc\n    .group_by([\"passenger_count\", \"trip_distance\"])\n    .agg([\n        pl.mean(\"tip_amount\").alias(\"mean_tip\"),\n        pl.mean(\"fare_amount\").alias(\"mean_fare\"),\n        ])\n    .sort([\"passenger_count\", \"trip_distance\"])\n)\n\ntic = time.time()\ndat3 = q3.collect()\ntoc = time.time()\n\ndat3\n\ndat3.unpivot(index = [\"passenger_count\", \"trip_distance\"])\n\nmean_tips  = nyc.group_by(\"month\").agg(pl.col(\"tip_amount\").mean())\nmean_fares = nyc.group_by(\"month\").agg(pl.col(\"fare_amount\").mean())\n\n(\n    mean_tips\n    .join(\n        mean_fares,\n        on = \"month\",\n        how = \"left\" # default is inner join\n    )\n    .collect()\n)",
     "crumbs": [
       "Notes",
-      "DuckDB SQL"
+      "Polars (R + Python)"
+    ]
+  },
+  {
+    "objectID": "misc/links.html",
+    "href": "misc/links.html",
+    "title": "Useful links",
+    "section": "",
+    "text": "Category\nLinks\n\n\n\n\nPersonal website\n🔗 GitHub site\n\n\nCoffee chat (with me)\n🔗 Appointment link\n\n\nComputing and replication resources\n🔗 Web-scraping 1  🔗 Web-scraping 2  🔗 Parallel programming  🔗 Docker  🔗 Google compute engine 1  🔗 Google compute engine 2  🔗 Databases  🔗 Spark  🔗 DuckDB and polars  🔗 NYU Course Notes & Resources  🔗 Quantitative dynamic model\n\n\nSpatial packages\n🔗 R as GIS for economists  🔗 Spatial data science\n\n\nJulia\n🔗 Julia for data science  🔗 Computational economics for PhDs  🔗 Computational Methods in Macroeconomics  🔗 BLPDemand.jl  🔗 Guide to Efficient Computational Work in Economics  🔗 Econometrics with Julia  🔗 Advanced Dynamic Programming\n\n\nUseful packages\n🔗 New DiD methods\n\n\nGraduate trade and spatial\n🔗 Treb Allen\n\n\nNotes\n🔗 BLP-notes (Adam Smith)",
+    "crumbs": [
+      "Misc.",
+      "Useful links"
+    ]
+  },
+  {
+    "objectID": "prepare/notes-io.html",
+    "href": "prepare/notes-io.html",
+    "title": "Notes",
+    "section": "",
+    "text": "This section is not for formally defining the field of IO. I am just writng down some things IO research seem to focus on.\nIO is about understanding market structure and how it affects the equilibrium outcomes such as price, quantity, etc. By market structure, we mean mainly the various features of the supply-side of the market (the firm). IO tries to understand the characteristics of the market structure and how it affects welfare (consumer surplus, profit) in the equilibrium.\nOld IO used to analyze empirical association of market structures across industries. But this was problematic because market structure is endogenous. This lead to the period of game theory. Game theory was useful because it provided useful tools to characterize the strategic interactions of individuals that make up the market.\nNew empirical IO seems to focus their research within some specific industry and also employ economic theory and econometric methods to fully characterize the market of their interests. During this process, they developed many useful tools (demand estimation, production function estimation, dynamic model, etc) that are also helpful to non-IO researchers.\n\n\n\nActually, this can be derived from the usual utility function. Suppose consumer maximizes:\n\\[\n  \\max_{q_1, q_2, c} U(q_1, q_2, c)\n\\]\nsubject to\n\\[\\begin{align}\n  p_1 q_1 + p_2 q_2 + c = m \\\\\n  q_1 q_2 = 0\n\\end{align}\\]\n\\(c\\) is the numeraire good with its price normalized to 1. To make this more simple, we will assume that quantity has to be either 1 or 0.\nThen we can get conditional indirect utility function which is (we condition on \\(q_1 = 0\\))\n\\[\n  \\max_{q_2, c} U(0, q_2, c)\n\\]\nsubject to\n\\[\n  p_2 q_2 + c = m\n\\]\nThere is a standard solution for this demand functions \\(q_2(p_2, m)\\) and \\(c(p_2, m)\\). So plug this into the demand function and we get the indirect utility function:\n\\[\n  V_2(p_2, m) = U(0, q_2(p_2, m), c(p_2, m)) = U(0, 1, m-p_2)\n\\]\nwhere the last equation holds because we are only considering that consumer can buy at most one good for \\(q_1, q_2\\).\nDoing the same conditioning on \\(q_2 = 0\\), we can see that the solution to the discrete choice part of the decision problem is then given by a choice between the wo conditional utility functions:\n\\[\n  \\max_{j=\\{1,2 \\}} V_j (p_j, m)\n\\]\nThis is the discrete choice model we usually see. We then usually add some random shocks to accomodate the changes in the people’s choice in the real-world data.\n\n\n\nI think \\(\\varepsilon\\) part is some random shock related to the conditional indirect utility of product \\(j\\). But this becomes bit weird as we add more random components into the model like mixed logit in BLP. In this setup, people usually call \\(\\varepsilon\\) as some superimposed noise used to accomodate estimation. This is because having \\(\\varepsilon\\) allows us to derive the conditional choice probability in multinomial logit form. Thus in this case, \\(\\varepsilon\\) does not seem to have a very important economic meaning. But sometimes I feel people think of this term as some idiosyncratic error terms that is specific to some individuals. Thus if we consider this error as something that is very specific to certain individual (uncorrelated with other unobserved systematic factors), this could make sense."
+  },
+  {
+    "objectID": "prepare/notes-io.html#nice-things-to-know",
+    "href": "prepare/notes-io.html#nice-things-to-know",
+    "title": "Notes",
+    "section": "",
+    "text": "This section is not for formally defining the field of IO. I am just writng down some things IO research seem to focus on.\nIO is about understanding market structure and how it affects the equilibrium outcomes such as price, quantity, etc. By market structure, we mean mainly the various features of the supply-side of the market (the firm). IO tries to understand the characteristics of the market structure and how it affects welfare (consumer surplus, profit) in the equilibrium.\nOld IO used to analyze empirical association of market structures across industries. But this was problematic because market structure is endogenous. This lead to the period of game theory. Game theory was useful because it provided useful tools to characterize the strategic interactions of individuals that make up the market.\nNew empirical IO seems to focus their research within some specific industry and also employ economic theory and econometric methods to fully characterize the market of their interests. During this process, they developed many useful tools (demand estimation, production function estimation, dynamic model, etc) that are also helpful to non-IO researchers.\n\n\n\nActually, this can be derived from the usual utility function. Suppose consumer maximizes:\n\\[\n  \\max_{q_1, q_2, c} U(q_1, q_2, c)\n\\]\nsubject to\n\\[\\begin{align}\n  p_1 q_1 + p_2 q_2 + c = m \\\\\n  q_1 q_2 = 0\n\\end{align}\\]\n\\(c\\) is the numeraire good with its price normalized to 1. To make this more simple, we will assume that quantity has to be either 1 or 0.\nThen we can get conditional indirect utility function which is (we condition on \\(q_1 = 0\\))\n\\[\n  \\max_{q_2, c} U(0, q_2, c)\n\\]\nsubject to\n\\[\n  p_2 q_2 + c = m\n\\]\nThere is a standard solution for this demand functions \\(q_2(p_2, m)\\) and \\(c(p_2, m)\\). So plug this into the demand function and we get the indirect utility function:\n\\[\n  V_2(p_2, m) = U(0, q_2(p_2, m), c(p_2, m)) = U(0, 1, m-p_2)\n\\]\nwhere the last equation holds because we are only considering that consumer can buy at most one good for \\(q_1, q_2\\).\nDoing the same conditioning on \\(q_2 = 0\\), we can see that the solution to the discrete choice part of the decision problem is then given by a choice between the wo conditional utility functions:\n\\[\n  \\max_{j=\\{1,2 \\}} V_j (p_j, m)\n\\]\nThis is the discrete choice model we usually see. We then usually add some random shocks to accomodate the changes in the people’s choice in the real-world data.\n\n\n\nI think \\(\\varepsilon\\) part is some random shock related to the conditional indirect utility of product \\(j\\). But this becomes bit weird as we add more random components into the model like mixed logit in BLP. In this setup, people usually call \\(\\varepsilon\\) as some superimposed noise used to accomodate estimation. This is because having \\(\\varepsilon\\) allows us to derive the conditional choice probability in multinomial logit form. Thus in this case, \\(\\varepsilon\\) does not seem to have a very important economic meaning. But sometimes I feel people think of this term as some idiosyncratic error terms that is specific to some individuals. Thus if we consider this error as something that is very specific to certain individual (uncorrelated with other unobserved systematic factors), this could make sense."
+  },
+  {
+    "objectID": "prepare/notes-io.html#ackerberg-et-al.-2006",
+    "href": "prepare/notes-io.html#ackerberg-et-al.-2006",
+    "title": "Notes",
+    "section": "Ackerberg et al. (2006)",
+    "text": "Ackerberg et al. (2006)\n\nDemand systems\nBefore the modern empirical IO, demand system was usually based on “representative agent models” in a “product space.” This lead to various problems:\nProblms of representative agent models\nSince lot of the demand systemts were estimated from aggregate market level data, it was hard to generalize the analysis of particular market into different settings. This is because of heterogenous agents in different markets. In order to alleviate this, researchers tried methods such as imposing some a priori distribution of consumer characteristics and aggregate it to the market level. The problem of this approach was that this distribution was very ad-hoc and unrealistic.\nSolutions of representative agent problem\nOne solution to this problem was the use of simulation methods. Instead of assuming certain distribution, researchers would draw a vector of consumer characteristics from some observed population data (e.g. CPS) in that market. Then they would determine the choices made by individuals for some given parameters and aggregate the choices to get the predicted demand. After that, they would apply some algorithm to find the parameter values that get these predicted demand match the observed demand.\n\nProblems of product space\n\n“Too many parameters problems”: If we model the demand system in terms of the product space, we would need to estimate large number of parameters. This could easily become impossible with the data we have.\n“New goods problem”: Since we are in product space, we can only think about goods that were already there. We cannot analyze the demand for new goods.\n\nSolutions of product space problem\nOne solution was to transition from product space to characteristic space. Now a product is a bundle of characteristics and individuals’ preferences are defined on those characteristics.\n\nBackground on characteristics space\nIn fact, papers such as Mcfadden (1974, 1981) and others already provided a well-defined econometrics models that is consistent with this setup. But it was not widely used in IO due to two reasons:\n\nLogit model’s tendency to give arise to IIA problem.\nEarly models did not account for unobserved product characteristics.\n\n\nIIA problem\nBefore we go deep into the problem of IIA, please be aware that IIA assumption is not always an unrealistic asumption. In fact, there can be certain settings where the assumption is plausible. Thus what matters is the objective of your research question.\nAnyway, IIA stands for Independence from Irrelevant Alternatives. What this means is that for alternatives \\(i\\) and \\(k\\), ratio of logit probability does not depend on other alternatives. So why is this property problematic? This becomes an issue when we are interested in understanding substitution patterns across products in certain market. Nice example is the famous red bus and blue bus example. Suppose in some market consumers can either take a car or a blue bus to work. Now assume that the representative utility of two modes are same. Then the we have \\(p_c = P_{bb} = \\frac{1}{2}\\). In this case, the ratio of logit probability is 1. Now suppose red bus is introduced to the market. Since the only difference between red bus and blue bus is color, assume that ratio of their logit probability is one: \\(P{rb} / P_{bb} = 1\\). But in logit model, the ratio for car and blue bus will also still be one. So the only probability where this is possible is when \\(P_c = P_{bb} = P_{rb} = \\frac{1}{3}\\). But this is unrealistic as we would expect that only the probability of people taking the blue bus would be affected. This is because probability of people taking the car should not be affected by introduction of another bus.\nThis problem leads to proportional substitution. In logit model, cross-elasticity of product \\(i\\) becomes same for any other alternative \\(j\\). So change in one product’s factor will lead to same proportional shift in all other alternativies. Of course this is an unrealistic behavior (especially if you are interested in variations of substitution patterns across products).\nSolutions to IIA\nThere are many ways to solve it. Mostly, people use other model such as nested logit model or random coefficient (mixed logit) model.\n\nUnobserved product characteristics problem\nThis is similar to the traditional simultaneous equation problem in demand/supply function. Basically, price is correlated with the error term. Simple solution would be to apply IV using supply shifters. But this is not an easy problem for the demand system as equations are embedded in a complex non-linear functional forms.\nSolutions to unobserved product characteristics problem\nThis was solved by Berry (1994) and BLP (1995). By applying non-linear change of variables or contraction mapping, we can retrieve the equation that is linear in unobservables. Then we can apply the traditional IV estimation to overcome the endogeneity problem.\n\nSimple model\n\\[\nu_{ijt} = U(\\tilde{x}_{jt}, \\xi_{jt}, z_{it}, v_{it}, y_{it} - p_{jt}, \\theta).\n\\]\nUsually we will just drop the index \\(t\\) which stands for market. We asume there are \\(k\\) dimension of product characteristics. In practice, we do not explicitly model the expenditure in other markets. Instead, income is subsumed into either \\(v_i\\) or \\(z_i\\) and utility is modelled as depending explicitly on price.\n\\[\nu_{ij} = U(\\tilde{x}_j, \\xi_j, z_i, v_i, p_j, \\theta).\n\\]\nWe then parameterize the model in linear fashion and let\n\\[\nU_{ij} = \\sum_k x_{jk}\\theta_{ik} + \\xi_j + \\varepsilon_{ij},\n\\]\nwhere \\(\\theta_{ik} = \\overline{\\theta_k} + \\theta_k^{o}` z_i + \\theta_k^{u}` v_i\\). We normalize outside utility as \\(U_{i,0} = 0\\).\nWe can then fully write the model as\n\\[\nU_{ij} = \\overbrace{\\delta_j}^{\\sum_k x_{jk} \\overline{\\theta_k} + \\xi_j} + \\sum_{kr} x_{jk} z_{ir} \\theta_{rk}^o + \\sum_{kl} x_{jk} v_{il} \\theta_{kl}^u + \\varepsilon_{ij}.\n\\]\nSteps in estimation\nStep I\nApproximation to the aggregate shares conditional on a partiuclar value of \\((\\delta, \\theta)\\). McFadden (1974) showed that in logit assumption, we can find the choice probabilities implied by the model analytically condition on the \\(v_i\\).\n\\[\n\\sigma_j(\\theta, \\delta) = \\int \\overbrace{\\frac{\\exp [ \\delta_j + \\sum_{kl} x_{jk} v_{il} \\theta_{kl}^u ]}{1 + \\sum_q \\exp[ \\delta_q + \\sum_{kl} x_{qk} v_{il} \\theta_{kl}^u ]}}^{\\text{by McFadden}} f(v) d(v).\n\\]\nThis integral is intractable. We then use simulation to obtain an approximation of it following Pakes (1986).\n\\[\n\\sigma_j(\\theta, \\delta, P^{ns}) = \\sum_{r=1}^{ns} \\ldots\n\\]\nStep II\nThen contraction mapping by BLP (1995):\n\\[\n\\delta_j^k(\\theta) = \\delta_j^{k-1} (\\theta) + \\log[s_j^n] - \\log[\\sigma_j(\\theta, \\delta^{k-1}, P^{ns})].\n\\]\nThen we can get the unobservables in linear form:\n\\[\n\\xi_j(\\theta, s^n, P^{ns}) = \\delta(\\cdot) - \\sum_k x_{jk} \\overline{\\theta_k}.\n\\]\nStep III\nGood ol’ GMM.\n\\[\nG_{J, n, ns} (\\theta) = \\sum_j \\xi_j(\\theta, s^n, P^{ns}) f_j(w).\n\\]\nAdditional sources of info on demand parameters\n\nAdding equilibrium assumption (e.g. supply equation, pricing equation) could make the estimation more precise.\nAdding Micro data: Sometimes we can get a more precise estimate if we have individual level data on consumer’s characteristics. This is become more relevant as now there are many microdata that is available to researchers."
+  },
+  {
+    "objectID": "teaching/metrics.html",
+    "href": "teaching/metrics.html",
+    "title": "Metric theory",
+    "section": "",
+    "text": "This pages contains log for my self-study on metric theory.",
+    "crumbs": [
+      "Teaching",
+      "Mathematics",
+      "Metric theory resources"
     ]
   },
   {
@@ -904,60 +937,27 @@
     ]
   },
   {
-    "objectID": "teaching/faq.html",
-    "href": "teaching/faq.html",
-    "title": "FAQ",
+    "objectID": "teaching/office-hours.html",
+    "href": "teaching/office-hours.html",
+    "title": "Overview on OH",
     "section": "",
     "text": "TBD",
     "crumbs": [
       "Teaching",
       "Class-name",
-      "FAQ"
+      "Office hours"
     ]
   },
   {
-    "objectID": "teaching/topology.html",
-    "href": "teaching/topology.html",
-    "title": "Topology",
+    "objectID": "teaching/teaching.html",
+    "href": "teaching/teaching.html",
+    "title": "Class name",
     "section": "",
-    "text": "This pages contains log for my self-study on topology.",
+    "text": "This page contains an outline of the topics, content, and assignments for the semester. Note that this schedule will be updated as the semester progresses and the timeline of topics and assignments might be updated throughout the semester. Syllabus\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nweek\ndow\ndate\nwhat\ntopic\nprepare\nslides\nhw\nhw_sol\nexam\nnotes\n\n\n\n\n1\nM\nAug 29\nLab\nNo lab\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nAug 30\nLec 1\nWelcome to STA 199\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 1\nLec 2\nMeet the toolkit\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n2\nM\nSep 5\nLab 0\nHello R!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 0\n\n\n\nT\nSep 6\nLec 3\nGrammar of graphics\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 8\nLec 4\nVisualizing various types of data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 1\n\n\n\nF\nSep 9\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 0 + AE 1\n\n\n\nSu\nSep 11\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: AE 2\n\n\n3\nM\nSep 12\nLab 1\nData visualization\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 1\n\n\n\nT\nSep 13\nLec 5\nGrammar of data wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 15\nLec 6\nWorking with multiple data frames\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 1 / Release: HW 2\n\n\n\nF\nSep 16\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 1\n\n\n4\nM\nSep 19\nLab 2\nData wrangling\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 2\n\n\n\nT\nSep 20\nLec 7\nTidying data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 22\nLec 8\nData types and classes\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue HW 2\n\n\n\nF\nSep 23\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 2\n\n\n5\nM\nSep 26\nLab 3\nData tidying\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 3\n\n\n\nT\nSep 27\nLec 9\nImporting and recoding data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nSep 29\nLec 10\nExam 1 Review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 1 at 12pm\n\n\n\nF\nSep 30\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 3\n\n\n6\nM\nOct 3\nLab\nNo lab - Work on Exam 1\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam 1 at 2pm\n\n\n\nT\nOct 4\nLec 11\nData science ethics - Misrepresentation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 6\nLec 12\nData science ethics - Algorithmic bias + data privacy\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 3\n\n\n7\nM\nOct 10\nLab\nNo lab - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nOct 11\nLecture\nNo Lec - Fall break\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 13\nLec 13\nWeb scraping\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 3\n\n\n8\nM\nOct 17\nLab\nWork on project proposal\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nOct 18\nLec 14\nFunctions + iteration\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 20\nLec 15\nThe language of models\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nF\nOct 21\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project proposal\n\n\n9\nM\nOct 24\nLab 4\nProbability + Simpson's Paradox\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 4\n\n\n\nT\nOct 25\nLec 16\nModels with a single predictor\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nOct 27\nLec 17\nModels with multiple predictors\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: HW 4\n\n\n\nF\nOct 28\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 4\n\n\n10\nM\nOct 31\nLab 5\nPredicting a numerical outcome\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 5\n\n\n\nT\nNov 1\nLec 18\nModels with multiple predictors + Overfitting\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 3\nLec 19\nLogistic regression\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 4 / Release: HW 5\n\n\n\nF\nNov 4\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 5 / Release: HW 6\n\n\n\nS\nNov 5\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 1\n\n\n11\nM\nNov 7\nLab\nWork on project draft\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nNov 8\nLec 20\nQuantifying uncertainty with bootstrap intervals\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 10\nLec 21\nHypothesis testing via simulation\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 5\n\n\n\nF\nNov 11\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 1\n\n\n12\nM\nNov 14\nLab 6\nPrediction + Bootstrapping\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Lab 6\n\n\n\nT\nNov 15\nLec 22\nInference overview\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 17\nLec 23\nExam 2 Review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam 2 at 12pm\n\n\n\nF\nNov 18\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Lab 6\n\n\n13\nM\nNov 21\nLab\nNo lab - Work on Exam 2\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam 2 at 2pm\n\n\n\nT\nNov 22\nLec 24\nNo lecture - Work on projects\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nNov 24\nLecture\nNo lecture - Thanksgiving\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nF\nNov 25\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nRelease: Exam retake (optional)\n\n\n\nSu\nNov 27\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project draft 2 (optional)\n\n\n14\nM\nNov 28\nLab\nWork on project peer review\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project peer review\n\n\n\nT\nNov 29\nLec 25\nCommunicating data science results effectively\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Team peer evaluations 2\n\n\n\nTh\nDec 1\nLec 26\nCustomizing Quarto reports and presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n15\nM\nDec 5\nLab\nProject presentations\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nT\nDec 6\nLec 25\nLooking further: Text analysis\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTh\nDec 8\nLec 26\nLooking further: Interactive web applications with Shiny\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Project everything\n\n\n\nF\nDec 9\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: HW 6 / Statistics experience\n\n\n16\nTh\nDec 15\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDue: Exam retake (optional)",
     "crumbs": [
       "Teaching",
-      "Mathematics",
-      "Topology resources"
+      "Class-name",
+      "Overview"
     ]
-  },
-  {
-    "objectID": "teaching/metrics.html",
-    "href": "teaching/metrics.html",
-    "title": "Metric theory",
-    "section": "",
-    "text": "This pages contains log for my self-study on metric theory.",
-    "crumbs": [
-      "Teaching",
-      "Mathematics",
-      "Metric theory resources"
-    ]
-  },
-  {
-    "objectID": "prepare/notes-spatial.html",
-    "href": "prepare/notes-spatial.html",
-    "title": "Notes",
-    "section": "",
-    "text": "It is interesting that MTO shows that MTO is only beneficial to children who are young. At first, MTO project was understood as a failed experiment because it had no significant effect on the marginalized households that moved to better neighborhoods. However, Chetty, Hendren, and Katz (2016) showed that young children (under 13) that moved due to the MTO project had higher college attendance and earnings and lower single parenthood rates. The paper hints that it might have something to do with the disturbance effect. There are tradeoffs from moving: while moving to better neighborhoods give children better environment, it also leads to disruption effect where the children has to move away from their familiar environment. Considerng this tradeoff, it is likely that younger children are less affected by the disruption effect as their duration of living in poor neighborhoods is shorter."
-  },
-  {
-    "objectID": "prepare/notes-spatial.html#mto-project",
-    "href": "prepare/notes-spatial.html#mto-project",
-    "title": "Notes",
-    "section": "",
-    "text": "It is interesting that MTO shows that MTO is only beneficial to children who are young. At first, MTO project was understood as a failed experiment because it had no significant effect on the marginalized households that moved to better neighborhoods. However, Chetty, Hendren, and Katz (2016) showed that young children (under 13) that moved due to the MTO project had higher college attendance and earnings and lower single parenthood rates. The paper hints that it might have something to do with the disturbance effect. There are tradeoffs from moving: while moving to better neighborhoods give children better environment, it also leads to disruption effect where the children has to move away from their familiar environment. Considerng this tradeoff, it is likely that younger children are less affected by the disruption effect as their duration of living in poor neighborhoods is shorter."
-  },
-  {
-    "objectID": "prepare/notes-spatial.html#agglomeration-externality",
-    "href": "prepare/notes-spatial.html#agglomeration-externality",
-    "title": "Notes",
-    "section": "Agglomeration externality",
-    "text": "Agglomeration externality"
   }
 ]
