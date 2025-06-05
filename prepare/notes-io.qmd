@@ -11,7 +11,7 @@ execute:
 
 This section is not for formally defining the field of IO. I am just writng down some things IO research seem to focus on. 
 
-IO is about understanding **market structure** and how it affects the equilibrium outcomes such as price, quantity, etc. By market structure, we mean mainly the various features of the supply-side of the market (the firm). Io tries to understand the characteristics of the market structure and how it affects welfare (consumer surplus, profit) in the equilibrium. 
+IO is about understanding **market structure** and how it affects the equilibrium outcomes such as price, quantity, etc. By market structure, we mean mainly the various features of the supply-side of the market (the firm). IO tries to understand the characteristics of the market structure and how it affects welfare (consumer surplus, profit) in the equilibrium. 
 
 Old IO used to analyze empirical association of market structures across industries. But this was problematic because market structure is endogenous. This lead to the period of game theory. Game theory was useful because it provided useful tools to characterize the strategic interactions of individuals that make up the market. 
 
@@ -64,7 +64,7 @@ This is the discrete choice model we usually see. We then usually add some rando
 
 ### What is $\varepsilon_{ijt}$? (in progress)
 
-I think $\varepsilon$ part is some random shock related to the conditional indirect utility of product $j$. But this becomes bit weird as we add more random components into the model like mixed logit in BLP. In this setup, people usually call $\varepsilon$ as some superimposed noise used to accomodate estimation. This is because having $\varepsilon$ allows us to derive the conditional choice probability in multinomial logit form. Thus in this case, $\varepsilon$ does not seem to have a very important economic meaning. 
+I think $\varepsilon$ part is some random shock related to the conditional indirect utility of product $j$. But this becomes bit weird as we add more random components into the model like mixed logit in BLP. In this setup, people usually call $\varepsilon$ as some superimposed noise used to accomodate estimation. This is because having $\varepsilon$ allows us to derive the conditional choice probability in multinomial logit form. Thus in this case, $\varepsilon$ does not seem to have a very important economic meaning. But sometimes I feel people think of this term as some idiosyncratic error terms that is specific to some individuals. Thus if we consider this error as something that is very specific to certain individual (uncorrelated with other unobserved systematic factors), this could make sense. 
 
 ## Ackerberg et al. (2006)
 
@@ -106,7 +106,15 @@ In fact, papers such as Mcfadden (1974, 1981) and others already provided a well
 
 **IIA problem**
 
+Before we go deep into the problem of IIA, please be aware that IIA assumption is not always an unrealistic asumption. In fact, there can be certain settings where the assumption is plausible. Thus what matters is the objective of your research question.
+
+Anyway, IIA stands for **Independence from Irrelevant Alternatives**. What this means is that for alternatives $i$ and $k$, ratio of logit probability does not depend on other alternatives. So why is this property problematic? This becomes an issue when we are interested in understanding substitution patterns across products in certain market. Nice example is the famous red bus and blue bus example. Suppose in some market consumers can either take a car or a blue bus to work. Now assume that the representative utility of two modes are same. Then the we have $p_c = P_{bb} = \frac{1}{2}$. In this case, the ratio of logit probability is 1. Now suppose red bus is introduced to the market. Since the only difference between red bus and blue bus is color, assume that ratio of their logit probability is one: $P{rb} / P_{bb} = 1$. But in logit model, the ratio for car and blue bus will also still be one. So the only probability where this is possible is when $P_c = P_{bb} = P_{rb} = \frac{1}{3}$. But this is unrealistic as we would expect that only the probability of people taking the blue bus would be affected. This is because probability of people taking the car should not be affected by introduction of another bus.
+
+This problem leads to proportional substitution. In logit model, cross-elasticity of product $i$ becomes same for any other alternative $j$. So change in one product's factor will lead to same proportional shift in all other alternativies. Of course this is an unrealistic behavior (especially if you are interested in variations of substitution patterns across products).
+
 **Solutions to IIA**
+
+There are many ways to solve it. Mostly, people use other model such as nested logit model or random coefficient (mixed logit) model.
 
 ---
 
@@ -189,9 +197,3 @@ $$
 1. Adding equilibrium assumption (e.g. supply equation, pricing equation) could make the estimation more precise.
 
 2. Adding Micro data: Sometimes we can get a more precise estimate if we have individual level data on consumer's characteristics. This is become more relevant as now there are many microdata that is available to researchers.
-
-### Dynamic
-
-Research which uses dynamic games settings are relatively rare and new. This is not because dynamic setting was not considered important to IO folks. It is just that it is very hard to estimate parameters in dynamic setup. But luckily, there has been some recent breakthroughs.  
-
-

@@ -375,7 +375,6 @@ window.Quarto = {
   <li><a href="#ackerberg-et-al.-2006" id="toc-ackerberg-et-al.-2006" class="nav-link" data-scroll-target="#ackerberg-et-al.-2006">Ackerberg et al.&nbsp;(2006)</a>
   <ul class="collapse">
   <li><a href="#demand-systems" id="toc-demand-systems" class="nav-link" data-scroll-target="#demand-systems">Demand systems</a></li>
-  <li><a href="#dynamic" id="toc-dynamic" class="nav-link" data-scroll-target="#dynamic">Dynamic</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://hchulkim.github.io/tools-site/edit/main/prepare/notes-io.qmd" class="toc-action"><i class="bi bi-git"></i>Edit this page</a></li><li><a href="https://hchulkim.github.io/tools-site/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -408,7 +407,7 @@ window.Quarto = {
 <section id="what-is-io" class="level3">
 <h3 class="anchored" data-anchor-id="what-is-io">What is IO?</h3>
 <p>This section is not for formally defining the field of IO. I am just writng down some things IO research seem to focus on.</p>
-<p>IO is about understanding <strong>market structure</strong> and how it affects the equilibrium outcomes such as price, quantity, etc. By market structure, we mean mainly the various features of the supply-side of the market (the firm). Io tries to understand the characteristics of the market structure and how it affects welfare (consumer surplus, profit) in the equilibrium.</p>
+<p>IO is about understanding <strong>market structure</strong> and how it affects the equilibrium outcomes such as price, quantity, etc. By market structure, we mean mainly the various features of the supply-side of the market (the firm). IO tries to understand the characteristics of the market structure and how it affects welfare (consumer surplus, profit) in the equilibrium.</p>
 <p>Old IO used to analyze empirical association of market structures across industries. But this was problematic because market structure is endogenous. This lead to the period of game theory. Game theory was useful because it provided useful tools to characterize the strategic interactions of individuals that make up the market.</p>
 <p>New empirical IO seems to focus their research within some specific industry and also employ economic theory and econometric methods to fully characterize the market of their interests. During this process, they developed many useful tools (demand estimation, production function estimation, dynamic model, etc) that are also helpful to non-IO researchers.</p>
 </section>
@@ -445,7 +444,7 @@ window.Quarto = {
 </section>
 <section id="what-is-varepsilon_ijt-in-progress" class="level3">
 <h3 class="anchored" data-anchor-id="what-is-varepsilon_ijt-in-progress">What is <span class="math inline">\(\varepsilon_{ijt}\)</span>? (in progress)</h3>
-<p>I think <span class="math inline">\(\varepsilon\)</span> part is some random shock related to the conditional indirect utility of product <span class="math inline">\(j\)</span>. But this becomes bit weird as we add more random components into the model like mixed logit in BLP. In this setup, people usually call <span class="math inline">\(\varepsilon\)</span> as some superimposed noise used to accomodate estimation. This is because having <span class="math inline">\(\varepsilon\)</span> allows us to derive the conditional choice probability in multinomial logit form. Thus in this case, <span class="math inline">\(\varepsilon\)</span> does not seem to have a very important economic meaning.</p>
+<p>I think <span class="math inline">\(\varepsilon\)</span> part is some random shock related to the conditional indirect utility of product <span class="math inline">\(j\)</span>. But this becomes bit weird as we add more random components into the model like mixed logit in BLP. In this setup, people usually call <span class="math inline">\(\varepsilon\)</span> as some superimposed noise used to accomodate estimation. This is because having <span class="math inline">\(\varepsilon\)</span> allows us to derive the conditional choice probability in multinomial logit form. Thus in this case, <span class="math inline">\(\varepsilon\)</span> does not seem to have a very important economic meaning. But sometimes I feel people think of this term as some idiosyncratic error terms that is specific to some individuals. Thus if we consider this error as something that is very specific to certain individual (uncorrelated with other unobserved systematic factors), this could make sense.</p>
 </section>
 </section>
 <section id="ackerberg-et-al.-2006" class="level2">
@@ -474,7 +473,11 @@ window.Quarto = {
 </ol>
 <hr>
 <p><strong>IIA problem</strong></p>
+<p>Before we go deep into the problem of IIA, please be aware that IIA assumption is not always an unrealistic asumption. In fact, there can be certain settings where the assumption is plausible. Thus what matters is the objective of your research question.</p>
+<p>Anyway, IIA stands for <strong>Independence from Irrelevant Alternatives</strong>. What this means is that for alternatives <span class="math inline">\(i\)</span> and <span class="math inline">\(k\)</span>, ratio of logit probability does not depend on other alternatives. So why is this property problematic? This becomes an issue when we are interested in understanding substitution patterns across products in certain market. Nice example is the famous red bus and blue bus example. Suppose in some market consumers can either take a car or a blue bus to work. Now assume that the representative utility of two modes are same. Then the we have <span class="math inline">\(p_c = P_{bb} = \frac{1}{2}\)</span>. In this case, the ratio of logit probability is 1. Now suppose red bus is introduced to the market. Since the only difference between red bus and blue bus is color, assume that ratio of their logit probability is one: <span class="math inline">\(P{rb} / P_{bb} = 1\)</span>. But in logit model, the ratio for car and blue bus will also still be one. So the only probability where this is possible is when <span class="math inline">\(P_c = P_{bb} = P_{rb} = \frac{1}{3}\)</span>. But this is unrealistic as we would expect that only the probability of people taking the blue bus would be affected. This is because probability of people taking the car should not be affected by introduction of another bus.</p>
+<p>This problem leads to proportional substitution. In logit model, cross-elasticity of product <span class="math inline">\(i\)</span> becomes same for any other alternative <span class="math inline">\(j\)</span>. So change in one product’s factor will lead to same proportional shift in all other alternativies. Of course this is an unrealistic behavior (especially if you are interested in variations of substitution patterns across products).</p>
 <p><strong>Solutions to IIA</strong></p>
+<p>There are many ways to solve it. Mostly, people use other model such as nested logit model or random coefficient (mixed logit) model.</p>
 <hr>
 <p><strong>Unobserved product characteristics problem</strong></p>
 <p>This is similar to the traditional simultaneous equation problem in demand/supply function. Basically, price is correlated with the error term. Simple solution would be to apply IV using supply shifters. But this is not an easy problem for the demand system as equations are embedded in a complex non-linear functional forms.</p>
@@ -527,10 +530,6 @@ G_{J, n, ns} (\theta) = \sum_j \xi_j(\theta, s^n, P^{ns}) f_j(w).
 <li><p>Adding equilibrium assumption (e.g.&nbsp;supply equation, pricing equation) could make the estimation more precise.</p></li>
 <li><p>Adding Micro data: Sometimes we can get a more precise estimate if we have individual level data on consumer’s characteristics. This is become more relevant as now there are many microdata that is available to researchers.</p></li>
 </ol>
-</section>
-<section id="dynamic" class="level3">
-<h3 class="anchored" data-anchor-id="dynamic">Dynamic</h3>
-<p>Research which uses dynamic games settings are relatively rare and new. This is not because dynamic setting was not considered important to IO folks. It is just that it is very hard to estimate parameters in dynamic setup. But luckily, there has been some recent breakthroughs.</p>
 
 
 </section>
